@@ -7,11 +7,11 @@ describe('BOWOL App Integration', () => {
     render(<App />);
     
     // Verificar logotipo/marca en cabecera
-    expect(screen.getByText('BOWOL')).toBeInTheDocument();
+    expect(screen.getAllByText(/BOWOL/i)[0]).toBeInTheDocument();
     
-    // Verificar ciclo Intelligence -> Strategy -> Execution
-    expect(screen.getByText('1. Intelligence')).toBeInTheDocument();
-    expect(screen.getByText('2. Strategy')).toBeInTheDocument();
-    expect(screen.getByText('3. Execution')).toBeInTheDocument();
+    // Verificar ciclo Inteligencia -> Estrategia -> Ejecución
+    expect(screen.getByText('Radar de Tendencias')).toBeInTheDocument();
+    expect(screen.getByText('FODA & Scoring RICE')).toBeInTheDocument();
+    expect(screen.getByText('Kanban & Sprints Ágiles')).toBeInTheDocument();
   });
 });
