@@ -15,7 +15,8 @@ import {
   FlaskConical,
   Repeat,
   Calendar,
-  Share2
+  Share2,
+  CreditCard
 } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
 import { useAuth } from '@/features/auth/context/AuthContext';
@@ -115,6 +116,11 @@ export const RootLayout: React.FC = () => {
               </div>
             )}
 
+            <Link to="/billing">
+              <Button variant="ghost" size="icon" aria-label="Suscripción y Facturación" title="Suscripción y Facturación">
+                <CreditCard className="w-4 h-4 text-zinc-400 hover:text-orange-400 transition-colors" strokeWidth={1.5} />
+              </Button>
+            </Link>
             <Link to="/settings">
               <Button variant="ghost" size="icon" aria-label="Ajustes">
                 <Settings className="w-4 h-4 text-zinc-400" strokeWidth={1.5} />

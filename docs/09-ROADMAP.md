@@ -75,9 +75,9 @@
 - [x] Estimación de escenarios de impacto basada en métricas históricas.
 
 ### FASE 12 — Suscripciones SaaS y Monetización (Semanas 25-27)
-- [ ] Planes de suscripción (Free, Pro, Business) y límites de uso.
-- [ ] Integración con pasarela de pago (Stripe / MercadoPago).
-- [ ] Medición y descuento de AI Credits en llamadas a modelos.
+- [x] Planes de suscripción (Free, Pro, Business) y límites de uso.
+- [x] Integración con pasarela de pago (Stripe / MercadoPago).
+- [x] Medición y descuento de AI Credits en llamadas a modelos.
 
 ### FASE 13 — Enterprise & Escalado (Fase Posterior)
 - [ ] Autenticación corporativa Single Sign-On (SSO SAML / OIDC).
