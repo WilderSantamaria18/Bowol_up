@@ -14,7 +14,8 @@ import {
   Grid2X2,
   FlaskConical,
   Repeat,
-  Calendar
+  Calendar,
+  Share2
 } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
 import { useAuth } from '@/features/auth/context/AuthContext';
@@ -36,6 +37,7 @@ export const RootLayout: React.FC = () => {
     { label: 'Execution', path: '/tasks', icon: CheckSquare },
     { label: 'Sprints', path: '/sprints', icon: Repeat },
     { label: 'Calendar', path: '/calendar', icon: Calendar },
+    { label: 'Brand & Social', path: '/social', icon: Share2 },
     { label: 'Analytics', path: '/dashboard', icon: BarChart3 },
   ];
 

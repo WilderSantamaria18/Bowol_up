@@ -18,6 +18,7 @@ import { HypothesesPage } from '@/features/hypotheses/pages/HypothesesPage';
 import { TaskBoardPage } from '@/features/tasks/pages/TaskBoardPage';
 import { SprintsPage } from '@/features/sprints/pages/SprintsPage';
 import { CalendarPage } from '@/features/calendar/pages/CalendarPage';
+import { SocialPage } from '@/features/social/pages/SocialPage';
 import { DashboardPage } from '@/features/dashboard/pages/DashboardPage';
 import { NotFoundPage } from '@/pages/NotFoundPage';
 
@@ -149,6 +150,22 @@ export const App: React.FC = () => {
                 element={
                   <ProtectedRoute>
                     <CalendarPage />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="social"
+                element={
+                  <ProtectedRoute>
+                    <SocialPage />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="brand"
+                element={
+                  <ProtectedRoute>
+                    <SocialPage />
                   </ProtectedRoute>
                 }
               />

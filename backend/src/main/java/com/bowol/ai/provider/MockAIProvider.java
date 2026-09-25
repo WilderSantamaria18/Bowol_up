@@ -236,6 +236,46 @@ public class MockAIProvider implements AIProvider {
             """.stripIndent();
         }
 
+        if (lower.contains("social") || lower.contains("brand") || lower.contains("post")) {
+            return """
+            {
+              "topic": "Innovación y Estrategia Ágil",
+              "proposals": [
+                {
+                  "channel": "LINKEDIN",
+                  "title": "La revolución de la innovación ágil orientada a datos",
+                  "content": "La verdadera agilidad no consiste en correr más rápido, sino en aprender antes que el mercado.\\n\\nEn nuestra última iteración descubrimos cómo la combinación de señales estratégicas e inteligencia artificial permite reducir el ciclo de validación de semanas a días.\\n\\n¿Cómo está tu organización midiendo el impacto de sus iniciativas?",
+                  "tags": ["Innovacion", "Estrategia", "InteligenciaArtificial", "Agile"],
+                  "predictedImpact": {
+                    "reachEstimateMin": 3200,
+                    "reachEstimateMax": 7500,
+                    "engagementRate": 5.4,
+                    "viralityScore": 78,
+                    "sentiment": "POSITIVE",
+                    "bestTimeToPost": "Martes o Jueves a las 09:30 AM",
+                    "strategicReasoning": "El formato reflexivo y la pregunta de cierre fomentan debate entre perfiles de liderazgo técnico y directores de producto."
+                  }
+                },
+                {
+                  "channel": "TWITTER_X",
+                  "title": "Validación exprés de hipótesis",
+                  "content": "Acelerar sin validar es solo acumular deuda técnica.\\n\\nConvertimos señales de mercado en experimentos medibles en menos de 48 horas. Menos reuniones, más datos empíricos.\\n\\n#BuildInPublic #AI #StartupGrowth",
+                  "tags": ["BuildInPublic", "AI", "StartupGrowth"],
+                  "predictedImpact": {
+                    "reachEstimateMin": 1800,
+                    "reachEstimateMax": 4200,
+                    "engagementRate": 3.8,
+                    "viralityScore": 65,
+                    "sentiment": "PROVOCATIVE",
+                    "bestTimeToPost": "Miércoles a las 12:15 PM",
+                    "strategicReasoning": "Tono directo y contundente ideal para tracción en comunidades de constructores y early adopters."
+                  }
+                }
+              ]
+            }
+            """.stripIndent();
+        }
+
         return """
         {
           "status": "SUCCESS",

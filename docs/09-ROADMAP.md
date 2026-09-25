@@ -70,9 +70,9 @@
 - [x] Integración bidireccional con Google Calendar y Microsoft Outlook (RFC 5545 iCalendar `.ics`).
 
 ### FASE 11 — Social & Brand Intelligence (Semanas 21-24)
-- [ ] Kit de marca (Brand Profile): paleta, tipografías y tono de voz.
-- [ ] Generación de propuestas de contenido adaptadas a canales sociales.
-- [ ] Estimación de escenarios de impacto basada en métricas históricas.
+- [x] Kit de marca (Brand Profile): paleta, tipografías y tono de voz.
+- [x] Generación de propuestas de contenido adaptadas a canales sociales.
+- [x] Estimación de escenarios de impacto basada en métricas históricas.
 
 ### FASE 12 — Suscripciones SaaS y Monetización (Semanas 25-27)
 - [ ] Planes de suscripción (Free, Pro, Business) y límites de uso.
