@@ -1,9 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { 
-  TrendingUp, 
-  Target, 
-  Zap, 
   ArrowRight, 
   Sparkles, 
   Check, 
@@ -13,10 +10,14 @@ import { Button } from '@/components/ui/Button';
 import { Badge } from '@/components/ui/Badge';
 import { useAuth } from '@/features/auth/context/AuthContext';
 import { ExecutiveCockpit } from '@/features/dashboard/components/ExecutiveCockpit';
+import { InteractiveInnovationSimulator } from '@/features/landing/components/InteractiveInnovationSimulator';
+import { InteractiveModuleExplorer } from '@/features/landing/components/InteractiveModuleExplorer';
+import { InteractiveRoiCalculator } from '@/features/landing/components/InteractiveRoiCalculator';
 
 export const HomePage: React.FC = () => {
   const { isAuthenticated } = useAuth();
   const [openFaq, setOpenFaq] = useState<number | null>(0);
+  const [billingCycle, setBillingCycle] = useState<'MONTHLY' | 'ANNUAL'>('MONTHLY');
 
   // Si el usuario está autenticado, mostramos el Cockpit Ejecutivo de su espacio de trabajo
   if (isAuthenticated) {
@@ -43,7 +44,7 @@ export const HomePage: React.FC = () => {
   ];
 
   return (
-    <div className="space-y-24 py-8 relative">
+    <div className="space-y-28 py-8 relative">
       {/* Background Ambient Glows */}
       <div className="glow-spot-orange top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 opacity-70" />
       <div className="glow-spot-indigo top-96 right-0 opacity-40" />
@@ -79,13 +80,13 @@ export const HomePage: React.FC = () => {
               Comenzar Prueba Gratuita
             </Button>
           </Link>
-          <a href="#features" className="w-full sm:w-auto">
+          <a href="#simulator" className="w-full sm:w-auto">
             <Button
               variant="secondary"
               size="lg"
               className="w-full sm:w-auto border-white/[0.08] hover:border-white/[0.2] bg-zinc-900/60"
             >
-              Conocer el Sistema
+              Probar Simulador en Vivo
             </Button>
           </a>
         </div>
@@ -103,143 +104,60 @@ export const HomePage: React.FC = () => {
         </div>
       </section>
 
-      {/* Showcase Visual: Liquid Glass Cockpit Preview */}
-      <section className="relative z-10 max-w-5xl mx-auto">
-        <div className="rounded-2xl liquid-glass p-2 sm:p-4 border border-white/[0.1] shadow-2xl relative overflow-hidden">
-          {/* Top Mockup Window Header */}
-          <div className="flex items-center justify-between pb-3 px-3 border-b border-white/[0.06] mb-4 text-xs text-zinc-400">
-            <div className="flex items-center gap-2">
-              <div className="w-3 h-3 rounded-full bg-rose-500/80" />
-              <div className="w-3 h-3 rounded-full bg-amber-500/80" />
-              <div className="w-3 h-3 rounded-full bg-emerald-500/80" />
-              <span className="ml-2 font-mono text-[11px] text-zinc-500">bowol.app / workspace / strategic-cockpit</span>
-            </div>
-            <div className="flex items-center gap-2 font-mono text-[11px] text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded border border-emerald-500/20">
-              <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping" />
-              AI Agent Active
-            </div>
-          </div>
-
-          {/* Inner Mockup Cards Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <div className="p-4 rounded-xl bg-zinc-950/70 border border-white/[0.06]">
-              <div className="flex items-center justify-between mb-2">
-                <span className="text-[11px] font-semibold uppercase tracking-wider text-zinc-400">Radar de Mercado</span>
-                <Badge variant="brand">Score 94</Badge>
-              </div>
-              <h4 className="text-sm font-bold text-white mb-1">IA Generativa en Logística</h4>
-              <p className="text-xs text-zinc-400 leading-snug">Señal detectada en 14 repositorios con crecimiento de adopción de +182% en el último mes.</p>
-            </div>
-
-            <div className="p-4 rounded-xl bg-zinc-950/70 border border-white/[0.06]">
-              <div className="flex items-center justify-between mb-2">
-                <span className="text-[11px] font-semibold uppercase tracking-wider text-zinc-400">FODA & RICE</span>
-                <Badge variant="success">Oportunidad #1</Badge>
-              </div>
-              <h4 className="text-sm font-bold text-white mb-1">Automatización de Backlog</h4>
-              <p className="text-xs text-zinc-400 leading-snug">RICE Score: 850. Alto alcance con bajo esfuerzo de implementación validado en sprint.</p>
-            </div>
-
-            <div className="p-4 rounded-xl bg-zinc-950/70 border border-white/[0.06]">
-              <div className="flex items-center justify-between mb-2">
-                <span className="text-[11px] font-semibold uppercase tracking-wider text-zinc-400">Velocidad del Sprint</span>
-                <Badge variant="default">Sprint 4 en curso</Badge>
-              </div>
-              <h4 className="text-sm font-bold text-white mb-1">84% Completado</h4>
-              <p className="text-xs text-zinc-400 leading-snug">12 tareas desplegadas. Burndown alineado con la meta de lanzamiento al mercado.</p>
-            </div>
-          </div>
-        </div>
+      {/* 1. Live Interactive Innovation Simulator */}
+      <section id="simulator" className="relative z-10 scroll-mt-24">
+        <InteractiveInnovationSimulator />
       </section>
 
-      {/* The 3 Pillars Section */}
-      <section id="features" className="space-y-12 max-w-6xl mx-auto scroll-mt-24">
-        <div className="text-center max-w-2xl mx-auto space-y-3">
-          <Badge variant="brand">Flujo de Innovación</Badge>
-          <h2 className="text-3xl sm:text-4xl font-extrabold text-white font-display">
-            El Ciclo Continuo de Innovación
-          </h2>
-          <p className="text-sm text-zinc-400">
-            Un motor sincronizado que transforma la información del mercado en resultados tangibles.
-          </p>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <div className="liquid-glass-card rounded-2xl p-6 relative overflow-hidden">
-            <div className="w-12 h-12 rounded-xl bg-blue-500/10 border border-blue-500/30 flex items-center justify-center text-blue-400 mb-5">
-              <TrendingUp className="w-6 h-6" strokeWidth={1.5} />
-            </div>
-            <span className="text-[11px] uppercase tracking-widest font-bold text-blue-400 block mb-1">
-              Fase 01 — Inteligencia
-            </span>
-            <h3 className="text-xl font-bold text-white mb-2">Radar de Tendencias</h3>
-            <p className="text-xs text-zinc-400 leading-relaxed mb-4">
-              Monitoreo automático de señales tecnológicas, repositorios de código abierto y videos de alta tracción con evaluación de aplicabilidad personalizada.
-            </p>
-            <ul className="space-y-2 text-xs text-zinc-300">
-              <li className="flex items-center gap-2">
-                <Check className="w-3.5 h-3.5 text-blue-400" /> Algoritmo propietario de TrendScore
-              </li>
-              <li className="flex items-center gap-2">
-                <Check className="w-3.5 h-3.5 text-blue-400" /> Conectores GitHub & YouTube
-              </li>
-            </ul>
-          </div>
-
-          <div className="liquid-glass-card rounded-2xl p-6 relative overflow-hidden">
-            <div className="w-12 h-12 rounded-xl bg-orange-500/10 border border-orange-500/30 flex items-center justify-center text-orange-400 mb-5">
-              <Target className="w-6 h-6" strokeWidth={1.5} />
-            </div>
-            <span className="text-[11px] uppercase tracking-widest font-bold text-orange-400 block mb-1">
-              Fase 02 — Estrategia
-            </span>
-            <h3 className="text-xl font-bold text-white mb-2">FODA & Scoring RICE</h3>
-            <p className="text-xs text-zinc-400 leading-relaxed mb-4">
-              Convierte las señales detectadas en matrices FODA dinámicas y prioriza iniciativas estratégicas con modelos cuantitativos transparentes.
-            </p>
-            <ul className="space-y-2 text-xs text-zinc-300">
-              <li className="flex items-center gap-2">
-                <Check className="w-3.5 h-3.5 text-orange-400" /> Evidencias verificables por cuadrante
-              </li>
-              <li className="flex items-center gap-2">
-                <Check className="w-3.5 h-3.5 text-orange-400" /> Formulación de hipótesis auditadas
-              </li>
-            </ul>
-          </div>
-
-          <div className="liquid-glass-card rounded-2xl p-6 relative overflow-hidden">
-            <div className="w-12 h-12 rounded-xl bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center text-emerald-400 mb-5">
-              <Zap className="w-6 h-6" strokeWidth={1.5} />
-            </div>
-            <span className="text-[11px] uppercase tracking-widest font-bold text-emerald-400 block mb-1">
-              Fase 03 — Ejecución
-            </span>
-            <h3 className="text-xl font-bold text-white mb-2">Kanban & Sprints Ágiles</h3>
-            <p className="text-xs text-zinc-400 leading-relaxed mb-4">
-              Descompón metas complejas en tareas ejecutables con el AI Backlog Decomposer, gestiona sprints y sincroniza calendarios con tu equipo.
-            </p>
-            <ul className="space-y-2 text-xs text-zinc-300">
-              <li className="flex items-center gap-2">
-                <Check className="w-3.5 h-3.5 text-emerald-400" /> Tablero Kanban de alta velocidad
-              </li>
-              <li className="flex items-center gap-2">
-                <Check className="w-3.5 h-3.5 text-emerald-400" /> Sincronización iCalendar (.ics)
-              </li>
-            </ul>
-          </div>
-        </div>
+      {/* 2. Interactive Modular Workbench */}
+      <section id="features" className="relative z-10 scroll-mt-24">
+        <InteractiveModuleExplorer />
       </section>
 
-      {/* Transparent Pricing Section */}
-      <section id="pricing" className="space-y-12 max-w-6xl mx-auto scroll-mt-24">
-        <div className="text-center max-w-2xl mx-auto space-y-3">
+      {/* 3. Interactive ROI & Savings Calculator */}
+      <section className="relative z-10">
+        <InteractiveRoiCalculator />
+      </section>
+
+      {/* 4. Transparent Pricing Section with Interactive Billing Cycle Switcher */}
+      <section id="pricing" className="space-y-12 max-w-6xl mx-auto scroll-mt-24 relative z-10">
+        <div className="text-center max-w-2xl mx-auto space-y-4">
           <Badge variant="brand">Monetización & Planes</Badge>
           <h2 className="text-3xl sm:text-4xl font-extrabold text-white font-display">
-            Planes Claros para Crecer Sin Fricción
+            Planes Transparentes para Crecer Sin Fricción
           </h2>
           <p className="text-sm text-zinc-400">
             Comienza gratis con tu equipo y escala tus créditos de IA conforme tu cadencia de innovación se acelere.
           </p>
+
+          {/* Interactive Billing Cycle Toggle */}
+          <div className="inline-flex items-center bg-zinc-900 border border-zinc-800 p-1 rounded-xl">
+            <button
+              type="button"
+              onClick={() => setBillingCycle('MONTHLY')}
+              className={`px-4 py-1.5 rounded-lg text-xs font-medium transition-all ${
+                billingCycle === 'MONTHLY'
+                  ? 'bg-orange-500 text-white shadow-md'
+                  : 'text-zinc-400 hover:text-white'
+              }`}
+            >
+              Facturación Mensual
+            </button>
+            <button
+              type="button"
+              onClick={() => setBillingCycle('ANNUAL')}
+              className={`px-4 py-1.5 rounded-lg text-xs font-medium transition-all flex items-center gap-1.5 ${
+                billingCycle === 'ANNUAL'
+                  ? 'bg-orange-500 text-white shadow-md'
+                  : 'text-zinc-400 hover:text-white'
+              }`}
+            >
+              <span>Facturación Anual</span>
+              <span className="px-1.5 py-0.2 rounded text-[10px] bg-emerald-500/20 text-emerald-300 font-bold border border-emerald-500/30">
+                -15% Descuento
+              </span>
+            </button>
+          </div>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -283,8 +201,12 @@ export const HomePage: React.FC = () => {
               </div>
               <p className="text-xs text-zinc-400 min-h-[32px]">Para scaleups y equipos de producto con alta cadencia.</p>
               <div className="my-6 pb-6 border-b border-zinc-800">
-                <span className="text-4xl font-extrabold text-white">$49</span>
-                <span className="text-xs text-zinc-400 ml-1">/ mes</span>
+                <span className="text-4xl font-extrabold text-white">
+                  ${billingCycle === 'ANNUAL' ? '490' : '49'}
+                </span>
+                <span className="text-xs text-zinc-400 ml-1">
+                  {billingCycle === 'ANNUAL' ? '/ año' : '/ mes'}
+                </span>
               </div>
               <ul className="space-y-2.5 text-xs text-zinc-200 mb-6">
                 <li className="flex items-center gap-2 font-medium"><Check className="w-4 h-4 text-orange-400" /> 5,000 créditos de IA al mes</li>
@@ -309,8 +231,12 @@ export const HomePage: React.FC = () => {
               </div>
               <p className="text-xs text-zinc-400 min-h-[32px]">Para organizaciones consolidadas, consultoras y agencias.</p>
               <div className="my-6 pb-6 border-b border-zinc-800">
-                <span className="text-4xl font-extrabold text-white">$199</span>
-                <span className="text-xs text-zinc-400 ml-1">/ mes</span>
+                <span className="text-4xl font-extrabold text-white">
+                  ${billingCycle === 'ANNUAL' ? '1,990' : '199'}
+                </span>
+                <span className="text-xs text-zinc-400 ml-1">
+                  {billingCycle === 'ANNUAL' ? '/ año' : '/ mes'}
+                </span>
               </div>
               <ul className="space-y-2.5 text-xs text-zinc-300 mb-6">
                 <li className="flex items-center gap-2 font-medium"><Check className="w-4 h-4 text-indigo-400" /> 25,000 créditos de IA al mes</li>
@@ -328,8 +254,8 @@ export const HomePage: React.FC = () => {
         </div>
       </section>
 
-      {/* FAQ Accordion */}
-      <section className="max-w-3xl mx-auto space-y-6">
+      {/* 5. FAQ Accordion */}
+      <section className="max-w-3xl mx-auto space-y-6 relative z-10">
         <div className="text-center space-y-2">
           <Badge variant="default">Resolución de Dudas</Badge>
           <h3 className="text-2xl sm:text-3xl font-bold text-white font-display">
@@ -368,7 +294,7 @@ export const HomePage: React.FC = () => {
         </div>
       </section>
 
-      {/* Final CTA Banner */}
+      {/* 6. Final CTA Banner */}
       <section className="relative z-10 max-w-4xl mx-auto">
         <div className="rounded-3xl liquid-glass border border-orange-500/30 p-8 sm:p-12 text-center space-y-6 relative overflow-hidden bg-gradient-to-b from-orange-500/10 via-zinc-900 to-zinc-950">
           <div className="w-14 h-14 rounded-2xl bg-orange-500/20 border border-orange-500/40 flex items-center justify-center text-orange-400 mx-auto shadow-lg shadow-orange-500/20">

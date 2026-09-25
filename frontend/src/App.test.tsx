@@ -11,7 +11,7 @@ describe('BOWOL App Integration', () => {
     
     // Verificar ciclo Inteligencia -> Estrategia -> Ejecución
     expect(screen.getByText('Radar de Tendencias')).toBeInTheDocument();
-    expect(screen.getByText('FODA & Scoring RICE')).toBeInTheDocument();
-    expect(screen.getByText('Kanban & Sprints Ágiles')).toBeInTheDocument();
+    expect(screen.getByText('FODA con Evidencias')).toBeInTheDocument();
+    expect(screen.getByText('Kanban & Sprints')).toBeInTheDocument();
   });
 });
