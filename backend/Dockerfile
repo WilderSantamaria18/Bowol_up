@@ -16,7 +16,7 @@ RUN mvn clean package -DskipTests -B
 # ============================================================
 # STAGE 2: Runtime
 # ============================================================
-FROM eclipse-temurin:21-jre-alpine AS runtime
+FROM eclipse-temurin:25-jre-alpine AS runtime
 
 RUN apk add --no-cache curl tzdata && \
     addgroup -S bowol && \
