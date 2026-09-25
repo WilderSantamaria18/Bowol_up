@@ -1,0 +1,28 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "OpportunityFromSwotOutput",
+  "type": "object",
+  "required": ["opportunities"],
+  "properties": {
+    "opportunities": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["title"],
+        "properties": {
+          "title": { "type": "string", "minLength": 3 },
+          "description": { "type": "string" },
+          "reachScore": { "type": "integer", "minimum": 0, "maximum": 100 },
+          "impactScore": { "type": "integer", "minimum": 0, "maximum": 100 },
+          "confidenceScore": { "type": "integer", "minimum": 0, "maximum": 100 },
+          "effortScore": { "type": "integer", "minimum": 1, "maximum": 100 },
+          "evidence": {
+            "type": "array",
+            "items": { "type": "string" }
+          }
+        }
+      }
+    }
+  },
+  "additionalProperties": true
+}

@@ -1,0 +1,21 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "HypothesisFormulateOutput",
+  "type": "object",
+  "required": ["statement", "validationMethod", "successMetric", "targetValue"],
+  "properties": {
+    "statement": {
+      "type": "string",
+      "minLength": 10
+    },
+    "validationMethod": {
+      "type": "string"
+    },
+    "successMetric": {
+      "type": "string"
+    },
+    "targetValue": {
+      "type": "string"
+    }
+  }
+}

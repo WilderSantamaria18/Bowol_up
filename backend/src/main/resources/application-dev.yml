@@ -1,0 +1,6 @@
+# Configuración para entorno de desarrollo local
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/bowol_db
+    username: bowol_user
+    password: bowol_secret

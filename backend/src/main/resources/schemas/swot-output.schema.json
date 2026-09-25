@@ -1,0 +1,36 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "SwotAnalysisOutput",
+  "type": "object",
+  "required": ["strengths", "weaknesses", "opportunities", "threats"],
+  "properties": {
+    "strengths": {
+      "type": "array",
+      "items": {
+        "type": ["string", "object"]
+      }
+    },
+    "weaknesses": {
+      "type": "array",
+      "items": {
+        "type": ["string", "object"]
+      }
+    },
+    "opportunities": {
+      "type": "array",
+      "items": {
+        "type": ["string", "object"]
+      }
+    },
+    "threats": {
+      "type": "array",
+      "items": {
+        "type": ["string", "object"]
+      }
+    },
+    "summary": {
+      "type": ["string", "object"]
+    }
+  },
+  "additionalProperties": true
+}

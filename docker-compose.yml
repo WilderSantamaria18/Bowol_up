@@ -1,0 +1,89 @@
+version: '3.9'
+
+services:
+  postgres:
+    image: pgvector/pgvector:pg16
+    container_name: bowol-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${DB_USER:-bowol_app}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-bowol_secret}
+      POSTGRES_DB: ${DB_NAME:-bowol_db}
+      TZ: America/Lima
+      PGTZ: America/Lima
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./infra/docker/postgres/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USER:-bowol_app} -d ${DB_NAME:-bowol_db}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - bowol-network
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+      target: runtime
+    container_name: bowol-backend
+    restart: unless-stopped
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      SPRING_PROFILES_ACTIVE: ${SPRING_PROFILES_ACTIVE:-local}
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_NAME: ${DB_NAME:-bowol_db}
+      DB_USER: ${DB_USER:-bowol_app}
+      DB_PASSWORD: ${DB_PASSWORD:-bowol_secret}
+      JWT_PUBLIC_KEY_PATH: classpath:keys/test-public.pem
+      JWT_PRIVATE_KEY_PATH: classpath:keys/test-private.pem
+      OPENAI_API_KEY: ${OPENAI_API_KEY:-}
+      ANTHROPIC_API_KEY: ${ANTHROPIC_API_KEY:-}
+    ports:
+      - "8080:8080"
+      - "5005:5005"
+    volumes:
+      - ./infra/secrets:/run/secrets:ro
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:8080/actuator/health || exit 1"]
+      interval: 15s
+      timeout: 5s
+      start_period: 30s
+      retries: 3
+    networks:
+      - bowol-network
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+      target: runtime
+    container_name: bowol-frontend
+    restart: unless-stopped
+    depends_on:
+      - backend
+    environment:
+      VITE_API_URL: http://localhost:8080/api/v1
+    ports:
+      - "3000:80"
+    healthcheck:
+      test: ["CMD-SHELL", "wget --quiet --tries=1 --spider http://localhost/ || exit 1"]
+      interval: 15s
+      timeout: 3s
+      retries: 3
+    networks:
+      - bowol-network
+
+volumes:
+  postgres_data:
+    driver: local
+
+networks:
+  bowol-network:
+    driver: bridge
