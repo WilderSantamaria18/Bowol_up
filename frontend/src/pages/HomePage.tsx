@@ -22,7 +22,7 @@ export const HomePage: React.FC = () => {
 
   // Si es un visitante, mostramos la Landing Page interactiva estilo Apple / Samsung
   return (
-    <div className="relative w-full bg-[#0A0A0C] text-zinc-100 antialiased selection:bg-orange-500/30 selection:text-white">
+    <div className="relative w-full bg-slate-100/90 dark:bg-[#09090B] text-zinc-900 dark:text-zinc-100 antialiased selection:bg-orange-500/20 selection:text-orange-500 transition-colors duration-200">
       {/* Subtle Analog Texture Film Grain */}
       <div className="film-grain" />
 

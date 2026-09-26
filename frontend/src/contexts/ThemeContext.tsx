@@ -15,19 +15,20 @@ const THEME_STORAGE_KEY = 'bowol_theme_preference';
 
 export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [theme, setThemeState] = useState<Theme>(() => {
-    if (typeof window === 'undefined') return 'dark';
+    if (typeof window === 'undefined') return 'light';
     const saved = localStorage.getItem(THEME_STORAGE_KEY) as Theme | null;
-    return saved || 'dark';
+    return saved || 'light';
   });
 
-  const [resolvedTheme, setResolvedTheme] = useState<'light' | 'dark'>('dark');
+  const [resolvedTheme, setResolvedTheme] = useState<'light' | 'dark'>('light');
 
   useEffect(() => {
     const root = document.documentElement;
+    const body = document.body;
     const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
 
     const updateTheme = () => {
-      let isDark = true;
+      let isDark = false;
       if (theme === 'system') {
         isDark = mediaQuery.matches;
       } else {
@@ -40,10 +41,18 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ childre
         root.classList.add('dark');
         root.classList.remove('light');
         root.style.colorScheme = 'dark';
+        if (body) {
+          body.classList.add('dark');
+          body.classList.remove('light');
+        }
       } else {
         root.classList.remove('dark');
         root.classList.add('light');
         root.style.colorScheme = 'light';
+        if (body) {
+          body.classList.remove('dark');
+          body.classList.add('light');
+        }
       }
     };
 

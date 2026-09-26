@@ -106,7 +106,7 @@ export const RootLayout: React.FC = () => {
   ];
 
   return (
-    <div className="min-h-screen flex flex-col bg-slate-50 dark:bg-[#08080A] text-zinc-900 dark:text-zinc-100 transition-colors">
+    <div className="min-h-screen flex flex-col bg-slate-100 dark:bg-[#09090B] text-zinc-900 dark:text-zinc-100 transition-colors duration-200">
       {/* Header with Liquid Glass styling */}
       <header className="sticky top-0 z-40 liquid-glass border-b border-zinc-200/80 dark:border-white/[0.08]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
