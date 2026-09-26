@@ -22,7 +22,7 @@ export const Select = React.forwardRef<HTMLSelectElement, SelectProps>(
     return (
       <div className="w-full space-y-1.5">
         {label && (
-          <label htmlFor={selectId} className="block text-xs font-medium text-zinc-300">
+          <label htmlFor={selectId} className="block text-xs font-bold text-zinc-900 dark:text-zinc-200 tracking-tight">
             {label}
           </label>
         )}
@@ -31,26 +31,28 @@ export const Select = React.forwardRef<HTMLSelectElement, SelectProps>(
             id={selectId}
             ref={ref}
             className={cn(
-              'w-full h-10 px-3 pr-10 text-sm rounded-lg bg-zinc-900/80 border text-zinc-100 appearance-none transition-all duration-200 focus:outline-none focus:ring-1',
+              'w-full h-10 px-3 pr-10 text-sm rounded-lg border appearance-none transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-orange-500/30 focus:border-orange-500 shadow-sm cursor-pointer',
+              'bg-zinc-50/80 hover:bg-white focus:bg-white text-zinc-950 border-zinc-300 hover:border-zinc-400',
+              'dark:bg-zinc-950/80 dark:hover:bg-zinc-950 dark:focus:bg-zinc-950 dark:text-zinc-100 dark:border-zinc-700/80 dark:hover:border-zinc-600',
               error
-                ? 'border-rose-500/80 focus:border-rose-500 focus:ring-rose-500/20'
-                : 'border-white/[0.08] focus:border-orange-500/80 focus:ring-orange-500/20 hover:border-white/[0.15]',
+                ? 'border-rose-500 focus:border-rose-500 focus:ring-rose-500/30 dark:border-rose-500'
+                : '',
               className
             )}
             {...props}
           >
             {options.map((opt) => (
-              <option key={opt.value} value={opt.value} className="bg-zinc-900 text-zinc-100">
+              <option key={opt.value} value={opt.value} className="bg-white text-zinc-900 dark:bg-zinc-900 dark:text-zinc-100">
                 {opt.label}
               </option>
             ))}
           </select>
-          <div className="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none text-zinc-400">
-            <ChevronDown className="w-4 h-4" strokeWidth={1.5} />
+          <div className="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none text-zinc-500 dark:text-zinc-400">
+            <ChevronDown className="w-4 h-4" strokeWidth={1.75} />
           </div>
         </div>
-        {error && <p className="text-xs text-rose-400">{error}</p>}
-        {!error && helperText && <p className="text-xs text-zinc-500">{helperText}</p>}
+        {error && <p className="text-xs text-rose-600 dark:text-rose-400 font-semibold">{error}</p>}
+        {!error && helperText && <p className="text-xs text-zinc-600 dark:text-zinc-400 font-medium">{helperText}</p>}
       </div>
     );
   }

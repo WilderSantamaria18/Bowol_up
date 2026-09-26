@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Mail, Lock, User, Building, ArrowRight, Layers } from 'lucide-react';
+import { Mail, Lock, User, Building, ArrowRight } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { Input } from '@/components/ui/Input';
 import { Button } from '@/components/ui/Button';
-import { Card } from '@/components/ui/Card';
 import { Alert } from '@/components/ui/Alert';
+import { BrandLogo } from '@/components/ui/BrandLogo';
 import { PasswordStrengthIndicator } from '../components/PasswordStrengthIndicator';
 import { ProblemDetail } from '@/services/http';
 
@@ -58,24 +58,24 @@ export const RegisterPage: React.FC = () => {
   };
 
   return (
-    <div className="min-h-[calc(100vh-12rem)] flex flex-col justify-center items-center px-4 py-8">
+    <div className="min-h-[calc(100vh-10rem)] flex flex-col justify-center items-center px-4 py-12 relative">
+      {/* Subtle ambient spotlight for executive depth */}
+      <div className="absolute inset-0 flex items-center justify-center pointer-events-none overflow-hidden -z-10">
+        <div className="w-[520px] h-[520px] bg-orange-500/[0.07] dark:bg-orange-500/15 rounded-full blur-[90px]" />
+      </div>
+
       <div className="max-w-md w-full space-y-6">
-        <div className="text-center space-y-2">
-          <Link to="/" className="inline-flex items-center gap-2 group">
-            <div className="w-9 h-9 rounded-xl bg-orange-600/20 border border-orange-500/40 flex items-center justify-center text-orange-400 group-hover:scale-105 transition-transform">
-              <Layers className="w-5 h-5" strokeWidth={1.5} />
-            </div>
-            <span className="font-bold text-xl tracking-tight text-white">
-              BOWOL<span className="text-orange-500">.</span>
-            </span>
-          </Link>
-          <h1 className="text-2xl font-bold tracking-tight text-white">Comenzar con BOWOL</h1>
-          <p className="text-xs text-zinc-400">
+        <div className="text-center space-y-3 flex flex-col items-center">
+          <BrandLogo size="lg" asLink to="/" showTagline />
+          <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-zinc-950 dark:text-white font-display pt-2">
+            Comenzar con BOWOL
+          </h1>
+          <p className="text-xs sm:text-sm text-zinc-600 dark:text-zinc-400 max-w-xs leading-relaxed font-medium">
             Crea tu cuenta de fundador y despliega tu workspace con IA en segundos
           </p>
         </div>
 
-        <Card variant="glass" className="border-white/[0.08] shadow-glass p-6 sm:p-8 space-y-5">
+        <div className="bg-white dark:bg-zinc-900/90 border border-zinc-200/90 dark:border-zinc-800 shadow-2xl shadow-zinc-300/40 dark:shadow-[0_20px_60px_-15px_rgba(0,0,0,0.85)] rounded-2xl p-7 sm:p-9 space-y-6 backdrop-blur-xl">
           {errorProblem && (
             <Alert
               variant="error"
@@ -118,7 +118,7 @@ export const RegisterPage: React.FC = () => {
               helperText="Podrás invitar a tu equipo y miembros después"
             />
 
-            <div className="space-y-1">
+            <div className="space-y-1.5">
               <Input
                 id="register-password"
                 label="Contraseña"
@@ -137,7 +137,7 @@ export const RegisterPage: React.FC = () => {
               type="submit"
               variant="primary"
               size="lg"
-              className="w-full mt-4"
+              className="w-full mt-4 shadow-lg shadow-orange-500/25 hover:shadow-orange-500/40 font-bold"
               isLoading={isLoading}
               rightIcon={ArrowRight}
             >
@@ -145,13 +145,13 @@ export const RegisterPage: React.FC = () => {
             </Button>
           </form>
 
-          <div className="pt-2 text-center text-xs text-zinc-400 border-t border-white/[0.06]">
+          <div className="pt-4 text-center text-xs text-zinc-600 dark:text-zinc-400 border-t border-zinc-200/90 dark:border-zinc-800">
             ¿Ya tienes una cuenta creada?{' '}
-            <Link to="/login" className="font-semibold text-orange-400 hover:text-orange-300 transition-colors">
+            <Link to="/login" className="font-bold text-orange-600 dark:text-orange-400 hover:text-orange-500 hover:underline transition-colors">
               Iniciar sesión
             </Link>
           </div>
-        </Card>
+        </div>
       </div>
     </div>
   );

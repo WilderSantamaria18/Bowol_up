@@ -20,7 +20,7 @@ export const PasswordStrengthIndicator: React.FC<PasswordStrengthProps> = ({ pas
 
   const labels = ['Sin ingresar', 'Muy débil', 'Moderada', 'Fuerte', 'Excelente'];
   const colors = [
-    'bg-zinc-800',
+    'bg-zinc-200 dark:bg-zinc-800',
     'bg-rose-500',
     'bg-amber-500',
     'bg-blue-500',
@@ -30,17 +30,17 @@ export const PasswordStrengthIndicator: React.FC<PasswordStrengthProps> = ({ pas
   if (!password) return null;
 
   return (
-    <div className="space-y-1.5 pt-1">
-      <div className="flex items-center justify-between text-[11px] text-zinc-400">
+    <div className="space-y-1.5 pt-1 text-left">
+      <div className="flex items-center justify-between text-[11px] text-zinc-600 dark:text-zinc-400">
         <span>Seguridad de contraseña</span>
-        <span className="font-medium text-zinc-300">{labels[score]}</span>
+        <span className="font-semibold text-zinc-800 dark:text-zinc-200">{labels[score]}</span>
       </div>
       <div className="grid grid-cols-4 gap-1.5 h-1">
         {[1, 2, 3, 4].map((step) => (
           <div
             key={step}
             className={`rounded-full transition-colors duration-300 ${
-              score >= step ? colors[score] : 'bg-zinc-800'
+              score >= step ? colors[score] : 'bg-zinc-200 dark:bg-zinc-800'
             }`}
           />
         ))}

@@ -249,16 +249,32 @@ export const RootLayout: React.FC = () => {
                 {/* Theme Toggle */}
                 <ThemeToggle size="sm" />
 
-                <Link to="/login">
-                  <Button variant="ghost" size="sm" className="text-zinc-600 dark:text-zinc-300 hover:text-zinc-900 dark:hover:text-white text-xs sm:text-sm">
-                    Iniciar Sesión
-                  </Button>
-                </Link>
-                <a href="#solicitar">
-                  <Button variant="primary" size="sm" className="shadow-lg shadow-orange-500/25 text-xs sm:text-sm">
-                    Solicitar Acceso
-                  </Button>
-                </a>
+                {location.pathname === '/login' ? (
+                  <Link to="/register">
+                    <Button variant="primary" size="sm" className="shadow-lg shadow-orange-500/25 text-xs sm:text-sm font-semibold">
+                      Crear Cuenta
+                    </Button>
+                  </Link>
+                ) : location.pathname === '/register' ? (
+                  <Link to="/login">
+                    <Button variant="outline" size="sm" className="text-xs sm:text-sm font-semibold">
+                      Iniciar Sesión
+                    </Button>
+                  </Link>
+                ) : (
+                  <>
+                    <Link to="/login">
+                      <Button variant="ghost" size="sm" className="text-zinc-700 dark:text-zinc-300 hover:text-zinc-950 dark:hover:text-white text-xs sm:text-sm font-semibold">
+                        Iniciar Sesión
+                      </Button>
+                    </Link>
+                    <Link to="/register">
+                      <Button variant="primary" size="sm" className="shadow-lg shadow-orange-500/25 text-xs sm:text-sm font-semibold">
+                        Comenzar Gratis
+                      </Button>
+                    </Link>
+                  </>
+                )}
               </div>
             )}
           </div>
@@ -290,11 +306,11 @@ export const RootLayout: React.FC = () => {
 
       {/* Footer only when not in landing mode (landing has its own rich footer) */}
       {(location.pathname !== '/' || isAuthenticated) && (
-        <footer className="border-t border-white/[0.06] bg-zinc-950/40 py-8 text-center text-xs text-zinc-500">
+        <footer className="border-t border-zinc-200 dark:border-white/[0.06] bg-white/70 dark:bg-zinc-950/40 py-8 text-center text-xs text-zinc-600 dark:text-zinc-400">
           <div className="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-4">
             <div className="flex items-center gap-2">
               <BrandLogo size="sm" asLink to="/" />
-              <span className="text-zinc-600">|</span>
+              <span className="text-zinc-400 dark:text-zinc-600">|</span>
               <span>Operating System for Innovation & Execution</span>
             </div>
             <p>© {new Date().getFullYear()} BOWOL Inc. Todos los derechos reservados.</p>
