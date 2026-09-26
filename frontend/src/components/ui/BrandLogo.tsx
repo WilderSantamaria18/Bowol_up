@@ -1,12 +1,13 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { BowolVectorLogo } from './BowolVectorLogo';
 
 interface BrandLogoProps {
   size?: 'sm' | 'md' | 'lg' | 'xl';
   asLink?: boolean;
   to?: string;
   showTagline?: boolean;
-  variant?: 'combined' | 'emblem' | 'full' | 'wordmark';
+  variant?: 'combined' | 'emblem' | 'full' | 'wordmark' | 'vector';
   className?: string;
 }
 
@@ -49,7 +50,9 @@ export const BrandLogo: React.FC<BrandLogoProps> = ({
 
   let logoInner = null;
 
-  if (variant === 'full') {
+  if (variant === 'vector') {
+    logoInner = <BowolVectorLogo size={size} />;
+  } else if (variant === 'full') {
     logoInner = (
       <div className={`relative flex items-center justify-center ${fullSizes[size]}`}>
         {/* Light theme official logo (black wings/letters + orange W) */}
