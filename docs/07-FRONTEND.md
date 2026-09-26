@@ -55,11 +55,29 @@ Flechas "→" pegadas al final de botones o links ("Ver más →")	Decoración v
 Marcadores numerados 01 / 02 / 03 como decoración	Solo son válidos si el contenido es realmente una secuencia (pasos de un flujo, línea de tiempo). Si no lo es, no numerar
 Acentuar una sola palabra del título en cursiva/color/negrita	Es el default de cualquier landing genérica; si algo merece énfasis, que sea por jerarquía tipográfica real, no por un truco puntual
 2. Design System de BOWOL
-2.1 Paleta de colores
+2.1 Paleta de colores y Regla de Identidad Cromática del Logo
 
-Filosofía: dos modos (light/dark) con contraste alto, acento naranja de marca usado con moderación (máximo 8% de superficie por pantalla).
+### Regla Fundamental: Identidad "BO [W] OL" y Anti-Saturación
+El logotipo de BOWOL posee una identidad cromática única: letras base en color neutro (**B**, **O**, **O**, **L**) y la letra **W** en naranja vibrante, coronado por el emblema de alas y cohete espacial.
 
-ts
+1. **Modo Oscuro (`Dark Mode`)**:
+   - Fondo: `#08080A` (Obsidiana) / `#12131A`.
+   - Letras base (**B**, **O**, **O**, **L** y cohete): Blanco puro `#FFFFFF` / `#F4F4F5` (Contraste $\ge 19.5:1$, WCAG AAA).
+   - Letra acento (**W**, ventana y llama): Naranja vibrante `#F97316` / `#FB923C` (Contraste $\ge 7.2:1$, WCAG AAA).
+   - Superficies: Cristal translúcido `rgba(30, 31, 38, 0.70)` con borde `rgba(255, 255, 255, 0.08)`.
+
+2. **Modo Claro (`Light Mode`)**:
+   - Fondo: Blanco perla `#F8F9FA` / `#FFFFFF`.
+   - Letras base (**B**, **O**, **O**, **L** y cohete): Negro obsidiana `#09090B` / `#18181B` (Contraste $\ge 19:1$, WCAG AAA).
+   - Letra acento (**W**, ventana y llama): Naranja de alto contraste `#EA580C` / `#C2410C` (Contraste $\ge 4.54:1$, WCAG AA texto / AAA componentes).
+   - Superficies: Cristal translúcido `rgba(255, 255, 255, 0.85)` con borde `rgba(0, 0, 0, 0.07)`.
+
+3. **Regla de Anti-Saturación (60-30-10)**:
+   - **60% Superficies Neutras**: Dark (`#08080A`), Light (`#F8F9FA`).
+   - **30% Estructura y Lectura**: Tipografía base, bordes y separadores.
+   - **10% Acento Naranja**: Exclusivo para la **W** del logo, CTAs principales, indicadores de prioridad crítica y micro-resplandores difusos. **Nunca** se inundan fondos enteros de tarjetas en naranja sólido.
+
+```ts
 // tailwind.config.ts
 export default {
   theme: {

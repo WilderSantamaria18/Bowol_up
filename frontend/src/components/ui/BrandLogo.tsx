@@ -42,7 +42,7 @@ export const BrandLogo: React.FC<BrandLogoProps> = ({
           viewBox="0 0 24 24"
           fill="none"
           xmlns="http://www.w3.org/2000/svg"
-          className="w-full h-full text-orange-400 group-hover:text-orange-300 transition-colors"
+          className="w-full h-full text-orange-600 dark:text-orange-400 group-hover:scale-105 transition-all"
         >
           <path
             d="M12 2L3 7V17L12 22L21 17V7L12 2Z"
@@ -65,13 +65,14 @@ export const BrandLogo: React.FC<BrandLogoProps> = ({
         </svg>
       </div>
 
-      {/* Typography */}
+      {/* Typography with W-Orange Signature Branding */}
       <div className="flex flex-col">
-        <span className={`font-display font-extrabold tracking-wider text-white ${textSizes[size]}`}>
-          BOWOL<span className="text-orange-500 font-black animate-pulse">.</span>
+        <span className={`font-display font-black tracking-wider text-zinc-900 dark:text-white transition-colors ${textSizes[size]}`}>
+          BO<span className="text-orange-600 dark:text-orange-400">W</span>OL
+          <span className="text-orange-600 dark:text-orange-400 animate-pulse">.</span>
         </span>
         {showTagline && (
-          <span className="text-[10px] tracking-widest uppercase font-medium text-zinc-500 -mt-0.5">
+          <span className="text-[10px] tracking-widest uppercase font-medium text-zinc-500 dark:text-zinc-400 -mt-0.5">
             AI Innovation OS
           </span>
         )}
