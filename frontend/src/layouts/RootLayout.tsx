@@ -150,15 +150,21 @@ export const RootLayout: React.FC = () => {
                 </Link>
               </nav>
             ) : (
-              <nav className="hidden md:flex items-center gap-6 ml-4 text-xs font-medium text-zinc-400">
-                <a href="#features" className="hover:text-white transition-colors">
-                  Características
+              <nav className="hidden md:flex items-center gap-7 ml-4 text-[13px] font-medium text-zinc-400">
+                <a href="#problema" className="hover:text-white transition-colors duration-150">
+                  Problema
                 </a>
-                <a href="#workflow" className="hover:text-white transition-colors">
-                  Cómo Funciona
+                <a href="#ciclo" className="hover:text-white transition-colors duration-150">
+                  Flujo Continuo
                 </a>
-                <a href="#pricing" className="hover:text-white transition-colors">
-                  Planes & Precios
+                <a href="#plataforma" className="hover:text-white transition-colors duration-150">
+                  Plataforma
+                </a>
+                <a href="#interactive-demo" className="hover:text-white transition-colors duration-150">
+                  Terminal Vivo
+                </a>
+                <a href="#metricas" className="hover:text-white transition-colors duration-150">
+                  Impacto
                 </a>
               </nav>
             )}
@@ -237,15 +243,15 @@ export const RootLayout: React.FC = () => {
             ) : (
               <div className="flex items-center gap-3">
                 <Link to="/login">
-                  <Button variant="ghost" size="sm" className="text-zinc-300 hover:text-white">
+                  <Button variant="ghost" size="sm" className="text-zinc-300 hover:text-white text-xs sm:text-sm">
                     Iniciar Sesión
                   </Button>
                 </Link>
-                <Link to="/register">
-                  <Button variant="primary" size="sm" className="shadow-lg shadow-orange-500/20">
-                    Comenzar Gratis
+                <a href="#solicitar">
+                  <Button variant="primary" size="sm" className="shadow-lg shadow-orange-500/25 text-xs sm:text-sm">
+                    Solicitar Acceso
                   </Button>
-                </Link>
+                </a>
               </div>
             )}
           </div>
@@ -253,7 +259,13 @@ export const RootLayout: React.FC = () => {
       </header>
 
       {/* Main Content */}
-      <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <main
+        className={`flex-1 w-full ${
+          location.pathname === '/' && !isAuthenticated
+            ? 'p-0 max-w-none'
+            : 'max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8'
+        }`}
+      >
         <Outlet />
       </main>
 
@@ -269,17 +281,19 @@ export const RootLayout: React.FC = () => {
         standaloneLinks={standaloneLinks}
       />
 
-      {/* Footer */}
-      <footer className="border-t border-white/[0.06] bg-zinc-950/40 py-8 text-center text-xs text-zinc-500">
-        <div className="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-4">
-          <div className="flex items-center gap-2">
-            <BrandLogo size="sm" asLink to="/" />
-            <span className="text-zinc-600">|</span>
-            <span>Operating System for Innovation & Execution</span>
+      {/* Footer only when not in landing mode (landing has its own rich footer) */}
+      {(location.pathname !== '/' || isAuthenticated) && (
+        <footer className="border-t border-white/[0.06] bg-zinc-950/40 py-8 text-center text-xs text-zinc-500">
+          <div className="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-4">
+            <div className="flex items-center gap-2">
+              <BrandLogo size="sm" asLink to="/" />
+              <span className="text-zinc-600">|</span>
+              <span>Operating System for Innovation & Execution</span>
+            </div>
+            <p>© {new Date().getFullYear()} BOWOL Inc. Todos los derechos reservados.</p>
           </div>
-          <p>© {new Date().getFullYear()} BOWOL Inc. Todos los derechos reservados.</p>
-        </div>
-      </footer>
+        </footer>
+      )}
     </div>
   );
 };

@@ -114,3 +114,68 @@ h1, h2, h3, h4, .font-display {
   pointer-events: none;
   filter: blur(45px);
 }
+
+/* Apple & Samsung Style Landing Page Utility Classes */
+.film-grain {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 99;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.03'/%3E%3C/svg%3E");
+  mix-blend-mode: overlay;
+}
+
+.lens-flare-orange {
+  background: radial-gradient(circle at 50% 50%, rgba(249, 115, 22, 0.18), transparent 70%);
+}
+
+.lens-flare-blue {
+  background: radial-gradient(circle at 50% 50%, rgba(59, 130, 246, 0.12), transparent 70%);
+}
+
+.enterprise-grid {
+  background-size: 56px 56px;
+  background-image: 
+    linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+  mask-image: radial-gradient(ellipse 65% 55% at 50% 35%, #000 20%, transparent 85%);
+  -webkit-mask-image: radial-gradient(ellipse 65% 55% at 50% 35%, #000 20%, transparent 85%);
+}
+
+.spotlight-card {
+  position: relative;
+  overflow: hidden;
+}
+
+.spotlight-card::before {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  background: radial-gradient(350px circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(249, 115, 22, 0.14), transparent 60%);
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  pointer-events: none;
+  border-radius: inherit;
+  z-index: 1;
+}
+
+.spotlight-card:hover::before {
+  opacity: 1;
+}
+
+.liquid-card {
+  background: rgba(24, 24, 27, 0.65);
+  backdrop-filter: blur(28px) saturate(160%);
+  -webkit-backdrop-filter: blur(28px) saturate(160%);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.08) inset, 0 20px 40px -15px rgba(0, 0, 0, 0.7);
+}
+
+.liquid-floating {
+  background: rgba(39, 39, 42, 0.65);
+  backdrop-filter: blur(40px) saturate(170%);
+  -webkit-backdrop-filter: blur(40px) saturate(170%);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.14) inset, 0 24px 60px -12px rgba(0, 0, 0, 0.85);
+}
+
