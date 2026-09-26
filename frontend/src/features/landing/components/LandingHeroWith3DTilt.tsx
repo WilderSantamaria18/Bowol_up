@@ -72,15 +72,15 @@ export const LandingHeroWith3DTilt: React.FC = () => {
         initial={{ opacity: 0, y: -20, filter: 'blur(8px)' }}
         animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
         transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-        className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-white/[0.04] border border-white/[0.08] backdrop-blur-md text-xs text-zinc-300 mb-8 shadow-sm"
+        className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-zinc-200/60 dark:bg-white/[0.04] border border-zinc-300/80 dark:border-white/[0.08] backdrop-blur-md text-xs text-zinc-700 dark:text-zinc-300 mb-8 shadow-sm"
       >
         <span className="relative flex h-2 w-2">
           <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-orange-400 opacity-75" />
           <span className="relative inline-flex rounded-full h-2 w-2 bg-orange-500" />
         </span>
         <span className="font-medium tracking-tight">Enterprise Intelligence Workspace 2026</span>
-        <span className="text-zinc-600">|</span>
-        <span className="text-zinc-400">SOC2 Type II Certificado</span>
+        <span className="text-zinc-400 dark:text-zinc-600">|</span>
+        <span className="text-zinc-600 dark:text-zinc-400">SOC2 Type II Certificado</span>
       </motion.div>
 
       {/* Hero Typography with Apple Stagger Blur Reveal */}
@@ -89,10 +89,10 @@ export const LandingHeroWith3DTilt: React.FC = () => {
           initial={{ opacity: 0, y: 30, filter: 'blur(10px)' }}
           animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
           transition={{ duration: 0.9, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
-          className="text-4xl sm:text-6xl lg:text-7xl font-bold tracking-tight text-white leading-[1.08] font-display"
+          className="text-4xl sm:text-6xl lg:text-7xl font-bold tracking-tight text-zinc-950 dark:text-white leading-[1.08] font-display"
         >
           Del ruido del mercado a la <br className="hidden sm:inline" />
-          <span className="text-transparent bg-clip-text bg-gradient-to-r from-orange-400 via-amber-300 to-orange-500">
+          <span className="text-transparent bg-clip-text bg-gradient-to-r from-orange-500 via-amber-400 to-orange-600 dark:from-orange-400 dark:via-amber-300 dark:to-orange-500">
             ejecución estratégica real.
           </span>
         </motion.h1>
@@ -101,7 +101,7 @@ export const LandingHeroWith3DTilt: React.FC = () => {
           initial={{ opacity: 0, y: 20, filter: 'blur(6px)' }}
           animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
           transition={{ duration: 0.9, delay: 0.25, ease: [0.16, 1, 0.3, 1] }}
-          className="mt-7 text-base sm:text-lg lg:text-xl text-zinc-400 max-w-[720px] mx-auto font-normal leading-relaxed"
+          className="mt-7 text-base sm:text-lg lg:text-xl text-zinc-600 dark:text-zinc-400 max-w-[720px] mx-auto font-normal leading-relaxed"
         >
           BOWOL conecta señales de mercado, análisis competitivo FODA y formulación de hipótesis con los sprints ejecutables de tu equipo. Un solo ciclo continuo.
         </motion.p>
@@ -126,9 +126,9 @@ export const LandingHeroWith3DTilt: React.FC = () => {
           <motion.div whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }}>
             <a
               href="#interactive-demo"
-              className="w-full sm:w-auto inline-flex items-center justify-center gap-2 h-12 px-7 rounded-xl text-sm font-medium text-zinc-300 hover:text-white bg-zinc-900/60 border border-white/10 hover:border-white/20 backdrop-blur-xl transition-all"
+              className="w-full sm:w-auto inline-flex items-center justify-center gap-2 h-12 px-7 rounded-xl text-sm font-medium text-zinc-700 dark:text-zinc-300 hover:text-zinc-950 dark:hover:text-white bg-white/80 dark:bg-zinc-900/60 border border-zinc-200 dark:border-white/10 hover:border-zinc-300 dark:hover:border-white/20 backdrop-blur-xl transition-all shadow-sm"
             >
-              <Play className="w-3.5 h-3.5 text-orange-400 fill-orange-400" />
+              <Play className="w-3.5 h-3.5 text-orange-500 fill-orange-500" />
               <span>Ver terminal de producto</span>
             </a>
           </motion.div>

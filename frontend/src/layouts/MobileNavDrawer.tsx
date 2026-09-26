@@ -2,6 +2,7 @@ import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { X, LogOut, Settings, CreditCard, Sparkles, Building2 } from 'lucide-react';
 import { BrandLogo } from '@/components/ui/BrandLogo';
+import { ThemeToggle } from '@/components/ui/ThemeToggle';
 import { NavDropdownItem } from './NavDropdown';
 import { useAuth } from '@/features/auth/context/AuthContext';
 import { useCopilot } from '@/features/copilot/context/CopilotContext';
@@ -44,14 +45,17 @@ export const MobileNavDrawer: React.FC<MobileNavDrawerProps> = ({
           {/* Header */}
           <div className="flex items-center justify-between pb-4 border-b border-zinc-800/80">
             <BrandLogo size="sm" asLink to="/" />
-            <button
-              type="button"
-              onClick={onClose}
-              className="p-1.5 rounded-lg text-zinc-400 hover:text-white hover:bg-zinc-800 transition-colors"
-              aria-label="Cerrar menú"
-            >
-              <X className="w-5 h-5" strokeWidth={1.5} />
-            </button>
+            <div className="flex items-center gap-2">
+              <ThemeToggle size="sm" />
+              <button
+                type="button"
+                onClick={onClose}
+                className="p-1.5 rounded-lg text-zinc-400 hover:text-white hover:bg-zinc-800 transition-colors"
+                aria-label="Cerrar menú"
+              >
+                <X className="w-5 h-5" strokeWidth={1.5} />
+              </button>
+            </div>
           </div>
 
           {/* Org & User Card */}

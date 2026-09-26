@@ -2,10 +2,11 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 
 interface BrandLogoProps {
-  size?: 'sm' | 'md' | 'lg';
+  size?: 'sm' | 'md' | 'lg' | 'xl';
   asLink?: boolean;
   to?: string;
   showTagline?: boolean;
+  variant?: 'combined' | 'emblem' | 'full' | 'wordmark';
   className?: string;
 }
 
@@ -14,75 +15,140 @@ export const BrandLogo: React.FC<BrandLogoProps> = ({
   asLink = true,
   to = '/',
   showTagline = false,
+  variant = 'combined',
   className = '',
 }) => {
-  const iconSizes = {
+  // Sizing definitions
+  const emblemSizes = {
     sm: 'w-7 h-7',
     md: 'w-8 h-8',
     lg: 'w-10 h-10',
+    xl: 'w-14 h-14',
+  };
+
+  const fullSizes = {
+    sm: 'h-7 w-auto',
+    md: 'h-9 w-auto',
+    lg: 'h-12 w-auto',
+    xl: 'h-16 w-auto',
+  };
+
+  const wordmarkSizes = {
+    sm: 'h-4 w-auto',
+    md: 'h-5 w-auto',
+    lg: 'h-7 w-auto',
+    xl: 'h-9 w-auto',
   };
 
   const textSizes = {
-    sm: 'text-base',
-    md: 'text-lg',
-    lg: 'text-2xl',
+    sm: 'text-base tracking-wide',
+    md: 'text-lg tracking-wider',
+    lg: 'text-2xl tracking-widest',
+    xl: 'text-3xl tracking-widest',
   };
 
-  const content = (
-    <div className={`flex items-center gap-2.5 group select-none ${className}`}>
-      {/* Liquid Glass Isotipo Icon */}
-      <div
-        className={`relative ${iconSizes[size]} rounded-xl bg-gradient-to-br from-orange-500/20 via-zinc-900 to-amber-500/10 border border-orange-500/30 flex items-center justify-center p-1.5 shadow-md shadow-orange-500/10 group-hover:border-orange-500/60 group-hover:scale-105 transition-all duration-300`}
-      >
-        {/* Subtle refractive inner glass reflection */}
-        <div className="absolute inset-0 rounded-xl bg-gradient-to-b from-white/10 to-transparent pointer-events-none" />
+  let logoInner = null;
 
-        {/* Vector SVG Emblem: Interconnected Innovation Nodes */}
-        <svg
-          viewBox="0 0 24 24"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-          className="w-full h-full text-orange-600 dark:text-orange-400 group-hover:scale-105 transition-all"
+  if (variant === 'full') {
+    logoInner = (
+      <div className={`relative flex items-center justify-center ${fullSizes[size]}`}>
+        {/* Light theme official logo (black wings/letters + orange W) */}
+        <img
+          src="/logo/bowol_full_light.png"
+          alt="BOWOL"
+          className="h-full w-auto object-contain dark:hidden select-none transition-transform duration-300 group-hover:scale-105"
+          loading="eager"
+        />
+        {/* Dark theme official logo (white wings/letters + orange W) */}
+        <img
+          src="/logo/bowol_full_dark.png"
+          alt="BOWOL"
+          className="h-full w-auto object-contain hidden dark:block select-none transition-transform duration-300 group-hover:scale-105"
+          loading="eager"
+        />
+      </div>
+    );
+  } else if (variant === 'emblem') {
+    logoInner = (
+      <div className={`relative flex items-center justify-center ${emblemSizes[size]}`}>
+        <img
+          src="/logo/bowol_emblem_light.png"
+          alt="BOWOL"
+          className="w-full h-full object-contain dark:hidden select-none transition-transform duration-300 group-hover:scale-105"
+          loading="eager"
+        />
+        <img
+          src="/logo/bowol_emblem_dark.png"
+          alt="BOWOL"
+          className="w-full h-full object-contain hidden dark:block select-none transition-transform duration-300 group-hover:scale-105"
+          loading="eager"
+        />
+      </div>
+    );
+  } else if (variant === 'wordmark') {
+    logoInner = (
+      <div className={`relative flex items-center justify-center ${wordmarkSizes[size]}`}>
+        <img
+          src="/logo/bowol_wordmark_light.png"
+          alt="BOWOL"
+          className="h-full w-auto object-contain dark:hidden select-none transition-transform duration-300 group-hover:scale-105"
+          loading="eager"
+        />
+        <img
+          src="/logo/bowol_wordmark_dark.png"
+          alt="BOWOL"
+          className="h-full w-auto object-contain hidden dark:block select-none transition-transform duration-300 group-hover:scale-105"
+          loading="eager"
+        />
+      </div>
+    );
+  } else {
+    // Default 'combined': Official rocket emblem asset + vector typography with orange W signature
+    logoInner = (
+      <div className="flex items-center gap-2.5">
+        {/* Authentic Rocket Emblem from official logo */}
+        <div
+          className={`relative ${emblemSizes[size]} flex items-center justify-center rounded-xl p-0.5 transition-all duration-300 group-hover:scale-105`}
         >
-          <path
-            d="M12 2L3 7V17L12 22L21 17V7L12 2Z"
-            stroke="currentColor"
-            strokeWidth="1.75"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            className="opacity-90"
+          <img
+            src="/logo/bowol_emblem_light.png"
+            alt="BOWOL Emblem"
+            className="w-full h-full object-contain dark:hidden select-none drop-shadow-sm"
+            loading="eager"
           />
-          <path
-            d="M12 6L7 9V15L12 18L17 15V9L12 6Z"
-            fill="currentColor"
-            fillOpacity="0.25"
-            stroke="currentColor"
-            strokeWidth="1.25"
-            strokeLinecap="round"
-            strokeLinejoin="round"
+          <img
+            src="/logo/bowol_emblem_dark.png"
+            alt="BOWOL Emblem"
+            className="w-full h-full object-contain hidden dark:block select-none drop-shadow-[0_0_8px_rgba(249,115,22,0.25)]"
+            loading="eager"
           />
-          <circle cx="12" cy="12" r="2.25" fill="#EA580C" />
-        </svg>
-      </div>
+        </div>
 
-      {/* Typography with W-Orange Signature Branding */}
-      <div className="flex flex-col">
-        <span className={`font-display font-black tracking-wider text-zinc-900 dark:text-white transition-colors ${textSizes[size]}`}>
-          BO<span className="text-orange-600 dark:text-orange-400">W</span>OL
-          <span className="text-orange-600 dark:text-orange-400 animate-pulse">.</span>
-        </span>
-        {showTagline && (
-          <span className="text-[10px] tracking-widest uppercase font-medium text-zinc-500 dark:text-zinc-400 -mt-0.5">
-            AI Innovation OS
+        {/* Geometric Wordmark with official orange W signature */}
+        <div className="flex flex-col leading-none">
+          <span className={`font-display font-extrabold text-zinc-900 dark:text-white transition-colors ${textSizes[size]}`}>
+            BO<span className="text-orange-500 dark:text-orange-400">W</span>OL
+            <span className="text-orange-500 dark:text-orange-400 animate-pulse">.</span>
           </span>
-        )}
+          {showTagline && (
+            <span className="text-[9px] tracking-[0.2em] uppercase font-bold text-zinc-500 dark:text-zinc-400 mt-0.5">
+              AI Innovation OS
+            </span>
+          )}
+        </div>
       </div>
+    );
+  }
+
+  const content = (
+    <div className={`inline-flex items-center group select-none ${className}`}>
+      {logoInner}
     </div>
   );
 
   if (asLink) {
     return (
-      <Link to={to} className="inline-flex focus:outline-none">
+      <Link to={to} className="inline-flex items-center focus:outline-none focus:ring-2 focus:ring-orange-500/40 rounded-xl">
         {content}
       </Link>
     );

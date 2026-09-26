@@ -23,6 +23,7 @@ import {
 } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
 import { BrandLogo } from '@/components/ui/BrandLogo';
+import { ThemeToggle } from '@/components/ui/ThemeToggle';
 import { NavDropdown, NavDropdownItem } from './NavDropdown';
 import { MobileNavDrawer } from './MobileNavDrawer';
 import { useAuth } from '@/features/auth/context/AuthContext';
@@ -105,9 +106,9 @@ export const RootLayout: React.FC = () => {
   ];
 
   return (
-    <div className="min-h-screen flex flex-col bg-[#08080A]">
+    <div className="min-h-screen flex flex-col bg-slate-50 dark:bg-[#08080A] text-zinc-900 dark:text-zinc-100 transition-colors">
       {/* Header with Liquid Glass styling */}
-      <header className="sticky top-0 z-40 liquid-glass border-b border-white/[0.08]">
+      <header className="sticky top-0 z-40 liquid-glass border-b border-zinc-200/80 dark:border-white/[0.08]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
           <div className="flex items-center gap-6">
             {/* Minimalist Logo */}
@@ -150,20 +151,20 @@ export const RootLayout: React.FC = () => {
                 </Link>
               </nav>
             ) : (
-              <nav className="hidden md:flex items-center gap-7 ml-4 text-[13px] font-medium text-zinc-400">
-                <a href="#problema" className="hover:text-white transition-colors duration-150">
+              <nav className="hidden md:flex items-center gap-7 ml-4 text-[13px] font-medium text-zinc-600 dark:text-zinc-400">
+                <a href="#problema" className="hover:text-zinc-950 dark:hover:text-white transition-colors duration-150">
                   Problema
                 </a>
-                <a href="#ciclo" className="hover:text-white transition-colors duration-150">
+                <a href="#ciclo" className="hover:text-zinc-950 dark:hover:text-white transition-colors duration-150">
                   Flujo Continuo
                 </a>
-                <a href="#plataforma" className="hover:text-white transition-colors duration-150">
+                <a href="#plataforma" className="hover:text-zinc-950 dark:hover:text-white transition-colors duration-150">
                   Plataforma
                 </a>
-                <a href="#interactive-demo" className="hover:text-white transition-colors duration-150">
+                <a href="#interactive-demo" className="hover:text-zinc-950 dark:hover:text-white transition-colors duration-150">
                   Terminal Vivo
                 </a>
-                <a href="#metricas" className="hover:text-white transition-colors duration-150">
+                <a href="#metricas" className="hover:text-zinc-950 dark:hover:text-white transition-colors duration-150">
                   Impacto
                 </a>
               </nav>
@@ -219,6 +220,9 @@ export const RootLayout: React.FC = () => {
                   <span className="hidden sm:inline">AI Copilot</span>
                 </Button>
 
+                {/* Theme Toggle */}
+                <ThemeToggle size="sm" />
+
                 {/* Logout */}
                 <Button
                   variant="ghost"
@@ -242,8 +246,11 @@ export const RootLayout: React.FC = () => {
               </>
             ) : (
               <div className="flex items-center gap-3">
+                {/* Theme Toggle */}
+                <ThemeToggle size="sm" />
+
                 <Link to="/login">
-                  <Button variant="ghost" size="sm" className="text-zinc-300 hover:text-white text-xs sm:text-sm">
+                  <Button variant="ghost" size="sm" className="text-zinc-600 dark:text-zinc-300 hover:text-zinc-900 dark:hover:text-white text-xs sm:text-sm">
                     Iniciar Sesión
                   </Button>
                 </Link>

@@ -3,6 +3,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { AuthProvider } from '@/features/auth/context/AuthContext';
 import { CopilotProvider } from '@/features/copilot/context/CopilotContext';
+import { ThemeProvider } from '@/contexts/ThemeContext';
 import { ProtectedRoute, PublicOnlyRoute } from '@/app/router/ProtectedRoute';
 import { RootLayout } from '@/layouts/RootLayout';
 import { HomePage } from '@/pages/HomePage';
@@ -37,10 +38,11 @@ const queryClient = new QueryClient({
 export const App: React.FC = () => {
   return (
     <QueryClientProvider client={queryClient}>
-      <AuthProvider>
-        <CopilotProvider>
-          <BrowserRouter>
-            <Routes>
+      <ThemeProvider>
+        <AuthProvider>
+          <CopilotProvider>
+            <BrowserRouter>
+              <Routes>
             <Route path="/" element={<RootLayout />}>
               <Route index element={<HomePage />} />
               <Route
@@ -201,6 +203,7 @@ export const App: React.FC = () => {
         </BrowserRouter>
       </CopilotProvider>
     </AuthProvider>
+    </ThemeProvider>
   </QueryClientProvider>
 );
 };
