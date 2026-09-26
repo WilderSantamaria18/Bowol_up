@@ -41,7 +41,7 @@ export const RootLayout: React.FC = () => {
   const strategyItems: NavDropdownItem[] = [
     {
       label: 'Radar de Tendencias',
-      description: 'Detección continua de señales de mercado con IA',
+      description: 'Detección continua de señales multi-fuente',
       path: '/trends',
       icon: TrendingUp,
       iconColor: 'bg-blue-500/10 border-blue-500/20 text-blue-400',
@@ -131,8 +131,8 @@ export const RootLayout: React.FC = () => {
                   to="/social"
                   className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-colors ${
                     location.pathname.startsWith('/social')
-                      ? 'bg-orange-500/10 text-orange-400 border border-orange-500/30'
-                      : 'text-zinc-400 hover:text-zinc-200 hover:bg-white/[0.04]'
+                      ? 'bg-orange-500/10 text-orange-600 dark:text-orange-400 border border-orange-500/30'
+                      : 'text-zinc-600 dark:text-zinc-400 hover:text-zinc-950 dark:hover:text-zinc-200 hover:bg-zinc-200/60 dark:hover:bg-white/[0.04]'
                   }`}
                 >
                   <Share2 className="w-3.5 h-3.5" strokeWidth={1.5} />
@@ -142,8 +142,8 @@ export const RootLayout: React.FC = () => {
                   to="/dashboard"
                   className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-colors ${
                     location.pathname.startsWith('/dashboard')
-                      ? 'bg-orange-500/10 text-orange-400 border border-orange-500/30'
-                      : 'text-zinc-400 hover:text-zinc-200 hover:bg-white/[0.04]'
+                      ? 'bg-orange-500/10 text-orange-600 dark:text-orange-400 border border-orange-500/30'
+                      : 'text-zinc-600 dark:text-zinc-400 hover:text-zinc-950 dark:hover:text-zinc-200 hover:bg-zinc-200/60 dark:hover:bg-white/[0.04]'
                   }`}
                 >
                   <BarChart3 className="w-3.5 h-3.5" strokeWidth={1.5} />
@@ -177,12 +177,12 @@ export const RootLayout: React.FC = () => {
               <>
                 <div className="hidden sm:flex items-center gap-2 mr-1">
                   <div className="text-right">
-                    <span className="text-xs font-semibold text-zinc-200 block leading-tight">{user?.name}</span>
-                    <span className="text-[10px] text-zinc-500 truncate max-w-[120px] block">
+                    <span className="text-xs font-semibold text-zinc-900 dark:text-zinc-100 block leading-tight">{user?.name}</span>
+                    <span className="text-[10px] text-zinc-500 dark:text-zinc-400 truncate max-w-[120px] block">
                       {organization?.name || 'Workspace'}
                     </span>
                   </div>
-                  <div className="w-8 h-8 rounded-xl bg-orange-500/10 border border-orange-500/30 flex items-center justify-center text-orange-400 text-xs font-bold">
+                  <div className="w-8 h-8 rounded-xl bg-orange-500/10 border border-orange-500/30 flex items-center justify-center text-orange-600 dark:text-orange-400 text-xs font-bold">
                     {user?.name ? user.name.charAt(0).toUpperCase() : <UserIcon className="w-4 h-4" />}
                   </div>
                 </div>
@@ -190,21 +190,21 @@ export const RootLayout: React.FC = () => {
                 {/* Billing Link */}
                 <Link to="/billing">
                   <Button variant="ghost" size="icon" aria-label="Suscripción y Facturación" title="Suscripción y Créditos">
-                    <CreditCard className="w-4 h-4 text-zinc-400 hover:text-orange-400 transition-colors" strokeWidth={1.5} />
+                    <CreditCard className="w-4 h-4 text-zinc-500 dark:text-zinc-400 hover:text-orange-500 dark:hover:text-orange-400 transition-colors" strokeWidth={1.5} />
                   </Button>
                 </Link>
 
                 {/* Settings Link */}
                 <Link to="/settings">
                   <Button variant="ghost" size="icon" aria-label="Ajustes de Organización" title="Ajustes">
-                    <Settings className="w-4 h-4 text-zinc-400 hover:text-white transition-colors" strokeWidth={1.5} />
+                    <Settings className="w-4 h-4 text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white transition-colors" strokeWidth={1.5} />
                   </Button>
                 </Link>
 
                 {/* Audit Logs Link */}
                 <Link to="/audit-logs">
                   <Button variant="ghost" size="icon" aria-label="Auditoría Empresarial" title="Auditoría & Compliance">
-                    <Shield className="w-4 h-4 text-zinc-400 hover:text-emerald-400 transition-colors" strokeWidth={1.5} />
+                    <Shield className="w-4 h-4 text-zinc-500 dark:text-zinc-400 hover:text-emerald-500 dark:hover:text-emerald-400 transition-colors" strokeWidth={1.5} />
                   </Button>
                 </Link>
 
@@ -214,7 +214,7 @@ export const RootLayout: React.FC = () => {
                   size="sm"
                   leftIcon={Sparkles}
                   onClick={() => openCopilot({ contextType: 'GENERAL' })}
-                  className="border-orange-500/30 hover:border-orange-500/60 shadow-lg shadow-orange-500/10 text-orange-300"
+                  className="border-orange-500/30 hover:border-orange-500/60 shadow-lg shadow-orange-500/10 text-orange-600 dark:text-orange-300"
                   aria-label="Abrir AI Copilot"
                 >
                   <span className="hidden sm:inline">AI Copilot</span>
@@ -231,14 +231,14 @@ export const RootLayout: React.FC = () => {
                   title="Cerrar sesión"
                   aria-label="Cerrar sesión"
                 >
-                  <LogOut className="w-4 h-4 text-zinc-400 hover:text-rose-400 transition-colors" strokeWidth={1.5} />
+                  <LogOut className="w-4 h-4 text-zinc-500 dark:text-zinc-400 hover:text-rose-600 dark:hover:text-rose-400 transition-colors" strokeWidth={1.5} />
                 </Button>
 
                 {/* Mobile Hamburger Button */}
                 <button
                   type="button"
                   onClick={() => setIsMobileMenuOpen(true)}
-                  className="p-2 rounded-xl text-zinc-400 hover:text-white hover:bg-white/[0.06] md:hidden transition-colors"
+                  className="p-2 rounded-xl text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white hover:bg-zinc-200/50 dark:hover:bg-white/[0.06] md:hidden transition-colors"
                   aria-label="Abrir menú"
                 >
                   <Menu className="w-5 h-5" strokeWidth={1.5} />

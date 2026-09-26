@@ -9,9 +9,8 @@ describe('BOWOL App Integration', () => {
     // Verificar logotipo/marca en cabecera
     expect(screen.getAllByText(/BOWOL/i)[0]).toBeInTheDocument();
     
-    // Verificar ciclo Inteligencia -> Estrategia -> Ejecución
-    expect(screen.getByText('Radar de Tendencias')).toBeInTheDocument();
-    expect(screen.getByText('FODA con Evidencias')).toBeInTheDocument();
-    expect(screen.getByText('Kanban & Sprints')).toBeInTheDocument();
+    // Verificar titular ejecutivo y lanzador de trayectoria
+    expect(screen.getByText(/De la señal de mercado a la ejecución estratégica/i)).toBeInTheDocument();
+    expect(screen.getByText(/Desplázate para iniciar trayectoria/i)).toBeInTheDocument();
   });
 });

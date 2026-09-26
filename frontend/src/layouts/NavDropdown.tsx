@@ -47,10 +47,10 @@ export const NavDropdown: React.FC<NavDropdownProps> = ({ label, icon: MainIcon,
         onClick={() => setIsOpen(!isOpen)}
         className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-all select-none ${
           isCurrentActive
-            ? 'bg-orange-500/10 text-orange-400 border border-orange-500/30 shadow-sm'
+            ? 'bg-orange-500/10 text-orange-600 dark:text-orange-400 border border-orange-500/30 shadow-sm'
             : isOpen
-            ? 'bg-white/[0.08] text-white'
-            : 'text-zinc-400 hover:text-zinc-200 hover:bg-white/[0.04]'
+            ? 'bg-zinc-200/80 dark:bg-white/[0.08] text-zinc-950 dark:text-white'
+            : 'text-zinc-600 dark:text-zinc-400 hover:text-zinc-950 dark:hover:text-zinc-200 hover:bg-zinc-200/50 dark:hover:bg-white/[0.04]'
         }`}
         aria-expanded={isOpen}
       >
@@ -58,7 +58,7 @@ export const NavDropdown: React.FC<NavDropdownProps> = ({ label, icon: MainIcon,
         <span>{label}</span>
         <ChevronDown
           className={`w-3 h-3 text-zinc-500 transition-transform duration-200 ${
-            isOpen ? 'rotate-180 text-orange-400' : ''
+            isOpen ? 'rotate-180 text-orange-500 dark:text-orange-400' : ''
           }`}
           strokeWidth={1.5}
         />
@@ -66,7 +66,7 @@ export const NavDropdown: React.FC<NavDropdownProps> = ({ label, icon: MainIcon,
 
       {/* Liquid Glass Dropdown Menu */}
       {isOpen && (
-        <div className="absolute top-full left-0 mt-2 w-72 rounded-2xl liquid-glass-dropdown p-2 z-50 animate-in fade-in slide-in-from-top-2 duration-150">
+        <div className="absolute top-full left-0 mt-2 w-72 rounded-2xl bg-white/95 dark:bg-[#121318]/95 border border-zinc-200/90 dark:border-white/10 shadow-xl dark:shadow-2xl backdrop-blur-2xl p-2 z-50 animate-in fade-in slide-in-from-top-2 duration-150">
           <div className="space-y-1">
             {items.map((item) => {
               const Icon = item.icon;
@@ -79,28 +79,28 @@ export const NavDropdown: React.FC<NavDropdownProps> = ({ label, icon: MainIcon,
                   className={`flex items-start gap-3 p-2.5 rounded-xl transition-all group ${
                     isActive
                       ? 'bg-orange-500/15 border border-orange-500/30'
-                      : 'hover:bg-white/[0.06] border border-transparent hover:border-white/[0.08]'
+                      : 'hover:bg-zinc-100 dark:hover:bg-white/[0.06] border border-transparent hover:border-zinc-200 dark:hover:border-white/[0.08]'
                   }`}
                 >
                   <div
                     className={`w-8 h-8 rounded-lg flex items-center justify-center shrink-0 border ${
-                      item.iconColor || 'bg-orange-500/10 border-orange-500/20 text-orange-400'
+                      item.iconColor || 'bg-orange-500/10 border-orange-500/20 text-orange-600 dark:text-orange-400'
                     } group-hover:scale-105 transition-transform`}
                   >
                     <Icon className="w-4 h-4" strokeWidth={1.5} />
                   </div>
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center justify-between">
-                      <span className="text-xs font-semibold text-white group-hover:text-orange-300 transition-colors">
+                      <span className="text-xs font-semibold text-zinc-900 dark:text-white group-hover:text-orange-600 dark:group-hover:text-orange-400 transition-colors">
                         {item.label}
                       </span>
                       {item.badge && (
-                        <span className="text-[10px] px-1.5 py-0.2 rounded font-mono bg-zinc-800 text-zinc-300 border border-zinc-700">
+                        <span className="text-[10px] px-1.5 py-0.2 rounded font-mono bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 border border-zinc-200 dark:border-zinc-700">
                           {item.badge}
                         </span>
                       )}
                     </div>
-                    <p className="text-[11px] text-zinc-400 leading-tight mt-0.5 truncate">
+                    <p className="text-[11px] text-zinc-500 dark:text-zinc-400 leading-tight mt-0.5 truncate">
                       {item.description}
                     </p>
                   </div>

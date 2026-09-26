@@ -42,22 +42,22 @@ export const NewInitiativeModal: React.FC<NewInitiativeModalProps> = ({ isOpen, 
   const calculatedRice = effort > 0 ? Math.round((reach * impact * (confidence / 100)) / effort) : 0;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-md animate-fadeIn">
-      <div className="relative w-full max-w-xl rounded-2xl bg-[#12131a] border border-white/[0.08] p-6 shadow-2xl space-y-5">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 dark:bg-black/75 backdrop-blur-md animate-fadeIn">
+      <div className="relative w-full max-w-xl rounded-2xl bg-white dark:bg-[#12131a] border border-zinc-200 dark:border-white/[0.08] p-6 shadow-2xl space-y-5">
         {/* Header */}
-        <div className="flex items-center justify-between border-b border-white/[0.08] pb-4">
+        <div className="flex items-center justify-between border-b border-zinc-200 dark:border-white/[0.08] pb-4">
           <div className="flex items-center gap-2.5">
-            <div className="w-8 h-8 rounded-lg bg-orange-500/20 border border-orange-500/30 flex items-center justify-center text-orange-400">
+            <div className="w-8 h-8 rounded-lg bg-orange-500/10 dark:bg-orange-500/20 border border-orange-500/20 dark:border-orange-500/30 flex items-center justify-center text-orange-600 dark:text-orange-400">
               <Plus className="w-4 h-4" />
             </div>
             <div>
-              <h2 className="text-base font-semibold text-white">Nueva Iniciativa Estratégica</h2>
-              <p className="text-xs text-zinc-400">Incorpora una oportunidad y calcúlale su score RICE</p>
+              <h2 className="text-base font-semibold text-zinc-950 dark:text-white">Nueva Iniciativa Estratégica</h2>
+              <p className="text-xs text-zinc-500 dark:text-zinc-400">Incorpora una oportunidad y calcúlale su score RICE</p>
             </div>
           </div>
           <button
             onClick={onClose}
-            className="p-1 rounded-lg text-zinc-400 hover:text-white hover:bg-white/[0.06] transition-colors"
+            className="p-1 rounded-lg text-zinc-400 hover:text-zinc-700 dark:hover:text-white hover:bg-zinc-100 dark:hover:bg-white/[0.06] transition-colors"
           >
             <X className="w-4 h-4" />
           </button>
@@ -66,7 +66,7 @@ export const NewInitiativeModal: React.FC<NewInitiativeModalProps> = ({ isOpen, 
         {/* Form */}
         <div className="space-y-4">
           <div>
-            <label className="block text-xs font-medium text-zinc-300 mb-1.5">
+            <label className="block text-xs font-medium text-zinc-700 dark:text-zinc-300 mb-1.5">
               Título de la iniciativa *
             </label>
             <input
@@ -74,12 +74,12 @@ export const NewInitiativeModal: React.FC<NewInitiativeModalProps> = ({ isOpen, 
               value={title}
               onChange={(e) => setTitle(e.target.value)}
               placeholder="Ej: Inferencia perimetral con modelos SLM en edge"
-              className="w-full px-3.5 py-2.5 rounded-lg bg-white/[0.03] border border-white/[0.1] text-sm text-white placeholder-zinc-500 focus:outline-none focus:border-orange-500/50 focus:ring-1 focus:ring-orange-500/50"
+              className="w-full px-3.5 py-2.5 rounded-lg bg-zinc-50 dark:bg-white/[0.03] border border-zinc-300 dark:border-white/[0.1] text-sm text-zinc-900 dark:text-white placeholder-zinc-400 dark:placeholder-zinc-500 focus:outline-none focus:border-orange-500/50 focus:ring-1 focus:ring-orange-500/50"
             />
           </div>
 
           <div>
-            <label className="block text-xs font-medium text-zinc-300 mb-1.5">
+            <label className="block text-xs font-medium text-zinc-700 dark:text-zinc-300 mb-1.5">
               Descripción & Hipótesis de Valor
             </label>
             <textarea
@@ -87,25 +87,25 @@ export const NewInitiativeModal: React.FC<NewInitiativeModalProps> = ({ isOpen, 
               value={description}
               onChange={(e) => setDescription(e.target.value)}
               placeholder="¿Qué problema resuelve y por qué es una ventaja competitiva?"
-              className="w-full px-3.5 py-2.5 rounded-lg bg-white/[0.03] border border-white/[0.1] text-sm text-white placeholder-zinc-500 focus:outline-none focus:border-orange-500/50 focus:ring-1 focus:ring-orange-500/50 resize-none"
+              className="w-full px-3.5 py-2.5 rounded-lg bg-zinc-50 dark:bg-white/[0.03] border border-zinc-300 dark:border-white/[0.1] text-sm text-zinc-900 dark:text-white placeholder-zinc-400 dark:placeholder-zinc-500 focus:outline-none focus:border-orange-500/50 focus:ring-1 focus:ring-orange-500/50 resize-none"
             />
           </div>
 
           {/* RICE Quick Sliders */}
-          <div className="p-4 rounded-xl bg-white/[0.02] border border-white/[0.06] space-y-3">
+          <div className="p-4 rounded-xl bg-zinc-50 dark:bg-white/[0.02] border border-zinc-200 dark:border-white/[0.06] space-y-3">
             <div className="flex items-center justify-between">
-              <span className="text-xs font-semibold text-zinc-300 uppercase tracking-wider flex items-center gap-1.5">
-                <Target className="w-3.5 h-3.5 text-orange-400" />
+              <span className="text-xs font-semibold text-zinc-700 dark:text-zinc-300 uppercase tracking-wider flex items-center gap-1.5">
+                <Target className="w-3.5 h-3.5 text-orange-500 dark:text-orange-400" />
                 Estimación RICE Preliminar
               </span>
-              <span className="text-xs font-bold text-orange-400 bg-orange-500/10 px-2 py-0.5 rounded border border-orange-500/20">
+              <span className="text-xs font-bold text-orange-600 dark:text-orange-400 bg-orange-500/10 px-2 py-0.5 rounded border border-orange-500/20">
                 Score: {calculatedRice}
               </span>
             </div>
 
             <div className="grid grid-cols-2 gap-3 text-xs">
               <div>
-                <label className="text-zinc-400 block mb-1">Alcance (Reach: {reach} usuarios)</label>
+                <label className="text-zinc-600 dark:text-zinc-400 block mb-1">Alcance (Reach: {reach} usuarios)</label>
                 <input
                   type="range"
                   min="50"
@@ -117,7 +117,7 @@ export const NewInitiativeModal: React.FC<NewInitiativeModalProps> = ({ isOpen, 
                 />
               </div>
               <div>
-                <label className="text-zinc-400 block mb-1">Impacto (1=Bajo, 3=Alto, 5=Masivo: {impact})</label>
+                <label className="text-zinc-600 dark:text-zinc-400 block mb-1">Impacto (1=Bajo, 3=Alto, 5=Masivo: {impact})</label>
                 <input
                   type="range"
                   min="1"
@@ -129,7 +129,7 @@ export const NewInitiativeModal: React.FC<NewInitiativeModalProps> = ({ isOpen, 
                 />
               </div>
               <div>
-                <label className="text-zinc-400 block mb-1">Confianza ({confidence}%)</label>
+                <label className="text-zinc-600 dark:text-zinc-400 block mb-1">Confianza ({confidence}%)</label>
                 <input
                   type="range"
                   min="10"
@@ -141,7 +141,7 @@ export const NewInitiativeModal: React.FC<NewInitiativeModalProps> = ({ isOpen, 
                 />
               </div>
               <div>
-                <label className="text-zinc-400 block mb-1">Esfuerzo ({effort} personas/mes)</label>
+                <label className="text-zinc-600 dark:text-zinc-400 block mb-1">Esfuerzo ({effort} personas/mes)</label>
                 <input
                   type="range"
                   min="1"
@@ -157,7 +157,7 @@ export const NewInitiativeModal: React.FC<NewInitiativeModalProps> = ({ isOpen, 
         </div>
 
         {/* Footer */}
-        <div className="flex items-center justify-end gap-3 pt-3 border-t border-white/[0.08]">
+        <div className="flex items-center justify-end gap-3 pt-3 border-t border-zinc-200 dark:border-white/[0.08]">
           <Button variant="ghost" size="sm" onClick={onClose}>
             Cancelar
           </Button>

@@ -36,11 +36,11 @@ interface HeroSlide {
 const heroSlides: HeroSlide[] = [
   {
     id: 'orquestacion',
-    badge: 'Enterprise Intelligence Workspace 2026',
+    badge: 'Enterprise Strategy Workspace 2026',
     tag: 'Fase 01 a 04 • Ciclo Continuo',
     titlePrefix: 'Del ruido del mercado a la',
     titleHighlight: 'ejecución estratégica real.',
-    subtitle: 'BOWOL conecta señales de mercado, análisis competitivo FODA y formulación de hipótesis con los sprints ejecutables de tu equipo. Un solo ciclo continuo.',
+    subtitle: 'BOWOL conecta señales vivas de mercado, análisis competitivo FODA y formulación de hipótesis con los sprints ejecutables de tu equipo. Un solo ciclo continuo.',
     primaryCtaText: 'Comenzar prueba empresarial',
     primaryCtaLink: '/register',
     secondaryCtaText: 'Ver terminal de producto',
@@ -51,8 +51,8 @@ const heroSlides: HeroSlide[] = [
     badge: 'Detección Temprana Multi-Fuente',
     tag: '28+ Fuentes Científicas & Mercado',
     titlePrefix: 'De la señal competitiva al',
-    titleHighlight: 'descubrimiento validado con IA.',
-    subtitle: 'Monitoreo de papers arXiv, actividad en GitHub y presentaciones SEC. Transforma datos dispersos en evidencia científica para decisiones corporativas inmediatas.',
+    titleHighlight: 'descubrimiento empírico continuo.',
+    subtitle: 'Monitoreo de papers arXiv, repositorios de código y registros regulatorios. Transforma datos dispersos en evidencia estructurada para decisiones corporativas inmediatas.',
     primaryCtaText: 'Explorar radar de señales',
     primaryCtaLink: '#ciclo',
     secondaryCtaText: 'Ver fuentes verificadas',
@@ -61,7 +61,7 @@ const heroSlides: HeroSlide[] = [
   {
     id: 'sprints',
     badge: 'Priorización Matemática RICE',
-    tag: 'AI Backlog Decomposer Integrado',
+    tag: 'Descomposición Algorítmica de Backlog',
     titlePrefix: 'De la hipótesis estratégica al',
     titleHighlight: 'sprint ejecutable sin fricción.',
     subtitle: 'Descompón epics en tareas listas para producción con estimación objetiva de impacto, confianza y esfuerzo. Sin reuniones infinitas ni documentos muertos.',

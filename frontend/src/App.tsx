@@ -7,23 +7,34 @@ import { ThemeProvider } from '@/contexts/ThemeContext';
 import { ProtectedRoute, PublicOnlyRoute } from '@/app/router/ProtectedRoute';
 import { RootLayout } from '@/layouts/RootLayout';
 import { HomePage } from '@/pages/HomePage';
-import { LoginPage } from '@/features/auth/pages/LoginPage';
-import { RegisterPage } from '@/features/auth/pages/RegisterPage';
-import { SettingsPage } from '@/features/organization/pages/SettingsPage';
-import { OnboardingPage } from '@/features/businessprofile/pages/OnboardingPage';
-import { BusinessProfilePage } from '@/features/businessprofile/pages/BusinessProfilePage';
-import { TrendsPage } from '@/features/trends/pages/TrendsPage';
-import { SwotPage } from '@/features/swot/pages/SwotPage';
-import { OpportunitiesPage } from '@/features/opportunities/pages/OpportunitiesPage';
-import { HypothesesPage } from '@/features/hypotheses/pages/HypothesesPage';
-import { TaskBoardPage } from '@/features/tasks/pages/TaskBoardPage';
-import { SprintsPage } from '@/features/sprints/pages/SprintsPage';
-import { CalendarPage } from '@/features/calendar/pages/CalendarPage';
-import { SocialPage } from '@/features/social/pages/SocialPage';
-import { DashboardPage } from '@/features/dashboard/pages/DashboardPage';
-import { BillingPage } from '@/features/billing/pages/BillingPage';
-import { AuditLogsPage } from '@/features/audit/pages/AuditLogsPage';
-import { NotFoundPage } from '@/pages/NotFoundPage';
+
+// Lazy-loaded routes for optimal initial bundle performance
+const LoginPage = React.lazy(() => import('@/features/auth/pages/LoginPage').then(m => ({ default: m.LoginPage })));
+const RegisterPage = React.lazy(() => import('@/features/auth/pages/RegisterPage').then(m => ({ default: m.RegisterPage })));
+const SettingsPage = React.lazy(() => import('@/features/organization/pages/SettingsPage').then(m => ({ default: m.SettingsPage })));
+const OnboardingPage = React.lazy(() => import('@/features/businessprofile/pages/OnboardingPage').then(m => ({ default: m.OnboardingPage })));
+const BusinessProfilePage = React.lazy(() => import('@/features/businessprofile/pages/BusinessProfilePage').then(m => ({ default: m.BusinessProfilePage })));
+const TrendsPage = React.lazy(() => import('@/features/trends/pages/TrendsPage').then(m => ({ default: m.TrendsPage })));
+const SwotPage = React.lazy(() => import('@/features/swot/pages/SwotPage').then(m => ({ default: m.SwotPage })));
+const OpportunitiesPage = React.lazy(() => import('@/features/opportunities/pages/OpportunitiesPage').then(m => ({ default: m.OpportunitiesPage })));
+const HypothesesPage = React.lazy(() => import('@/features/hypotheses/pages/HypothesesPage').then(m => ({ default: m.HypothesesPage })));
+const TaskBoardPage = React.lazy(() => import('@/features/tasks/pages/TaskBoardPage').then(m => ({ default: m.TaskBoardPage })));
+const SprintsPage = React.lazy(() => import('@/features/sprints/pages/SprintsPage').then(m => ({ default: m.SprintsPage })));
+const CalendarPage = React.lazy(() => import('@/features/calendar/pages/CalendarPage').then(m => ({ default: m.CalendarPage })));
+const SocialPage = React.lazy(() => import('@/features/social/pages/SocialPage').then(m => ({ default: m.SocialPage })));
+const DashboardPage = React.lazy(() => import('@/features/dashboard/pages/DashboardPage').then(m => ({ default: m.DashboardPage })));
+const BillingPage = React.lazy(() => import('@/features/billing/pages/BillingPage').then(m => ({ default: m.BillingPage })));
+const AuditLogsPage = React.lazy(() => import('@/features/audit/pages/AuditLogsPage').then(m => ({ default: m.AuditLogsPage })));
+const NotFoundPage = React.lazy(() => import('@/pages/NotFoundPage').then(m => ({ default: m.NotFoundPage })));
+
+const RouteLoadingFallback: React.FC = () => (
+  <div className="min-h-[60vh] w-full flex flex-col items-center justify-center p-8">
+    <div className="w-7 h-7 rounded-full border-2 border-orange-500/20 border-t-orange-500 animate-spin" />
+    <span className="mt-3 text-[11px] font-mono text-zinc-500 dark:text-zinc-400 tracking-widest uppercase">
+      Cargando módulo...
+    </span>
+  </div>
+);
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -42,7 +53,8 @@ export const App: React.FC = () => {
         <AuthProvider>
           <CopilotProvider>
             <BrowserRouter>
-              <Routes>
+              <React.Suspense fallback={<RouteLoadingFallback />}>
+                <Routes>
             <Route path="/" element={<RootLayout />}>
               <Route index element={<HomePage />} />
               <Route
@@ -200,7 +212,8 @@ export const App: React.FC = () => {
               <Route path="*" element={<NotFoundPage />} />
             </Route>
           </Routes>
-        </BrowserRouter>
+        </React.Suspense>
+      </BrowserRouter>
       </CopilotProvider>
     </AuthProvider>
     </ThemeProvider>

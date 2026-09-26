@@ -25,16 +25,16 @@ export const BentoSwotSynthesis: React.FC = () => {
   const formatCount = (n: number) => n.toString().padStart(2, '0');
 
   return (
-    <div className="rounded-2xl bg-[#1e1f26]/70 backdrop-blur-2xl p-6 border border-white/[0.08] shadow-[0_8px_32px_-4px_rgba(0,0,0,0.45)] flex flex-col justify-between space-y-4">
+    <div className="rounded-2xl bg-white dark:bg-[#181920]/80 backdrop-blur-2xl p-6 border border-zinc-200/90 dark:border-white/[0.08] shadow-sm dark:shadow-[0_8px_32px_-4px_rgba(0,0,0,0.45)] flex flex-col justify-between space-y-4">
       <div>
         <div className="flex items-center justify-between mb-2">
           <div>
-            <h2 className="text-base sm:text-lg font-bold text-white tracking-tight">
+            <h2 className="text-base sm:text-lg font-bold text-zinc-950 dark:text-white tracking-tight">
               Síntesis FODA
             </h2>
-            <p className="text-xs text-zinc-400 mt-0.5">Matriz estratégica consolidada</p>
+            <p className="text-xs text-zinc-500 dark:text-zinc-400 mt-0.5">Matriz estratégica consolidada</p>
           </div>
-          <div className="w-8 h-8 rounded-lg bg-[#292931]/80 border border-white/[0.06] flex items-center justify-center text-zinc-400">
+          <div className="w-8 h-8 rounded-lg bg-zinc-100 dark:bg-[#292931]/80 border border-zinc-200/80 dark:border-white/[0.06] flex items-center justify-center text-zinc-500 dark:text-zinc-400">
             <LayoutGrid className="w-4 h-4" />
           </div>
         </div>
@@ -44,15 +44,15 @@ export const BentoSwotSynthesis: React.FC = () => {
           {/* Fortalezas */}
           <Link
             to="/swot"
-            className="p-3.5 rounded-xl bg-[#1a1b22]/70 hover:bg-[#292931] border border-white/[0.04] hover:border-orange-500/30 transition-all cursor-pointer group flex flex-col justify-between"
+            className="p-3.5 rounded-xl bg-zinc-50 dark:bg-[#1a1b22]/70 hover:bg-zinc-100 dark:hover:bg-[#292931] border border-zinc-200/80 dark:border-white/[0.04] hover:border-orange-500/40 transition-all cursor-pointer group flex flex-col justify-between"
           >
             <div className="flex items-center justify-between mb-2">
-              <span className="text-xs font-bold text-orange-400">Fortalezas</span>
-              <span className="text-xs text-zinc-500 font-mono font-medium">
+              <span className="text-xs font-bold text-orange-600 dark:text-orange-400">Fortalezas</span>
+              <span className="text-xs text-zinc-400 dark:text-zinc-500 font-mono font-medium">
                 {formatCount(strengthsCount)}
               </span>
             </div>
-            <p className="text-xs text-zinc-300 line-clamp-2 leading-relaxed">
+            <p className="text-xs text-zinc-700 dark:text-zinc-300 line-clamp-2 leading-relaxed">
               {strengthSnippet}
             </p>
           </Link>
@@ -60,15 +60,15 @@ export const BentoSwotSynthesis: React.FC = () => {
           {/* Oportunidades */}
           <Link
             to="/swot"
-            className="p-3.5 rounded-xl bg-[#1a1b22]/70 hover:bg-[#292931] border border-white/[0.04] hover:border-amber-400/30 transition-all cursor-pointer group flex flex-col justify-between"
+            className="p-3.5 rounded-xl bg-zinc-50 dark:bg-[#1a1b22]/70 hover:bg-zinc-100 dark:hover:bg-[#292931] border border-zinc-200/80 dark:border-white/[0.04] hover:border-amber-500/40 transition-all cursor-pointer group flex flex-col justify-between"
           >
             <div className="flex items-center justify-between mb-2">
-              <span className="text-xs font-bold text-amber-300">Oportunidades</span>
-              <span className="text-xs text-zinc-500 font-mono font-medium">
+              <span className="text-xs font-bold text-amber-600 dark:text-amber-300">Oportunidades</span>
+              <span className="text-xs text-zinc-400 dark:text-zinc-500 font-mono font-medium">
                 {formatCount(opportunitiesCount)}
               </span>
             </div>
-            <p className="text-xs text-zinc-300 line-clamp-2 leading-relaxed">
+            <p className="text-xs text-zinc-700 dark:text-zinc-300 line-clamp-2 leading-relaxed">
               {opportunitySnippet}
             </p>
           </Link>
@@ -76,15 +76,15 @@ export const BentoSwotSynthesis: React.FC = () => {
           {/* Debilidades */}
           <Link
             to="/swot"
-            className="p-3.5 rounded-xl bg-[#1a1b22]/70 hover:bg-[#292931] border border-white/[0.04] hover:border-zinc-500/30 transition-all cursor-pointer group flex flex-col justify-between"
+            className="p-3.5 rounded-xl bg-zinc-50 dark:bg-[#1a1b22]/70 hover:bg-zinc-100 dark:hover:bg-[#292931] border border-zinc-200/80 dark:border-white/[0.04] hover:border-zinc-400 dark:hover:border-zinc-500/30 transition-all cursor-pointer group flex flex-col justify-between"
           >
             <div className="flex items-center justify-between mb-2">
-              <span className="text-xs font-bold text-zinc-400">Debilidades</span>
-              <span className="text-xs text-zinc-500 font-mono font-medium">
+              <span className="text-xs font-bold text-zinc-600 dark:text-zinc-400">Debilidades</span>
+              <span className="text-xs text-zinc-400 dark:text-zinc-500 font-mono font-medium">
                 {formatCount(weaknessesCount)}
               </span>
             </div>
-            <p className="text-xs text-zinc-300 line-clamp-2 leading-relaxed">
+            <p className="text-xs text-zinc-700 dark:text-zinc-300 line-clamp-2 leading-relaxed">
               {weaknessSnippet}
             </p>
           </Link>
@@ -92,15 +92,15 @@ export const BentoSwotSynthesis: React.FC = () => {
           {/* Amenazas */}
           <Link
             to="/swot"
-            className="p-3.5 rounded-xl bg-[#1a1b22]/70 hover:bg-[#292931] border border-white/[0.04] hover:border-red-500/30 transition-all cursor-pointer group flex flex-col justify-between"
+            className="p-3.5 rounded-xl bg-zinc-50 dark:bg-[#1a1b22]/70 hover:bg-zinc-100 dark:hover:bg-[#292931] border border-zinc-200/80 dark:border-white/[0.04] hover:border-rose-500/40 transition-all cursor-pointer group flex flex-col justify-between"
           >
             <div className="flex items-center justify-between mb-2">
-              <span className="text-xs font-bold text-red-400">Amenazas</span>
-              <span className="text-xs text-zinc-500 font-mono font-medium">
+              <span className="text-xs font-bold text-rose-600 dark:text-rose-400">Amenazas</span>
+              <span className="text-xs text-zinc-400 dark:text-zinc-500 font-mono font-medium">
                 {formatCount(threatsCount)}
               </span>
             </div>
-            <p className="text-xs text-zinc-300 line-clamp-2 leading-relaxed">
+            <p className="text-xs text-zinc-700 dark:text-zinc-300 line-clamp-2 leading-relaxed">
               {threatSnippet}
             </p>
           </Link>
@@ -110,10 +110,10 @@ export const BentoSwotSynthesis: React.FC = () => {
       {/* Button link */}
       <Link
         to="/swot"
-        className="w-full flex items-center justify-center gap-2 py-2.5 rounded-xl bg-[#292931]/60 hover:bg-[#33343c] text-zinc-200 hover:text-white font-medium text-xs transition-colors border border-white/[0.06] shadow-[inset_0_1px_0_0_rgba(255,255,255,0.06)]"
+        className="w-full flex items-center justify-center gap-2 py-2.5 rounded-xl bg-zinc-100 hover:bg-zinc-200 dark:bg-[#292931]/60 dark:hover:bg-[#33343c] text-zinc-800 hover:text-zinc-950 dark:text-zinc-200 dark:hover:text-white font-medium text-xs transition-colors border border-zinc-200 dark:border-white/[0.06] shadow-sm"
       >
         <span>Abrir panel FODA interactivo</span>
-        <ArrowUpRight className="w-3.5 h-3.5 text-zinc-400" />
+        <ArrowUpRight className="w-3.5 h-3.5 text-zinc-500 dark:text-zinc-400" />
       </Link>
     </div>
   );

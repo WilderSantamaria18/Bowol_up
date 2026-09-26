@@ -73,19 +73,19 @@ export const BentoDashboardHeader: React.FC<BentoDashboardHeaderProps> = ({
     <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
       <div className="space-y-1.5">
         {/* Breadcrumbs */}
-        <div className="flex items-center gap-1.5 text-xs text-zinc-400 font-medium">
-          <span className="hover:text-zinc-200 transition-colors cursor-pointer">Plataforma</span>
-          <ChevronRight className="w-3 h-3 text-zinc-600" />
-          <span className="text-orange-400/90 font-semibold">Resumen</span>
-          <span className="text-zinc-600">•</span>
-          <span className="text-zinc-400">{summary.organization.name}</span>
-          <span className="px-1.5 py-0.5 rounded text-[10px] uppercase font-bold tracking-wider bg-orange-500/10 text-orange-400 border border-orange-500/20">
+        <div className="flex items-center gap-1.5 text-xs text-zinc-500 dark:text-zinc-400 font-medium">
+          <span className="hover:text-zinc-950 dark:hover:text-zinc-200 transition-colors cursor-pointer">Plataforma</span>
+          <ChevronRight className="w-3 h-3 text-zinc-400 dark:text-zinc-600" />
+          <span className="text-orange-600 dark:text-orange-400 font-semibold">Resumen</span>
+          <span className="text-zinc-400 dark:text-zinc-600">•</span>
+          <span className="text-zinc-600 dark:text-zinc-400">{summary.organization.name}</span>
+          <span className="px-1.5 py-0.5 rounded text-[10px] uppercase font-bold tracking-wider bg-orange-500/10 text-orange-600 dark:text-orange-400 border border-orange-500/20">
             {summary.organization.plan}
           </span>
         </div>
 
         {/* Title */}
-        <h1 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight font-display">
+        <h1 className="text-2xl sm:text-3xl font-extrabold text-zinc-950 dark:text-white tracking-tight font-display">
           Visión Estratégica
         </h1>
       </div>
@@ -98,7 +98,7 @@ export const BentoDashboardHeader: React.FC<BentoDashboardHeaderProps> = ({
           leftIcon={RefreshCw}
           isLoading={isSyncing}
           onClick={onSyncTrends}
-          className="shadow-[inset_0_1px_0_0_rgba(255,255,255,0.06)]"
+          className="shadow-sm"
         >
           {isSyncing ? 'Sincronizando...' : 'Sincronizar'}
         </Button>
@@ -106,7 +106,7 @@ export const BentoDashboardHeader: React.FC<BentoDashboardHeaderProps> = ({
         <button
           onClick={handleExportReport}
           type="button"
-          className="group flex items-center gap-2 px-3.5 py-2 rounded-lg bg-[#292931]/60 hover:bg-[#33343c] text-zinc-200 font-medium text-xs transition-all shadow-[inset_0_1px_0_0_rgba(255,255,255,0.08)] active:scale-[0.985] border border-white/[0.06]"
+          className="group flex items-center gap-2 px-3.5 py-2 rounded-lg bg-zinc-100 hover:bg-zinc-200 dark:bg-[#292931]/60 dark:hover:bg-[#33343c] text-zinc-700 dark:text-zinc-200 font-medium text-xs transition-all border border-zinc-200 dark:border-white/[0.06] active:scale-[0.985]"
         >
           {copiedExport ? (
             <>

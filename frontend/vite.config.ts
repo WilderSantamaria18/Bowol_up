@@ -23,6 +23,21 @@ export default defineConfig({
       },
     },
   },
+  build: {
+    target: 'esnext',
+    cssCodeSplit: true,
+    chunkSizeWarningLimit: 600,
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          'vendor-react': ['react', 'react-dom', 'react-router-dom'],
+          'vendor-motion': ['framer-motion', 'gsap'],
+          'vendor-icons': ['lucide-react'],
+          'vendor-query': ['@tanstack/react-query', 'axios'],
+        },
+      },
+    },
+  },
   test: {
     globals: true,
     environment: 'jsdom',

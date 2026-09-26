@@ -40,17 +40,17 @@ export const MobileNavDrawer: React.FC<MobileNavDrawerProps> = ({
       />
 
       {/* Drawer Panel */}
-      <div className="fixed inset-y-0 left-0 w-full max-w-xs liquid-glass-dropdown border-r border-zinc-800 p-5 overflow-y-auto flex flex-col justify-between shadow-2xl animate-in slide-in-from-left duration-200">
+      <div className="fixed inset-y-0 left-0 w-full max-w-xs bg-white dark:bg-[#121318] border-r border-zinc-200 dark:border-zinc-800 p-5 overflow-y-auto flex flex-col justify-between shadow-2xl animate-in slide-in-from-left duration-200">
         <div className="space-y-6">
           {/* Header */}
-          <div className="flex items-center justify-between pb-4 border-b border-zinc-800/80">
+          <div className="flex items-center justify-between pb-4 border-b border-zinc-200 dark:border-zinc-800/80">
             <BrandLogo size="sm" asLink to="/" />
             <div className="flex items-center gap-2">
               <ThemeToggle size="sm" />
               <button
                 type="button"
                 onClick={onClose}
-                className="p-1.5 rounded-lg text-zinc-400 hover:text-white hover:bg-zinc-800 transition-colors"
+                className="p-1.5 rounded-lg text-zinc-500 hover:text-zinc-950 hover:bg-zinc-100 dark:text-zinc-400 dark:hover:text-white dark:hover:bg-zinc-800 transition-colors"
                 aria-label="Cerrar menú"
               >
                 <X className="w-5 h-5" strokeWidth={1.5} />
@@ -60,15 +60,15 @@ export const MobileNavDrawer: React.FC<MobileNavDrawerProps> = ({
 
           {/* Org & User Card */}
           {user && (
-            <div className="p-3 rounded-xl bg-zinc-900/80 border border-zinc-800/80 flex items-center justify-between">
+            <div className="p-3 rounded-xl bg-zinc-50 dark:bg-zinc-900/80 border border-zinc-200 dark:border-zinc-800/80 flex items-center justify-between">
               <div className="flex items-center gap-2.5 overflow-hidden">
-                <div className="w-9 h-9 rounded-lg bg-orange-500/10 border border-orange-500/30 flex items-center justify-center text-orange-400 font-bold text-sm">
+                <div className="w-9 h-9 rounded-lg bg-orange-500/10 border border-orange-500/30 flex items-center justify-center text-orange-600 dark:text-orange-400 font-bold text-sm">
                   {user.name ? user.name.charAt(0).toUpperCase() : 'U'}
                 </div>
                 <div className="overflow-hidden">
-                  <div className="text-xs font-bold text-white truncate">{user.name}</div>
-                  <div className="text-[11px] text-zinc-400 truncate flex items-center gap-1">
-                    <Building2 className="w-3 h-3 text-zinc-500 shrink-0" />
+                  <div className="text-xs font-bold text-zinc-900 dark:text-white truncate">{user.name}</div>
+                  <div className="text-[11px] text-zinc-500 dark:text-zinc-400 truncate flex items-center gap-1">
+                    <Building2 className="w-3 h-3 text-zinc-400 shrink-0" />
                     {organization?.name || 'Workspace'}
                   </div>
                 </div>
@@ -108,11 +108,11 @@ export const MobileNavDrawer: React.FC<MobileNavDrawerProps> = ({
                         onClick={onClose}
                         className={`flex items-center gap-3 px-3 py-2 rounded-xl text-xs font-medium transition-colors ${
                           isActive
-                            ? 'bg-orange-500/15 text-orange-400 border border-orange-500/30'
-                            : 'text-zinc-300 hover:text-white hover:bg-white/[0.04]'
+                            ? 'bg-orange-500/15 text-orange-600 dark:text-orange-400 border border-orange-500/30 font-semibold'
+                            : 'text-zinc-700 dark:text-zinc-300 hover:text-zinc-950 dark:hover:text-white hover:bg-zinc-100 dark:hover:bg-white/[0.04]'
                         }`}
                       >
-                        <Icon className="w-4 h-4 text-orange-400" strokeWidth={1.5} />
+                        <Icon className="w-4 h-4 text-orange-600 dark:text-orange-400" strokeWidth={1.5} />
                         <span>{item.label}</span>
                       </Link>
                     );
@@ -122,7 +122,7 @@ export const MobileNavDrawer: React.FC<MobileNavDrawerProps> = ({
             ))}
 
             {/* Standalone Links */}
-            <div className="space-y-1 pt-2 border-t border-zinc-800/80">
+            <div className="space-y-1 pt-2 border-t border-zinc-200 dark:border-zinc-800/80">
               {standaloneLinks.map((item) => {
                 const Icon = item.icon;
                 const isActive = location.pathname.startsWith(item.path);
@@ -134,11 +134,11 @@ export const MobileNavDrawer: React.FC<MobileNavDrawerProps> = ({
                     onClick={onClose}
                     className={`flex items-center gap-3 px-3 py-2 rounded-xl text-xs font-medium transition-colors ${
                       isActive
-                        ? 'bg-orange-500/15 text-orange-400 border border-orange-500/30'
-                        : 'text-zinc-300 hover:text-white hover:bg-white/[0.04]'
+                        ? 'bg-orange-500/15 text-orange-600 dark:text-orange-400 border border-orange-500/30 font-semibold'
+                        : 'text-zinc-700 dark:text-zinc-300 hover:text-zinc-950 dark:hover:text-white hover:bg-zinc-100 dark:hover:bg-white/[0.04]'
                     }`}
                   >
-                    <Icon className="w-4 h-4 text-zinc-400" strokeWidth={1.5} />
+                    <Icon className="w-4 h-4 text-zinc-500 dark:text-zinc-400" strokeWidth={1.5} />
                     <span>{item.label}</span>
                   </Link>
                 );
@@ -148,22 +148,22 @@ export const MobileNavDrawer: React.FC<MobileNavDrawerProps> = ({
         </div>
 
         {/* Footer actions */}
-        <div className="pt-4 border-t border-zinc-800/80 space-y-2 mt-6">
+        <div className="pt-4 border-t border-zinc-200 dark:border-zinc-800/80 space-y-2 mt-6">
           <Link
             to="/billing"
             onClick={onClose}
-            className="flex items-center gap-2.5 px-3 py-2 rounded-xl text-xs text-zinc-400 hover:text-white hover:bg-zinc-800/60 transition-colors"
+            className="flex items-center gap-2.5 px-3 py-2 rounded-xl text-xs text-zinc-600 hover:text-zinc-950 hover:bg-zinc-100 dark:text-zinc-400 dark:hover:text-white dark:hover:bg-zinc-800/60 transition-colors"
           >
-            <CreditCard className="w-4 h-4 text-orange-400" strokeWidth={1.5} />
+            <CreditCard className="w-4 h-4 text-orange-500 dark:text-orange-400" strokeWidth={1.5} />
             <span>Suscripción y Créditos</span>
           </Link>
 
           <Link
             to="/settings"
             onClick={onClose}
-            className="flex items-center gap-2.5 px-3 py-2 rounded-xl text-xs text-zinc-400 hover:text-white hover:bg-zinc-800/60 transition-colors"
+            className="flex items-center gap-2.5 px-3 py-2 rounded-xl text-xs text-zinc-600 hover:text-zinc-950 hover:bg-zinc-100 dark:text-zinc-400 dark:hover:text-white dark:hover:bg-zinc-800/60 transition-colors"
           >
-            <Settings className="w-4 h-4 text-zinc-400" strokeWidth={1.5} />
+            <Settings className="w-4 h-4 text-zinc-500 dark:text-zinc-400" strokeWidth={1.5} />
             <span>Ajustes de Organización</span>
           </Link>
 
@@ -173,7 +173,7 @@ export const MobileNavDrawer: React.FC<MobileNavDrawerProps> = ({
               onClose();
               logout();
             }}
-            className="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl text-xs text-rose-400 hover:bg-rose-500/10 transition-colors"
+            className="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl text-xs text-rose-600 dark:text-rose-400 hover:bg-rose-500/10 transition-colors"
           >
             <LogOut className="w-4 h-4" strokeWidth={1.5} />
             <span>Cerrar Sesión</span>

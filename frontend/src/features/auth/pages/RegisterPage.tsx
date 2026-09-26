@@ -71,7 +71,7 @@ export const RegisterPage: React.FC = () => {
             Comenzar con BOWOL
           </h1>
           <p className="text-xs sm:text-sm text-zinc-600 dark:text-zinc-400 max-w-xs leading-relaxed font-medium">
-            Crea tu cuenta de fundador y despliega tu workspace con IA en segundos
+            Crea tu cuenta de fundador y despliega tu workspace estratégico en segundos
           </p>
         </div>
 

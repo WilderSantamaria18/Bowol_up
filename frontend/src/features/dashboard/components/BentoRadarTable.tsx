@@ -97,27 +97,27 @@ export const BentoRadarTable: React.FC<BentoRadarTableProps> = ({ trends, totalG
   });
 
   return (
-    <div className="rounded-2xl bg-[#1e1f26]/70 backdrop-blur-2xl p-6 border border-white/[0.08] shadow-[0_8px_32px_-4px_rgba(0,0,0,0.45)] flex flex-col justify-between space-y-5">
+    <div className="rounded-2xl bg-white dark:bg-[#181920]/80 backdrop-blur-2xl p-6 border border-zinc-200/90 dark:border-white/[0.08] shadow-sm dark:shadow-[0_8px_32px_-4px_rgba(0,0,0,0.45)] flex flex-col justify-between space-y-5">
       {/* Header with Segmented Filter */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         <div>
-          <h2 className="text-base sm:text-lg font-bold text-white tracking-tight">
+          <h2 className="text-base sm:text-lg font-bold text-zinc-950 dark:text-white tracking-tight">
             Radar de Tendencias y Señales Emergentes
           </h2>
-          <p className="text-xs text-zinc-400 mt-0.5">
+          <p className="text-xs text-zinc-500 dark:text-zinc-400 mt-0.5">
             Detección automatizada de movimientos tecnológicos con impacto sectorial
           </p>
         </div>
 
         {/* Filter Tray */}
-        <div className="inline-flex p-1 rounded-xl bg-[#0d0e15]/80 text-zinc-400 self-start sm:self-auto border border-white/[0.04]">
+        <div className="inline-flex p-1 rounded-xl bg-zinc-100 dark:bg-[#0d0e15]/80 text-zinc-600 dark:text-zinc-400 self-start sm:self-auto border border-zinc-200/80 dark:border-white/[0.04]">
           <button
             type="button"
             onClick={() => setActiveFilter('all')}
             className={`px-3 py-1 rounded-lg text-xs font-medium transition-all ${
               activeFilter === 'all'
-                ? 'bg-[#292931] text-white shadow-sm'
-                : 'hover:text-white'
+                ? 'bg-white dark:bg-[#292931] text-zinc-950 dark:text-white shadow-sm'
+                : 'hover:text-zinc-950 dark:hover:text-white'
             }`}
           >
             Todos
@@ -127,8 +127,8 @@ export const BentoRadarTable: React.FC<BentoRadarTableProps> = ({ trends, totalG
             onClick={() => setActiveFilter('saas')}
             className={`px-3 py-1 rounded-lg text-xs font-medium transition-all ${
               activeFilter === 'saas'
-                ? 'bg-[#292931] text-white shadow-sm'
-                : 'hover:text-white'
+                ? 'bg-white dark:bg-[#292931] text-zinc-950 dark:text-white shadow-sm'
+                : 'hover:text-zinc-950 dark:hover:text-white'
             }`}
           >
             SaaS
@@ -138,8 +138,8 @@ export const BentoRadarTable: React.FC<BentoRadarTableProps> = ({ trends, totalG
             onClick={() => setActiveFilter('deeptech')}
             className={`px-3 py-1 rounded-lg text-xs font-medium transition-all ${
               activeFilter === 'deeptech'
-                ? 'bg-[#292931] text-white shadow-sm'
-                : 'hover:text-white'
+                ? 'bg-white dark:bg-[#292931] text-zinc-950 dark:text-white shadow-sm'
+                : 'hover:text-zinc-950 dark:hover:text-white'
             }`}
           >
             DeepTech
@@ -149,8 +149,8 @@ export const BentoRadarTable: React.FC<BentoRadarTableProps> = ({ trends, totalG
             onClick={() => setActiveFilter('fintech')}
             className={`px-3 py-1 rounded-lg text-xs font-medium transition-all ${
               activeFilter === 'fintech'
-                ? 'bg-[#292931] text-white shadow-sm'
-                : 'hover:text-white'
+                ? 'bg-white dark:bg-[#292931] text-zinc-950 dark:text-white shadow-sm'
+                : 'hover:text-zinc-950 dark:hover:text-white'
             }`}
           >
             Fintech
@@ -162,7 +162,7 @@ export const BentoRadarTable: React.FC<BentoRadarTableProps> = ({ trends, totalG
       <div className="overflow-x-auto">
         <table className="w-full text-left text-xs">
           <thead>
-            <tr className="text-zinc-500 font-semibold uppercase tracking-wider border-b border-white/[0.06]">
+            <tr className="text-zinc-500 dark:text-zinc-400 font-semibold uppercase tracking-wider border-b border-zinc-100 dark:border-white/[0.06]">
               <th className="pb-3 pr-4 font-semibold">Tendencia</th>
               <th className="pb-3 px-4 font-semibold">Categoría</th>
               <th className="pb-3 px-4 font-semibold">Índice Adopción</th>
@@ -170,23 +170,23 @@ export const BentoRadarTable: React.FC<BentoRadarTableProps> = ({ trends, totalG
               <th className="pb-3 pl-4 text-right font-semibold">Acción</th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-white/[0.04]">
+          <tbody className="divide-y divide-zinc-100 dark:divide-white/[0.04]">
             {filteredItems.map((item) => (
-              <tr key={item.id} className="group hover:bg-white/[0.02] transition-colors">
+              <tr key={item.id} className="group hover:bg-zinc-50 dark:hover:bg-white/[0.02] transition-colors">
                 {/* Tendencia */}
                 <td className="py-3.5 pr-4">
                   <div className="flex items-center gap-3">
-                    <div className="w-8 h-8 rounded-lg bg-[#292931]/80 border border-white/[0.06] flex items-center justify-center shrink-0">
-                      {item.iconType === 'sparkles' && <Sparkles className="w-4 h-4 text-orange-400" />}
-                      {item.iconType === 'tree' && <GitFork className="w-4 h-4 text-amber-300" />}
-                      {item.iconType === 'shield' && <ShieldCheck className="w-4 h-4 text-zinc-400" />}
-                      {item.iconType === 'cpu' && <Cpu className="w-4 h-4 text-orange-400" />}
+                    <div className="w-8 h-8 rounded-lg bg-zinc-100 dark:bg-[#292931]/80 border border-zinc-200/80 dark:border-white/[0.06] flex items-center justify-center shrink-0">
+                      {item.iconType === 'sparkles' && <Sparkles className="w-4 h-4 text-orange-500 dark:text-orange-400" />}
+                      {item.iconType === 'tree' && <GitFork className="w-4 h-4 text-amber-500 dark:text-amber-300" />}
+                      {item.iconType === 'shield' && <ShieldCheck className="w-4 h-4 text-zinc-500 dark:text-zinc-400" />}
+                      {item.iconType === 'cpu' && <Cpu className="w-4 h-4 text-orange-500 dark:text-orange-400" />}
                     </div>
                     <div className="min-w-0">
-                      <span className="font-semibold text-white block truncate text-xs sm:text-sm">
+                      <span className="font-semibold text-zinc-900 dark:text-white block truncate text-xs sm:text-sm">
                         {item.title}
                       </span>
-                      <span className="text-[11px] text-zinc-400 truncate block">
+                      <span className="text-[11px] text-zinc-500 dark:text-zinc-400 truncate block">
                         {item.subtitle}
                       </span>
                     </div>
@@ -195,7 +195,7 @@ export const BentoRadarTable: React.FC<BentoRadarTableProps> = ({ trends, totalG
 
                 {/* Categoría */}
                 <td className="py-3.5 px-4">
-                  <span className="px-2.5 py-1 rounded-md bg-[#292931]/70 text-zinc-300 font-medium text-[11px] border border-white/[0.06]">
+                  <span className="px-2.5 py-1 rounded-md bg-zinc-100 dark:bg-[#292931]/70 text-zinc-700 dark:text-zinc-300 font-medium text-[11px] border border-zinc-200/80 dark:border-white/[0.06]">
                     {item.category}
                   </span>
                 </td>
@@ -203,13 +203,13 @@ export const BentoRadarTable: React.FC<BentoRadarTableProps> = ({ trends, totalG
                 {/* Índice Adopción */}
                 <td className="py-3.5 px-4">
                   <div className="flex items-center gap-2.5">
-                    <div className="w-20 h-1.5 bg-[#0d0e15] rounded-full overflow-hidden border border-white/[0.04]">
+                    <div className="w-20 h-1.5 bg-zinc-100 dark:bg-[#0d0e15] rounded-full overflow-hidden border border-zinc-200/60 dark:border-white/[0.04]">
                       <div
                         className="h-full bg-orange-500 rounded-full transition-all duration-500"
                         style={{ width: `${item.adoptionRate}%` }}
                       />
                     </div>
-                    <span className="font-semibold text-zinc-200 tabular-nums text-xs">
+                    <span className="font-semibold text-zinc-800 dark:text-zinc-200 tabular-nums text-xs">
                       {item.adoptionRate}%
                     </span>
                   </div>
@@ -218,17 +218,17 @@ export const BentoRadarTable: React.FC<BentoRadarTableProps> = ({ trends, totalG
                 {/* Impacto Estratégico */}
                 <td className="py-3.5 px-4">
                   {item.impact === 'Crítico' && (
-                    <span className="inline-flex items-center gap-1.5 text-orange-400 font-semibold text-xs">
+                    <span className="inline-flex items-center gap-1.5 text-orange-600 dark:text-orange-400 font-semibold text-xs">
                       <TrendingUp className="w-3.5 h-3.5" /> Crítico
                     </span>
                   )}
                   {item.impact === 'Alto' && (
-                    <span className="inline-flex items-center gap-1.5 text-amber-300 font-semibold text-xs">
+                    <span className="inline-flex items-center gap-1.5 text-amber-600 dark:text-amber-300 font-semibold text-xs">
                       <Zap className="w-3.5 h-3.5" /> Alto
                     </span>
                   )}
                   {item.impact === 'Moderado' && (
-                    <span className="inline-flex items-center gap-1.5 text-zinc-400 font-medium text-xs">
+                    <span className="inline-flex items-center gap-1.5 text-zinc-500 dark:text-zinc-400 font-medium text-xs">
                       <Minus className="w-3.5 h-3.5" /> Moderado
                     </span>
                   )}
@@ -238,7 +238,7 @@ export const BentoRadarTable: React.FC<BentoRadarTableProps> = ({ trends, totalG
                 <td className="py-3.5 pl-4 text-right">
                   <Link
                     to="/trends"
-                    className="p-1.5 rounded-lg hover:bg-white/[0.06] text-zinc-400 hover:text-white transition-colors inline-flex"
+                    className="p-1.5 rounded-lg hover:bg-zinc-100 dark:hover:bg-white/[0.06] text-zinc-500 hover:text-zinc-950 dark:text-zinc-400 dark:hover:text-white transition-colors inline-flex"
                     title="Ver análisis de tendencia"
                   >
                     <ChevronRight className="w-4 h-4" />
@@ -251,13 +251,13 @@ export const BentoRadarTable: React.FC<BentoRadarTableProps> = ({ trends, totalG
       </div>
 
       {/* Footer */}
-      <div className="flex items-center justify-between pt-2 border-t border-white/[0.04]">
-        <span className="text-xs text-zinc-500">
+      <div className="flex items-center justify-between pt-2 border-t border-zinc-100 dark:border-white/[0.04]">
+        <span className="text-xs text-zinc-500 dark:text-zinc-400">
           Mostrando {filteredItems.length} de {totalGlobalTrends || 28} señales detectadas
         </span>
         <Link
           to="/trends"
-          className="text-xs font-semibold text-orange-400 hover:text-orange-300 transition-colors flex items-center gap-1 group"
+          className="text-xs font-semibold text-orange-600 dark:text-orange-400 hover:text-orange-500 transition-colors flex items-center gap-1 group"
         >
           <span>Ver matriz completa</span>
           <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />

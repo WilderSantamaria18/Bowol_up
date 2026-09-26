@@ -1,5 +1,6 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { render, screen, fireEvent } from '@testing-library/react';
+import { MemoryRouter } from 'react-router-dom';
 import { SettingsPage } from '../pages/SettingsPage';
 import { organizationService } from '../services/organizationService';
 
@@ -61,7 +62,11 @@ describe('SettingsPage Component', () => {
   });
 
   it('renderiza el perfil general y permite alternar a la pestaña de miembros', async () => {
-    render(<SettingsPage />);
+    render(
+      <MemoryRouter>
+        <SettingsPage />
+      </MemoryRouter>
+    );
 
     expect(await screen.findByDisplayValue('Startup AI')).toBeInTheDocument();
     expect(screen.getByDisplayValue('SaaS B2B')).toBeInTheDocument();
@@ -76,7 +81,11 @@ describe('SettingsPage Component', () => {
   });
 
   it('permite abrir el modal de invitar miembro', async () => {
-    render(<SettingsPage />);
+    render(
+      <MemoryRouter>
+        <SettingsPage />
+      </MemoryRouter>
+    );
 
     // Cambiar a la pestaña de miembros
     const membersTab = await screen.findByRole('button', { name: /equipo y miembros/i });

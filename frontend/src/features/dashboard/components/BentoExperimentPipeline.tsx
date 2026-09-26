@@ -73,18 +73,18 @@ export const BentoExperimentPipeline: React.FC = () => {
     : defaultExperiments;
 
   return (
-    <div className="rounded-2xl bg-[#1e1f26]/70 backdrop-blur-2xl p-6 border border-white/[0.08] shadow-[0_8px_32px_-4px_rgba(0,0,0,0.45)] flex flex-col justify-between space-y-4">
+    <div className="rounded-2xl bg-white dark:bg-[#181920]/80 backdrop-blur-2xl p-6 border border-zinc-200/90 dark:border-white/[0.08] shadow-sm dark:shadow-[0_8px_32px_-4px_rgba(0,0,0,0.45)] flex flex-col justify-between space-y-4">
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h2 className="text-base sm:text-lg font-bold text-white tracking-tight">
+          <h2 className="text-base sm:text-lg font-bold text-zinc-950 dark:text-white tracking-tight">
             Pipeline de Experimentación
           </h2>
-          <p className="text-xs text-zinc-400 mt-0.5">
+          <p className="text-xs text-zinc-500 dark:text-zinc-400 mt-0.5">
             Validación continua orientada a métricas clave
           </p>
         </div>
-        <span className="px-2.5 py-1 rounded-lg bg-[#292931] border border-white/[0.06] text-xs font-semibold text-zinc-200">
+        <span className="px-2.5 py-1 rounded-lg bg-zinc-100 dark:bg-[#292931] border border-zinc-200/80 dark:border-white/[0.06] text-xs font-semibold text-zinc-800 dark:text-zinc-200">
           {items.length} Activas
         </span>
       </div>
@@ -94,19 +94,19 @@ export const BentoExperimentPipeline: React.FC = () => {
         {items.map((item) => (
           <div
             key={item.id}
-            className="flex items-center justify-between p-3.5 rounded-xl bg-[#1a1b22]/60 hover:bg-[#292931]/60 transition-colors border border-white/[0.04] group"
+            className="flex items-center justify-between p-3.5 rounded-xl bg-zinc-50 dark:bg-[#1a1b22]/60 hover:bg-zinc-100 dark:hover:bg-[#292931]/60 transition-colors border border-zinc-200/80 dark:border-white/[0.04] group"
           >
             <div className="flex items-center gap-3 min-w-0">
               <span
                 className={`w-2 h-2 rounded-full shrink-0 ${
-                  item.active ? 'bg-orange-500 ring-4 ring-orange-500/10' : 'bg-zinc-600'
+                  item.active ? 'bg-orange-500 ring-4 ring-orange-500/10' : 'bg-zinc-400 dark:bg-zinc-600'
                 }`}
               />
               <div className="min-w-0">
-                <span className="text-xs sm:text-sm font-semibold text-zinc-200 block truncate group-hover:text-white transition-colors">
+                <span className="text-xs sm:text-sm font-semibold text-zinc-900 dark:text-zinc-200 block truncate group-hover:text-zinc-950 dark:group-hover:text-white transition-colors">
                   {item.code}: {item.statement}
                 </span>
-                <span className="text-[11px] text-zinc-400 block truncate mt-0.5">
+                <span className="text-[11px] text-zinc-500 dark:text-zinc-400 block truncate mt-0.5">
                   Objetivo: {item.targetMetric}
                 </span>
               </div>
@@ -118,7 +118,7 @@ export const BentoExperimentPipeline: React.FC = () => {
               >
                 {item.ownerInitials}
               </div>
-              <span className="text-[11px] font-medium px-2 py-0.5 rounded-md bg-[#292931] text-zinc-300 border border-white/[0.06]">
+              <span className="text-[11px] font-medium px-2 py-0.5 rounded-md bg-zinc-200/60 dark:bg-[#292931] text-zinc-700 dark:text-zinc-300 border border-zinc-300/60 dark:border-white/[0.06]">
                 {item.stage}
               </span>
             </div>
@@ -127,10 +127,10 @@ export const BentoExperimentPipeline: React.FC = () => {
       </div>
 
       {/* Footer link */}
-      <div className="pt-1 border-t border-white/[0.04]">
+      <div className="pt-1 border-t border-zinc-100 dark:border-white/[0.04]">
         <Link
           to="/hypotheses"
-          className="text-xs font-semibold text-orange-400 hover:text-orange-300 transition-colors flex items-center gap-1.5 group inline-flex"
+          className="text-xs font-semibold text-orange-600 dark:text-orange-400 hover:text-orange-500 transition-colors flex items-center gap-1.5 group inline-flex"
         >
           <span>Administrar experimentos del sprint</span>
           <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />

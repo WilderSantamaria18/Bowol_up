@@ -102,15 +102,13 @@ describe('ExecutiveCockpit Component', () => {
     );
 
     // Esperar a que se resuelva la consulta
-    expect(await screen.findByText('Cockpit de Innovación')).toBeInTheDocument();
+    expect(await screen.findByText('Visión Estratégica')).toBeInTheDocument();
     expect(screen.getByText('AI Innovations Labs')).toBeInTheDocument();
-    expect(screen.getByText('Alonso Founder')).toBeInTheDocument();
 
     // Validar indicadores
-    expect(screen.getByText('AVANZADO')).toBeInTheDocument();
     expect(screen.getByText('Autonomous Code Refactoring Agents')).toBeInTheDocument();
     expect(screen.getByText('Sprint 1 — Core Intelligence Engine')).toBeInTheDocument();
     expect(screen.getByText('75%')).toBeInTheDocument();
-    expect(screen.getByText('Sincronizar Tendencias')).toBeInTheDocument();
+    expect(screen.getByText('Sincronizar')).toBeInTheDocument();
   });
 });
