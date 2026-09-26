@@ -42,6 +42,7 @@ public class SprintService {
     private final AIProviderResolver aiProviderResolver;
     private final AIAuditService aiAuditService;
     private final ObjectMapper objectMapper;
+    private final com.bowol.developer.WebhookService webhookService;
 
     @Transactional(readOnly = true)
     public List<SprintResponse> getSprintsByProject(UUID projectId, SprintStatus status, UserPrincipal principal) {
@@ -181,6 +182,24 @@ public class SprintService {
         sprint.setStatus(SprintStatus.COMPLETED);
         Sprint saved = sprintRepository.save(sprint);
         List<Task> remainingTasks = taskRepository.findAllByProjectIdAndSprintIdOrderByPositionAsc(saved.getProjectId(), saved.getId());
+
+        try {
+            long doneCount = tasks.stream().filter(t -> t.getStatus() == TaskStatus.DONE).count();
+            Map<String, Object> sprintData = new LinkedHashMap<>();
+            sprintData.put("sprint_id", saved.getId().toString());
+            sprintData.put("project_id", saved.getProjectId().toString());
+            sprintData.put("name", saved.getName());
+            sprintData.put("goal", saved.getGoal());
+            sprintData.put("start_date", saved.getStartDate().toString());
+            sprintData.put("end_date", saved.getEndDate().toString());
+            sprintData.put("total_tasks", tasks.size());
+            sprintData.put("completed_tasks", doneCount);
+            sprintData.put("incomplete_tasks", incompleteTasks.size());
+            webhookService.dispatchEventAsync(principal.getOrganizationId(), "sprint.completed", sprintData);
+        } catch (Exception e) {
+            log.warn("No se pudo disparar webhook sprint.completed: {}", e.getMessage());
+        }
+
         log.info("Sprint completado {}", saved.getId());
         return SprintResponse.from(saved, remainingTasks);
     }

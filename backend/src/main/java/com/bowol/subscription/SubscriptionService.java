@@ -11,7 +11,9 @@ import org.springframework.transaction.annotation.Transactional;
 import java.math.BigDecimal;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -23,6 +25,7 @@ public class SubscriptionService {
     private final SubscriptionPlanRepository planRepository;
     private final OrganizationSubscriptionRepository subscriptionRepository;
     private final BillingInvoiceRepository invoiceRepository;
+    private final com.bowol.developer.WebhookService webhookService;
 
     @Transactional
     public OrganizationSubscriptionResponse getOrCreateSubscription(UUID organizationId) {
@@ -125,6 +128,24 @@ public class SubscriptionService {
 
         sub.setAiCreditsUsed(newUsed);
         subscriptionRepository.save(sub);
+
+        double usageRatio = (double) newUsed / (double) sub.getAiCreditsTotal();
+        if (usageRatio >= 0.8) {
+            try {
+                Map<String, Object> data = new LinkedHashMap<>();
+                data.put("organization_id", organizationId.toString());
+                data.put("plan_id", sub.getPlanId());
+                data.put("credits_total", sub.getAiCreditsTotal());
+                data.put("credits_used", newUsed);
+                data.put("credits_remaining", Math.max(0, sub.getAiCreditsTotal() - newUsed));
+                data.put("percentage", Math.min(100, Math.round(usageRatio * 100)));
+                data.put("trigger_reason", reason);
+                webhookService.dispatchEventAsync(organizationId, "subscription.credit_threshold_reached", data);
+            } catch (Exception e) {
+                log.warn("No se pudo disparar webhook subscription.credit_threshold_reached: {}", e.getMessage());
+            }
+        }
+
         log.info("Consumidos {} créditos IA para la org {} por '{}'. Total consumido: {}/{}",
                 creditsToConsume, organizationId, reason, newUsed, sub.getAiCreditsTotal());
         return true;

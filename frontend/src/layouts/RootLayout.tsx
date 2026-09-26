@@ -18,7 +18,8 @@ import {
   CreditCard,
   Target,
   Layers,
-  Menu
+  Menu,
+  Shield
 } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
 import { BrandLogo } from '@/components/ui/BrandLogo';
@@ -190,6 +191,13 @@ export const RootLayout: React.FC = () => {
                 <Link to="/settings">
                   <Button variant="ghost" size="icon" aria-label="Ajustes de Organización" title="Ajustes">
                     <Settings className="w-4 h-4 text-zinc-400 hover:text-white transition-colors" strokeWidth={1.5} />
+                  </Button>
+                </Link>
+
+                {/* Audit Logs Link */}
+                <Link to="/audit-logs">
+                  <Button variant="ghost" size="icon" aria-label="Auditoría Empresarial" title="Auditoría & Compliance">
+                    <Shield className="w-4 h-4 text-zinc-400 hover:text-emerald-400 transition-colors" strokeWidth={1.5} />
                   </Button>
                 </Link>
 

@@ -35,6 +35,7 @@ public class TrendRelevanceEvaluator {
     private final AIProviderResolver aiProviderResolver;
     private final AIResponseValidator aiResponseValidator;
     private final AIAuditService aiAuditService;
+    private final com.bowol.developer.WebhookService webhookService;
 
     @Transactional
     public TrendRelevanceResponse evaluateRelevance(UUID organizationId, UUID userId, UUID trendId) {
@@ -96,6 +97,21 @@ public class TrendRelevanceEvaluator {
 
         TrendRelevance saved = trendRelevanceRepository.save(relevance);
         log.info("Evaluación con IA completada exitosamente para tendencia {}: score={}, tags={}", trendId, score, tags);
+
+        if (score >= 70) {
+            try {
+                Map<String, Object> eventData = new LinkedHashMap<>();
+                eventData.put("trend_id", trendId.toString());
+                eventData.put("title", trend.getTitle());
+                eventData.put("source", trend.getSource() != null ? trend.getSource().name() : "MARKET");
+                eventData.put("score", score);
+                eventData.put("ai_summary", aiSummary);
+                eventData.put("tags", tags);
+                webhookService.dispatchEventAsync(organizationId, "trend.high_relevance_detected", eventData);
+            } catch (Exception e) {
+                log.warn("No se pudo disparar webhook trend.high_relevance_detected: {}", e.getMessage());
+            }
+        }
 
         TrendRelevanceResponse resp = TrendRelevanceResponse.from(saved);
         if (validatedJson.has("strategicAlignment") && validatedJson.get("strategicAlignment").isTextual()) {

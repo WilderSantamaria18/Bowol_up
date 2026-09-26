@@ -60,6 +60,7 @@ public class OrganizationController {
     }
 
     @PostMapping("/{id}/members")
+    @com.bowol.audit.AuditedAction(action = "MEMBER_INVITE", entityType = "ORGANIZATION", entityIdParam = "id", description = "Invitación de nuevo miembro a la organización")
     public ResponseEntity<MemberResponse> inviteMember(
             @PathVariable UUID id,
             @Valid @RequestBody InviteMemberRequest request,
@@ -69,6 +70,7 @@ public class OrganizationController {
     }
 
     @PatchMapping("/{id}/members/{userId}")
+    @com.bowol.audit.AuditedAction(action = "ROLE_CHANGE", entityType = "MEMBER", entityIdParam = "userId", description = "Actualización de rol de miembro de la organización")
     public ResponseEntity<MemberResponse> updateMemberRole(
             @PathVariable UUID id,
             @PathVariable UUID userId,
@@ -79,6 +81,7 @@ public class OrganizationController {
     }
 
     @DeleteMapping("/{id}/members/{userId}")
+    @com.bowol.audit.AuditedAction(action = "MEMBER_REMOVE", entityType = "MEMBER", entityIdParam = "userId", description = "Eliminación de miembro de la organización")
     public ResponseEntity<Void> removeMember(
             @PathVariable UUID id,
             @PathVariable UUID userId,

@@ -21,6 +21,7 @@ import { CalendarPage } from '@/features/calendar/pages/CalendarPage';
 import { SocialPage } from '@/features/social/pages/SocialPage';
 import { DashboardPage } from '@/features/dashboard/pages/DashboardPage';
 import { BillingPage } from '@/features/billing/pages/BillingPage';
+import { AuditLogsPage } from '@/features/audit/pages/AuditLogsPage';
 import { NotFoundPage } from '@/pages/NotFoundPage';
 
 const queryClient = new QueryClient({
@@ -183,6 +184,14 @@ export const App: React.FC = () => {
                 element={
                   <ProtectedRoute>
                     <BillingPage />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="audit-logs"
+                element={
+                  <ProtectedRoute>
+                    <AuditLogsPage />
                   </ProtectedRoute>
                 }
               />

@@ -54,6 +54,7 @@ public class OpportunityService {
     private final AIAuditService aiAuditService;
     private final ProjectRepository projectRepository;
     private final ProjectMemberRepository projectMemberRepository;
+    private final com.bowol.developer.WebhookService webhookService;
 
     @Transactional
     public ProjectResponse convertToProject(UUID opportunityId, UserPrincipal principal) {
@@ -222,6 +223,8 @@ public class OpportunityService {
 
         log.info("Generadas {} oportunidades desde FODA {} para org {}", savedOpportunities.size(), swotId, organizationId);
 
+        savedOpportunities.forEach(opp -> dispatchRiceCalculatedWebhook(organizationId, opp));
+
         List<OpportunityResponse> dtoList = savedOpportunities.stream()
                 .map(OpportunityResponse::from)
                 .toList();
@@ -294,6 +297,8 @@ public class OpportunityService {
         opp.calculateAndSetPriorityScore();
         Opportunity saved = opportunityRepository.save(opp);
 
+        dispatchRiceCalculatedWebhook(organizationId, saved);
+
         log.info("Oportunidad creada manualmente: id={}, org={}", saved.getId(), organizationId);
         return OpportunityResponse.from(saved);
     }
@@ -330,6 +335,9 @@ public class OpportunityService {
 
         opp.calculateAndSetPriorityScore();
         Opportunity saved = opportunityRepository.save(opp);
+
+        dispatchRiceCalculatedWebhook(principal.getOrganizationId(), saved);
+
         return OpportunityResponse.from(saved);
     }
 
@@ -352,5 +360,22 @@ public class OpportunityService {
         evidenceRefRepository.deleteByOrganizationIdAndEntityTypeAndEntityId(principal.getOrganizationId(), "OPPORTUNITY", id);
         opportunityRepository.delete(opp);
         log.info("Oportunidad eliminada: id={}, org={}", id, principal.getOrganizationId());
+    }
+
+    private void dispatchRiceCalculatedWebhook(UUID organizationId, Opportunity opp) {
+        try {
+            Map<String, Object> data = new LinkedHashMap<>();
+            data.put("opportunity_id", opp.getId().toString());
+            data.put("title", opp.getTitle());
+            data.put("reach", opp.getReachScore());
+            data.put("impact", opp.getImpactScore());
+            data.put("confidence", opp.getConfidenceScore());
+            data.put("effort", opp.getEffortScore());
+            data.put("rice_score", opp.getPriorityScore());
+            data.put("status", opp.getStatus() != null ? opp.getStatus().name() : "IDENTIFIED");
+            webhookService.dispatchEventAsync(organizationId, "opportunity.rice_calculated", data);
+        } catch (Exception e) {
+            log.warn("No se pudo disparar webhook opportunity.rice_calculated: {}", e.getMessage());
+        }
     }
 }

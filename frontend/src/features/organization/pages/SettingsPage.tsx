@@ -1,16 +1,19 @@
 import React, { useEffect, useState } from 'react';
-import { Building, Users, Loader2 } from 'lucide-react';
+import { Link } from 'react-router-dom';
+import { Building, Users, Loader2, Key, Webhook, Shield, ExternalLink } from 'lucide-react';
 import { useAuth } from '@/features/auth/context/AuthContext';
 import { organizationService } from '../services/organizationService';
 import { Organization, Member, Role, UpdateOrganizationDTO } from '../types';
 import { OrgProfileForm } from '../components/OrgProfileForm';
 import { MemberList } from '../components/MemberList';
 import { InviteMemberModal } from '../components/InviteMemberModal';
+import { ApiKeyManagement } from '@/features/developer/components/ApiKeyManagement';
+import { WebhookManagement } from '@/features/developer/components/WebhookManagement';
 import { Alert } from '@/components/ui/Alert';
 
 export const SettingsPage: React.FC = () => {
   const { organization: activeOrg } = useAuth();
-  const [activeTab, setActiveTab] = useState<'profile' | 'members'>('profile');
+  const [activeTab, setActiveTab] = useState<'profile' | 'members' | 'api-keys' | 'webhooks'>('profile');
   const [organization, setOrganization] = useState<Organization | null>(null);
   const [members, setMembers] = useState<Member[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -87,7 +90,7 @@ export const SettingsPage: React.FC = () => {
       {error && <Alert variant="error" detail={error} />}
 
       {/* Tabs */}
-      <div className="flex border-b border-white/[0.08] gap-6">
+      <div className="flex flex-wrap border-b border-white/[0.08] gap-4 sm:gap-6">
         <button
           onClick={() => setActiveTab('profile')}
           className={`pb-3 text-sm font-medium flex items-center gap-2 border-b-2 transition-colors ${
@@ -111,6 +114,39 @@ export const SettingsPage: React.FC = () => {
           <Users className="w-4 h-4" strokeWidth={1.5} />
           Equipo y Miembros ({members.length})
         </button>
+
+        <button
+          onClick={() => setActiveTab('api-keys')}
+          className={`pb-3 text-sm font-medium flex items-center gap-2 border-b-2 transition-colors ${
+            activeTab === 'api-keys'
+              ? 'border-orange-500 text-orange-400'
+              : 'border-transparent text-zinc-400 hover:text-zinc-200'
+          }`}
+        >
+          <Key className="w-4 h-4" strokeWidth={1.5} />
+          API Keys & Desarrolladores
+        </button>
+
+        <button
+          onClick={() => setActiveTab('webhooks')}
+          className={`pb-3 text-sm font-medium flex items-center gap-2 border-b-2 transition-colors ${
+            activeTab === 'webhooks'
+              ? 'border-orange-500 text-orange-400'
+              : 'border-transparent text-zinc-400 hover:text-zinc-200'
+          }`}
+        >
+          <Webhook className="w-4 h-4" strokeWidth={1.5} />
+          Webhooks Salientes
+        </button>
+
+        <Link
+          to="/audit-logs"
+          className="pb-3 text-sm font-medium flex items-center gap-1.5 border-b-2 border-transparent text-zinc-400 hover:text-orange-400 ml-auto transition-colors"
+        >
+          <Shield className="w-4 h-4" strokeWidth={1.5} />
+          Auditoría & Compliance
+          <ExternalLink className="w-3 h-3 opacity-60" />
+        </Link>
       </div>
 
       {/* Content */}
@@ -131,6 +167,14 @@ export const SettingsPage: React.FC = () => {
             onRoleChange={handleRoleChange}
             onRemoveMember={handleRemoveMember}
           />
+        )}
+
+        {activeTab === 'api-keys' && (
+          <ApiKeyManagement />
+        )}
+
+        {activeTab === 'webhooks' && (
+          <WebhookManagement />
         )}
       </div>
 

@@ -80,6 +80,15 @@
 - [x] Medición y descuento de AI Credits en llamadas a modelos.
 
 ### FASE 13 — Enterprise & Escalado (Fase Posterior)
-- [ ] Autenticación corporativa Single Sign-On (SSO SAML / OIDC).
-- [ ] Registro inmutable de auditoría (Audit Logs).
-- [ ] APIs públicas con rate limiting y webhooks salientes.
+- [ ] Autenticación corporativa Single Sign-On (SSO SAML / OIDC / Google / Azure AD).
+- [x] Registro inmutable de auditoría (Audit Logs SOC 2 / ISO 27001) con aspecto AOP `@AuditedAction`, exportación CSV/JSON y visor de evidencias.
+- [x] Developer Platform: API Keys (`bwl_live_...`) con SHA-256, revocación instantánea y Token Bucket Rate Limiting (60/1.000/10.000 req/min por plan).
+- [x] Motor de Webhooks salientes con firma criptográfica HMAC-SHA256 (`X-Bowol-Signature`), reintentos con backoff exponencial e historial de entregas.
+- [x] Conexión de eventos reales del ciclo de vida a Webhooks:
+  - `trend.high_relevance_detected` (Score $\ge 70$)
+  - `opportunity.rice_calculated` (Cálculo y derivación RICE)
+  - `sprint.completed` (Métricas de sprint y tareas finalizadas)
+  - `task.blocked` (Transición a estado BLOCKED)
+  - `subscription.credit_threshold_reached` (Consumo $\ge 80\%$ de créditos mensuales)
+- [x] Consola Web de Desarrolladores y Auditoría en Frontend (`/audit-logs`, `/settings` > API Keys & Webhooks).
+

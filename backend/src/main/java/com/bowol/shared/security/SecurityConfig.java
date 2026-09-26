@@ -28,6 +28,7 @@ import java.util.*;
 public class SecurityConfig {
 
     private final JwtAuthenticationFilter jwtAuthFilter;
+    private final com.bowol.developer.ApiKeyAuthenticationFilter apiKeyAuthFilter;
     private final ObjectMapper objectMapper;
 
     @Value("${bowol.cors.allowed-origins:http://localhost:5173,http://localhost:3000}")
@@ -96,6 +97,7 @@ public class SecurityConfig {
                             response.getWriter().write(objectMapper.writeValueAsString(problem));
                         })
                 )
+                .addFilterBefore(apiKeyAuthFilter, UsernamePasswordAuthenticationFilter.class)
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();

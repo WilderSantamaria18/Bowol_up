@@ -31,6 +31,7 @@ public class SubscriptionController {
     }
 
     @PostMapping("/upgrade")
+    @com.bowol.audit.AuditedAction(action = "SUBSCRIPTION_UPGRADE", entityType = "BILLING", description = "Cambio de plan de suscripción corporativo")
     public ResponseEntity<OrganizationSubscriptionResponse> upgradeSubscription(
             @Valid @RequestBody UpgradeSubscriptionRequest request,
             @AuthenticationPrincipal UserPrincipal principal) {
@@ -39,6 +40,7 @@ public class SubscriptionController {
     }
 
     @PostMapping("/cancel")
+    @com.bowol.audit.AuditedAction(action = "SUBSCRIPTION_CANCEL", entityType = "BILLING", description = "Cancelación de suscripción de la organización")
     public ResponseEntity<OrganizationSubscriptionResponse> cancelSubscription(
             @AuthenticationPrincipal UserPrincipal principal) {
         OrganizationSubscriptionResponse sub = subscriptionService.cancelSubscription(principal.getOrganizationId());

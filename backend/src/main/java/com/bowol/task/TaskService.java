@@ -41,6 +41,7 @@ public class TaskService {
     private final AIProviderResolver aiProviderResolver;
     private final AIResponseValidator aiResponseValidator;
     private final AIAuditService aiAuditService;
+    private final com.bowol.developer.WebhookService webhookService;
 
     @Transactional(readOnly = true)
     public List<TaskResponse> getTasks(UUID projectId, UUID sprintId, TaskStatus status, UUID assigneeId, UserPrincipal principal) {
@@ -109,6 +110,7 @@ public class TaskService {
                 .build();
 
         Task saved = taskRepository.save(task);
+        checkAndDispatchBlockedTask(principal.getOrganizationId(), saved);
         log.info("Tarea creada {} para proyecto {}", saved.getId(), request.getProjectId());
         return TaskResponse.from(saved);
     }
@@ -143,6 +145,7 @@ public class TaskService {
         }
 
         Task saved = taskRepository.save(task);
+        checkAndDispatchBlockedTask(principal.getOrganizationId(), saved);
         return TaskResponse.from(saved);
     }
 
@@ -151,6 +154,7 @@ public class TaskService {
         Task task = getTaskEntity(id, principal.getOrganizationId());
         task.setStatus(request.getStatus());
         Task saved = taskRepository.save(task);
+        checkAndDispatchBlockedTask(principal.getOrganizationId(), saved);
         log.info("Status de tarea {} actualizado a {}", id, request.getStatus());
         return TaskResponse.from(saved);
     }
@@ -176,6 +180,9 @@ public class TaskService {
 
             if (move.getStatus() != null) {
                 task.setStatus(move.getStatus());
+                if (move.getStatus() == TaskStatus.BLOCKED) {
+                    checkAndDispatchBlockedTask(principal.getOrganizationId(), task);
+                }
             }
             if (move.getSprintId() != null) {
                 task.setSprintId(move.getSprintId());
@@ -310,5 +317,23 @@ public class TaskService {
         projectService.getProjectEntity(task.getProjectId(), organizationId);
 
         return task;
+    }
+
+    private void checkAndDispatchBlockedTask(UUID organizationId, Task task) {
+        if (task.getStatus() == TaskStatus.BLOCKED) {
+            try {
+                Map<String, Object> data = new LinkedHashMap<>();
+                data.put("task_id", task.getId().toString());
+                data.put("project_id", task.getProjectId().toString());
+                data.put("title", task.getTitle());
+                data.put("priority", task.getPriority() != null ? task.getPriority().name() : "MEDIUM");
+                data.put("assignee_id", task.getAssigneeId() != null ? task.getAssigneeId().toString() : null);
+                data.put("estimate_hours", task.getEstimateHours());
+                data.put("sprint_id", task.getSprintId() != null ? task.getSprintId().toString() : null);
+                webhookService.dispatchEventAsync(organizationId, "task.blocked", data);
+            } catch (Exception e) {
+                log.warn("No se pudo disparar webhook task.blocked: {}", e.getMessage());
+            }
+        }
     }
 }
