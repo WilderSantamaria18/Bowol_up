@@ -14,8 +14,9 @@ export const LandingEnterpriseCta: React.FC = () => {
 
   return (
     <section id="solicitar" className="py-28 relative overflow-hidden scroll-mt-20">
+      {/* Soft calibrated ambient glow (non-blinding) */}
       <motion.div
-        animate={{ scale: [1, 1.15, 1], opacity: [0.35, 0.55, 0.35] }}
+        animate={{ scale: [1, 1.1, 1], opacity: [0.12, 0.22, 0.12] }}
         transition={{ duration: 7, repeat: Infinity, ease: 'easeInOut' }}
         className="absolute inset-0 lens-flare-orange blur-[160px] pointer-events-none"
       />
@@ -26,21 +27,21 @@ export const LandingEnterpriseCta: React.FC = () => {
           whileInView={{ opacity: 1, y: 0, scale: 1 }}
           viewport={{ once: true }}
           transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
-          className="liquid-floating rounded-3xl p-8 sm:p-16 lg:p-20 text-center relative overflow-hidden"
+          className="liquid-floating rounded-3xl p-8 sm:p-16 lg:p-20 text-center relative overflow-hidden border border-zinc-200/80 dark:border-white/10 shadow-xl"
         >
           <div className="max-w-[720px] mx-auto space-y-6">
             <motion.div
               whileHover={{ rotate: 10, scale: 1.1 }}
-              className="w-14 h-14 rounded-2xl bg-orange-500/15 border border-orange-500/30 flex items-center justify-center text-orange-400 mx-auto shadow-lg shadow-orange-500/20 cursor-pointer"
+              className="w-14 h-14 rounded-2xl bg-orange-500/15 border border-orange-500/30 flex items-center justify-center text-orange-500 dark:text-orange-400 mx-auto shadow-md cursor-pointer"
             >
               <Rocket className="w-7 h-7" />
             </motion.div>
 
-            <h2 className="text-3xl sm:text-5xl font-extrabold text-white tracking-tight leading-[1.12] font-display">
+            <h2 className="text-3xl sm:text-5xl font-extrabold text-zinc-950 dark:text-white tracking-tight leading-[1.12] font-display">
               Comienza a cerrar el ciclo estratégico en tu organización.
             </h2>
 
-            <p className="text-zinc-400 text-base sm:text-lg leading-relaxed">
+            <p className="text-zinc-600 dark:text-zinc-400 text-base sm:text-lg leading-relaxed">
               Acceso selectivo para líderes de innovación, estrategia y producto. Conecta señales con resultados medibles desde el primer mes.
             </p>
 
@@ -49,9 +50,9 @@ export const LandingEnterpriseCta: React.FC = () => {
               <motion.div
                 initial={{ opacity: 0, scale: 0.9 }}
                 animate={{ opacity: 1, scale: 1 }}
-                className="p-5 rounded-2xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-300 flex items-center justify-center gap-3"
+                className="p-5 rounded-2xl bg-emerald-500/10 border border-emerald-500/30 text-emerald-700 dark:text-emerald-300 flex items-center justify-center gap-3 shadow-sm"
               >
-                <Check className="w-5 h-5" />
+                <Check className="w-5 h-5 text-emerald-600 dark:text-emerald-400" />
                 <span className="text-sm font-semibold">
                   Solicitud registrada institucionalmente. Un estratega de BOWOL se contactará en breve.
                 </span>
@@ -64,7 +65,7 @@ export const LandingEnterpriseCta: React.FC = () => {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="nombre@empresa.com"
-                  className="flex-1 h-12 px-4 rounded-xl bg-black/60 border border-white/10 text-white placeholder-zinc-500 text-sm focus:outline-none focus:ring-2 focus:ring-orange-500/40 focus:border-orange-500/50 backdrop-blur-md"
+                  className="flex-1 h-12 px-4 rounded-xl bg-white dark:bg-black/60 border border-zinc-300 dark:border-white/10 text-zinc-900 dark:text-white placeholder-zinc-400 dark:placeholder-zinc-500 text-sm focus:outline-none focus:ring-2 focus:ring-orange-500/40 focus:border-orange-500/50 backdrop-blur-md shadow-inner"
                 />
                 <motion.button
                   whileHover={{ scale: 1.03 }}

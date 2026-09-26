@@ -48,13 +48,13 @@ export const LandingImpactNumbers: React.FC = () => {
               viewport={{ once: true }}
               transition={{ duration: 0.7, delay: idx * 0.12, ease: [0.16, 1, 0.3, 1] }}
               className={`pl-6 border-l-2 ${
-                item.accent ? 'border-orange-500' : 'border-white/10 hover:border-orange-500/40'
+                item.accent ? 'border-orange-500' : 'border-zinc-300 dark:border-white/10 hover:border-orange-500/40'
               } transition-colors`}
             >
-              <div className="text-4xl sm:text-6xl font-extrabold text-white tracking-tight tabular-nums font-display">
+              <div className="text-4xl sm:text-6xl font-extrabold text-zinc-950 dark:text-white tracking-tight tabular-nums font-display">
                 {item.valueComponent}
               </div>
-              <p className="mt-3 text-sm text-zinc-400 font-medium leading-relaxed">
+              <p className="mt-3 text-sm text-zinc-600 dark:text-zinc-400 font-medium leading-relaxed">
                 {item.label}
               </p>
             </motion.div>

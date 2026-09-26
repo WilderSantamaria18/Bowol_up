@@ -43,13 +43,13 @@ export const LandingProblemSpotlight: React.FC = () => {
           transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
           className="max-w-[760px]"
         >
-          <p className="text-xs font-mono text-orange-500 uppercase tracking-wider mb-3">
+          <p className="text-xs font-mono text-orange-500 uppercase tracking-wider mb-3 font-semibold">
             Diagnóstico Industrial
           </p>
-          <h2 className="text-3xl sm:text-5xl font-semibold text-white tracking-tight leading-[1.12] font-display">
+          <h2 className="text-3xl sm:text-5xl font-semibold text-zinc-950 dark:text-white tracking-tight leading-[1.12] font-display">
             Las empresas no tienen un problema de información. Tienen una ruptura entre análisis y ejecución.
           </h2>
-          <p className="mt-6 text-zinc-400 text-base sm:text-lg leading-relaxed">
+          <p className="mt-6 text-zinc-600 dark:text-zinc-400 text-base sm:text-lg leading-relaxed">
             Los equipos acumulan reportes aislados, consultorías estáticas y tableros inconexos. Las oportunidades se diluyen en reuniones sin aterrizar en código, diseño o entregables de sprint.
           </p>
         </motion.div>
@@ -69,13 +69,13 @@ export const LandingProblemSpotlight: React.FC = () => {
                 onMouseMove={handleMouseMove}
                 className="spotlight-card liquid-card p-8 rounded-2xl group transition-all duration-300"
               >
-                <div className="w-12 h-12 rounded-xl bg-white/[0.04] border border-white/[0.08] flex items-center justify-center text-orange-400 mb-6 group-hover:scale-110 group-hover:border-orange-500/40 transition-all duration-300 shadow-md">
+                <div className="w-12 h-12 rounded-xl bg-orange-500/10 dark:bg-white/[0.04] border border-orange-500/20 dark:border-white/[0.08] flex items-center justify-center text-orange-500 dark:text-orange-400 mb-6 group-hover:scale-110 group-hover:border-orange-500/40 transition-all duration-300 shadow-sm">
                   <Icon className="w-5 h-5" />
                 </div>
-                <h3 className="text-lg font-semibold text-white tracking-tight group-hover:text-orange-300 transition-colors">
+                <h3 className="text-lg font-semibold text-zinc-900 dark:text-white tracking-tight group-hover:text-orange-600 dark:group-hover:text-orange-300 transition-colors">
                   {problem.title}
                 </h3>
-                <p className="mt-3 text-sm text-zinc-400 leading-relaxed">
+                <p className="mt-3 text-sm text-zinc-600 dark:text-zinc-400 leading-relaxed">
                   {problem.description}
                 </p>
               </motion.div>

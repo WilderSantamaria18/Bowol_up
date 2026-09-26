@@ -178,11 +178,19 @@ html:not(.dark) .liquid-pill {
 }
 
 .lens-flare-orange {
-  background: radial-gradient(circle at 50% 50%, rgba(249, 115, 22, 0.18), transparent 70%);
+  background: radial-gradient(circle at 50% 50%, rgba(249, 115, 22, 0.09), transparent 70%);
+}
+
+html:not(.dark) .lens-flare-orange {
+  background: radial-gradient(circle at 50% 50%, rgba(249, 115, 22, 0.04), transparent 70%);
 }
 
 .lens-flare-blue {
-  background: radial-gradient(circle at 50% 50%, rgba(59, 130, 246, 0.12), transparent 70%);
+  background: radial-gradient(circle at 50% 50%, rgba(59, 130, 246, 0.06), transparent 70%);
+}
+
+html:not(.dark) .lens-flare-blue {
+  background: radial-gradient(circle at 50% 50%, rgba(59, 130, 246, 0.03), transparent 70%);
 }
 
 .enterprise-grid {
