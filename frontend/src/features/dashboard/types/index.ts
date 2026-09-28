@@ -56,10 +56,28 @@ export interface DashboardExecutionSummary {
   completedTasksCount: number;
 }
 
+export interface DashboardExecutiveBriefing {
+  headline: string;
+  highlights: string[];
+  generatedAt: string;
+}
+
+export interface DashboardHealthScoreInfo {
+  overallScore: number;
+  executionScore: number;
+  strategyScore: number;
+  marketScore: number;
+  maturityScore: number;
+  statusLabel: 'OPTIMAL' | 'GOOD' | 'ATTENTION_NEEDED';
+  explanation: string;
+}
+
 export interface DashboardSummary {
   organization: DashboardOrganizationInfo;
   maturity: DashboardMaturityInfo;
   trends: DashboardTrendsSummary;
   strategy: DashboardStrategySummary;
   execution: DashboardExecutionSummary;
+  briefing?: DashboardExecutiveBriefing;
+  healthScore?: DashboardHealthScoreInfo;
 }

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { X, LogOut, Settings, CreditCard, Sparkles, Building2 } from 'lucide-react';
+import { X, LogOut, Settings, CreditCard, Sparkles, Building2, Search } from 'lucide-react';
 import { BrandLogo } from '@/components/ui/BrandLogo';
 import { ThemeToggle } from '@/components/ui/ThemeToggle';
 import { NavDropdownItem } from './NavDropdown';
@@ -17,6 +17,7 @@ interface MobileNavDrawerProps {
   onClose: () => void;
   groups: NavGroup[];
   standaloneLinks: { label: string; path: string; icon: React.ElementType }[];
+  onOpenCommandPalette?: () => void;
 }
 
 export const MobileNavDrawer: React.FC<MobileNavDrawerProps> = ({
@@ -24,6 +25,7 @@ export const MobileNavDrawer: React.FC<MobileNavDrawerProps> = ({
   onClose,
   groups,
   standaloneLinks,
+  onOpenCommandPalette,
 }) => {
   const location = useLocation();
   const { user, organization, logout } = useAuth();
@@ -74,6 +76,26 @@ export const MobileNavDrawer: React.FC<MobileNavDrawerProps> = ({
                 </div>
               </div>
             </div>
+          )}
+
+          {/* Command Palette Mobile Action */}
+          {onOpenCommandPalette && (
+            <button
+              type="button"
+              onClick={() => {
+                onClose();
+                onOpenCommandPalette();
+              }}
+              className="w-full flex items-center justify-between py-2 px-3 rounded-xl bg-zinc-100 dark:bg-zinc-800/80 text-zinc-700 dark:text-zinc-200 text-xs font-medium border border-zinc-200/80 dark:border-zinc-700/80 hover:border-orange-500/30 transition-colors"
+            >
+              <span className="flex items-center gap-2">
+                <Search className="w-4 h-4 text-zinc-400" strokeWidth={1.5} />
+                <span>Buscar o ir a...</span>
+              </span>
+              <kbd className="text-[10px] font-mono px-1.5 py-0.5 rounded bg-white dark:bg-zinc-700 text-zinc-500 dark:text-zinc-400 border border-zinc-200 dark:border-zinc-600">
+                ⌘K
+              </kbd>
+            </button>
           )}
 
           {/* Copilot Action */}

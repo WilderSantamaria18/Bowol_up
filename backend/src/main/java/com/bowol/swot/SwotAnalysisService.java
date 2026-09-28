@@ -89,12 +89,31 @@ public class SwotAnalysisService {
         List<SwotItem> threats = aiResponseValidator.extractQuadrantItems(validatedJson, "threats");
         String summaryText = aiResponseValidator.extractSummary(validatedJson);
 
-        // If opportunities items have no evidenceIds, assign relevant trend IDs where applicable
-        if (!relevantTrends.isEmpty() && !opportunities.isEmpty()) {
+        // Ensure internal/external sourcing & link external trend evidence
+        strengths.forEach(s -> {
+            s.setType("STRENGTHS");
+            if (s.getSource() == null) s.setSource("INTERNAL_PROFILE");
+        });
+        weaknesses.forEach(w -> {
+            w.setType("WEAKNESSES");
+            if (w.getSource() == null) w.setSource("INTERNAL_PROFILE");
+        });
+
+        if (!relevantTrends.isEmpty()) {
             for (int i = 0; i < opportunities.size() && i < relevantTrends.size(); i++) {
                 SwotItem opp = opportunities.get(i);
+                opp.setType("OPPORTUNITIES");
+                opp.setSource("TREND_RADAR");
                 if (opp.getEvidenceIds() == null || opp.getEvidenceIds().isEmpty()) {
                     opp.setEvidenceIds(List.of(relevantTrends.get(i).getId().toString()));
+                }
+            }
+            for (int i = 0; i < threats.size(); i++) {
+                SwotItem thr = threats.get(i);
+                thr.setType("THREATS");
+                thr.setSource("TREND_RADAR");
+                if (i < relevantTrends.size() && (thr.getEvidenceIds() == null || thr.getEvidenceIds().isEmpty())) {
+                    thr.setEvidenceIds(List.of(relevantTrends.get(relevantTrends.size() - 1 - i).getId().toString()));
                 }
             }
         }
@@ -200,19 +219,61 @@ public class SwotAnalysisService {
         SwotAnalysis swot = swotAnalysisRepository.findByIdAndOrganizationId(id, principal.getOrganizationId())
                 .orElseThrow(() -> new NotFoundException("SWOT_NO_ENCONTRADO", "No se encontró el análisis FODA con id: " + id));
 
+        String quadrant = request.getQuadrant().trim().toLowerCase();
+        String defaultType = switch (quadrant) {
+            case "strengths", "fortalezas" -> "STRENGTHS";
+            case "weaknesses", "debilidades" -> "WEAKNESSES";
+            case "opportunities", "oportunidades" -> "OPPORTUNITIES";
+            case "threats", "amenazas" -> "THREATS";
+            default -> throw new IllegalArgumentException("Cuadrante no reconocido: " + request.getQuadrant() + ". Válidos: strengths, weaknesses, opportunities, threats");
+        };
+
+        String defaultSource = (defaultType.equals("STRENGTHS") || defaultType.equals("WEAKNESSES"))
+                ? "INTERNAL_PROFILE" : "TREND_RADAR";
+
         SwotItem newItem = SwotItem.builder()
                 .id(UUID.randomUUID().toString())
                 .text(request.getText().trim())
+                .type(defaultType)
                 .evidenceIds(request.getEvidenceIds() != null ? request.getEvidenceIds() : new ArrayList<>())
+                .confidence(request.getConfidence() != null && !request.getConfidence().isBlank() ? request.getConfidence().toUpperCase() : "HIGH")
+                .impact(request.getImpact() != null && !request.getImpact().isBlank() ? request.getImpact().toUpperCase() : "HIGH")
+                .source(request.getSource() != null && !request.getSource().isBlank() ? request.getSource() : defaultSource)
+                .status(request.getStatus() != null && !request.getStatus().isBlank() ? request.getStatus().toUpperCase() : "ACTIVE")
+                .createdAt(Instant.now())
                 .build();
 
-        String quadrant = request.getQuadrant().trim().toLowerCase();
-        switch (quadrant) {
-            case "strengths", "fortalezas" -> swot.getStrengths().add(newItem);
-            case "weaknesses", "debilidades" -> swot.getWeaknesses().add(newItem);
-            case "opportunities", "oportunidades" -> swot.getOpportunities().add(newItem);
-            case "threats", "amenazas" -> swot.getThreats().add(newItem);
-            default -> throw new IllegalArgumentException("Cuadrante no reconocido: " + request.getQuadrant() + ". Válidos: strengths, weaknesses, opportunities, threats");
+        switch (defaultType) {
+            case "STRENGTHS" -> swot.getStrengths().add(newItem);
+            case "WEAKNESSES" -> swot.getWeaknesses().add(newItem);
+            case "OPPORTUNITIES" -> swot.getOpportunities().add(newItem);
+            case "THREATS" -> swot.getThreats().add(newItem);
+        }
+
+        SwotAnalysis saved = swotAnalysisRepository.save(swot);
+        return SwotAnalysisResponse.from(saved);
+    }
+
+    @Transactional
+    public SwotAnalysisResponse updateItemStatus(UUID id, String itemId, String newStatus, UserPrincipal principal) {
+        SwotAnalysis swot = swotAnalysisRepository.findByIdAndOrganizationId(id, principal.getOrganizationId())
+                .orElseThrow(() -> new NotFoundException("SWOT_NO_ENCONTRADO", "No se encontró el análisis FODA con id: " + id));
+
+        boolean found = false;
+        List<List<SwotItem>> allLists = List.of(swot.getStrengths(), swot.getWeaknesses(), swot.getOpportunities(), swot.getThreats());
+        for (List<SwotItem> list : allLists) {
+            for (SwotItem item : list) {
+                if (Objects.equals(item.getId(), itemId)) {
+                    item.setStatus(newStatus.toUpperCase());
+                    found = true;
+                    break;
+                }
+            }
+            if (found) break;
+        }
+
+        if (!found) {
+            throw new NotFoundException("ITEM_NO_ENCONTRADO", "No se encontró el item con id: " + itemId);
         }
 
         SwotAnalysis saved = swotAnalysisRepository.save(swot);

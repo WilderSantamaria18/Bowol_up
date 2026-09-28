@@ -238,4 +238,21 @@ describe('HypothesesPage', () => {
       expect(screen.getByText(/Proyecto creado exitosamente desde hipótesis validada/i)).toBeInTheDocument();
     });
   });
+
+  it('muestra las métricas KPI y filtra hipótesis por búsqueda de texto', async () => {
+    renderWithProviders();
+
+    await waitFor(() => {
+      expect(screen.getByText('Total Hipótesis')).toBeInTheDocument();
+      expect(screen.getByText('Validadas (Supported)')).toBeInTheDocument();
+      expect(screen.getByText('Creemos que ofrecer onboarding con IA aumentará la retención un 25%.')).toBeInTheDocument();
+      expect(screen.getByText('Creemos que las clínicas pagarán una suscripción anual con 20% descuento.')).toBeInTheDocument();
+    });
+
+    const searchInput = screen.getByPlaceholderText('Buscar por supuesto, métrica, método o segmento...');
+    fireEvent.change(searchInput, { target: { value: 'clínicas' } });
+
+    expect(screen.queryByText('Creemos que ofrecer onboarding con IA aumentará la retención un 25%.')).not.toBeInTheDocument();
+    expect(screen.getByText('Creemos que las clínicas pagarán una suscripción anual con 20% descuento.')).toBeInTheDocument();
+  });
 });

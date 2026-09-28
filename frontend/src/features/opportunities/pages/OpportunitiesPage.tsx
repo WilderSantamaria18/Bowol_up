@@ -1,18 +1,21 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { 
   useOpportunityBoard, 
   useCreateOpportunity, 
   useUpdateOpportunityStatus, 
   useDeleteOpportunity, 
-  useGenerateOpportunitiesFromSwot 
+  useGenerateOpportunitiesFromSwot,
+  useUpdateOpportunityData
 } from '../hooks/useOpportunities';
 import { useLatestSwot } from '@/features/swot/hooks/useSwot';
-import { OpportunityStatus, CreateOpportunityPayload } from '../types';
+import { OpportunityStatus, CreateOpportunityPayload, Opportunity, UpdateOpportunityPayload } from '../types';
 import { OpportunityHeader } from '../components/OpportunityHeader';
 import { OpportunityColumn } from '../components/OpportunityColumn';
 import { CreateOpportunityModal } from '../components/CreateOpportunityModal';
+import { RiceSimulatorModal } from '../components/RiceSimulatorModal';
 import { opportunityService } from '../services/opportunityService';
 import { useNavigate, useSearchParams } from 'react-router-dom';
+import { Search, Zap, CheckCircle2, Clock, Flame, FolderGit2 } from 'lucide-react';
 
 const COLUMNS: { status: OpportunityStatus; title: string; dotColor: string; badgeColor: string }[] = [
   { status: 'IDENTIFIED', title: 'Identificadas', dotColor: 'bg-sky-400', badgeColor: 'bg-sky-500/10 text-sky-400' },
@@ -37,11 +40,16 @@ export const OpportunitiesPage: React.FC = () => {
   const updateStatus = useUpdateOpportunityStatus();
   const deleteOpportunity = useDeleteOpportunity();
   const generateFromSwot = useGenerateOpportunitiesFromSwot();
+  const updateOpportunityData = useUpdateOpportunityData();
 
   const [isCreateOpen, setIsCreateOpen] = useState(shouldOpenCreate);
   const [initialTitle, setInitialTitle] = useState(urlTitle);
   const [initialDescription, setInitialDescription] = useState(urlDescription);
   const [swotAlert, setSwotAlert] = useState<string | null>(null);
+
+  // Search filter & Modal selection
+  const [searchQuery, setSearchQuery] = useState('');
+  const [selectedOpportunity, setSelectedOpportunity] = useState<Opportunity | null>(null);
 
   React.useEffect(() => {
     if (shouldOpenCreate) {
@@ -84,7 +92,69 @@ export const OpportunitiesPage: React.FC = () => {
 
   const handleDelete = (id: string) => {
     deleteOpportunity.mutate(id);
+    if (selectedOpportunity?.id === id) {
+      setSelectedOpportunity(null);
+    }
   };
+
+  const handleSaveOpportunity = async (id: string, payload: UpdateOpportunityPayload) => {
+    await updateOpportunityData.mutateAsync({ id, payload });
+  };
+
+  const handleConvertToProject = async (opportunityId: string) => {
+    try {
+      const project = await opportunityService.convertToProject(opportunityId);
+      if (project?.id) {
+        navigate(`/tasks?projectId=${project.id}&autoDecompose=true`);
+      }
+    } catch (err: any) {
+      console.error('Error al convertir oportunidad en proyecto:', err);
+    }
+  };
+
+  // KPIs & Filtered items
+  const allOpportunities = useMemo(() => {
+    if (!board) return [];
+    return [
+      ...(board.IDENTIFIED || []),
+      ...(board.EVALUATING || []),
+      ...(board.APPROVED || []),
+      ...(board.REJECTED || []),
+      ...(board.CONVERTED || []),
+    ];
+  }, [board]);
+
+  const topRiceScore = useMemo(() => {
+    if (allOpportunities.length === 0) return 0;
+    const scores = allOpportunities
+      .map(o => o.priorityScore || 0)
+      .filter(s => s > 0);
+    return scores.length > 0 ? Math.max(...scores).toFixed(1) : '0';
+  }, [allOpportunities]);
+
+  const filteredBoard = useMemo(() => {
+    if (!board) return {} as Record<OpportunityStatus, Opportunity[]>;
+    if (!searchQuery.trim()) return board;
+
+    const query = searchQuery.toLowerCase();
+    const filterList = (list: Opportunity[] = []) =>
+      list.filter(
+        item =>
+          item.title?.toLowerCase().includes(query) ||
+          item.description?.toLowerCase().includes(query) ||
+          item.problem?.toLowerCase().includes(query) ||
+          item.targetSegment?.toLowerCase().includes(query) ||
+          item.ownerName?.toLowerCase().includes(query)
+      );
+
+    return {
+      IDENTIFIED: filterList(board.IDENTIFIED),
+      EVALUATING: filterList(board.EVALUATING),
+      APPROVED: filterList(board.APPROVED),
+      REJECTED: filterList(board.REJECTED),
+      CONVERTED: filterList(board.CONVERTED),
+    };
+  }, [board, searchQuery]);
 
   if (isLoading) {
     return (
@@ -100,17 +170,6 @@ export const OpportunitiesPage: React.FC = () => {
       </div>
     );
   }
-
-  const handleConvertToProject = async (opportunityId: string) => {
-    try {
-      const project = await opportunityService.convertToProject(opportunityId);
-      if (project?.id) {
-        navigate(`/tasks?projectId=${project.id}&autoDecompose=true`);
-      }
-    } catch (err: any) {
-      console.error('Error al convertir oportunidad en proyecto:', err);
-    }
-  };
 
   return (
     <div className="space-y-8 pb-12">
@@ -134,10 +193,75 @@ export const OpportunitiesPage: React.FC = () => {
         </div>
       )}
 
+      {/* KPI Cards & Search Bar */}
+      <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-5 gap-3">
+        <div className="glass-panel p-3.5 rounded-xl border border-white/[0.06] bg-white/[0.015]">
+          <div className="flex items-center justify-between text-zinc-400 text-xs">
+            <span>Total Oportunidades</span>
+            <Flame className="w-3.5 h-3.5 text-orange-400" strokeWidth={1.5} />
+          </div>
+          <p className="text-xl font-bold text-white mt-1">{allOpportunities.length}</p>
+        </div>
+
+        <div className="glass-panel p-3.5 rounded-xl border border-white/[0.06] bg-white/[0.015]">
+          <div className="flex items-center justify-between text-zinc-400 text-xs">
+            <span>Máximo RICE</span>
+            <Zap className="w-3.5 h-3.5 text-amber-400" strokeWidth={1.5} />
+          </div>
+          <p className="text-xl font-bold text-amber-300 mt-1">{topRiceScore}</p>
+        </div>
+
+        <div className="glass-panel p-3.5 rounded-xl border border-white/[0.06] bg-white/[0.015]">
+          <div className="flex items-center justify-between text-zinc-400 text-xs">
+            <span>En Evaluación</span>
+            <Clock className="w-3.5 h-3.5 text-sky-400" strokeWidth={1.5} />
+          </div>
+          <p className="text-xl font-bold text-sky-300 mt-1">{board?.EVALUATING?.length || 0}</p>
+        </div>
+
+        <div className="glass-panel p-3.5 rounded-xl border border-white/[0.06] bg-white/[0.015]">
+          <div className="flex items-center justify-between text-zinc-400 text-xs">
+            <span>Aprobadas</span>
+            <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" strokeWidth={1.5} />
+          </div>
+          <p className="text-xl font-bold text-emerald-300 mt-1">{board?.APPROVED?.length || 0}</p>
+        </div>
+
+        <div className="glass-panel p-3.5 rounded-xl border border-white/[0.06] bg-white/[0.015] col-span-2 sm:col-span-4 lg:col-span-1">
+          <div className="flex items-center justify-between text-zinc-400 text-xs">
+            <span>Convertidas a Proyecto</span>
+            <FolderGit2 className="w-3.5 h-3.5 text-purple-400" strokeWidth={1.5} />
+          </div>
+          <p className="text-xl font-bold text-purple-300 mt-1">{board?.CONVERTED?.length || 0}</p>
+        </div>
+      </div>
+
+      {/* Filter / Search Bar */}
+      <div className="flex items-center justify-between gap-4">
+        <div className="relative w-full max-w-sm">
+          <Search className="w-3.5 h-3.5 text-zinc-500 absolute left-3 top-1/2 -translate-y-1/2" strokeWidth={1.5} />
+          <input
+            type="text"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            placeholder="Filtrar por título, problema, segmento o líder..."
+            className="w-full text-xs bg-black/40 border border-white/[0.08] rounded-xl pl-9 pr-3 py-2 text-zinc-200 placeholder-zinc-500 focus:outline-none focus:border-white/20"
+          />
+        </div>
+        {searchQuery && (
+          <button
+            onClick={() => setSearchQuery('')}
+            className="text-xs text-zinc-400 hover:text-white"
+          >
+            Limpiar filtro
+          </button>
+        )}
+      </div>
+
       {/* Kanban Board Columns */}
       <div className="flex gap-5 overflow-x-auto pb-6 items-start">
         {COLUMNS.map((col) => {
-          const list = board?.[col.status] || [];
+          const list = filteredBoard[col.status] || [];
           return (
             <OpportunityColumn
               key={col.status}
@@ -148,6 +272,7 @@ export const OpportunitiesPage: React.FC = () => {
               opportunities={list}
               onStatusChange={handleStatusChange}
               onDelete={handleDelete}
+              onSelect={(opp) => setSelectedOpportunity(opp)}
               onConvertToProject={handleConvertToProject}
             />
           );
@@ -162,6 +287,16 @@ export const OpportunitiesPage: React.FC = () => {
         isLoading={createOpportunity.isPending}
         initialTitle={initialTitle}
         initialDescription={initialDescription}
+      />
+
+      {/* RICE Simulator & Opportunity Detail Modal */}
+      <RiceSimulatorModal
+        isOpen={!!selectedOpportunity}
+        opportunity={selectedOpportunity}
+        onClose={() => setSelectedOpportunity(null)}
+        onSave={handleSaveOpportunity}
+        onConvertToProject={handleConvertToProject}
+        isSaving={updateOpportunityData.isPending}
       />
     </div>
   );

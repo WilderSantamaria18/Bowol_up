@@ -43,6 +43,25 @@ public class Opportunity {
     @Column(name = "description", columnDefinition = "text")
     private String description;
 
+    @Column(name = "problem", columnDefinition = "text")
+    private String problem;
+
+    @Column(name = "proposal", columnDefinition = "text")
+    private String proposal;
+
+    @Column(name = "target_segment", length = 150)
+    private String targetSegment;
+
+    @Column(name = "risk_level", length = 20)
+    @Builder.Default
+    private String riskLevel = "MEDIUM";
+
+    @Column(name = "owner_name", length = 150)
+    private String ownerName;
+
+    @Column(name = "related_trend_id")
+    private UUID relatedTrendId;
+
     @Column(name = "reach_score")
     private Integer reachScore;
 

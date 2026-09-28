@@ -24,9 +24,17 @@ public class UpdateExperimentRequest {
 
     private ExperimentStatus status;
 
+    private String ownerName;
+
+    private java.math.BigDecimal budget;
+
+    private String targetMetric;
+
     private String resultMetric;
 
     private String resultValue;
 
     private String conclusion;
+
+    private String evidenceNotes;
 }

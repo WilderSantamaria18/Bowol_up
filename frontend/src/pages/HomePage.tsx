@@ -43,14 +43,14 @@ export const HomePage: React.FC = () => {
           <div className="aurora aurora-a opacity-60 dark:opacity-90" />
           <div className="aurora aurora-b opacity-50 dark:opacity-80" />
           <div className="absolute inset-0 grid-bg opacity-40 dark:opacity-70" />
-          
+
           {/* Subtle floating quantum signal nodes */}
           <div className="absolute top-1/4 left-1/5 w-1.5 h-1.5 rounded-full bg-orange-400/40 animate-ping" />
           <div className="absolute top-1/3 right-1/4 w-1.5 h-1.5 rounded-full bg-blue-400/40 animate-pulse" />
           <div className="absolute bottom-1/3 left-1/3 w-1 h-1 rounded-full bg-amber-400/50" />
         </div>
 
-        {/* Spacer for center vector logo rendered fixed by AnimatedLogoCompanion */}
+        {/* Spacer for center vector logo rendered fixed by BowolLogoScroll */}
         <div className="w-full h-44 sm:h-56 pointer-events-none" />
 
         {/* Hero Bottom Zone: Clean Subtitle & Launch Cue */}
@@ -91,26 +91,28 @@ export const HomePage: React.FC = () => {
       {/* 2. Ticker de Fuentes de Señal Verificadas */}
       <LandingVerifiedSourcesTicker />
 
-      {/* 3. El Problema (Spotlight Cards con Iluminación al Cursor) */}
-      <LandingProblemSpotlight />
+      {/* 3. SECCIÓN INTELLIGENCE (Escaneo de Mercado & Radar) */}
+      <div data-mode="intelligence">
+        <LandingProblemSpotlight />
+        <LandingContinuousCycle />
+      </div>
 
-      {/* 4. Ciclo Continuo (Navegador Interactivo de Metodología) */}
-      <LandingContinuousCycle />
+      {/* 4. SECCIÓN STRATEGY (Traza Ruta & Arquitectura) */}
+      <div data-mode="strategy">
+        <LandingPlatformBento />
+      </div>
 
-      {/* 5. Arquitectura de Plataforma (Bento Grid 12 Columnas) */}
-      <LandingPlatformBento />
+      {/* 5. SECCIÓN EXECUTION (Empuje Térmico & Terminal de Producto) */}
+      <div data-mode="execution">
+        <LandingInteractiveTerminal />
+        <LandingImpactNumbers />
+      </div>
 
-      {/* 6. Simulador / Terminal de Producto en Vivo (Tabs Reactivos) */}
-      <LandingInteractiveTerminal />
-
-      {/* 7. Métricas de Impacto Industrial */}
-      <LandingImpactNumbers />
-
-      {/* 8. Call to Action Empresarial & Formulario de Acceso */}
-      <LandingEnterpriseCta />
-
-      {/* 9. Footer Corporativo Completo */}
-      <LandingFooter />
+      {/* 6. SECCIÓN LANDED (Aterrizaje en Pie de Página & Cierre) */}
+      <div data-mode="landed">
+        <LandingEnterpriseCta />
+        <LandingFooter />
+      </div>
     </div>
   );
 };

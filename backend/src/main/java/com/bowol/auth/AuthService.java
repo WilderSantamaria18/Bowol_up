@@ -199,7 +199,15 @@ public class AuthService {
         refreshTokenRepository.revokeAllByUserId(userId, Instant.now());
     }
 
-    private String generateAndPersistRefreshToken(User user, String userAgent, String ipAddress) {
+    @Transactional
+    public AuthResponse issueAuthResponseForUser(User user, Organization org, Role role, String userAgent, String ipAddress) {
+        Set<String> permissions = RolePermissions.getPermissionValues(role);
+        String accessToken = jwtService.generateAccessToken(user, org != null ? org.getId() : null, role, permissions);
+        String rawRefreshToken = generateAndPersistRefreshToken(user, userAgent, ipAddress);
+        return buildAuthResponse(user, org, role, permissions, accessToken, rawRefreshToken);
+    }
+
+    public String generateAndPersistRefreshToken(User user, String userAgent, String ipAddress) {
         byte[] randomBytes = new byte[32];
         secureRandom.nextBytes(randomBytes);
         String rawToken = Base64.getUrlEncoder().withoutPadding().encodeToString(randomBytes);

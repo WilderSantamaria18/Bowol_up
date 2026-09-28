@@ -18,6 +18,10 @@ public class HypothesisResponse {
     private UUID organizationId;
     private UUID opportunityId;
     private String statement;
+    private String targetSegment;
+    private String problemStatement;
+    private String solutionProposal;
+    private String expectedOutcome;
     private String validationMethod;
     private String successMetric;
     private String targetValue;
@@ -36,6 +40,10 @@ public class HypothesisResponse {
                 .organizationId(h.getOrganizationId())
                 .opportunityId(h.getOpportunityId())
                 .statement(h.getStatement())
+                .targetSegment(h.getTargetSegment())
+                .problemStatement(h.getProblemStatement())
+                .solutionProposal(h.getSolutionProposal())
+                .expectedOutcome(h.getExpectedOutcome())
                 .validationMethod(h.getValidationMethod())
                 .successMetric(h.getSuccessMetric())
                 .targetValue(h.getTargetValue())

@@ -10,6 +10,7 @@ interface OpportunityColumnProps {
   opportunities: Opportunity[];
   onStatusChange: (id: string, newStatus: OpportunityStatus) => void;
   onDelete: (id: string) => void;
+  onSelect?: (opportunity: Opportunity) => void;
   onConvertToProject?: (id: string) => void;
 }
 
@@ -21,6 +22,7 @@ export const OpportunityColumn: React.FC<OpportunityColumnProps> = ({
   opportunities,
   onStatusChange,
   onDelete,
+  onSelect,
   onConvertToProject,
 }) => {
   return (
@@ -52,6 +54,7 @@ export const OpportunityColumn: React.FC<OpportunityColumnProps> = ({
               opportunity={opp}
               onStatusChange={onStatusChange}
               onDelete={onDelete}
+              onSelect={onSelect}
               onConvertToProject={onConvertToProject}
             />
           ))

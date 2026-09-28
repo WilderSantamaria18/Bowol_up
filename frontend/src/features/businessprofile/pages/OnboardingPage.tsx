@@ -9,7 +9,11 @@ export const OnboardingPage: React.FC = () => {
 
   const handleComplete = async (data: OnboardingPayload) => {
     await businessProfileService.completeOnboarding(data);
-    navigate('/business-profile');
+    navigate('/dashboard', { replace: true });
+  };
+
+  const handleSaveAndExit = () => {
+    navigate('/dashboard');
   };
 
   return (
@@ -22,7 +26,7 @@ export const OnboardingPage: React.FC = () => {
           Completa el autodiagnóstico en 7 pasos para que el Copiloto de Innovación conozca el contexto exacto de tu empresa
         </p>
       </div>
-      <OnboardingWizard onComplete={handleComplete} />
+      <OnboardingWizard onComplete={handleComplete} onSaveAndExit={handleSaveAndExit} />
     </div>
   );
 };

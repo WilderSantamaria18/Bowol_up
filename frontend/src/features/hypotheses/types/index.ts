@@ -7,6 +7,10 @@ export interface Hypothesis {
   organizationId: string;
   opportunityId: string;
   statement: string;
+  targetSegment?: string;
+  problemStatement?: string;
+  solutionProposal?: string;
+  expectedOutcome?: string;
   validationMethod?: string;
   successMetric?: string;
   targetValue?: string;
@@ -22,6 +26,10 @@ export interface Hypothesis {
 export interface CreateHypothesisPayload {
   opportunityId: string;
   statement: string;
+  targetSegment?: string;
+  problemStatement?: string;
+  solutionProposal?: string;
+  expectedOutcome?: string;
   validationMethod?: string;
   successMetric?: string;
   targetValue?: string;
@@ -30,6 +38,10 @@ export interface CreateHypothesisPayload {
 
 export interface UpdateHypothesisPayload {
   statement?: string;
+  targetSegment?: string;
+  problemStatement?: string;
+  solutionProposal?: string;
+  expectedOutcome?: string;
   validationMethod?: string;
   successMetric?: string;
   targetValue?: string;

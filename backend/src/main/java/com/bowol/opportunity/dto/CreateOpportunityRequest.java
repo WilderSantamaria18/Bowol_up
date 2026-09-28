@@ -21,6 +21,18 @@ public class CreateOpportunityRequest {
 
     private String description;
 
+    private String problem;
+
+    private String proposal;
+
+    private String targetSegment;
+
+    private String riskLevel;
+
+    private String ownerName;
+
+    private UUID relatedTrendId;
+
     private UUID swotAnalysisId;
 
     @Min(value = 0, message = "reachScore debe ser mayor o igual a 0")

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { 
   Building2, 
   Users, 
@@ -11,7 +11,10 @@ import {
   ArrowLeft, 
   Check, 
   Plus, 
-  Trash2 
+  Trash2,
+  BookmarkCheck,
+  RotateCcw,
+  LogOut
 } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/Input';
@@ -21,11 +24,14 @@ import { GoalItem, OnboardingPayload } from '../types';
 import { OrganizationSize } from '@/features/organization/types';
 import { ProblemDetail } from '@/services/http';
 
+const ONBOARDING_DRAFT_KEY = 'bowol_onboarding_draft';
+
 interface OnboardingWizardProps {
   onComplete: (data: OnboardingPayload) => Promise<void>;
+  onSaveAndExit?: () => void;
 }
 
-export const OnboardingWizard: React.FC<OnboardingWizardProps> = ({ onComplete }) => {
+export const OnboardingWizard: React.FC<OnboardingWizardProps> = ({ onComplete, onSaveAndExit }) => {
   const [step, setStep] = useState(1);
   const totalSteps = 7;
 
@@ -46,6 +52,9 @@ export const OnboardingWizard: React.FC<OnboardingWizardProps> = ({ onComplete }
   const [tools, setTools] = useState<string[]>(['Slack', 'Notion']);
   const [newToolText, setNewToolText] = useState('');
 
+  const [competitors, setCompetitors] = useState<string[]>([]);
+  const [newCompetitorText, setNewCompetitorText] = useState('');
+
   const [channels, setChannels] = useState<string[]>(['LinkedIn', 'Email B2B']);
   const [newChannelText, setNewChannelText] = useState('');
 
@@ -54,6 +63,71 @@ export const OnboardingWizard: React.FC<OnboardingWizardProps> = ({ onComplete }
 
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [hasRestoredDraft, setHasRestoredDraft] = useState(false);
+
+  // Restore draft from localStorage on initial mount
+  useEffect(() => {
+    try {
+      const saved = localStorage.getItem(ONBOARDING_DRAFT_KEY);
+      if (saved) {
+        const draft = JSON.parse(saved);
+        if (draft.industry) setIndustry(draft.industry);
+        if (draft.size) setSize(draft.size);
+        if (draft.market) setMarket(draft.market);
+        if (Array.isArray(draft.goals) && draft.goals.length > 0) setGoals(draft.goals);
+        if (Array.isArray(draft.problems) && draft.problems.length > 0) setProblems(draft.problems);
+        if (Array.isArray(draft.tools) && draft.tools.length > 0) setTools(draft.tools);
+        if (Array.isArray(draft.competitors) && draft.competitors.length > 0) setCompetitors(draft.competitors);
+        if (Array.isArray(draft.channels) && draft.channels.length > 0) setChannels(draft.channels);
+        if (typeof draft.digitalMaturity === 'number') setDigitalMaturity(draft.digitalMaturity);
+        if (typeof draft.aiMaturity === 'number') setAiMaturity(draft.aiMaturity);
+        if (typeof draft.step === 'number' && draft.step >= 1 && draft.step <= totalSteps) {
+          setStep(draft.step);
+        }
+        setHasRestoredDraft(true);
+      }
+    } catch {
+      // Ignorar fallo de parseo
+    }
+  }, []);
+
+  // Autosave draft on form changes
+  useEffect(() => {
+    try {
+      const draft = {
+        step,
+        industry,
+        size,
+        market,
+        goals,
+        problems,
+        tools,
+        competitors,
+        channels,
+        digitalMaturity,
+        aiMaturity,
+      };
+      localStorage.setItem(ONBOARDING_DRAFT_KEY, JSON.stringify(draft));
+    } catch {
+      // Ignorar fallo de almacenamiento
+    }
+  }, [step, industry, size, market, goals, problems, tools, competitors, channels, digitalMaturity, aiMaturity]);
+
+  const handleResetDraft = () => {
+    localStorage.removeItem(ONBOARDING_DRAFT_KEY);
+    setIndustry('');
+    setSize('SMALL');
+    setMarket('');
+    setGoals([{ text: 'Aumentar adquisición de clientes calificados', priority: 1 }]);
+    setProblems(['Procesos manuales repetitivos']);
+    setTools(['Slack', 'Notion']);
+    setCompetitors([]);
+    setChannels(['LinkedIn', 'Email B2B']);
+    setDigitalMaturity(50);
+    setAiMaturity(25);
+    setStep(1);
+    setHasRestoredDraft(false);
+  };
 
   // Handlers para agregar y quitar elementos dinámicos
   const handleAddGoal = () => {
@@ -87,6 +161,17 @@ export const OnboardingWizard: React.FC<OnboardingWizardProps> = ({ onComplete }
 
   const handleRemoveTool = (index: number) => {
     setTools(tools.filter((_, i) => i !== index));
+  };
+
+  const handleAddCompetitor = () => {
+    if (newCompetitorText.trim()) {
+      setCompetitors([...competitors, newCompetitorText.trim()]);
+      setNewCompetitorText('');
+    }
+  };
+
+  const handleRemoveCompetitor = (index: number) => {
+    setCompetitors(competitors.filter((_, i) => i !== index));
   };
 
   const handleAddChannel = () => {
@@ -141,11 +226,13 @@ export const OnboardingWizard: React.FC<OnboardingWizardProps> = ({ onComplete }
         goals,
         problems,
         tools,
-        competitors: [],
+        competitors,
         channels,
         digitalMaturity,
         aiMaturity,
       });
+      // Limpiar borrador local tras éxito
+      localStorage.removeItem(ONBOARDING_DRAFT_KEY);
     } catch (err: unknown) {
       const problem = err as ProblemDetail;
       setError(problem?.detail || 'Ocurrió un error al registrar el perfil estratégico');
@@ -162,7 +249,38 @@ export const OnboardingWizard: React.FC<OnboardingWizardProps> = ({ onComplete }
   };
 
   return (
-    <div className="w-full max-w-2xl mx-auto space-y-8 animate-fade-in">
+    <div className="w-full max-w-2xl mx-auto space-y-6 animate-fade-in">
+      {/* Draft autosave bar */}
+      <div className="flex items-center justify-between px-1 text-xs">
+        <div className="flex items-center gap-2">
+          <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 font-medium text-[11px]">
+            <BookmarkCheck className="w-3.5 h-3.5" strokeWidth={1.5} />
+            Borrador guardado automáticamente
+          </span>
+          {hasRestoredDraft && (
+            <button
+              type="button"
+              onClick={handleResetDraft}
+              className="inline-flex items-center gap-1 text-[11px] text-zinc-400 hover:text-zinc-200 transition-colors underline underline-offset-2 ml-1"
+            >
+              <RotateCcw className="w-3 h-3" />
+              Reiniciar
+            </button>
+          )}
+        </div>
+
+        {onSaveAndExit && (
+          <button
+            type="button"
+            onClick={onSaveAndExit}
+            className="inline-flex items-center gap-1 text-[11px] text-zinc-400 hover:text-orange-400 transition-colors"
+          >
+            <LogOut className="w-3 h-3" />
+            Continuar después
+          </button>
+        )}
+      </div>
+
       {/* Progress Header */}
       <div className="space-y-3">
         <div className="flex items-center justify-between text-xs text-zinc-400">
@@ -400,10 +518,10 @@ export const OnboardingWizard: React.FC<OnboardingWizardProps> = ({ onComplete }
                 </div>
                 <div>
                   <h2 className="text-base font-semibold text-zinc-100">
-                    Herramientas actuales y canales de crecimiento
+                    Herramientas, Competidores y Canales
                   </h2>
                   <p className="text-xs text-zinc-400">
-                    Software con el que opera tu equipo y medios principales de contacto
+                    Software operativo, competidores de referencia y canales de captación
                   </p>
                 </div>
               </div>
@@ -430,6 +548,33 @@ export const OnboardingWizard: React.FC<OnboardingWizardProps> = ({ onComplete }
                       </span>
                     ))}
                   </div>
+                </div>
+
+                <div>
+                  <label className="block text-xs font-medium text-zinc-300 mb-1.5">Competidores o alternativas conocidas</label>
+                  <div className="flex gap-2 mb-2">
+                    <Input
+                      value={newCompetitorText}
+                      onChange={(e) => setNewCompetitorText(e.target.value)}
+                      placeholder="ej. Competidor Alpha, Solución Legacy, Startup XYZ"
+                      onKeyDown={(e) => e.key === 'Enter' && (e.preventDefault(), handleAddCompetitor())}
+                    />
+                    <Button type="button" variant="secondary" size="md" onClick={handleAddCompetitor} leftIcon={Plus}>
+                      Añadir
+                    </Button>
+                  </div>
+                  {competitors.length === 0 ? (
+                    <p className="text-[11px] text-zinc-500 italic">Opcional. Permite contrastar señales de mercado frente a tus competidores.</p>
+                  ) : (
+                    <div className="flex flex-wrap gap-2">
+                      {competitors.map((comp, idx) => (
+                        <span key={idx} className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-zinc-900 border border-orange-500/20 text-xs text-orange-200">
+                          {comp}
+                          <button type="button" onClick={() => handleRemoveCompetitor(idx)} className="text-zinc-500 hover:text-rose-400">×</button>
+                        </span>
+                      ))}
+                    </div>
+                  )}
                 </div>
 
                 <div>

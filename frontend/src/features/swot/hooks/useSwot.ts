@@ -64,6 +64,19 @@ export function useRemoveSwotItem(swotId: string) {
   });
 }
 
+export function useUpdateSwotItemStatus(swotId: string) {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: ({ itemId, status }: { itemId: string; status: string }) =>
+      swotService.updateItemStatus(swotId, itemId, status),
+    onSuccess: (updatedSwot) => {
+      queryClient.setQueryData(SWOT_QUERY_KEYS.latest, updatedSwot);
+      queryClient.invalidateQueries({ queryKey: ['swot'] });
+    },
+  });
+}
+
 export function useUpdateSwot(swotId: string) {
   const queryClient = useQueryClient();
 

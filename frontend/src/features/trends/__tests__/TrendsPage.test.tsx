@@ -1,6 +1,7 @@
 import { render, screen, waitFor } from '@testing-library/react';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { BrowserRouter } from 'react-router-dom';
 import { TrendsPage } from '../pages/TrendsPage';
 import { trendService } from '../services/trendService';
 
@@ -67,7 +68,9 @@ describe('TrendsPage Component', () => {
   it('renders page title and trend cards correctly', async () => {
     render(
       <QueryClientProvider client={queryClient}>
-        <TrendsPage />
+        <BrowserRouter>
+          <TrendsPage />
+        </BrowserRouter>
       </QueryClientProvider>
     );
 

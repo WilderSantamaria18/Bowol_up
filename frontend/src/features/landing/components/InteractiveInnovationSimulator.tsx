@@ -7,7 +7,12 @@ import {
   CheckCircle2, 
   RefreshCw, 
   GitBranch, 
-  Youtube
+  Youtube,
+  CreditCard,
+  ShoppingCart,
+  Stethoscope,
+  Cpu,
+  type LucideIcon
 } from 'lucide-react';
 import { Badge } from '@/components/ui/Badge';
 import { Button } from '@/components/ui/Button';
@@ -15,7 +20,7 @@ import { Button } from '@/components/ui/Button';
 interface IndustryDemo {
   id: string;
   name: string;
-  icon: string;
+  Icon: LucideIcon;
   trendTitle: string;
   trendDescription: string;
   trendScore: number;
@@ -32,11 +37,11 @@ const DEMOS: Record<string, IndustryDemo> = {
   fintech: {
     id: 'fintech',
     name: 'Fintech & Pagos',
-    icon: '💳',
+    Icon: CreditCard,
     trendTitle: 'Conciliación Financiera Autónoma con LLMs',
     trendDescription: 'Aparición de agentes autónomos que reducen en 90% el tiempo de resolución de discrepancias bancarias multidivisa.',
     trendScore: 94,
-    sources: { githubStars: '+3.4k ⭐', youtubeViews: '48k vistas', velocity: '+240% este mes' },
+    sources: { githubStars: '+3.4k stars', youtubeViews: '48k vistas', velocity: '+240% este mes' },
     fodaType: 'OPORTUNIDAD',
     fodaText: 'Integrar pipeline de conciliación antes del cierre fiscal del Q4 reduce el churn en un 18%.',
     riceScore: 780,
@@ -51,11 +56,11 @@ const DEMOS: Record<string, IndustryDemo> = {
   ecommerce: {
     id: 'ecommerce',
     name: 'E-Commerce & Retail',
-    icon: '🛒',
+    Icon: ShoppingCart,
     trendTitle: 'Búsqueda Visual Vectorial con CLIP en Tiempo Real',
     trendDescription: 'Reemplazo de filtros de texto por similitud visual instantánea sobre catálogo fotográfico.',
     trendScore: 91,
-    sources: { githubStars: '+5.1k ⭐', youtubeViews: '82k vistas', velocity: '+185% este mes' },
+    sources: { githubStars: '+5.1k stars', youtubeViews: '82k vistas', velocity: '+185% este mes' },
     fodaType: 'FORTALEZA',
     fodaText: 'El catálogo existente de 50k productos ya posee embeddings generados en PostgreSQL.',
     riceScore: 840,
@@ -70,11 +75,11 @@ const DEMOS: Record<string, IndustryDemo> = {
   health: {
     id: 'health',
     name: 'Salud & Biotech',
-    icon: '🏥',
+    Icon: Stethoscope,
     trendTitle: 'Extracción Automatizada de Registros Médicos HL7',
     trendDescription: 'Modelos de lenguaje especializados en normativas de interoperabilidad médica y anonimización HIPAA.',
     trendScore: 89,
-    sources: { githubStars: '+2.8k ⭐', youtubeViews: '29k vistas', velocity: '+160% este mes' },
+    sources: { githubStars: '+2.8k stars', youtubeViews: '29k vistas', velocity: '+160% este mes' },
     fodaType: 'OPORTUNIDAD',
     fodaText: 'Cumplir con interoperabilidad abre acuerdos con 3 redes hospitalarias regionales.',
     riceScore: 720,
@@ -89,11 +94,11 @@ const DEMOS: Record<string, IndustryDemo> = {
   saas: {
     id: 'saas',
     name: 'B2B SaaS & AI',
-    icon: '🤖',
+    Icon: Cpu,
     trendTitle: 'Agentes de Retención Proactiva con Análisis de Sentimiento',
     trendDescription: 'Detección temprana de clientes en riesgo de cancelación mediante telemetría y tickets de soporte.',
     trendScore: 97,
-    sources: { githubStars: '+8.2k ⭐', youtubeViews: '115k vistas', velocity: '+320% este mes' },
+    sources: { githubStars: '+8.2k stars', youtubeViews: '115k vistas', velocity: '+320% este mes' },
     fodaType: 'FORTALEZA',
     fodaText: 'Integración nativa con eventos de usuario permite disparar ofertas de retención automatizadas.',
     riceScore: 920,
@@ -145,6 +150,7 @@ export const InteractiveInnovationSimulator: React.FC = () => {
         <div className="flex flex-wrap gap-2">
           {Object.entries(DEMOS).map(([key, item]) => {
             const isSelected = selectedIndustry === key;
+            const ItemIcon = item.Icon;
             return (
               <button
                 key={key}
@@ -156,7 +162,7 @@ export const InteractiveInnovationSimulator: React.FC = () => {
                     : 'bg-zinc-900/90 text-zinc-400 hover:text-white border border-white/[0.06] hover:border-white/[0.15]'
                 }`}
               >
-                <span>{item.icon}</span>
+                <ItemIcon className="w-3.5 h-3.5" strokeWidth={1.5} />
                 <span>{item.name}</span>
               </button>
             );

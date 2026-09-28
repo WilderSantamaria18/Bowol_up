@@ -20,6 +20,12 @@ public class OpportunityResponse {
     private UUID swotAnalysisId;
     private String title;
     private String description;
+    private String problem;
+    private String proposal;
+    private String targetSegment;
+    private String riskLevel;
+    private String ownerName;
+    private UUID relatedTrendId;
     private Integer reachScore;
     private Integer impactScore;
     private Integer confidenceScore;
@@ -38,6 +44,12 @@ public class OpportunityResponse {
                 .swotAnalysisId(opp.getSwotAnalysisId())
                 .title(opp.getTitle())
                 .description(opp.getDescription())
+                .problem(opp.getProblem())
+                .proposal(opp.getProposal())
+                .targetSegment(opp.getTargetSegment())
+                .riskLevel(opp.getRiskLevel() != null ? opp.getRiskLevel() : "MEDIUM")
+                .ownerName(opp.getOwnerName())
+                .relatedTrendId(opp.getRelatedTrendId())
                 .reachScore(opp.getReachScore())
                 .impactScore(opp.getImpactScore())
                 .confidenceScore(opp.getConfidenceScore())

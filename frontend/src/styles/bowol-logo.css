@@ -1,0 +1,59 @@
+:root {
+  --bowol-orange: #F5A623;
+  --bowol-orange-soft: #FFC24D;
+  --bowol-bg: #F5F5F7;
+  --bowol-glow-max: 0.5;
+}
+
+.light {
+  --bowol-bg: #F5F5F7;
+  --bowol-glow-max: 0.5;
+}
+
+.dark {
+  --bowol-bg: #09090B;
+  --bowol-glow-max: 0.9;
+}
+
+/* Único loop infinito permitido: Respiración de llama en reposo */
+@keyframes flame-breathe {
+  0%, 100% {
+    transform: scaleY(1) scaleX(1);
+  }
+  50% {
+    transform: scaleY(1.08) scaleX(0.97);
+  }
+}
+
+/* Pulso estático suave de resplandor atómico */
+@keyframes glow-pulse {
+  0%, 100% {
+    opacity: 0.75;
+  }
+  50% {
+    opacity: 0.95;
+  }
+}
+
+/* Capa IDLE: Separada arquitectónicamente de mode y physics */
+[data-layer="idle"] {
+  transform-box: fill-box;
+  transform-origin: 50% 100%;
+  animation: flame-breathe 1.7s ease-in-out infinite;
+  animation-play-state: paused;
+}
+
+body.rocket-docked [data-layer="idle"] {
+  animation-play-state: running;
+}
+
+body.rocket-docked [data-part="glow"] ellipse {
+  animation: glow-pulse 2.2s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [data-layer="idle"],
+  body.rocket-docked [data-part="glow"] ellipse {
+    animation: none !important;
+  }
+}

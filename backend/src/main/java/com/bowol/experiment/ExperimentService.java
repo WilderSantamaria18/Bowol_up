@@ -74,8 +74,12 @@ public class ExperimentService {
                 .startDate(request.getStartDate())
                 .endDate(request.getEndDate())
                 .status(request.getStatus() != null ? request.getStatus() : ExperimentStatus.PLANNED)
+                .ownerName(request.getOwnerName() != null ? request.getOwnerName().trim() : null)
+                .budget(request.getBudget())
+                .targetMetric(request.getTargetMetric())
                 .resultMetric(request.getResultMetric())
                 .resultValue(request.getResultValue())
+                .evidenceNotes(request.getEvidenceNotes())
                 .build();
 
         if (experiment.getStatus() == ExperimentStatus.RUNNING &&
@@ -111,6 +115,15 @@ public class ExperimentService {
         if (request.getStatus() != null) {
             experiment.setStatus(request.getStatus());
         }
+        if (request.getOwnerName() != null) {
+            experiment.setOwnerName(request.getOwnerName().trim());
+        }
+        if (request.getBudget() != null) {
+            experiment.setBudget(request.getBudget());
+        }
+        if (request.getTargetMetric() != null) {
+            experiment.setTargetMetric(request.getTargetMetric().trim());
+        }
         if (request.getResultMetric() != null) {
             experiment.setResultMetric(request.getResultMetric().trim());
         }
@@ -119,6 +132,9 @@ public class ExperimentService {
         }
         if (request.getConclusion() != null) {
             experiment.setConclusion(request.getConclusion().trim());
+        }
+        if (request.getEvidenceNotes() != null) {
+            experiment.setEvidenceNotes(request.getEvidenceNotes().trim());
         }
 
         Experiment saved = experimentRepository.save(experiment);

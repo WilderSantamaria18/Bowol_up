@@ -17,6 +17,7 @@ export const RegisterPage: React.FC = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [organizationName, setOrganizationName] = useState('');
+  const [termsAccepted, setTermsAccepted] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [errorProblem, setErrorProblem] = useState<ProblemDetail | null>(null);
 
@@ -40,6 +41,14 @@ export const RegisterPage: React.FC = () => {
       return;
     }
 
+    if (!termsAccepted) {
+      setErrorProblem({
+        status: 400,
+        detail: 'Debes aceptar los Términos de Servicio y la Política de Privacidad para continuar.',
+      });
+      return;
+    }
+
     setIsLoading(true);
     try {
       await register({
@@ -48,7 +57,7 @@ export const RegisterPage: React.FC = () => {
         password,
         organizationName: organizationName.trim() || undefined,
       });
-      navigate('/', { replace: true });
+      navigate('/onboarding', { replace: true });
     } catch (err) {
       const problem = err as ProblemDetail;
       setErrorProblem(problem);
@@ -131,6 +140,29 @@ export const RegisterPage: React.FC = () => {
                 autoComplete="new-password"
               />
               <PasswordStrengthIndicator password={password} />
+            </div>
+
+            <div className="pt-2">
+              <label className="flex items-start gap-2.5 cursor-pointer text-xs text-zinc-600 dark:text-zinc-400 select-none">
+                <input
+                  id="register-terms"
+                  type="checkbox"
+                  checked={termsAccepted}
+                  onChange={(e) => setTermsAccepted(e.target.checked)}
+                  className="mt-0.5 h-4 w-4 rounded border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-900 text-orange-500 focus:ring-orange-500/30 accent-orange-500 cursor-pointer"
+                />
+                <span>
+                  He leído y acepto los{' '}
+                  <span className="text-zinc-900 dark:text-zinc-200 font-semibold underline underline-offset-2">
+                    Términos de Servicio
+                  </span>{' '}
+                  y la{' '}
+                  <span className="text-zinc-900 dark:text-zinc-200 font-semibold underline underline-offset-2">
+                    Política de Privacidad
+                  </span>{' '}
+                  de BOWOL.
+                </span>
+              </label>
             </div>
 
             <Button

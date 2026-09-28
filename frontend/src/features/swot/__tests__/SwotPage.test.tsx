@@ -1,6 +1,7 @@
 import { render, screen, waitFor, fireEvent } from '@testing-library/react';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { MemoryRouter } from 'react-router-dom';
 import { SwotPage } from '../pages/SwotPage';
 import { swotService } from '../services/swotService';
 import { SwotAnalysis } from '../types';
@@ -13,6 +14,7 @@ vi.mock('../services/swotService', () => ({
     updateSwot: vi.fn(),
     addItem: vi.fn(),
     removeItem: vi.fn(),
+    updateItemStatus: vi.fn(),
     getEvidence: vi.fn(),
     deleteSwot: vi.fn(),
   },
@@ -39,16 +41,48 @@ const mockSwot: SwotAnalysis = {
     digitalMaturity: 80,
   },
   strengths: [
-    { id: 's-1', text: 'Equipo técnico de alta velocidad', evidenceIds: [] },
+    { 
+      id: 's-1', 
+      text: 'Equipo técnico de alta velocidad', 
+      evidenceIds: [],
+      confidence: 'HIGH',
+      impact: 'HIGH',
+      source: 'INTERNAL_PROFILE',
+      status: 'ACTIVE'
+    },
   ],
   weaknesses: [
-    { id: 'w-1', text: 'Presupuesto inicial ajustado', evidenceIds: [] },
+    { 
+      id: 'w-1', 
+      text: 'Presupuesto inicial ajustado', 
+      evidenceIds: [],
+      confidence: 'HIGH',
+      impact: 'MEDIUM',
+      source: 'INTERNAL_PROFILE',
+      status: 'ACTIVE'
+    },
   ],
   opportunities: [
-    { id: 'o-1', text: 'Automatización de pagos recurrentes', evidenceIds: ['trend-99'] },
+    { 
+      id: 'o-1', 
+      text: 'Automatización de pagos recurrentes', 
+      evidenceIds: ['trend-99'],
+      confidence: 'HIGH',
+      impact: 'HIGH',
+      source: 'TREND_RADAR',
+      status: 'ACTIVE'
+    },
   ],
   threats: [
-    { id: 't-1', text: 'Regulación financiera más estricta', evidenceIds: [] },
+    { 
+      id: 't-1', 
+      text: 'Regulación financiera más estricta', 
+      evidenceIds: [],
+      confidence: 'MEDIUM',
+      impact: 'HIGH',
+      source: 'TREND_RADAR',
+      status: 'ACTIVE'
+    },
   ],
   summary: 'Diagnóstico favorable para acelerar producto mínimo viable.',
   aiProvider: 'openai',
@@ -69,15 +103,19 @@ describe('SwotPage Component', () => {
     vi.clearAllMocks();
   });
 
+  const renderWithProviders = (ui: React.ReactElement) => {
+    return render(
+      <QueryClientProvider client={queryClient}>
+        <MemoryRouter>{ui}</MemoryRouter>
+      </QueryClientProvider>
+    );
+  };
+
   it('renders empty state when no SWOT exists and triggers AI generation', async () => {
     vi.mocked(swotService.getLatestSwot).mockRejectedValue(new Error('Not found'));
     vi.mocked(swotService.generateSwot).mockResolvedValue(mockSwot);
 
-    render(
-      <QueryClientProvider client={queryClient}>
-        <SwotPage />
-      </QueryClientProvider>
-    );
+    renderWithProviders(<SwotPage />);
 
     await waitFor(() => {
       expect(screen.getByText('Aún no tienes una Matriz FODA activa')).toBeInTheDocument();
@@ -95,14 +133,10 @@ describe('SwotPage Component', () => {
     });
   });
 
-  it('renders 2x2 matrix and executive summary when SWOT exists', async () => {
+  it('renders 2x2 matrix, executive summary, and entity badges when SWOT exists', async () => {
     vi.mocked(swotService.getLatestSwot).mockResolvedValue(mockSwot);
 
-    render(
-      <QueryClientProvider client={queryClient}>
-        <SwotPage />
-      </QueryClientProvider>
-    );
+    renderWithProviders(<SwotPage />);
 
     await waitFor(() => {
       expect(screen.getByText('Matriz FODA Dinámica')).toBeInTheDocument();
@@ -121,6 +155,11 @@ describe('SwotPage Component', () => {
     expect(screen.getByText('Presupuesto inicial ajustado')).toBeInTheDocument();
     expect(screen.getByText('Automatización de pagos recurrentes')).toBeInTheDocument();
     expect(screen.getByText('Regulación financiera más estricta')).toBeInTheDocument();
+
+    // Check entity attributes
+    expect(screen.getAllByText('Alta certeza').length).toBeGreaterThan(0);
+    expect(screen.getAllByText('Interno (Perfil)').length).toBeGreaterThan(0);
+    expect(screen.getAllByText('Radar de Mercado').length).toBeGreaterThan(0);
   });
 
   it('adds an item to a quadrant', async () => {
@@ -133,17 +172,12 @@ describe('SwotPage Component', () => {
       ],
     });
 
-    render(
-      <QueryClientProvider client={queryClient}>
-        <SwotPage />
-      </QueryClientProvider>
-    );
+    renderWithProviders(<SwotPage />);
 
     await waitFor(() => {
       expect(screen.getByText('Equipo técnico de alta velocidad')).toBeInTheDocument();
     });
 
-    // Find and click "Añadir elemento" in strengths quadrant
     const allAddBtns = screen.getAllByText('Añadir elemento');
     fireEvent.click(allAddBtns[0]);
 
@@ -161,6 +195,29 @@ describe('SwotPage Component', () => {
     });
   });
 
+  it('updates item status (dismisses item)', async () => {
+    vi.mocked(swotService.getLatestSwot).mockResolvedValue(mockSwot);
+    vi.mocked(swotService.updateItemStatus).mockResolvedValue({
+      ...mockSwot,
+      strengths: [
+        { ...mockSwot.strengths[0], status: 'DISMISSED' },
+      ],
+    });
+
+    renderWithProviders(<SwotPage />);
+
+    await waitFor(() => {
+      expect(screen.getByText('Equipo técnico de alta velocidad')).toBeInTheDocument();
+    });
+
+    const dismissBtns = screen.getAllByLabelText('Descartar elemento');
+    fireEvent.click(dismissBtns[0]);
+
+    await waitFor(() => {
+      expect(swotService.updateItemStatus).toHaveBeenCalledWith('swot-123', 's-1', 'DISMISSED');
+    });
+  });
+
   it('removes an item from a quadrant', async () => {
     vi.mocked(swotService.getLatestSwot).mockResolvedValue(mockSwot);
     vi.mocked(swotService.removeItem).mockResolvedValue({
@@ -168,11 +225,7 @@ describe('SwotPage Component', () => {
       strengths: [],
     });
 
-    render(
-      <QueryClientProvider client={queryClient}>
-        <SwotPage />
-      </QueryClientProvider>
-    );
+    renderWithProviders(<SwotPage />);
 
     await waitFor(() => {
       expect(screen.getByText('Equipo técnico de alta velocidad')).toBeInTheDocument();
@@ -186,7 +239,7 @@ describe('SwotPage Component', () => {
     });
   });
 
-  it('opens and closes evidence modal', async () => {
+  it('opens and closes evidence modal with linked trend signal', async () => {
     vi.mocked(swotService.getLatestSwot).mockResolvedValue(mockSwot);
     vi.mocked(swotService.getEvidence).mockResolvedValue([
       {
@@ -204,17 +257,12 @@ describe('SwotPage Component', () => {
       },
     ]);
 
-    render(
-      <QueryClientProvider client={queryClient}>
-        <SwotPage />
-      </QueryClientProvider>
-    );
+    renderWithProviders(<SwotPage />);
 
     await waitFor(() => {
       expect(screen.getByText('Evidencias de Mercado')).toBeInTheDocument();
     });
 
-    // Click button to open modal
     fireEvent.click(screen.getByText('Evidencias de Mercado'));
 
     await waitFor(() => {
@@ -223,7 +271,6 @@ describe('SwotPage Component', () => {
       expect(screen.getByText('95/100')).toBeInTheDocument();
     });
 
-    // Close modal
     const closeBtn = screen.getByLabelText('Cerrar modal');
     fireEvent.click(closeBtn);
 

@@ -21,4 +21,13 @@ public class AddSwotItemRequest {
 
     @Builder.Default
     private List<String> evidenceIds = new ArrayList<>();
+
+    private String confidence;
+
+    private String impact;
+
+    private String source;
+
+    private String status;
 }
+

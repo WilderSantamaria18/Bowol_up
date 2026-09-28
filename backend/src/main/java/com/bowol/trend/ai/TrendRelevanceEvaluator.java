@@ -103,7 +103,7 @@ public class TrendRelevanceEvaluator {
                 Map<String, Object> eventData = new LinkedHashMap<>();
                 eventData.put("trend_id", trendId.toString());
                 eventData.put("title", trend.getTitle());
-                eventData.put("source", trend.getSource() != null ? trend.getSource().name() : "MARKET");
+                eventData.put("source", trend.getSource() != null ? trend.getSource().getName() : "MARKET");
                 eventData.put("score", score);
                 eventData.put("ai_summary", aiSummary);
                 eventData.put("tags", tags);

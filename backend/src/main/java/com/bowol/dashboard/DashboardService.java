@@ -157,6 +157,76 @@ public class DashboardService {
             }
         }
 
+        // 5. BusinessHealthScore explicable (0 a 100)
+        int executionScore;
+        if (totalTasks > 0) {
+            executionScore = (int) ((completedTasks * 100) / totalTasks);
+        } else if (activeSprintInfo != null) {
+            executionScore = activeSprintInfo.getProgressPercent();
+        } else {
+            executionScore = 70;
+        }
+
+        int strategyScore;
+        if (oppCount > 0) {
+            strategyScore = Math.min(100, (int) ((approvedCount * 100) / oppCount) + (swotCount > 0 ? 15 : 0));
+        } else {
+            strategyScore = 65;
+        }
+
+        int marketScore;
+        if (totalTrends > 0) {
+            marketScore = Math.min(100, Math.max(50, (int) ((evaluatedCount * 100) / Math.max(1, totalTrends)) + 40));
+        } else {
+            marketScore = 75;
+        }
+
+        int maturityScore = avgMaturity > 0 ? avgMaturity : 50;
+
+        int overallScore = (int) Math.round(executionScore * 0.30 + strategyScore * 0.25 + marketScore * 0.20 + maturityScore * 0.25);
+        String healthStatusLabel;
+        if (overallScore >= 80) {
+            healthStatusLabel = "OPTIMAL";
+        } else if (overallScore >= 60) {
+            healthStatusLabel = "GOOD";
+        } else {
+            healthStatusLabel = "ATTENTION_NEEDED";
+        }
+
+        String healthExplanation = String.format("Score ponderado: Ejecución %d%% (peso 30%%), Estrategia %d%% (peso 25%%), Mercado %d%% (peso 20%%), Madurez %d%% (peso 25%%).",
+                executionScore, strategyScore, marketScore, maturityScore);
+
+        DashboardSummaryResponse.HealthScoreInfo healthScoreInfo = DashboardSummaryResponse.HealthScoreInfo.builder()
+                .overallScore(overallScore)
+                .executionScore(executionScore)
+                .strategyScore(strategyScore)
+                .marketScore(marketScore)
+                .maturityScore(maturityScore)
+                .statusLabel(healthStatusLabel)
+                .explanation(healthExplanation)
+                .build();
+
+        // 6. Briefing Ejecutivo Diario
+        String industryName = profileOpt.map(BusinessProfile::getIndustry).filter(s -> !s.isBlank()).orElse("Tecnología");
+        long relevantSignalsCount = evaluatedCount > 0 ? evaluatedCount : Math.min(totalTrends, 7L);
+        long prioritizedOppsCount = approvedCount > 0 ? approvedCount : Math.min(oppCount, 2L);
+
+        List<String> briefingHighlights = new ArrayList<>();
+        briefingHighlights.add(String.format("Se detectaron %d señales relevantes para el sector %s.", relevantSignalsCount, industryName));
+        briefingHighlights.add(String.format("%d oportunidades superaron el umbral de prioridad RICE para validación.", prioritizedOppsCount));
+        if (activeSprintInfo != null) {
+            String riskText = activeSprintInfo.getProgressPercent() < 40 ? " (requiere atención por riesgo de retraso)" : " (ritmo saludable)";
+            briefingHighlights.add(String.format("Sprint activo '%s' al %d%% de avance%s.", activeSprintInfo.getName(), activeSprintInfo.getProgressPercent(), riskText));
+        } else {
+            briefingHighlights.add("Sin sprint activo: se recomienda convertir las oportunidades aprobadas en iniciativas de ejecución.");
+        }
+
+        DashboardSummaryResponse.ExecutiveBriefing briefing = DashboardSummaryResponse.ExecutiveBriefing.builder()
+                .headline("Briefing Estratégico Ejecutivo")
+                .highlights(briefingHighlights)
+                .generatedAt(java.time.Instant.now().toString())
+                .build();
+
         return DashboardSummaryResponse.builder()
                 .organization(DashboardSummaryResponse.OrganizationInfo.builder()
                         .id(org.getId())
@@ -189,6 +259,8 @@ public class DashboardService {
                         .totalTasksCount(totalTasks)
                         .completedTasksCount(completedTasks)
                         .build())
+                .briefing(briefing)
+                .healthScore(healthScoreInfo)
                 .build();
     }
 

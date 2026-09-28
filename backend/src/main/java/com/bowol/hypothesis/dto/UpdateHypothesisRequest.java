@@ -12,6 +12,14 @@ public class UpdateHypothesisRequest {
 
     private String statement;
 
+    private String targetSegment;
+
+    private String problemStatement;
+
+    private String solutionProposal;
+
+    private String expectedOutcome;
+
     private String validationMethod;
 
     private String successMetric;

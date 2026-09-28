@@ -4,6 +4,8 @@ import { Alert } from '@/components/ui/Alert';
 import { dashboardService } from '../services/dashboardService';
 import { trendService } from '@/features/trends/services/trendService';
 import { BentoDashboardHeader } from './BentoDashboardHeader';
+import { ExecutiveDailyBriefing } from './ExecutiveDailyBriefing';
+import { StrategicTraceabilityFlow } from './StrategicTraceabilityFlow';
 import { BentoMetricsRow } from './BentoMetricsRow';
 import { BentoRadarTable } from './BentoRadarTable';
 import { BentoSwotSynthesis } from './BentoSwotSynthesis';
@@ -67,7 +69,17 @@ export const ExecutiveCockpit: React.FC = () => {
         </Alert>
       )}
 
-      {/* 1. Métricas Bento Superiores (Grid 12 col) */}
+      {/* 1. Briefing Ejecutivo Diario */}
+      <ExecutiveDailyBriefing
+        briefing={summary.briefing}
+        healthScore={summary.healthScore}
+        organizationName={summary.organization.name}
+      />
+
+      {/* 2. Ciclo de Trazabilidad Estratégica (Señal -> Tendencia -> Evidencia -> Oportunidad -> Hipótesis -> Experimento -> Tarea) */}
+      <StrategicTraceabilityFlow />
+
+      {/* 3. Métricas Bento Superiores (Grid 12 col) */}
       <BentoMetricsRow summary={summary} />
 
       {/* 2. Sección Media Bento: Radar de Tendencias (8 cols) & Síntesis FODA (4 cols) */}

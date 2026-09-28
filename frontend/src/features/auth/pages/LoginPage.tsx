@@ -124,6 +124,50 @@ export const LoginPage: React.FC = () => {
             </Button>
           </form>
 
+          <div className="relative flex items-center justify-center my-4">
+            <div className="border-t border-zinc-200 dark:border-zinc-800 w-full" />
+            <span className="bg-white dark:bg-zinc-900 px-3 text-[11px] text-zinc-500 uppercase tracking-wider font-mono absolute">
+              o Enterprise
+            </span>
+          </div>
+
+          <Button
+            type="button"
+            variant="outline"
+            size="md"
+            className="w-full font-medium text-xs border-zinc-300 dark:border-zinc-800 hover:bg-zinc-100 dark:hover:bg-zinc-800/80 text-zinc-700 dark:text-zinc-200"
+            onClick={async () => {
+              if (!email || !email.includes('@')) {
+                setErrorProblem({
+                  status: 400,
+                  title: 'Correo corporativo requerido',
+                  detail: 'Ingresa tu correo empresarial arriba para detectar tu proveedor SSO corporativo.',
+                });
+                return;
+              }
+              setIsLoading(true);
+              setErrorProblem(null);
+              try {
+                const { ssoService } = await import('@/features/organization/services/ssoService');
+                const res = await ssoService.initiate(email);
+                if (res.authorizationUrl) {
+                  window.location.href = res.authorizationUrl;
+                }
+              } catch (err: unknown) {
+                const problem = err as ProblemDetail;
+                setErrorProblem(problem || {
+                  status: 404,
+                  title: 'SSO no configurado',
+                  detail: 'No se encontró un proveedor SSO activo para tu dominio corporativo.',
+                });
+              } finally {
+                setIsLoading(false);
+              }
+            }}
+          >
+            Continuar con SSO Corporativo (Google / Azure AD)
+          </Button>
+
           <div className="pt-4 text-center text-xs text-zinc-600 dark:text-zinc-400 border-t border-zinc-200/90 dark:border-zinc-800">
             ¿No tienes una cuenta aún?{' '}
             <Link to="/register" className="font-bold text-orange-600 dark:text-orange-400 hover:text-orange-500 hover:underline transition-colors">

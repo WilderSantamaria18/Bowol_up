@@ -11,6 +11,7 @@ import com.bowol.source.TrendSourceRepository;
 import com.bowol.swot.dto.AddSwotItemRequest;
 import com.bowol.swot.dto.GenerateSwotRequest;
 import com.bowol.swot.dto.SwotItem;
+import com.bowol.swot.dto.UpdateSwotItemStatusRequest;
 import com.bowol.swot.dto.UpdateSwotRequest;
 import com.bowol.trend.Trend;
 import com.bowol.trend.TrendRepository;
@@ -27,6 +28,8 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.ArrayList;
 
 import java.util.List;
 import java.util.Map;
@@ -360,5 +363,35 @@ class SwotControllerTests {
         mockMvc.perform(get("/api/v1/swot/" + swotOrgA.getId())
                         .header("Authorization", "Bearer " + jwtOrgB))
                 .andExpect(status().isNotFound());
+    }
+
+    @Test
+    @DisplayName("PATCH /api/v1/swot/{id}/items/{itemId}/status updates item status (ACTIVE, CONVERTED, DISMISSED)")
+    void testUpdateItemStatus() throws Exception {
+        SwotItem item = SwotItem.builder()
+                .id(UUID.randomUUID().toString())
+                .text("Liderazgo en agentes autónomos")
+                .type("STRENGTHS")
+                .status("ACTIVE")
+                .build();
+
+        SwotAnalysis swot = swotAnalysisRepository.save(SwotAnalysis.builder()
+                .organizationId(testOrg.getId())
+                .strengths(new ArrayList<>(List.of(item)))
+                .build());
+
+        UpdateSwotItemStatusRequest statusReq = UpdateSwotItemStatusRequest.builder()
+                .status("CONVERTED")
+                .build();
+
+        mockMvc.perform(patch("/api/v1/swot/" + swot.getId() + "/items/" + item.getId() + "/status")
+                        .header("Authorization", "Bearer " + jwtToken)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(statusReq)))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.strengths[0].status").value("CONVERTED"));
+
+        SwotAnalysis updated = swotAnalysisRepository.findById(swot.getId()).orElseThrow();
+        assertThat(updated.getStrengths().get(0).getStatus()).isEqualTo("CONVERTED");
     }
 }

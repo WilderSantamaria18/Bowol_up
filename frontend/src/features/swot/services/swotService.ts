@@ -32,6 +32,10 @@ export const swotService = {
     return httpClient.delete(`/swot/${id}/items/${itemId}`);
   },
 
+  async updateItemStatus(id: string, itemId: string, status: string): Promise<SwotAnalysis> {
+    return httpClient.patch(`/swot/${id}/items/${itemId}/status`, { status });
+  },
+
   async getEvidence(id: string): Promise<EvidenceRef[]> {
     return httpClient.get(`/swot/${id}/evidence`);
   },

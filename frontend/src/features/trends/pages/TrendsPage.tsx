@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import {
   BookmarkCheck,
@@ -12,6 +13,7 @@ import { TrendList } from '../components/TrendList';
 import { TrendDetailModal } from '../components/TrendDetailModal';
 
 export const TrendsPage: React.FC = () => {
+  const navigate = useNavigate();
   const queryClient = useQueryClient();
 
   const [activeTab, setActiveTab] = useState<'all' | 'for-me'>('all');
@@ -269,6 +271,9 @@ export const TrendsPage: React.FC = () => {
         onSaveRelevance={handleSaveRelevance}
         onDismissRelevance={handleDismissRelevance}
         onEvaluateWithAi={async (trendId: string) => await evaluateMutation.mutateAsync(trendId)}
+        onConvertToOpportunity={(title, desc) => {
+          navigate(`/opportunities?create=true&title=${encodeURIComponent(title)}&description=${encodeURIComponent(desc)}`);
+        }}
       />
     </div>
   );

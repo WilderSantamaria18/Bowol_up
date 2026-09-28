@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { Check } from 'lucide-react';
 
 interface CycleStep {
   number: string;
@@ -263,9 +264,9 @@ export const LandingContinuousCycle: React.FC = () => {
                   )}
 
                   {activeStep === 3 && (
-                    <div className="p-6 rounded-2xl bg-white dark:bg-white/[0.03] border border-zinc-200/80 dark:border-white/5 mt-6 text-center space-y-3 shadow-sm">
-                      <div className="w-10 h-10 rounded-full bg-emerald-500/15 border border-emerald-500/30 text-emerald-600 dark:text-emerald-400 flex items-center justify-center mx-auto font-bold text-sm">
-                        ✓
+                    <div className="mt-6 p-6 rounded-2xl bg-emerald-500/10 border border-emerald-500/20 text-center space-y-3">
+                      <div className="w-10 h-10 rounded-full bg-emerald-500/15 border border-emerald-500/30 text-emerald-600 dark:text-emerald-400 flex items-center justify-center mx-auto">
+                        <Check className="w-5 h-5" strokeWidth={2} />
                       </div>
                       <h4 className="text-base font-semibold text-zinc-900 dark:text-white">Loop Retroalimentado con Éxito</h4>
                       <p className="text-xs text-zinc-600 dark:text-zinc-400 max-w-md mx-auto leading-relaxed">

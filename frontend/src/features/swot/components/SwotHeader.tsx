@@ -8,6 +8,8 @@ interface SwotHeaderProps {
   onOpenEvidences?: () => void;
   isGenerating?: boolean;
   hasSwot?: boolean;
+  showDismissed?: boolean;
+  onToggleShowDismissed?: () => void;
 }
 
 export const SwotHeader: React.FC<SwotHeaderProps> = ({
@@ -15,6 +17,8 @@ export const SwotHeader: React.FC<SwotHeaderProps> = ({
   onOpenEvidences,
   isGenerating = false,
   hasSwot = false,
+  showDismissed = true,
+  onToggleShowDismissed,
 }) => {
   const { openCopilot } = useCopilot();
 
@@ -35,6 +39,17 @@ export const SwotHeader: React.FC<SwotHeaderProps> = ({
       </div>
 
       <div className="flex flex-wrap items-center gap-2.5">
+        {hasSwot && onToggleShowDismissed && (
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={onToggleShowDismissed}
+            className="text-xs text-zinc-400 hover:text-white"
+          >
+            {showDismissed ? 'Ocultar descartados' : 'Mostrar descartados'}
+          </Button>
+        )}
+
         {hasSwot && onOpenEvidences && (
           <Button
             variant="ghost"

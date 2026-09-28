@@ -111,7 +111,12 @@ class DashboardControllerTests {
                 .andExpect(jsonPath("$.maturity.onboardingCompleted").value(true))
                 .andExpect(jsonPath("$.trends.totalGlobalTrends").isNumber())
                 .andExpect(jsonPath("$.strategy.opportunitiesCount").isNumber())
-                .andExpect(jsonPath("$.execution.activeProjectsCount").isNumber());
+                .andExpect(jsonPath("$.execution.activeProjectsCount").isNumber())
+                .andExpect(jsonPath("$.briefing.headline").isNotEmpty())
+                .andExpect(jsonPath("$.briefing.highlights").isArray())
+                .andExpect(jsonPath("$.healthScore.overallScore").isNumber())
+                .andExpect(jsonPath("$.healthScore.statusLabel").isString())
+                .andExpect(jsonPath("$.healthScore.explanation").isNotEmpty());
     }
 
     @Test

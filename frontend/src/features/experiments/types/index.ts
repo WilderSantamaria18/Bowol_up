@@ -10,9 +10,13 @@ export interface Experiment {
   startDate?: string;
   endDate?: string;
   status: ExperimentStatus;
+  ownerName?: string;
+  budget?: number;
+  targetMetric?: string;
   resultMetric?: string;
   resultValue?: string;
   conclusion?: string;
+  evidenceNotes?: string;
   createdAt: string;
   updatedAt?: string;
 }
@@ -25,8 +29,12 @@ export interface CreateExperimentPayload {
   startDate?: string;
   endDate?: string;
   status?: ExperimentStatus;
+  ownerName?: string;
+  budget?: number;
+  targetMetric?: string;
   resultMetric?: string;
   resultValue?: string;
+  evidenceNotes?: string;
 }
 
 export interface UpdateExperimentPayload {
@@ -36,9 +44,13 @@ export interface UpdateExperimentPayload {
   startDate?: string;
   endDate?: string;
   status?: ExperimentStatus;
+  ownerName?: string;
+  budget?: number;
+  targetMetric?: string;
   resultMetric?: string;
   resultValue?: string;
   conclusion?: string;
+  evidenceNotes?: string;
 }
 
 export interface UpdateExperimentStatusPayload {

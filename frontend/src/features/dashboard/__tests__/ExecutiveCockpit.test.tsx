@@ -69,6 +69,24 @@ const mockSummary: DashboardSummary = {
     totalTasksCount: 15,
     completedTasksCount: 10,
   },
+  briefing: {
+    headline: 'Briefing Estratégico Ejecutivo',
+    highlights: [
+      'Se detectaron 4 señales relevantes para tu sector.',
+      '2 oportunidades superaron el umbral de prioridad RICE.',
+      'Sprint activo al 75% de avance.',
+    ],
+    generatedAt: '2026-09-28T18:00:00Z',
+  },
+  healthScore: {
+    overallScore: 82,
+    executionScore: 75,
+    strategyScore: 80,
+    marketScore: 85,
+    maturityScore: 73,
+    statusLabel: 'OPTIMAL',
+    explanation: 'Score ponderado de ejecución, estrategia, mercado y madurez.',
+  },
 };
 
 vi.mock('../services/dashboardService', () => ({
@@ -104,6 +122,17 @@ describe('ExecutiveCockpit Component', () => {
     // Esperar a que se resuelva la consulta
     expect(await screen.findByText('Visión Estratégica')).toBeInTheDocument();
     expect(screen.getByText('AI Innovations Labs')).toBeInTheDocument();
+
+    // Validar Briefing Ejecutivo y Salud del Negocio
+    expect(screen.getByText('Briefing Estratégico Ejecutivo')).toBeInTheDocument();
+    expect(screen.getByText('Se detectaron 4 señales relevantes para tu sector.')).toBeInTheDocument();
+    expect(screen.getByText('Salud del Negocio')).toBeInTheDocument();
+    expect(screen.getByText('82')).toBeInTheDocument();
+
+    // Validar Ciclo de Trazabilidad Estratégica
+    expect(screen.getByText('Ciclo de Trazabilidad Estratégica')).toBeInTheDocument();
+    expect(screen.getByText('Señal')).toBeInTheDocument();
+    expect(screen.getByText('Experimento')).toBeInTheDocument();
 
     // Validar indicadores
     expect(screen.getByText('Autonomous Code Refactoring Agents')).toBeInTheDocument();

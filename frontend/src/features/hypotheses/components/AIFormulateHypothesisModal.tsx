@@ -8,6 +8,7 @@ interface AIFormulateHypothesisModalProps {
   onClose: () => void;
   onFormulate: (opportunityId: string) => void;
   opportunities: Opportunity[];
+  initialOpportunityId?: string;
   isLoading?: boolean;
 }
 
@@ -16,9 +17,16 @@ export const AIFormulateHypothesisModal: React.FC<AIFormulateHypothesisModalProp
   onClose,
   onFormulate,
   opportunities = [],
+  initialOpportunityId,
   isLoading = false,
 }) => {
-  const [opportunityId, setOpportunityId] = useState('');
+  const [opportunityId, setOpportunityId] = useState(initialOpportunityId || '');
+
+  React.useEffect(() => {
+    if (initialOpportunityId) {
+      setOpportunityId(initialOpportunityId);
+    }
+  }, [initialOpportunityId]);
 
   const oppList = opportunities || [];
   const effectiveOppId = opportunityId || (oppList.length > 0 ? oppList[0].id : '');

@@ -19,13 +19,15 @@ import {
   Target,
   Layers,
   Menu,
-  Shield
+  Shield,
+  Search
 } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
 import { BrandLogo } from '@/components/ui/BrandLogo';
 import { ThemeToggle } from '@/components/ui/ThemeToggle';
 import { NavDropdown, NavDropdownItem } from './NavDropdown';
 import { MobileNavDrawer } from './MobileNavDrawer';
+import { CommandPalette } from '@/components/layout/CommandPalette';
 import { useAuth } from '@/features/auth/context/AuthContext';
 import { useCopilot } from '@/features/copilot/context/CopilotContext';
 import { CopilotDrawer } from '@/features/copilot/components/CopilotDrawer';
@@ -36,6 +38,19 @@ export const RootLayout: React.FC = () => {
   const { user, organization, isAuthenticated, logout } = useAuth();
   const { openCopilot } = useCopilot();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isCommandPaletteOpen, setIsCommandPaletteOpen] = useState(false);
+
+  // Global shortcut: Cmd+K / Ctrl+K
+  React.useEffect(() => {
+    const handleGlobalKeyDown = (e: KeyboardEvent) => {
+      if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k') {
+        e.preventDefault();
+        setIsCommandPaletteOpen(prev => !prev);
+      }
+    };
+    window.addEventListener('keydown', handleGlobalKeyDown);
+    return () => window.removeEventListener('keydown', handleGlobalKeyDown);
+  }, []);
 
   // Group 1: Estrategia & Radar
   const strategyItems: NavDropdownItem[] = [
@@ -149,6 +164,21 @@ export const RootLayout: React.FC = () => {
                   <BarChart3 className="w-3.5 h-3.5" strokeWidth={1.5} />
                   Cockpit
                 </Link>
+
+                {/* Command Palette Desktop Shortcut Trigger */}
+                <button
+                  type="button"
+                  onClick={() => setIsCommandPaletteOpen(true)}
+                  className="hidden xl:flex items-center gap-2 ml-2 px-2.5 py-1.5 rounded-lg text-xs font-medium bg-zinc-200/50 dark:bg-white/[0.04] border border-zinc-200/80 dark:border-white/10 text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white hover:border-zinc-300 dark:hover:border-white/20 transition-all shadow-sm"
+                  aria-label="Abrir paleta de comandos (⌘K)"
+                  title="Buscar módulos y acciones (⌘K)"
+                >
+                  <Search className="w-3.5 h-3.5" strokeWidth={1.5} />
+                  <span className="text-[11px]">Comandos</span>
+                  <kbd className="inline-flex items-center gap-0.5 text-[10px] font-mono px-1.5 py-0.5 rounded bg-zinc-100 dark:bg-zinc-800 text-zinc-500 dark:text-zinc-400 border border-zinc-200 dark:border-zinc-700/80">
+                    ⌘K
+                  </kbd>
+                </button>
               </nav>
             ) : (
               <nav className="hidden md:flex items-center gap-7 ml-4 text-[13px] font-medium text-zinc-600 dark:text-zinc-400">
@@ -173,6 +203,17 @@ export const RootLayout: React.FC = () => {
 
           {/* Right Actions */}
           <div className="flex items-center gap-2.5">
+            {/* Quick Search / Command Palette Icon for all users */}
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={() => setIsCommandPaletteOpen(true)}
+              aria-label="Buscar o abrir paleta de comandos (⌘K)"
+              title="Comandos (⌘K)"
+            >
+              <Search className="w-4 h-4 text-zinc-500 dark:text-zinc-400 hover:text-orange-500 dark:hover:text-orange-400 transition-colors" strokeWidth={1.5} />
+            </Button>
+
             {isAuthenticated ? (
               <>
                 <div className="hidden sm:flex items-center gap-2 mr-1">
@@ -296,12 +337,19 @@ export const RootLayout: React.FC = () => {
       <CopilotDrawer />
       <CopilotFloatingTrigger />
 
+      {/* Global Command Palette (Cmd+K / Ctrl+K) */}
+      <CommandPalette
+        isOpen={isCommandPaletteOpen}
+        onClose={() => setIsCommandPaletteOpen(false)}
+      />
+
       {/* Mobile Navigation Drawer */}
       <MobileNavDrawer
         isOpen={isMobileMenuOpen}
         onClose={() => setIsMobileMenuOpen(false)}
         groups={mobileNavGroups}
         standaloneLinks={standaloneLinks}
+        onOpenCommandPalette={() => setIsCommandPaletteOpen(true)}
       />
 
       {/* Footer only when not in landing mode (landing has its own rich footer) */}

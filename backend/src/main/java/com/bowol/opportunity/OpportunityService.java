@@ -173,11 +173,21 @@ public class OpportunityService {
 
                 if (title.isBlank()) continue;
 
+                String problem = node.path("problem").asText("");
+                String proposal = node.path("proposal").asText("");
+                String targetSegment = node.path("targetSegment").asText("");
+                String riskLevel = node.has("riskLevel") && !node.get("riskLevel").asText().isBlank()
+                        ? node.get("riskLevel").asText().toUpperCase() : "MEDIUM";
+
                 Opportunity opp = Opportunity.builder()
                         .organizationId(organizationId)
                         .swotAnalysisId(swotId)
                         .title(title)
                         .description(description)
+                        .problem(problem)
+                        .proposal(proposal)
+                        .targetSegment(targetSegment)
+                        .riskLevel(riskLevel)
                         .reachScore(reach)
                         .impactScore(impact)
                         .confidenceScore(confidence)
@@ -286,6 +296,12 @@ public class OpportunityService {
                 .swotAnalysisId(request.getSwotAnalysisId())
                 .title(request.getTitle().trim())
                 .description(request.getDescription())
+                .problem(request.getProblem())
+                .proposal(request.getProposal())
+                .targetSegment(request.getTargetSegment())
+                .riskLevel(request.getRiskLevel() != null && !request.getRiskLevel().isBlank() ? request.getRiskLevel().toUpperCase() : "MEDIUM")
+                .ownerName(request.getOwnerName())
+                .relatedTrendId(request.getRelatedTrendId())
                 .reachScore(request.getReachScore())
                 .impactScore(request.getImpactScore())
                 .confidenceScore(request.getConfidenceScore())
@@ -313,6 +329,24 @@ public class OpportunityService {
         }
         if (request.getDescription() != null) {
             opp.setDescription(request.getDescription());
+        }
+        if (request.getProblem() != null) {
+            opp.setProblem(request.getProblem());
+        }
+        if (request.getProposal() != null) {
+            opp.setProposal(request.getProposal());
+        }
+        if (request.getTargetSegment() != null) {
+            opp.setTargetSegment(request.getTargetSegment());
+        }
+        if (request.getRiskLevel() != null) {
+            opp.setRiskLevel(request.getRiskLevel().toUpperCase());
+        }
+        if (request.getOwnerName() != null) {
+            opp.setOwnerName(request.getOwnerName());
+        }
+        if (request.getRelatedTrendId() != null) {
+            opp.setRelatedTrendId(request.getRelatedTrendId());
         }
         if (request.getReachScore() != null) {
             opp.setReachScore(request.getReachScore());

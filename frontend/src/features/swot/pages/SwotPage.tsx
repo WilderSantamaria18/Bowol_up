@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { 
   ShieldCheck, 
   AlertTriangle, 
@@ -10,9 +11,10 @@ import {
   useLatestSwot, 
   useGenerateSwot, 
   useAddSwotItem, 
-  useRemoveSwotItem 
+  useRemoveSwotItem,
+  useUpdateSwotItemStatus
 } from '../hooks/useSwot';
-import { QuadrantType } from '../types';
+import { QuadrantType, SwotItem } from '../types';
 import { SwotHeader } from '../components/SwotHeader';
 import { QuadrantCard } from '../components/QuadrantCard';
 import { SwotSummaryCard } from '../components/SwotSummaryCard';
@@ -20,12 +22,16 @@ import { EvidenceDetailModal } from '../components/EvidenceDetailModal';
 import { Button } from '@/components/ui/Button';
 
 export const SwotPage: React.FC = () => {
+  const navigate = useNavigate();
   const { data: swot, isLoading } = useLatestSwot();
   const generateSwot = useGenerateSwot();
   const addSwotItem = useAddSwotItem(swot?.id || '');
   const removeSwotItem = useRemoveSwotItem(swot?.id || '');
+  const updateSwotItemStatus = useUpdateSwotItemStatus(swot?.id || '');
 
   const [isEvidenceModalOpen, setIsEvidenceModalOpen] = useState(false);
+  const [selectedEvidenceId, setSelectedEvidenceId] = useState<string | undefined>();
+  const [showDismissed, setShowDismissed] = useState(true);
 
   const handleGenerate = async () => {
     try {
@@ -43,6 +49,30 @@ export const SwotPage: React.FC = () => {
   const handleRemoveItem = async (itemId: string) => {
     if (!swot?.id) return;
     await removeSwotItem.mutateAsync(itemId);
+  };
+
+  const handleUpdateItemStatus = async (itemId: string, status: string) => {
+    if (!swot?.id) return;
+    await updateSwotItemStatus.mutateAsync({ itemId, status });
+  };
+
+  const handleOpenEvidence = (evidenceId?: string) => {
+    setSelectedEvidenceId(evidenceId);
+    setIsEvidenceModalOpen(true);
+  };
+
+  const handleConvertToOpportunity = (item: SwotItem) => {
+    const textContent = item.statement || item.text;
+    const titleParam = encodeURIComponent(textContent);
+    const descParam = encodeURIComponent(`Iniciativa derivada directamente de la matriz FODA (${item.type || 'Estrategia'}).`);
+    const evParam = item.evidenceIds?.[0] ? `&evidenceId=${encodeURIComponent(item.evidenceIds[0])}` : '';
+    navigate(`/opportunities?create=true&title=${titleParam}&description=${descParam}&source=SWOT&swotItemId=${item.id}${evParam}`);
+  };
+
+  const handleConvertToHypothesis = (item: SwotItem) => {
+    const textContent = item.statement || item.text;
+    const stmtParam = encodeURIComponent(`Creemos que abordar "${textContent}" generará una ventaja estratégica validada para la empresa.`);
+    navigate(`/hypotheses?create=true&statement=${stmtParam}&source=SWOT&swotItemId=${item.id}`);
   };
 
   if (isLoading) {
@@ -65,9 +95,11 @@ export const SwotPage: React.FC = () => {
       {/* Header */}
       <SwotHeader
         onGenerate={handleGenerate}
-        onOpenEvidences={() => setIsEvidenceModalOpen(true)}
+        onOpenEvidences={() => handleOpenEvidence(undefined)}
         isGenerating={generateSwot.isPending}
         hasSwot={!!swot}
+        showDismissed={showDismissed}
+        onToggleShowDismissed={() => setShowDismissed(!showDismissed)}
       />
 
       {/* Empty State */}
@@ -121,7 +153,11 @@ export const SwotPage: React.FC = () => {
               }}
               onAddItem={(text) => handleAddItem('strengths', text)}
               onRemoveItem={handleRemoveItem}
-              onOpenEvidence={() => setIsEvidenceModalOpen(true)}
+              onUpdateItemStatus={handleUpdateItemStatus}
+              onOpenEvidence={handleOpenEvidence}
+              onConvertToOpportunity={handleConvertToOpportunity}
+              onConvertToHypothesis={handleConvertToHypothesis}
+              showDismissed={showDismissed}
             />
 
             {/* Weaknesses */}
@@ -140,7 +176,11 @@ export const SwotPage: React.FC = () => {
               }}
               onAddItem={(text) => handleAddItem('weaknesses', text)}
               onRemoveItem={handleRemoveItem}
-              onOpenEvidence={() => setIsEvidenceModalOpen(true)}
+              onUpdateItemStatus={handleUpdateItemStatus}
+              onOpenEvidence={handleOpenEvidence}
+              onConvertToOpportunity={handleConvertToOpportunity}
+              onConvertToHypothesis={handleConvertToHypothesis}
+              showDismissed={showDismissed}
             />
 
             {/* Opportunities */}
@@ -159,7 +199,11 @@ export const SwotPage: React.FC = () => {
               }}
               onAddItem={(text) => handleAddItem('opportunities', text)}
               onRemoveItem={handleRemoveItem}
-              onOpenEvidence={() => setIsEvidenceModalOpen(true)}
+              onUpdateItemStatus={handleUpdateItemStatus}
+              onOpenEvidence={handleOpenEvidence}
+              onConvertToOpportunity={handleConvertToOpportunity}
+              onConvertToHypothesis={handleConvertToHypothesis}
+              showDismissed={showDismissed}
             />
 
             {/* Threats */}
@@ -178,7 +222,11 @@ export const SwotPage: React.FC = () => {
               }}
               onAddItem={(text) => handleAddItem('threats', text)}
               onRemoveItem={handleRemoveItem}
-              onOpenEvidence={() => setIsEvidenceModalOpen(true)}
+              onUpdateItemStatus={handleUpdateItemStatus}
+              onOpenEvidence={handleOpenEvidence}
+              onConvertToOpportunity={handleConvertToOpportunity}
+              onConvertToHypothesis={handleConvertToHypothesis}
+              showDismissed={showDismissed}
             />
           </div>
         </>
@@ -188,8 +236,12 @@ export const SwotPage: React.FC = () => {
       {swot?.id && (
         <EvidenceDetailModal
           isOpen={isEvidenceModalOpen}
-          onClose={() => setIsEvidenceModalOpen(false)}
+          onClose={() => {
+            setIsEvidenceModalOpen(false);
+            setSelectedEvidenceId(undefined);
+          }}
           swotId={swot.id}
+          selectedEvidenceId={selectedEvidenceId}
         />
       )}
     </div>

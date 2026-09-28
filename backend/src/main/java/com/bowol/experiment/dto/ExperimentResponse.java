@@ -23,9 +23,13 @@ public class ExperimentResponse {
     private LocalDate startDate;
     private LocalDate endDate;
     private ExperimentStatus status;
+    private String ownerName;
+    private java.math.BigDecimal budget;
+    private String targetMetric;
     private String resultMetric;
     private String resultValue;
     private String conclusion;
+    private String evidenceNotes;
     private Instant createdAt;
     private Instant updatedAt;
 
@@ -41,9 +45,13 @@ public class ExperimentResponse {
                 .startDate(e.getStartDate())
                 .endDate(e.getEndDate())
                 .status(e.getStatus())
+                .ownerName(e.getOwnerName())
+                .budget(e.getBudget())
+                .targetMetric(e.getTargetMetric())
                 .resultMetric(e.getResultMetric())
                 .resultValue(e.getResultValue())
                 .conclusion(e.getConclusion())
+                .evidenceNotes(e.getEvidenceNotes())
                 .createdAt(e.getCreatedAt())
                 .updatedAt(e.getUpdatedAt())
                 .build();

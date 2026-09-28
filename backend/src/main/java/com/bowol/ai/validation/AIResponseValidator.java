@@ -103,14 +103,18 @@ public class AIResponseValidator {
         if (root.has(quadrantKey) && root.get(quadrantKey).isArray()) {
             for (JsonNode itemNode : root.get(quadrantKey)) {
                 if (itemNode.isTextual() && !itemNode.asText().isBlank()) {
-                    items.add(com.bowol.swot.dto.SwotItem.of(itemNode.asText().trim()));
+                    com.bowol.swot.dto.SwotItem item = com.bowol.swot.dto.SwotItem.of(itemNode.asText().trim());
+                    item.setType(quadrantKey.toUpperCase());
+                    item.setSource(quadrantKey.equalsIgnoreCase("strengths") || quadrantKey.equalsIgnoreCase("weaknesses")
+                            ? "INTERNAL_PROFILE" : "TREND_RADAR");
+                    items.add(item);
                 } else if (itemNode.isObject()) {
                     String id = itemNode.has("id") && itemNode.get("id").isTextual()
                             ? itemNode.get("id").asText()
                             : java.util.UUID.randomUUID().toString();
-                    String text = itemNode.has("text") && itemNode.get("text").isTextual()
-                            ? itemNode.get("text").asText().trim()
-                            : "";
+                    String text = itemNode.has("statement") && itemNode.get("statement").isTextual()
+                            ? itemNode.get("statement").asText().trim()
+                            : (itemNode.has("text") && itemNode.get("text").isTextual() ? itemNode.get("text").asText().trim() : "");
                     List<String> evidenceIds = new ArrayList<>();
                     if (itemNode.has("evidenceIds") && itemNode.get("evidenceIds").isArray()) {
                         for (JsonNode ev : itemNode.get("evidenceIds")) {
@@ -119,8 +123,29 @@ public class AIResponseValidator {
                             }
                         }
                     }
+                    String confidence = itemNode.has("confidence") && itemNode.get("confidence").isTextual()
+                            ? itemNode.get("confidence").asText().toUpperCase() : "HIGH";
+                    String impact = itemNode.has("impact") && itemNode.get("impact").isTextual()
+                            ? itemNode.get("impact").asText().toUpperCase() : "HIGH";
+                    String defaultSource = (quadrantKey.equalsIgnoreCase("strengths") || quadrantKey.equalsIgnoreCase("weaknesses"))
+                            ? "INTERNAL_PROFILE" : "TREND_RADAR";
+                    String source = itemNode.has("source") && itemNode.get("source").isTextual()
+                            ? itemNode.get("source").asText() : defaultSource;
+                    String status = itemNode.has("status") && itemNode.get("status").isTextual()
+                            ? itemNode.get("status").asText().toUpperCase() : "ACTIVE";
+
                     if (!text.isBlank()) {
-                        items.add(com.bowol.swot.dto.SwotItem.builder().id(id).text(text).evidenceIds(evidenceIds).build());
+                        items.add(com.bowol.swot.dto.SwotItem.builder()
+                                .id(id)
+                                .text(text)
+                                .type(quadrantKey.toUpperCase())
+                                .evidenceIds(evidenceIds)
+                                .confidence(confidence)
+                                .impact(impact)
+                                .source(source)
+                                .status(status)
+                                .createdAt(java.time.Instant.now())
+                                .build());
                     }
                 }
             }

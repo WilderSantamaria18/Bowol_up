@@ -93,6 +93,10 @@ public class HypothesisService {
                 .organizationId(orgId)
                 .opportunityId(opp.getId())
                 .statement(request.getStatement())
+                .targetSegment(request.getTargetSegment() != null ? request.getTargetSegment() : opp.getTargetSegment())
+                .problemStatement(request.getProblemStatement() != null ? request.getProblemStatement() : opp.getProblem())
+                .solutionProposal(request.getSolutionProposal() != null ? request.getSolutionProposal() : opp.getProposal())
+                .expectedOutcome(request.getExpectedOutcome())
                 .validationMethod(request.getValidationMethod())
                 .successMetric(request.getSuccessMetric())
                 .targetValue(request.getTargetValue())
@@ -111,6 +115,18 @@ public class HypothesisService {
 
         if (request.getStatement() != null && !request.getStatement().isBlank()) {
             hypothesis.setStatement(request.getStatement().trim());
+        }
+        if (request.getTargetSegment() != null) {
+            hypothesis.setTargetSegment(request.getTargetSegment().trim());
+        }
+        if (request.getProblemStatement() != null) {
+            hypothesis.setProblemStatement(request.getProblemStatement().trim());
+        }
+        if (request.getSolutionProposal() != null) {
+            hypothesis.setSolutionProposal(request.getSolutionProposal().trim());
+        }
+        if (request.getExpectedOutcome() != null) {
+            hypothesis.setExpectedOutcome(request.getExpectedOutcome().trim());
         }
         if (request.getValidationMethod() != null) {
             hypothesis.setValidationMethod(request.getValidationMethod().trim());
@@ -220,6 +236,9 @@ public class HypothesisService {
                 .organizationId(organizationId)
                 .opportunityId(opp.getId())
                 .statement(statement)
+                .targetSegment(opp.getTargetSegment())
+                .problemStatement(opp.getProblem())
+                .solutionProposal(opp.getProposal())
                 .validationMethod(validationMethod)
                 .successMetric(successMetric)
                 .targetValue(targetValue)

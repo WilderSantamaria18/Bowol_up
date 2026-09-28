@@ -19,6 +19,14 @@ export const AnimatedLogoCompanion: React.FC = () => {
   const containerRef = useRef<HTMLDivElement>(null);
   const positionerRef = useRef<HTMLDivElement>(null);
   const wordmarkRef = useRef<SVGGElement>(null);
+
+  // Letras individuales para dispersión radial
+  const letterBRef = useRef<SVGPathElement>(null);
+  const letterO1Ref = useRef<SVGPathElement>(null);
+  const letterWRef = useRef<SVGPathElement>(null);
+  const letterO2Ref = useRef<SVGPathElement>(null);
+  const letterLRef = useRef<SVGPathElement>(null);
+
   const flameGroupRef = useRef<SVGGElement>(null);
   const flameInnerRef = useRef<SVGPathElement>(null);
   const flameGlowRef = useRef<SVGEllipseElement>(null);
@@ -30,18 +38,17 @@ export const AnimatedLogoCompanion: React.FC = () => {
   const [ctaHref, setCtaHref] = useState('#flujo');
   const [ctaCoords, setCtaCoords] = useState({ top: 0, left: 0 });
 
-  // Interactive states
+  // Estados interactivos
   const [isHovered, setIsHovered] = useState(false);
   const [boostActive, setBoostActive] = useState(false);
   const [particles, setParticles] = useState<Particle[]>([]);
 
-  // Smooth Interactive Impulse on Click
+  // Impulso interactivo al hacer clic
   const triggerImpulse = useCallback(() => {
     if (!rocketRef.current || !wingsRef.current || !flameInnerRef.current || boostActive) return;
 
     setBoostActive(true);
 
-    // Smooth rotational impulse with elegant cubic bezier
     gsap.to([rocketRef.current, wingsRef.current], {
       rotation: '+=360',
       transformOrigin: '6450px 6400px',
@@ -50,7 +57,6 @@ export const AnimatedLogoCompanion: React.FC = () => {
       overwrite: 'auto',
     });
 
-    // Elegant flame stretch
     gsap.to(flameInnerRef.current, {
       scaleY: 1.8,
       scaleX: 1.25,
@@ -60,7 +66,6 @@ export const AnimatedLogoCompanion: React.FC = () => {
       ease: 'power2.out',
     });
 
-    // Subtle propellant particle sparks
     const r = positionerRef.current?.getBoundingClientRect();
     if (r) {
       const originX = r.left + r.width / 2;
@@ -82,7 +87,7 @@ export const AnimatedLogoCompanion: React.FC = () => {
     }, 1150);
   }, [boostActive]);
 
-  // Particle physics loop using requestAnimationFrame
+  // Loop de partículas
   useEffect(() => {
     if (particles.length === 0) return;
     let animId: number;
@@ -108,7 +113,7 @@ export const AnimatedLogoCompanion: React.FC = () => {
 
     animId = requestAnimationFrame(step);
     return () => cancelAnimationFrame(animId);
-  }, [particles.length > 0]);
+  }, [particles.length]);
 
   useEffect(() => {
     const positioner = positionerRef.current;
@@ -119,6 +124,12 @@ export const AnimatedLogoCompanion: React.FC = () => {
     const rocket = rocketRef.current;
     const wings = wingsRef.current;
 
+    const letterB = letterBRef.current;
+    const letterO1 = letterO1Ref.current;
+    const letterW = letterWRef.current;
+    const letterO2 = letterO2Ref.current;
+    const letterL = letterLRef.current;
+
     if (!positioner || !wordmark || !flame || !flameInner || !flameGlow || !rocket || !wings) {
       return;
     }
@@ -126,79 +137,108 @@ export const AnimatedLogoCompanion: React.FC = () => {
     const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     const isDesktop = () => window.innerWidth >= 960;
 
-    // 1. Estado inicial centrado en viewport
-    gsap.set(positioner, { xPercent: -50, yPercent: -50, x: 0, y: 0, scale: 1 });
+    // 1. Estado inicial centrado en viewport (SIN parpadeos, 100% visible desde frame 0)
+    gsap.set(positioner, { xPercent: -50, yPercent: -50, x: 0, y: 0, scale: 1, rotation: 0, opacity: 1 });
     gsap.set(wordmark, { opacity: 1, y: 0 });
+    gsap.set([letterB, letterO1, letterW, letterO2, letterL].filter(Boolean), {
+      x: 0,
+      y: 0,
+      rotation: 0,
+      opacity: 1,
+    });
     gsap.set(flame, { opacity: 0.35, scaleY: 0.55, scaleX: 0.8, transformOrigin: '6450px 5800px' });
     gsap.set(flameGlow, { opacity: 0 });
+    gsap.set([rocket, wings], { opacity: 1, y: 0, rotation: 0 });
 
-    // 2. Entrada cinematográfica ultra-suave
-    if (!reduceMotion) {
-      gsap.from(positioner, {
-        scale: 0.88,
-        opacity: 0,
-        duration: 1.5,
-        ease: 'power3.out',
-        delay: 0.15,
-      });
-    }
-
-    // 3. Timeline de Scroll con scrub elástico y suave (scrub: 1.2)
+    // 2. Timeline de Scroll Cinemático: Arco Balístico Curva en S + Dispersión Radial
     const tl = gsap.timeline({
       scrollTrigger: {
         trigger: '#hero-stage',
         start: 'top top',
-        end: '+=75%',
-        scrub: 1.2,
+        end: '+=85%',
+        scrub: 0.8, // 0.8: Balístico y con peso
         invalidateOnRefresh: true,
       },
     });
 
-    // Wordmark se disuelve con naturalidad
-    tl.to(wordmark, { opacity: 0, y: 24, duration: 0.6, ease: 'power2.in' }, 0);
+    // FASE A: Dispersión radial letra por letra del wordmark
+    if (letterB) {
+      tl.to(letterB, { x: -160, y: -30, rotation: -6, opacity: 0, duration: 0.45, ease: 'power2.in' }, 0);
+    }
+    if (letterO1) {
+      tl.to(letterO1, { x: -80, y: -45, rotation: -4, opacity: 0, duration: 0.45, ease: 'power2.in' }, 0);
+    }
+    if (letterW) {
+      tl.to(letterW, { y: -60, rotation: 2, opacity: 0, duration: 0.50, ease: 'power2.in' }, 0);
+    }
+    if (letterO2) {
+      tl.to(letterO2, { x: 80, y: -45, rotation: 4, opacity: 0, duration: 0.45, ease: 'power2.in' }, 0);
+    }
+    if (letterL) {
+      tl.to(letterL, { x: 160, y: -30, rotation: 6, opacity: 0, duration: 0.45, ease: 'power2.in' }, 0);
+    }
+
+    // Anticipación: micro-retroceso del fuselaje
+    tl.to(rocket, { y: 6, duration: 0.15, ease: 'power2.in' }, 0);
+    tl.to(rocket, { y: 0, duration: 0.15, ease: 'power2.out' }, 0.15);
 
     // Desvanecer microdescripciones del hero stage
     const heroElements = document.querySelectorAll('.hero-stage-item');
     if (heroElements.length > 0) {
-      tl.to(heroElements, { opacity: 0, y: -16, duration: 0.5, stagger: 0.05, ease: 'power2.in' }, 0);
+      tl.to(heroElements, { opacity: 0, y: -16, duration: 0.4, stagger: 0.04, ease: 'power2.in' }, 0);
     }
 
-    // El cohete y las alas viajan hacia el canal lateral izquierdo (gutter)
+    // FASE B: Trayectoria en Arco Balístico Curva en S (Keyframes hacia el dock)
     tl.to(
       positioner,
       {
-        x: () => (isDesktop() ? -window.innerWidth * 0.5 + 52 : -window.innerWidth * 0.5 + 36),
-        y: () => (isDesktop() ? -window.innerHeight * 0.15 : -window.innerHeight * 0.25),
-        scale: () => (isDesktop() ? 0.18 : 0.14),
+        keyframes: [
+          // Tramo 1: Elevación hacia el cuadrante superior derecho con cabeceo negativo
+          {
+            x: () => (isDesktop() ? +window.innerWidth * 0.06 : 0),
+            y: () => (isDesktop() ? -window.innerHeight * 0.08 : -window.innerHeight * 0.06),
+            rotation: -8,
+            duration: 0.35,
+            ease: 'power3.out',
+          },
+          // Tramo 2: Viraje continuo y descenso hacia el dock lateral
+          {
+            x: () => (isDesktop() ? -window.innerWidth * 0.5 + 52 : -window.innerWidth * 0.5 + 36),
+            y: () => (isDesktop() ? -window.innerHeight * 0.15 : -window.innerHeight * 0.25),
+            scale: () => (isDesktop() ? 0.18 : 0.14),
+            rotation: 0,
+            duration: 0.65,
+            ease: 'power3.inOut',
+          },
+        ],
         opacity: () => (window.innerWidth >= 1080 ? 1 : 0),
-        duration: 1.4,
-        ease: 'power2.inOut',
       },
-      0
+      0.15
     );
 
-    // Llama se activa de forma gradual
+    // Llama se activa de forma gradual con destello térmico
     tl.to(
       flame,
       {
         opacity: 1,
-        scaleY: 1,
-        scaleX: 1,
-        duration: 0.8,
+        scaleY: 1.15,
+        scaleX: 1.05,
+        duration: 0.4,
         ease: 'power2.out',
       },
-      0.5
+      0.2
     );
+    tl.to(flame, { scaleY: 1, scaleX: 1, duration: 0.3, ease: 'power2.inOut' }, 0.6);
 
     const scrollHint = document.getElementById('scroll-hint-btn');
     if (scrollHint) {
-      tl.to(scrollHint, { opacity: 0, duration: 0.35, ease: 'power2.in' }, 0);
+      tl.to(scrollHint, { opacity: 0, duration: 0.3, ease: 'power2.in' }, 0);
     }
 
     // Resplandor de tobera
-    tl.to(flameGlow, { opacity: 0.75, duration: 0.6, ease: 'power2.out' }, 0.65);
+    tl.to(flameGlow, { opacity: 0.75, duration: 0.5, ease: 'power2.out' }, 0.35);
 
-    // Activación de combustión constante
+    // Activación de combustión constante para el modo docked
     const igniteTrigger = ScrollTrigger.create({
       trigger: '#hero-stage',
       start: '+=45%',
@@ -210,7 +250,7 @@ export const AnimatedLogoCompanion: React.FC = () => {
       ScrollTrigger.refresh();
     }, 280);
 
-    // 4. Inclinación física reactiva por velocidad (lerp suave)
+    // 4. Inclinación física reactiva por velocidad (Decaimiento inercial elegante)
     let lastY = window.scrollY;
     let velocity = 0;
     let ticking = false;
@@ -222,7 +262,11 @@ export const AnimatedLogoCompanion: React.FC = () => {
       lastY = y;
 
       if (document.body.classList.contains('rocket-ignited') && !boostActive) {
-        const tilt = gsap.utils.clamp(-8, 8, velocity * 0.3);
+        // Direccionalidad: hasta -10° hacia abajo, hasta +6° hacia arriba
+        const tilt = velocity > 0
+          ? gsap.utils.clamp(-10, 0, -velocity * 0.25)
+          : gsap.utils.clamp(0, 6, -velocity * 0.2);
+
         gsap.to(rocket, {
           rotation: tilt,
           transformOrigin: '6450px 6400px',
@@ -238,7 +282,7 @@ export const AnimatedLogoCompanion: React.FC = () => {
           overwrite: 'auto',
         });
 
-        // Estiramiento dinámico de llama suave
+        // Estiramiento dinámico de llama
         const intensity = gsap.utils.clamp(0.9, 1.25, 1 + Math.abs(velocity) * 0.012);
         gsap.to(flameInner, {
           scaleY: intensity,
@@ -332,7 +376,7 @@ export const AnimatedLogoCompanion: React.FC = () => {
         }
       `}</style>
 
-      {/* Partículas de impulso propulsor */}
+      {/* Partículas de impulso propulsor por clic */}
       {particles.map((p) => (
         <div
           key={p.id}
@@ -371,7 +415,7 @@ export const AnimatedLogoCompanion: React.FC = () => {
             className="pointer-events-auto cursor-pointer select-none group relative transition-transform duration-300 hover:scale-[1.06] active:scale-[0.96]"
             aria-label="Cohete BOWOL interactivo"
           >
-            {/* Tooltip táctico sin emojis */}
+            {/* Tooltip táctico */}
             {isHovered && !boostActive && (
               <div className="absolute -top-9 left-1/2 -translate-x-1/2 px-2.5 py-1 rounded-lg bg-zinc-900/90 dark:bg-zinc-950/95 text-zinc-200 border border-zinc-700/80 text-[10.5px] font-medium whitespace-nowrap shadow-xl backdrop-blur-md transition-opacity">
                 Impulsar navegación
@@ -441,30 +485,35 @@ export const AnimatedLogoCompanion: React.FC = () => {
                   />
                 </g>
 
-                {/* WORDMARK */}
+                {/* WORDMARK (Letra por Letra para Dispersión Radial) */}
                 <g ref={wordmarkRef} className="will-change-transform">
                   {/* B */}
                   <path
+                    ref={letterBRef}
                     fill="currentColor"
                     d="M2632 2818 c-9 -9 -12 -128 -12 -474 0 -254 3 -469 6 -478 5 -14 49 -16 393 -16 423 0 457 4 556 59 29 17 64 48 85 76 30 42 35 58 38 117 7 116 -38 192 -142 242 l-47 23 39 26 c75 53 104 140 78 232 -32 107 -129 176 -278 195 -112 14 -701 13 -716 -2z m684 -230 c57 -56 21 -130 -68 -143 -24 -3 -104 -5 -178 -3 l-135 3 -3 74 c-2 41 -1 80 2 88 5 12 37 14 181 11 174 -3 175 -3 201 -30z m48 -367 c34 -32 40 -56 26 -91 -25 -59 -45 -65 -262 -68 l-198 -4 0 97 0 96 204 -3 c200 -3 205 -3 230 -27z"
                   />
                   {/* O */}
                   <path
+                    ref={letterO1Ref}
                     fill="currentColor"
                     d="M4625 2836 c-149 -29 -261 -84 -351 -173 -157 -155 -189 -359 -89 -554 25 -46 118 -142 175 -179 73 -47 199 -89 303 -100 310 -36 583 88 693 315 38 78 39 82 39 190 0 105 -2 113 -34 180 -46 93 -150 197 -248 248 -137 71 -340 102 -488 73z m207 -227 c164 -34 269 -156 255 -294 -10 -100 -68 -173 -177 -224 -47 -22 -68 -26 -150 -26 -82 1 -102 4 -151 28 -62 30 -121 82 -145 129 -22 42 -29 133 -15 185 25 90 112 168 221 197 68 18 95 19 162 5z"
                   />
                   {/* W Ámbar Oficial */}
                   <path
+                    ref={letterWRef}
                     fill="#F5A623"
                     d="M 5670 2820 L 5970 2820 L 6230 2300 L 6480 2820 L 6650 2820 L 6920 2300 L 7160 2820 L 7450 2820 L 7020 1860 L 6810 1860 L 6560 2370 L 6300 1860 L 6090 1860 Z"
                   />
                   {/* O */}
                   <path
+                    ref={letterO2Ref}
                     fill="currentColor"
                     d="M8285 2839 c-287 -42 -502 -235 -521 -469 -12 -140 36 -261 146 -368 73 -72 182 -131 295 -158 95 -24 305 -23 394 0 302 81 481 321 427 575 -47 221 -246 383 -519 420 -89 12 -136 12 -222 0z m251 -250 c73 -27 157 -107 173 -166 40 -144 -22 -270 -167 -336 -37 -17 -66 -22 -142 -22 -82 0 -103 4 -151 26 -176 82 -226 279 -107 414 94 107 245 139 394 84z"
                   />
                   {/* L */}
                   <path
+                    ref={letterLRef}
                     fill="currentColor"
                     d="M9533 2824 c-10 -5 -13 -112 -13 -490 l0 -484 470 0 471 0 -3 123 -3 122 -312 3 -313 2 -2 363 -3 362 -140 2 c-77 1 -146 -1 -152 -3z"
                   />
@@ -474,7 +523,6 @@ export const AnimatedLogoCompanion: React.FC = () => {
           </div>
         </div>
       </div>
-
 
       {/* CTA de Navegación Lateral Sincronizado */}
       {ctaVisible && (

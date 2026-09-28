@@ -41,6 +41,10 @@ Genera oportunidades de producto e innovación concretas basadas en cruzar las O
 Para cada oportunidad, propone:
 - title: Título conciso y claro de la iniciativa de oportunidad.
 - description: Descripción ejecutiva y valor esperado para el negocio.
+- problem: Problema o fricción detectada que se busca solucionar.
+- proposal: Propuesta de valor o solución técnica/funcional planteada.
+- targetSegment: Segmento de clientes o usuarios directamente beneficiados.
+- riskLevel: Nivel de riesgo estimado ("LOW", "MEDIUM", "HIGH").
 - reachScore: Alcance estimado del 0 al 100.
 - impactScore: Impacto en ingresos, retención o eficiencia del 0 al 100.
 - confidenceScore: Nivel de confianza o evidencia disponible del 0 al 100.
@@ -53,6 +57,10 @@ Responde ÚNICAMENTE con un objeto JSON válido con la siguiente estructura:
     {
       "title": "...",
       "description": "...",
+      "problem": "...",
+      "proposal": "...",
+      "targetSegment": "...",
+      "riskLevel": "LOW",
       "reachScore": 80,
       "impactScore": 90,
       "confidenceScore": 70,
@@ -61,3 +69,4 @@ Responde ÚNICAMENTE con un objeto JSON válido con la siguiente estructura:
     }
   ]
 }
+

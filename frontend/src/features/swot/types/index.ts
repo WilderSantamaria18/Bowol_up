@@ -1,7 +1,18 @@
+export type ItemConfidence = 'HIGH' | 'MEDIUM' | 'LOW';
+export type ItemImpact = 'HIGH' | 'MEDIUM' | 'LOW';
+export type ItemStatus = 'ACTIVE' | 'CONVERTED' | 'DISMISSED';
+
 export interface SwotItem {
   id: string;
+  type?: string;
   text: string;
+  statement?: string;
   evidenceIds: string[];
+  confidence?: ItemConfidence;
+  impact?: ItemImpact;
+  source?: string;
+  status?: ItemStatus;
+  createdAt?: string;
 }
 
 export type QuadrantType = 'strengths' | 'weaknesses' | 'opportunities' | 'threats';

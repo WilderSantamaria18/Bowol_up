@@ -1,3 +1,5 @@
+export type RiskLevel = 'LOW' | 'MEDIUM' | 'HIGH';
+
 export type OpportunityStatus = 'IDENTIFIED' | 'EVALUATING' | 'APPROVED' | 'REJECTED' | 'CONVERTED';
 
 export interface Opportunity {
@@ -6,6 +8,12 @@ export interface Opportunity {
   swotAnalysisId?: string;
   title: string;
   description?: string;
+  problem?: string;
+  proposal?: string;
+  targetSegment?: string;
+  riskLevel?: RiskLevel;
+  ownerName?: string;
+  relatedTrendId?: string;
   reachScore?: number;
   impactScore?: number;
   confidenceScore?: number;
@@ -22,6 +30,12 @@ export type OpportunityBoard = Record<OpportunityStatus, Opportunity[]>;
 export interface CreateOpportunityPayload {
   title: string;
   description?: string;
+  problem?: string;
+  proposal?: string;
+  targetSegment?: string;
+  riskLevel?: RiskLevel;
+  ownerName?: string;
+  relatedTrendId?: string;
   swotAnalysisId?: string;
   reachScore?: number;
   impactScore?: number;
@@ -33,6 +47,11 @@ export interface CreateOpportunityPayload {
 export interface UpdateOpportunityPayload {
   title?: string;
   description?: string;
+  problem?: string;
+  proposal?: string;
+  targetSegment?: string;
+  riskLevel?: RiskLevel;
+  ownerName?: string;
   reachScore?: number;
   impactScore?: number;
   confidenceScore?: number;

@@ -51,6 +51,18 @@ export function useUpdateOpportunity(id: string) {
   });
 }
 
+export function useUpdateOpportunityData() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: ({ id, payload }: { id: string; payload: UpdateOpportunityPayload }) =>
+      opportunityService.updateOpportunity(id, payload),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['opportunities'] });
+    },
+  });
+}
+
 export function useUpdateOpportunityStatus() {
   const queryClient = useQueryClient();
 

@@ -34,6 +34,18 @@ public class Hypothesis {
     @Column(name = "statement", nullable = false, columnDefinition = "text")
     private String statement;
 
+    @Column(name = "target_segment", columnDefinition = "text")
+    private String targetSegment;
+
+    @Column(name = "problem_statement", columnDefinition = "text")
+    private String problemStatement;
+
+    @Column(name = "solution_proposal", columnDefinition = "text")
+    private String solutionProposal;
+
+    @Column(name = "expected_outcome", columnDefinition = "text")
+    private String expectedOutcome;
+
     @Column(name = "validation_method", columnDefinition = "text")
     private String validationMethod;
 

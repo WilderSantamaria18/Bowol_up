@@ -65,9 +65,9 @@ public class PromptTemplateEngine {
         Map<String, Object> safeVars = variables != null ? variables : Map.of();
 
         return Mustache.compiler()
-                .defaultValue("")
-                .nullValue("")
                 .emptyStringIsFalse(true)
+                .nullValue("")
+                .defaultValue("")
                 .compile(template.getContent())
                 .execute(safeVars);
     }

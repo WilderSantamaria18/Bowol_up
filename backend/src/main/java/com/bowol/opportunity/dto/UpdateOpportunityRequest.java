@@ -15,6 +15,12 @@ import java.util.List;
 public class UpdateOpportunityRequest {
     private String title;
     private String description;
+    private String problem;
+    private String proposal;
+    private String targetSegment;
+    private String riskLevel;
+    private String ownerName;
+    private java.util.UUID relatedTrendId;
 
     @Min(0) @Max(100)
     private Integer reachScore;

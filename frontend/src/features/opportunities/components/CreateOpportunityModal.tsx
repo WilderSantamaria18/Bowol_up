@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { X, Zap, Plus, Check } from 'lucide-react';
-import { CreateOpportunityPayload } from '../types';
+import { X, Zap, Plus, Check, Target, AlertTriangle, User } from 'lucide-react';
+import { CreateOpportunityPayload, RiskLevel } from '../types';
 import { Button } from '@/components/ui/Button';
 
 interface CreateOpportunityModalProps {
@@ -22,6 +22,11 @@ export const CreateOpportunityModal: React.FC<CreateOpportunityModalProps> = ({
 }) => {
   const [title, setTitle] = useState(initialTitle);
   const [description, setDescription] = useState(initialDescription);
+  const [problem, setProblem] = useState('');
+  const [proposal, setProposal] = useState('');
+  const [targetSegment, setTargetSegment] = useState('');
+  const [riskLevel, setRiskLevel] = useState<RiskLevel>('LOW');
+  const [ownerName, setOwnerName] = useState('');
   const [reach, setReach] = useState(70);
   const [impact, setImpact] = useState(70);
   const [confidence, setConfidence] = useState(70);
@@ -45,7 +50,12 @@ export const CreateOpportunityModal: React.FC<CreateOpportunityModalProps> = ({
 
     await onSubmit({
       title: title.trim(),
-      description: description.trim(),
+      description: description.trim() || undefined,
+      problem: problem.trim() || undefined,
+      proposal: proposal.trim() || undefined,
+      targetSegment: targetSegment.trim() || undefined,
+      riskLevel,
+      ownerName: ownerName.trim() || undefined,
       reachScore: reach,
       impactScore: impact,
       confidenceScore: confidence,
@@ -54,13 +64,17 @@ export const CreateOpportunityModal: React.FC<CreateOpportunityModalProps> = ({
 
     setTitle('');
     setDescription('');
+    setProblem('');
+    setProposal('');
+    setTargetSegment('');
+    setOwnerName('');
     onClose();
   };
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/75 backdrop-blur-sm animate-fade-in">
       <div 
-        className="w-full max-w-lg bg-[#0F0F12] border border-white/[0.08] rounded-2xl shadow-2xl overflow-hidden flex flex-col"
+        className="w-full max-w-xl bg-[#0F0F12] border border-white/[0.08] rounded-2xl shadow-2xl overflow-hidden flex flex-col max-h-[90vh]"
         role="dialog"
         aria-modal="true"
         aria-labelledby="create-opportunity-title"
@@ -84,7 +98,7 @@ export const CreateOpportunityModal: React.FC<CreateOpportunityModalProps> = ({
         </div>
 
         {/* Form Body */}
-        <form onSubmit={handleSubmit} className="p-6 space-y-4">
+        <form onSubmit={handleSubmit} className="p-6 space-y-4 overflow-y-auto custom-scrollbar">
           <div className="space-y-1.5">
             <label className="text-xs font-medium text-zinc-300">
               Título de la iniciativa <span className="text-orange-500">*</span>
@@ -110,6 +124,76 @@ export const CreateOpportunityModal: React.FC<CreateOpportunityModalProps> = ({
               placeholder="Describe el beneficio esperado y objetivo a conseguir..."
               className="w-full text-xs bg-black/40 border border-white/[0.1] rounded-xl px-3 py-2 text-zinc-200 placeholder-zinc-500 focus:outline-none focus:border-white/30 resize-none"
             />
+          </div>
+
+          {/* Strategic Details */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
+            <div className="space-y-1">
+              <label className="text-zinc-300 font-medium">Problema detectado</label>
+              <input
+                type="text"
+                value={problem}
+                onChange={(e) => setProblem(e.target.value)}
+                placeholder="Fricción o pérdida actual..."
+                className="w-full text-xs bg-black/40 border border-white/[0.1] rounded-xl px-2.5 py-2 text-zinc-200 placeholder-zinc-600 focus:outline-none focus:border-white/30"
+              />
+            </div>
+            <div className="space-y-1">
+              <label className="text-zinc-300 font-medium">Propuesta de solución</label>
+              <input
+                type="text"
+                value={proposal}
+                onChange={(e) => setProposal(e.target.value)}
+                placeholder="Solución técnica o de producto..."
+                className="w-full text-xs bg-black/40 border border-white/[0.1] rounded-xl px-2.5 py-2 text-zinc-200 placeholder-zinc-600 focus:outline-none focus:border-white/30"
+              />
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs">
+            <div className="space-y-1">
+              <label className="text-zinc-300 font-medium flex items-center gap-1">
+                <Target className="w-3 h-3 text-sky-400" strokeWidth={1.5} />
+                <span>Segmento</span>
+              </label>
+              <input
+                type="text"
+                value={targetSegment}
+                onChange={(e) => setTargetSegment(e.target.value)}
+                placeholder="Ej. B2B SaaS"
+                className="w-full text-xs bg-black/40 border border-white/[0.1] rounded-xl px-2.5 py-2 text-zinc-200 placeholder-zinc-600 focus:outline-none focus:border-white/30"
+              />
+            </div>
+
+            <div className="space-y-1">
+              <label className="text-zinc-300 font-medium flex items-center gap-1">
+                <AlertTriangle className="w-3 h-3 text-amber-400" strokeWidth={1.5} />
+                <span>Nivel de Riesgo</span>
+              </label>
+              <select
+                value={riskLevel}
+                onChange={(e) => setRiskLevel(e.target.value as RiskLevel)}
+                className="w-full text-xs bg-black/40 border border-white/[0.1] rounded-xl px-2.5 py-2 text-zinc-200 focus:outline-none focus:border-white/30"
+              >
+                <option value="LOW">Bajo</option>
+                <option value="MEDIUM">Medio</option>
+                <option value="HIGH">Alto</option>
+              </select>
+            </div>
+
+            <div className="space-y-1">
+              <label className="text-zinc-300 font-medium flex items-center gap-1">
+                <User className="w-3 h-3 text-orange-400" strokeWidth={1.5} />
+                <span>Responsable</span>
+              </label>
+              <input
+                type="text"
+                value={ownerName}
+                onChange={(e) => setOwnerName(e.target.value)}
+                placeholder="Ej. Product Lead"
+                className="w-full text-xs bg-black/40 border border-white/[0.1] rounded-xl px-2.5 py-2 text-zinc-200 placeholder-zinc-600 focus:outline-none focus:border-white/30"
+              />
+            </div>
           </div>
 
           {/* RICE Sliders */}

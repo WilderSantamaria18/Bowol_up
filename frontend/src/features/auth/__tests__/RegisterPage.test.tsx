@@ -28,7 +28,7 @@ describe('RegisterPage Component', () => {
     expect(screen.getByLabelText(/^contraseña/i)).toBeInTheDocument();
   });
 
-  it('muestra validación cuando la contraseña tiene menos de 8 caracteres', async () => {
+  it('muestra validación cuando no se aceptan los términos y condiciones', async () => {
     render(
       <AuthProvider>
         <BrowserRouter>
@@ -37,14 +37,65 @@ describe('RegisterPage Component', () => {
       </AuthProvider>
     );
 
-    fireEvent.change(screen.getByLabelText(/nombre completo/i), { target: { value: 'Elena' } });
-    fireEvent.change(screen.getByLabelText(/correo electrónico de trabajo/i), { target: { value: 'elena@ai.com' } });
-    fireEvent.change(screen.getByLabelText(/^contraseña/i), { target: { value: '123' } });
+    fireEvent.change(screen.getByLabelText(/nombre completo/i), { target: { value: 'Elena Torres' } });
+    fireEvent.change(screen.getByLabelText(/correo electrónico de trabajo/i), { target: { value: 'elena@empresa.com' } });
+    fireEvent.change(screen.getByLabelText(/^contraseña/i), { target: { value: 'Password123!' } });
+
+    // Not checking terms
+    fireEvent.click(screen.getByRole('button', { name: /crear workspace gratis/i }));
+
+    await waitFor(() => {
+      expect(screen.getByText(/debes aceptar los términos de servicio/i)).toBeInTheDocument();
+    });
+  });
+
+  it('permite registrar con éxito al aceptar los términos y condiciones', async () => {
+    const { authService } = await import('../services/authService');
+    vi.mocked(authService.register).mockResolvedValueOnce({
+      user: {
+        id: 'user-1',
+        name: 'Elena Torres',
+        email: 'elena@empresa.com',
+        avatarUrl: '',
+        status: 'ACTIVE',
+      },
+      organization: {
+        id: 'org-1',
+        name: 'Elena Workspace',
+        slug: 'elena-workspace',
+        role: 'OWNER',
+        permissions: ['*'],
+      },
+      accessToken: 'token-123',
+      refreshToken: 'refresh-123',
+      tokenType: 'Bearer',
+      expiresIn: 900,
+    });
+
+    render(
+      <AuthProvider>
+        <BrowserRouter>
+          <RegisterPage />
+        </BrowserRouter>
+      </AuthProvider>
+    );
+
+    fireEvent.change(screen.getByLabelText(/nombre completo/i), { target: { value: 'Elena Torres' } });
+    fireEvent.change(screen.getByLabelText(/correo electrónico de trabajo/i), { target: { value: 'elena@empresa.com' } });
+    fireEvent.change(screen.getByLabelText(/^contraseña/i), { target: { value: 'Password123!' } });
+    
+    const termsCheckbox = screen.getByRole('checkbox');
+    fireEvent.click(termsCheckbox);
 
     fireEvent.click(screen.getByRole('button', { name: /crear workspace gratis/i }));
 
     await waitFor(() => {
-      expect(screen.getByText(/la contraseña debe tener un mínimo de 8 caracteres/i)).toBeInTheDocument();
+      expect(authService.register).toHaveBeenCalledWith({
+        name: 'Elena Torres',
+        email: 'elena@empresa.com',
+        password: 'Password123!',
+        organizationName: undefined,
+      });
     });
   });
 });

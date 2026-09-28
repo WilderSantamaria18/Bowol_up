@@ -95,7 +95,117 @@ public class MockAIProvider implements AIProvider {
 
         String lower = combined.toLowerCase();
 
-        if (lower.contains("relevance") || lower.contains("relevancia") || lower.contains("trend")) {
+        if (lower.contains("formulate-hypothesis") || lower.contains("hipótesis") || lower.contains("hypothesis") || lower.contains("lean startup") || lower.contains("chief scientific officer") || lower.contains("falsable")) {
+            return """
+            {
+              "statement": "Creemos que implementar un asistente de IA para reservas fuera de horario comercial aumentará la captación de leads en un 35%. Sabremos que es cierto cuando al menos 15 clientes agenden citas automáticamente en la primera semana de prueba.",
+              "validationMethod": "Landing page interactiva con formulario inteligente / Concierge MVP",
+              "successMetric": "Tasa de conversión de reservas nocturnas",
+              "targetValue": "Al menos 20% de conversión o 15 reservas confirmadas"
+            }
+            """.stripIndent();
+        }
+
+        if (lower.contains("reachscore") || lower.contains("metodología rice") || lower.contains("product strategist") || lower.contains("opportunity-from-swot") || lower.contains("from-swot")) {
+            return """
+            {
+              "opportunities": [
+                {
+                  "title": "Asistente IA para atención y reservas automáticas",
+                  "description": "Despliegue de un agente conversacional para captura de clientes fuera de horario comercial.",
+                  "problem": "Pérdida del 35% de leads que consultan fuera del horario comercial.",
+                  "proposal": "Agente autónomo integrado con CRM y pasarela para cerrar reservas en tiempo real.",
+                  "targetSegment": "Empresas SaaS B2B y servicios profesionales",
+                  "riskLevel": "LOW",
+                  "reachScore": 80,
+                  "impactScore": 90,
+                  "confidenceScore": 70,
+                  "effortScore": 50,
+                  "evidence": []
+                },
+                {
+                  "title": "Pipeline de analítica predictiva de rotación",
+                  "description": "Modelo de scoring para anticipar cancelaciones recurrentes con antelación.",
+                  "problem": "Ausencia de señales tempranas ante caída de uso en cuentas clave.",
+                  "proposal": "Algoritmo de detección de patrones anómalos de telemetría con alertas proactivas.",
+                  "targetSegment": "Clientes empresariales con contratos anuales",
+                  "riskLevel": "MEDIUM",
+                  "reachScore": 60,
+                  "impactScore": 75,
+                  "confidenceScore": 80,
+                  "effortScore": 40,
+                  "evidence": []
+                }
+              ]
+            }
+            """.stripIndent();
+        }
+
+        if (lower.contains("swot") || lower.contains("foda")) {
+            return """
+            {
+              "strengths": [
+                {
+                  "statement": "Adopción temprana de herramientas de IA",
+                  "confidence": "HIGH",
+                  "impact": "HIGH",
+                  "source": "INTERNAL_PROFILE"
+                },
+                {
+                  "statement": "Equipo técnico ágil",
+                  "confidence": "HIGH",
+                  "impact": "HIGH",
+                  "source": "INTERNAL_PROFILE"
+                }
+              ],
+              "weaknesses": [
+                {
+                  "statement": "Presupuesto limitado para infraestructura dedicada",
+                  "confidence": "HIGH",
+                  "impact": "MEDIUM",
+                  "source": "INTERNAL_PROFILE"
+                },
+                {
+                  "statement": "Dependencia de proveedores cloud",
+                  "confidence": "MEDIUM",
+                  "impact": "MEDIUM",
+                  "source": "INTERNAL_PROFILE"
+                }
+              ],
+              "opportunities": [
+                {
+                  "statement": "Automatización de flujos de soporte al cliente",
+                  "confidence": "HIGH",
+                  "impact": "HIGH",
+                  "source": "TREND_RADAR"
+                },
+                {
+                  "statement": "Creación de asistentes internos",
+                  "confidence": "HIGH",
+                  "impact": "HIGH",
+                  "source": "TREND_RADAR"
+                }
+              ],
+              "threats": [
+                {
+                  "statement": "Cambios rápidos en APIs de modelos",
+                  "confidence": "MEDIUM",
+                  "impact": "HIGH",
+                  "source": "TREND_RADAR"
+                },
+                {
+                  "statement": "Regulaciones de privacidad de datos",
+                  "confidence": "MEDIUM",
+                  "impact": "HIGH",
+                  "source": "TREND_RADAR"
+                }
+              ],
+              "summary": "Posición competitiva favorable con margen para acelerar la ejecución mediante modelos abiertos."
+            }
+            """.stripIndent();
+        }
+
+        if (lower.contains("relevance") || lower.contains("relevancia") || lower.contains("trend-evaluate") || lower.contains("trend")) {
             return """
             {
               "score": 88,
@@ -182,33 +292,6 @@ public class MockAIProvider implements AIProvider {
             """.stripIndent();
         }
 
-        if (lower.contains("opportunity") || lower.contains("oportunidad") || lower.contains("from-swot")) {
-            return """
-            {
-              "opportunities": [
-                {
-                  "title": "Asistente IA para atención y reservas automáticas",
-                  "description": "Despliegue de un agente conversacional para captura de clientes fuera de horario comercial.",
-                  "reachScore": 80,
-                  "impactScore": 90,
-                  "confidenceScore": 70,
-                  "effortScore": 50,
-                  "evidence": []
-                },
-                {
-                  "title": "Pipeline de analítica predictiva de rotación",
-                  "description": "Modelo de scoring para anticipar cancelaciones recurrentes con antelación.",
-                  "reachScore": 60,
-                  "impactScore": 75,
-                  "confidenceScore": 80,
-                  "effortScore": 40,
-                  "evidence": []
-                }
-              ]
-            }
-            """.stripIndent();
-        }
-
         if (lower.contains("sprint") || lower.contains("sprint-planner") || lower.contains("suggest-plan")) {
             return """
             {
@@ -224,17 +307,6 @@ public class MockAIProvider implements AIProvider {
             """.stripIndent();
         }
 
-        if (lower.contains("swot") || lower.contains("foda")) {
-            return """
-            {
-              "strengths": ["Adopción temprana de herramientas de IA", "Equipo técnico ágil"],
-              "weaknesses": ["Presupuesto limitado para infraestructura dedicada", "Dependencia de proveedores cloud"],
-              "opportunities": ["Automatización de flujos de soporte al cliente", "Creación de asistentes internos"],
-              "threats": ["Cambios rápidos en APIs de modelos", "Regulaciones de privacidad de datos"],
-              "summary": "Posición competitiva favorable con margen para acelerar la ejecución mediante modelos abiertos."
-            }
-            """.stripIndent();
-        }
 
         if (lower.contains("social") || lower.contains("brand") || lower.contains("post")) {
             return """

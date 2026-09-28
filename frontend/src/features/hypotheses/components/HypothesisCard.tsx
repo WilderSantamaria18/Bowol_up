@@ -84,9 +84,30 @@ export const HypothesisCard: React.FC<HypothesisCardProps> = ({
         </div>
 
         {/* Statement */}
-        <p className="text-sm font-medium text-zinc-100 leading-relaxed mb-4">
+        <p className="text-sm font-medium text-zinc-100 leading-relaxed mb-3">
           {hypothesis.statement}
         </p>
+
+        {/* Strategic Anchor Tags (Lean elements) */}
+        {(hypothesis.targetSegment || hypothesis.problemStatement || hypothesis.solutionProposal) && (
+          <div className="flex flex-wrap items-center gap-2 mb-3 text-[11px]">
+            {hypothesis.targetSegment && (
+              <span className="px-2 py-0.5 rounded-md bg-sky-500/10 text-sky-400 border border-sky-500/20 font-medium">
+                Segmento: {hypothesis.targetSegment}
+              </span>
+            )}
+            {hypothesis.problemStatement && (
+              <span className="px-2 py-0.5 rounded-md bg-amber-500/10 text-amber-400 border border-amber-500/20 font-medium truncate max-w-xs">
+                Problema: {hypothesis.problemStatement}
+              </span>
+            )}
+            {hypothesis.solutionProposal && (
+              <span className="px-2 py-0.5 rounded-md bg-purple-500/10 text-purple-400 border border-purple-500/20 font-medium truncate max-w-xs">
+                Solución: {hypothesis.solutionProposal}
+              </span>
+            )}
+          </div>
+        )}
 
         {/* Details Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5 text-xs bg-white/[0.02] border border-white/[0.04] p-3 rounded-lg">

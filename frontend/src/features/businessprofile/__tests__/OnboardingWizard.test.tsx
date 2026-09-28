@@ -31,4 +31,17 @@ describe('OnboardingWizard Component', () => {
     // Debe mostrar paso 2
     expect(await screen.findByRole('heading', { name: /cuál es el tamaño de tu equipo/i })).toBeInTheDocument();
   });
+
+  it('guarda el borrador en localStorage y permite continuar después', () => {
+    const handleComplete = vi.fn();
+    const handleSaveAndExit = vi.fn();
+    render(<OnboardingWizard onComplete={handleComplete} onSaveAndExit={handleSaveAndExit} />);
+
+    expect(screen.getByText(/borrador guardado automáticamente/i)).toBeInTheDocument();
+
+    const exitBtn = screen.getByRole('button', { name: /continuar después/i });
+    fireEvent.click(exitBtn);
+
+    expect(handleSaveAndExit).toHaveBeenCalledTimes(1);
+  });
 });

@@ -81,6 +81,16 @@ public class SwotController {
         return ResponseEntity.ok(response);
     }
 
+    @PatchMapping("/{id}/items/{itemId}/status")
+    public ResponseEntity<SwotAnalysisResponse> updateItemStatus(
+            @PathVariable UUID id,
+            @PathVariable String itemId,
+            @Valid @RequestBody UpdateSwotItemStatusRequest request,
+            @AuthenticationPrincipal UserPrincipal principal) {
+        SwotAnalysisResponse response = swotAnalysisService.updateItemStatus(id, itemId, request.getStatus(), principal);
+        return ResponseEntity.ok(response);
+    }
+
     @GetMapping("/{id}/evidence")
     public ResponseEntity<List<EvidenceRefResponse>> getEvidence(
             @PathVariable UUID id,

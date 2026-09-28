@@ -52,6 +52,15 @@ public class Experiment {
     @Builder.Default
     private ExperimentStatus status = ExperimentStatus.PLANNED;
 
+    @Column(name = "owner_name", length = 150)
+    private String ownerName;
+
+    @Column(name = "budget", precision = 12, scale = 2)
+    private java.math.BigDecimal budget;
+
+    @Column(name = "target_metric", columnDefinition = "text")
+    private String targetMetric;
+
     @Column(name = "result_metric", columnDefinition = "text")
     private String resultMetric;
 
@@ -60,6 +69,9 @@ public class Experiment {
 
     @Column(name = "conclusion", columnDefinition = "text")
     private String conclusion;
+
+    @Column(name = "evidence_notes", columnDefinition = "text")
+    private String evidenceNotes;
 
     @Column(name = "created_at", nullable = false, updatable = false)
     private Instant createdAt;

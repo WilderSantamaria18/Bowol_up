@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Building, Users, Loader2, Key, Webhook, Shield, ExternalLink } from 'lucide-react';
+import { Building, Users, Loader2, Key, Webhook, Shield, ShieldCheck, ExternalLink } from 'lucide-react';
 import { useAuth } from '@/features/auth/context/AuthContext';
 import { organizationService } from '../services/organizationService';
 import { Organization, Member, Role, UpdateOrganizationDTO } from '../types';
@@ -9,11 +9,12 @@ import { MemberList } from '../components/MemberList';
 import { InviteMemberModal } from '../components/InviteMemberModal';
 import { ApiKeyManagement } from '@/features/developer/components/ApiKeyManagement';
 import { WebhookManagement } from '@/features/developer/components/WebhookManagement';
+import { SsoManagement } from '../components/SsoManagement';
 import { Alert } from '@/components/ui/Alert';
 
 export const SettingsPage: React.FC = () => {
   const { organization: activeOrg } = useAuth();
-  const [activeTab, setActiveTab] = useState<'profile' | 'members' | 'api-keys' | 'webhooks'>('profile');
+  const [activeTab, setActiveTab] = useState<'profile' | 'members' | 'sso' | 'api-keys' | 'webhooks'>('profile');
   const [organization, setOrganization] = useState<Organization | null>(null);
   const [members, setMembers] = useState<Member[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -116,6 +117,18 @@ export const SettingsPage: React.FC = () => {
         </button>
 
         <button
+          onClick={() => setActiveTab('sso')}
+          className={`pb-3 text-sm font-medium flex items-center gap-2 border-b-2 transition-colors ${
+            activeTab === 'sso'
+              ? 'border-orange-500 text-orange-400'
+              : 'border-transparent text-zinc-400 hover:text-zinc-200'
+          }`}
+        >
+          <ShieldCheck className="w-4 h-4" strokeWidth={1.5} />
+          SSO Corporativo
+        </button>
+
+        <button
           onClick={() => setActiveTab('api-keys')}
           className={`pb-3 text-sm font-medium flex items-center gap-2 border-b-2 transition-colors ${
             activeTab === 'api-keys'
@@ -167,6 +180,10 @@ export const SettingsPage: React.FC = () => {
             onRoleChange={handleRoleChange}
             onRemoveMember={handleRemoveMember}
           />
+        )}
+
+        {activeTab === 'sso' && orgId && (
+          <SsoManagement organizationId={orgId} />
         )}
 
         {activeTab === 'api-keys' && (

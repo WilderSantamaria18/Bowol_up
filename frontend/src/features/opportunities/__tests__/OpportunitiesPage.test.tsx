@@ -223,4 +223,58 @@ describe('OpportunitiesPage Component', () => {
       );
     });
   });
+
+  it('opens RICE simulator when clicking card and allows saving recalibrated scores', async () => {
+    vi.mocked(opportunityService.updateOpportunity).mockResolvedValue({
+      ...mockBoard.IDENTIFIED[0],
+      reachScore: 85,
+    });
+
+    renderComponent();
+
+    await waitFor(() => {
+      expect(screen.getByText('Asistente IA para atención de soporte')).toBeInTheDocument();
+    });
+
+    // Click on the simulator button or the card
+    const simBtns = screen.getAllByLabelText('Simular RICE');
+    fireEvent.click(simBtns[0]);
+
+    await waitFor(() => {
+      expect(screen.getByTestId('rice-simulator-modal')).toBeInTheDocument();
+      expect(screen.getByText('Simulador de Escenarios RICE')).toBeInTheDocument();
+    });
+
+    // Adjust Alcance slider
+    const reachInput = screen.getByLabelText('Alcance');
+    fireEvent.change(reachInput, { target: { value: '85' } });
+
+    // Save calibration
+    const saveBtn = screen.getByText('Guardar Calibración');
+    fireEvent.click(saveBtn);
+
+    await waitFor(() => {
+      expect(opportunityService.updateOpportunity).toHaveBeenCalledWith(
+        'opp-1',
+        expect.objectContaining({
+          reachScore: 85,
+        })
+      );
+    });
+  });
+
+  it('filters opportunities in board by search query', async () => {
+    renderComponent();
+
+    await waitFor(() => {
+      expect(screen.getByText('Asistente IA para atención de soporte')).toBeInTheDocument();
+      expect(screen.getByText('Integración con Stripe Billing')).toBeInTheDocument();
+    });
+
+    const searchInput = screen.getByPlaceholderText('Filtrar por título, problema, segmento o líder...');
+    fireEvent.change(searchInput, { target: { value: 'Stripe' } });
+
+    expect(screen.queryByText('Asistente IA para atención de soporte')).not.toBeInTheDocument();
+    expect(screen.getByText('Integración con Stripe Billing')).toBeInTheDocument();
+  });
 });

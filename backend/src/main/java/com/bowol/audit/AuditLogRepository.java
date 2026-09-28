@@ -20,8 +20,8 @@ public interface AuditLogRepository extends JpaRepository<AuditLog, Long> {
           AND (:action IS NULL OR a.action = :action)
           AND (:entityType IS NULL OR a.entityType = :entityType)
           AND (:actorEmail IS NULL OR LOWER(a.actorEmail) LIKE LOWER(CONCAT('%', :actorEmail, '%')))
-          AND (:fromDate IS NULL OR a.createdAt >= :fromDate)
-          AND (:toDate IS NULL OR a.createdAt <= :toDate)
+          AND (CAST(:fromDate AS timestamp) IS NULL OR a.createdAt >= :fromDate)
+          AND (CAST(:toDate AS timestamp) IS NULL OR a.createdAt <= :toDate)
         ORDER BY a.createdAt DESC
     """)
     Page<AuditLog> findFiltered(
@@ -40,8 +40,8 @@ public interface AuditLogRepository extends JpaRepository<AuditLog, Long> {
           AND (:action IS NULL OR a.action = :action)
           AND (:entityType IS NULL OR a.entityType = :entityType)
           AND (:actorEmail IS NULL OR LOWER(a.actorEmail) LIKE LOWER(CONCAT('%', :actorEmail, '%')))
-          AND (:fromDate IS NULL OR a.createdAt >= :fromDate)
-          AND (:toDate IS NULL OR a.createdAt <= :toDate)
+          AND (CAST(:fromDate AS timestamp) IS NULL OR a.createdAt >= :fromDate)
+          AND (CAST(:toDate AS timestamp) IS NULL OR a.createdAt <= :toDate)
         ORDER BY a.createdAt DESC
     """)
     List<AuditLog> findAllFilteredForExport(

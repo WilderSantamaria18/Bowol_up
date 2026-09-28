@@ -22,6 +22,8 @@ public class DashboardSummaryResponse {
     private TrendsSummary trends;
     private StrategySummary strategy;
     private ExecutionSummary execution;
+    private ExecutiveBriefing briefing;
+    private HealthScoreInfo healthScore;
 
     @Getter
     @Setter
@@ -114,5 +116,31 @@ public class DashboardSummaryResponse {
         private int totalTasks;
         private int completedTasks;
         private int progressPercent;
+    }
+
+    @Getter
+    @Setter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    @Builder
+    public static class ExecutiveBriefing {
+        private String headline;
+        private List<String> highlights;
+        private String generatedAt;
+    }
+
+    @Getter
+    @Setter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    @Builder
+    public static class HealthScoreInfo {
+        private int overallScore;
+        private int executionScore;
+        private int strategyScore;
+        private int marketScore;
+        private int maturityScore;
+        private String statusLabel;
+        private String explanation;
     }
 }

@@ -7,12 +7,14 @@ interface EvidenceDetailModalProps {
   isOpen: boolean;
   onClose: () => void;
   swotId: string;
+  selectedEvidenceId?: string;
 }
 
 export const EvidenceDetailModal: React.FC<EvidenceDetailModalProps> = ({
   isOpen,
   onClose,
   swotId,
+  selectedEvidenceId,
 }) => {
   const { data: evidences = [], isLoading } = useSwotEvidence(isOpen ? swotId : undefined);
 
@@ -68,10 +70,16 @@ export const EvidenceDetailModal: React.FC<EvidenceDetailModalProps> = ({
               No hay evidencias de tendencias asociadas directamente a este FODA.
             </div>
           ) : (
-            evidences.map((ev) => (
+            evidences.map((ev) => {
+              const isSelected = !!selectedEvidenceId && (String(ev.id) === selectedEvidenceId || ev.trendId === selectedEvidenceId);
+              return (
               <div
                 key={ev.id}
-                className="p-4 rounded-xl bg-white/[0.02] border border-white/[0.06] hover:border-white/[0.12] transition-colors space-y-2"
+                className={`p-4 rounded-xl border transition-colors space-y-2 ${
+                  isSelected 
+                    ? 'bg-sky-500/10 border-sky-500/30 ring-1 ring-sky-500/20' 
+                    : 'bg-white/[0.02] border-white/[0.06] hover:border-white/[0.12]'
+                }`}
               >
                 <div className="flex items-start justify-between gap-3">
                   <div className="flex items-center gap-2">
@@ -79,6 +87,11 @@ export const EvidenceDetailModal: React.FC<EvidenceDetailModalProps> = ({
                       {ev.trendSource || 'Tendencia'}
                     </span>
                     <h4 className="text-sm font-medium text-white">{ev.trendTitle || 'Tendencia identificada'}</h4>
+                    {isSelected && (
+                      <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-sky-500/20 text-sky-300 border border-sky-500/30">
+                        Vinculada a este elemento
+                      </span>
+                    )}
                   </div>
                   {ev.trendScore !== undefined && (
                     <span className="inline-flex items-center gap-1 text-xs font-semibold px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 shrink-0">
@@ -91,7 +104,8 @@ export const EvidenceDetailModal: React.FC<EvidenceDetailModalProps> = ({
                   <p className="text-xs text-zinc-400 leading-relaxed">{ev.note}</p>
                 )}
               </div>
-            ))
+              );
+            })
           )}
         </div>
 
