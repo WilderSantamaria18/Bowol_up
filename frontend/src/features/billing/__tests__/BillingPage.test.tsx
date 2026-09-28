@@ -221,4 +221,16 @@ describe('BillingPage Component (SaaS Subscriptions & Monetization)', () => {
       });
     });
   });
+
+  it('renders the AI Credits Consumption Reference Table with explainable rates', async () => {
+    renderComponent();
+
+    await waitFor(() => {
+      expect(screen.getByText('Transparencia en el Consumo de AI Credits')).toBeInTheDocument();
+      expect(screen.getByText('Evaluación y filtrado de Señal en Radar')).toBeInTheDocument();
+      expect(screen.getByText('5 créditos')).toBeInTheDocument();
+      expect(screen.getByText('Descomposición Ágil de Proyecto en Épicas')).toBeInTheDocument();
+      expect(screen.getByText('40 créditos')).toBeInTheDocument();
+    });
+  });
 });

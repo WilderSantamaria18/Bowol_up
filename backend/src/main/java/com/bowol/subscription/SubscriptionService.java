@@ -185,6 +185,103 @@ public class SubscriptionService {
         return OrganizationSubscriptionResponse.fromEntity(saved, plan);
     }
 
+    @Transactional
+    public boolean processPaymentWebhook(PaymentWebhookEvent event, String signatureHeader) {
+        if (event == null || event.getEventType() == null) {
+            log.warn("Evento de webhook de pagos inválido o nulo");
+            return false;
+        }
+
+        UUID orgId = event.getOrganizationId();
+        if (orgId == null) {
+            log.warn("Evento de webhook sin organizationId: {}", event);
+            return false;
+        }
+
+        String eventType = event.getEventType();
+        String invoiceNum = event.getInvoiceNumber() != null ? event.getInvoiceNumber() : ("WH-" + (Instant.now().toEpochMilli() % 1000000));
+
+        // Idempotency: verify if this invoice has already been handled
+        if (invoiceRepository.existsByInvoiceNumber(invoiceNum)) {
+            log.info("Factura {} ya procesada anteriormente. Descartando webhook duplicado.", invoiceNum);
+            return true;
+        }
+
+        OrganizationSubscription sub = subscriptionRepository.findByOrganizationId(orgId)
+                .orElseGet(() -> createDefaultSubscription(orgId));
+
+        Instant now = Instant.now();
+        Instant periodEnd = now.plus(30, ChronoUnit.DAYS);
+
+        if ("invoice.payment_succeeded".equalsIgnoreCase(eventType)) {
+            if (event.getPlanId() != null) {
+                SubscriptionPlan targetPlan = planRepository.findById(event.getPlanId())
+                        .orElseGet(this::getFallbackPlan);
+                sub.setPlanId(targetPlan.getId());
+                sub.setAiCreditsTotal(targetPlan.getAiCreditsMonthly());
+            }
+            sub.setStatus(SubscriptionStatus.ACTIVE);
+            sub.setCurrentPeriodStart(now);
+            sub.setCurrentPeriodEnd(periodEnd);
+            sub.setCancelAtPeriodEnd(false);
+            subscriptionRepository.save(sub);
+
+            BigDecimal amount = event.getAmountUsd() != null ? event.getAmountUsd() : BigDecimal.ZERO;
+            BillingInvoice invoice = BillingInvoice.builder()
+                    .invoiceNumber(invoiceNum)
+                    .amountUsd(amount)
+                    .status(InvoiceStatus.PAID)
+                    .planName(event.getPlanId() != null ? event.getPlanId() : sub.getPlanId())
+                    .periodStart(now)
+                    .periodEnd(periodEnd)
+                    .pdfUrl("https://billing.bowol.io/invoices/" + invoiceNum + ".pdf")
+                    .build();
+            invoice.setOrganizationId(orgId);
+            invoiceRepository.save(invoice);
+
+            try {
+                Map<String, Object> data = new LinkedHashMap<>();
+                data.put("organization_id", orgId.toString());
+                data.put("invoice_number", invoiceNum);
+                data.put("amount_usd", amount);
+                data.put("status", "PAID");
+                webhookService.dispatchEventAsync(orgId, "subscription.payment_succeeded", data);
+            } catch (Exception e) {
+                log.warn("No se pudo notificar evento subscription.payment_succeeded: {}", e.getMessage());
+            }
+
+            log.info("Webhook invoice.payment_succeeded procesado exitosamente para org {}", orgId);
+            return true;
+
+        } else if ("invoice.payment_failed".equalsIgnoreCase(eventType)) {
+            sub.setStatus(SubscriptionStatus.PAST_DUE);
+            subscriptionRepository.save(sub);
+
+            try {
+                Map<String, Object> data = new LinkedHashMap<>();
+                data.put("organization_id", orgId.toString());
+                data.put("invoice_number", invoiceNum);
+                data.put("status", "PAST_DUE");
+                webhookService.dispatchEventAsync(orgId, "subscription.payment_failed", data);
+            } catch (Exception e) {
+                log.warn("No se pudo notificar evento subscription.payment_failed: {}", e.getMessage());
+            }
+
+            log.warn("Webhook invoice.payment_failed registrado para org {}", orgId);
+            return true;
+
+        } else if ("customer.subscription.deleted".equalsIgnoreCase(eventType)) {
+            sub.setStatus(SubscriptionStatus.CANCELED);
+            sub.setCancelAtPeriodEnd(true);
+            subscriptionRepository.save(sub);
+            log.info("Webhook customer.subscription.deleted procesado para org {}", orgId);
+            return true;
+        }
+
+        log.info("Webhook de pago no procesado (tipo desconocido: {})", eventType);
+        return false;
+    }
+
     private OrganizationSubscription createDefaultSubscription(UUID organizationId) {
         Instant now = Instant.now();
         Instant periodEnd = now.plus(30, ChronoUnit.DAYS);

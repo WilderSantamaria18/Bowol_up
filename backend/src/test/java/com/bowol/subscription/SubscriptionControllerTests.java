@@ -265,4 +265,68 @@ class SubscriptionControllerTests {
                 .andExpect(jsonPath("$.plan.id").value("FREE"))
                 .andExpect(jsonPath("$.aiCreditsTotal").value(500));
     }
+
+    @Test
+    @DisplayName("POST /api/v1/subscriptions/webhook procesa invoice.payment_succeeded con idempotencia")
+    void testHandlePaymentWebhook_Success_And_Idempotency() throws Exception {
+        com.bowol.subscription.dto.PaymentWebhookEvent webhookEvent = com.bowol.subscription.dto.PaymentWebhookEvent.builder()
+                .eventType("invoice.payment_succeeded")
+                .eventId("evt_12345")
+                .organizationId(orgA.getId())
+                .planId("PRO")
+                .amountUsd(BigDecimal.valueOf(49.00))
+                .invoiceNumber("INV-STRIPE-IDEM-001")
+                .build();
+
+        // Primer envío -> procesado exitosamente
+        mockMvc.perform(post("/api/v1/subscriptions/webhook")
+                        .header("Authorization", "Bearer " + tokenOrgA)
+                        .header("X-Webhook-Signature", "sig_valid_test_token")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(webhookEvent)))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.received").value(true))
+                .andExpect(jsonPath("$.processed").value(true));
+
+        // Verificar que la factura se guardó
+        List<BillingInvoice> invoices = invoiceRepository.findAllByOrganizationIdAndDeletedAtIsNullOrderByCreatedAtDesc(orgA.getId());
+        assertThat(invoices).hasSize(1);
+        assertThat(invoices.get(0).getInvoiceNumber()).isEqualTo("INV-STRIPE-IDEM-001");
+        assertThat(invoices.get(0).getAmountUsd()).isEqualByComparingTo(BigDecimal.valueOf(49.00));
+
+        // Segundo envío con el mismo invoiceNumber -> Idempotencia garantizada (no duplica factura)
+        mockMvc.perform(post("/api/v1/subscriptions/webhook")
+                        .header("Authorization", "Bearer " + tokenOrgA)
+                        .header("X-Webhook-Signature", "sig_valid_test_token")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(webhookEvent)))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.received").value(true))
+                .andExpect(jsonPath("$.processed").value(true));
+
+        List<BillingInvoice> invoicesAfterSecondCall = invoiceRepository.findAllByOrganizationIdAndDeletedAtIsNullOrderByCreatedAtDesc(orgA.getId());
+        assertThat(invoicesAfterSecondCall).hasSize(1);
+    }
+
+    @Test
+    @DisplayName("POST /api/v1/subscriptions/webhook procesa invoice.payment_failed y pasa estado a PAST_DUE")
+    void testHandlePaymentWebhook_PaymentFailed() throws Exception {
+        com.bowol.subscription.dto.PaymentWebhookEvent failEvent = com.bowol.subscription.dto.PaymentWebhookEvent.builder()
+                .eventType("invoice.payment_failed")
+                .eventId("evt_fail_6789")
+                .organizationId(orgA.getId())
+                .invoiceNumber("INV-FAIL-001")
+                .build();
+
+        mockMvc.perform(post("/api/v1/subscriptions/webhook")
+                        .header("Authorization", "Bearer " + tokenOrgA)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(failEvent)))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.received").value(true))
+                .andExpect(jsonPath("$.processed").value(true));
+
+        OrganizationSubscription sub = subscriptionRepository.findByOrganizationId(orgA.getId()).orElseThrow();
+        assertThat(sub.getStatus()).isEqualTo(SubscriptionStatus.PAST_DUE);
+    }
 }

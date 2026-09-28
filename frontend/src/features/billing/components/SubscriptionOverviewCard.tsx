@@ -41,15 +41,15 @@ export const SubscriptionOverviewCard: React.FC<SubscriptionOverviewCardProps> =
   };
 
   return (
-    <Card className="relative overflow-hidden border border-zinc-800 bg-gradient-to-b from-zinc-900/90 to-zinc-950/80 backdrop-blur-md">
+    <Card className="relative overflow-hidden border border-zinc-200/90 dark:border-white/[0.08] bg-white/85 dark:bg-zinc-900/85 backdrop-blur-xl shadow-lg dark:shadow-[0_12px_40px_-8px_rgba(0,0,0,0.6)]">
       {/* Background glow */}
       <div className="absolute top-0 right-0 -mr-16 -mt-16 w-64 h-64 bg-orange-500/10 rounded-full blur-3xl pointer-events-none" />
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 relative z-10">
         {/* Left Column: Current Plan & Status */}
-        <div className="space-y-4 lg:border-r lg:border-zinc-800/80 lg:pr-6">
+        <div className="space-y-4 lg:border-r border-zinc-200 dark:border-zinc-800/80 lg:pr-6">
           <div className="flex items-center justify-between">
-            <span className="text-xs uppercase tracking-wider font-semibold text-zinc-400">Plan Actual</span>
+            <span className="text-xs uppercase tracking-wider font-semibold text-zinc-500 dark:text-zinc-400">Plan Actual</span>
             <div className="flex items-center gap-2">
               <Badge variant={status === 'ACTIVE' ? 'success' : 'warning'}>
                 {status === 'ACTIVE' ? 'Activo' : status}
@@ -61,25 +61,25 @@ export const SubscriptionOverviewCard: React.FC<SubscriptionOverviewCardProps> =
           </div>
 
           <div>
-            <h3 className="text-2xl font-bold text-white tracking-tight flex items-center gap-2">
+            <h3 className="text-2xl font-bold text-zinc-900 dark:text-zinc-100 tracking-tight flex items-center gap-2 font-display">
               {plan.name}
               {plan.planKey !== 'FREE' && (
-                <Sparkles className="w-5 h-5 text-amber-400 animate-pulse" strokeWidth={1.5} />
+                <Sparkles className="w-5 h-5 text-amber-500 dark:text-amber-400 animate-pulse" strokeWidth={1.5} />
               )}
             </h3>
-            <p className="text-sm text-zinc-400 mt-1">{plan.description}</p>
+            <p className="text-sm text-zinc-500 dark:text-zinc-400 mt-1">{plan.description}</p>
           </div>
 
-          <div className="pt-2 border-t border-zinc-800/60 flex items-center gap-2 text-xs text-zinc-400">
-            <Calendar className="w-4 h-4 text-zinc-500" strokeWidth={1.5} />
+          <div className="pt-2 border-t border-zinc-200 dark:border-zinc-800/60 flex items-center gap-2 text-xs text-zinc-500 dark:text-zinc-400">
+            <Calendar className="w-4 h-4 text-zinc-400 dark:text-zinc-500" strokeWidth={1.5} />
             <span>
               {cancelAtPeriodEnd ? 'Expira el:' : 'Próxima renovación:'}{' '}
-              <strong className="text-zinc-200">{formatDate(currentPeriodEnd)}</strong>
+              <strong className="text-zinc-800 dark:text-zinc-200">{formatDate(currentPeriodEnd)}</strong>
             </span>
           </div>
 
           {cancelAtPeriodEnd && (
-            <div className="flex items-center gap-2 text-xs text-amber-400 bg-amber-500/10 border border-amber-500/20 px-3 py-2 rounded-lg">
+            <div className="flex items-center gap-2 text-xs text-amber-600 dark:text-amber-400 bg-amber-500/10 border border-amber-500/20 px-3 py-2 rounded-xl">
               <AlertTriangle className="w-4 h-4 shrink-0" strokeWidth={1.5} />
               <span>Cancelación programada al final del periodo.</span>
             </div>
@@ -87,20 +87,20 @@ export const SubscriptionOverviewCard: React.FC<SubscriptionOverviewCardProps> =
         </div>
 
         {/* Center Column: AI Credits Usage */}
-        <div className="space-y-4 lg:border-r lg:border-zinc-800/80 lg:pr-6 flex flex-col justify-center">
+        <div className="space-y-4 lg:border-r border-zinc-200 dark:border-zinc-800/80 lg:pr-6 flex flex-col justify-center">
           <div className="flex items-center justify-between">
-            <span className="text-xs uppercase tracking-wider font-semibold text-zinc-400 flex items-center gap-1.5">
-              <Zap className="w-3.5 h-3.5 text-orange-400" strokeWidth={1.5} />
+            <span className="text-xs uppercase tracking-wider font-semibold text-zinc-500 dark:text-zinc-400 flex items-center gap-1.5">
+              <Zap className="w-3.5 h-3.5 text-orange-500 dark:text-orange-400" strokeWidth={1.5} />
               Créditos de Inteligencia Artificial
             </span>
-            <span className="text-xs font-medium text-zinc-300">
+            <span className="text-xs font-medium text-zinc-700 dark:text-zinc-300">
               {creditsBalance} disponibles
             </span>
           </div>
 
           {/* Progress bar */}
           <div className="space-y-1.5">
-            <div className="w-full bg-zinc-800/80 rounded-full h-2.5 overflow-hidden p-0.5 border border-zinc-700/50">
+            <div className="w-full bg-zinc-100 dark:bg-zinc-800/80 rounded-full h-2.5 overflow-hidden p-0.5 border border-zinc-200 dark:border-zinc-700/50">
               <div
                 className={`h-full rounded-full transition-all duration-500 ${
                   isNearLimit ? 'bg-gradient-to-r from-amber-500 to-rose-500' : 'bg-gradient-to-r from-orange-500 to-amber-400'
@@ -108,16 +108,16 @@ export const SubscriptionOverviewCard: React.FC<SubscriptionOverviewCardProps> =
                 style={{ width: `${Math.max(4, usagePercentage)}%` }}
               />
             </div>
-            <div className="flex justify-between text-xs text-zinc-400">
+            <div className="flex justify-between text-xs text-zinc-500 dark:text-zinc-400">
               <span>{creditsUsedThisCycle} usados en este ciclo</span>
-              <span className={isNearLimit ? 'text-rose-400 font-semibold' : 'text-zinc-400'}>
+              <span className={isNearLimit ? 'text-rose-500 dark:text-rose-400 font-semibold' : 'text-zinc-500 dark:text-zinc-400'}>
                 {usagePercentage}% consumido
               </span>
             </div>
           </div>
 
           <div className="pt-2 text-xs text-zinc-500 flex items-center gap-1.5">
-            <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" strokeWidth={1.5} />
+            <CheckCircle2 className="w-3.5 h-3.5 text-emerald-500" strokeWidth={1.5} />
             <span>Los créditos se recargan mensualmente según tu plan.</span>
           </div>
         </div>
@@ -137,9 +137,9 @@ export const SubscriptionOverviewCard: React.FC<SubscriptionOverviewCardProps> =
           <Button
             variant="outline"
             onClick={onBuyCreditsClick}
-            className="w-full justify-center border-zinc-700 hover:border-orange-500/40 text-zinc-300 hover:text-white"
+            className="w-full justify-center border-zinc-200 dark:border-zinc-700 hover:border-orange-500/40 text-zinc-700 dark:text-zinc-300 hover:text-orange-600 dark:hover:text-white"
           >
-            <Zap className="w-4 h-4 mr-2 text-orange-400" strokeWidth={1.5} />
+            <Zap className="w-4 h-4 mr-2 text-orange-500 dark:text-orange-400" strokeWidth={1.5} />
             Comprar Paquete de Créditos
           </Button>
 

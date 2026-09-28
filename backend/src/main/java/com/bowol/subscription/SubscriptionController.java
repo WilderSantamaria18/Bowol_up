@@ -61,4 +61,12 @@ public class SubscriptionController {
         OrganizationSubscriptionResponse sub = subscriptionService.buyCredits(principal.getOrganizationId(), request.getCredits());
         return ResponseEntity.ok(sub);
     }
+
+    @PostMapping("/webhook")
+    public ResponseEntity<java.util.Map<String, Object>> handlePaymentWebhook(
+            @RequestBody PaymentWebhookEvent event,
+            @RequestHeader(value = "X-Webhook-Signature", required = false) String signature) {
+        boolean processed = subscriptionService.processPaymentWebhook(event, signature);
+        return ResponseEntity.ok(java.util.Map.of("received", true, "processed", processed));
+    }
 }
