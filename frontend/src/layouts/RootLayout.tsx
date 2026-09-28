@@ -21,6 +21,7 @@ import {
   Layers,
   Menu,
   Shield,
+  Palette,
   Search
 } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
@@ -117,8 +118,27 @@ export const RootLayout: React.FC = () => {
     },
   ];
 
+  // Group 3: Comunicación & Marca
+  const communicationItems: NavDropdownItem[] = [
+    {
+      label: 'Manual de Marca (Brand Kit)',
+      description: 'Identidad, voz editorial, colores y directrices para IA',
+      path: '/brand',
+      icon: Palette,
+      iconColor: 'bg-rose-500/10 border-rose-500/20 text-rose-400',
+    },
+    {
+      label: 'Social Studio & Propuestas IA',
+      description: 'Generación asistida de posts y análisis de impacto',
+      path: '/social',
+      icon: Share2,
+      iconColor: 'bg-orange-500/10 border-orange-500/20 text-orange-400',
+    },
+  ];
+
   const standaloneLinks = [
-    { label: 'Brand & Social', path: '/social', icon: Share2 },
+    { label: 'Manual de Marca', path: '/brand', icon: Palette },
+    { label: 'Social Studio', path: '/social', icon: Share2 },
     { label: 'Cockpit Ejecutivo', path: '/dashboard', icon: BarChart3 },
     { label: 'Business Profile', path: '/business-profile', icon: Building2 },
   ];
@@ -126,6 +146,7 @@ export const RootLayout: React.FC = () => {
   const mobileNavGroups = [
     { label: 'Estrategia & Radar', items: strategyItems },
     { label: 'Ejecución Ágil', items: executionItems },
+    { label: 'Marca & Redes', items: communicationItems },
   ];
 
   return (
@@ -150,17 +171,11 @@ export const RootLayout: React.FC = () => {
                   icon={Layers}
                   items={executionItems}
                 />
-                <Link
-                  to="/social"
-                  className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-colors ${
-                    location.pathname.startsWith('/social')
-                      ? 'bg-orange-500/10 text-orange-600 dark:text-orange-400 border border-orange-500/30'
-                      : 'text-zinc-600 dark:text-zinc-400 hover:text-zinc-950 dark:hover:text-zinc-200 hover:bg-zinc-200/60 dark:hover:bg-white/[0.04]'
-                  }`}
-                >
-                  <Share2 className="w-3.5 h-3.5" strokeWidth={1.5} />
-                  Marca & Redes
-                </Link>
+                <NavDropdown
+                  label="Marca & Redes"
+                  icon={Palette}
+                  items={communicationItems}
+                />
                 <Link
                   to="/dashboard"
                   className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-colors ${

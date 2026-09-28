@@ -24,6 +24,7 @@ const TaskBoardPage = React.lazy(() => import('@/features/tasks/pages/TaskBoardP
 const SprintsPage = React.lazy(() => import('@/features/sprints/pages/SprintsPage').then(m => ({ default: m.SprintsPage })));
 const CalendarPage = React.lazy(() => import('@/features/calendar/pages/CalendarPage').then(m => ({ default: m.CalendarPage })));
 const SocialPage = React.lazy(() => import('@/features/social/pages/SocialPage').then(m => ({ default: m.SocialPage })));
+const BrandPage = React.lazy(() => import('@/features/brand/pages/BrandPage').then(m => ({ default: m.BrandPage })));
 const DashboardPage = React.lazy(() => import('@/features/dashboard/pages/DashboardPage').then(m => ({ default: m.DashboardPage })));
 const BillingPage = React.lazy(() => import('@/features/billing/pages/BillingPage').then(m => ({ default: m.BillingPage })));
 const AuditLogsPage = React.lazy(() => import('@/features/audit/pages/AuditLogsPage').then(m => ({ default: m.AuditLogsPage })));
@@ -191,7 +192,7 @@ export const App: React.FC = () => {
                 path="brand"
                 element={
                   <ProtectedRoute>
-                    <SocialPage />
+                    <BrandPage />
                   </ProtectedRoute>
                 }
               />

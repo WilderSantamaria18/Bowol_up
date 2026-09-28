@@ -11,6 +11,7 @@ import {
   Repeat, 
   Calendar, 
   Share2, 
+  Palette,
   BarChart3, 
   Building2, 
   CreditCard, 
@@ -150,14 +151,24 @@ export const CommandPalette: React.FC<CommandPaletteProps> = ({ isOpen, onClose 
       shortcut: 'G C'
     },
     {
+      id: 'nav-brand',
+      title: 'Manual de Marca & Voz (Brand Kit)',
+      description: 'Identidad, colores, tipografía y tono editorial para IA',
+      category: 'Navegación',
+      icon: Palette,
+      keywords: ['marca', 'brand', 'kit', 'identidad', 'colores', 'tono', 'voz'],
+      action: () => { navigate('/brand'); onClose(); },
+      shortcut: 'G B'
+    },
+    {
       id: 'nav-social',
-      title: 'Brand & Social Studio',
-      description: 'Identidad de marca y generación asistida de contenido',
+      title: 'Social Studio & Propuestas IA',
+      description: 'Generación de posts, estimación de impacto y multicanal',
       category: 'Navegación',
       icon: Share2,
-      keywords: ['social', 'redes', 'marca', 'brand', 'linkedin', 'twitter'],
+      keywords: ['social', 'redes', 'posts', 'linkedin', 'twitter', 'impacto'],
       action: () => { navigate('/social'); onClose(); },
-      shortcut: 'G B'
+      shortcut: 'G M'
     },
     {
       id: 'nav-profile',
