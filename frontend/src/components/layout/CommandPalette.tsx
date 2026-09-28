@@ -6,6 +6,7 @@ import {
   Grid2X2, 
   Lightbulb, 
   FlaskConical, 
+  FolderKanban,
   CheckSquare, 
   Repeat, 
   Calendar, 
@@ -107,6 +108,16 @@ export const CommandPalette: React.FC<CommandPaletteProps> = ({ isOpen, onClose 
       keywords: ['hipótesis', 'experimentos', 'validación', 'lean'],
       action: () => { navigate('/hypotheses'); onClose(); },
       shortcut: 'G H'
+    },
+    {
+      id: 'nav-projects',
+      title: 'Iniciativas & Proyectos',
+      description: 'Cartera estratégica, épicas y descomposición ágil con IA',
+      category: 'Navegación',
+      icon: FolderKanban,
+      keywords: ['proyectos', 'projects', 'iniciativas', 'épicas', 'portfolio'],
+      action: () => { navigate('/projects'); onClose(); },
+      shortcut: 'G P'
     },
     {
       id: 'nav-tasks',

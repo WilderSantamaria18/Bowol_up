@@ -61,3 +61,34 @@ export interface UpdateSprintPayload {
   endDate?: string;
   status?: SprintStatus;
 }
+
+export type ProjectMemberRole = 'LEAD' | 'CONTRIBUTOR' | 'VIEWER';
+
+export interface ProjectMember {
+  id: number;
+  projectId: string;
+  userId: string;
+  role: ProjectMemberRole;
+  addedAt: string;
+}
+
+export interface AddProjectMemberPayload {
+  userId: string;
+  role: ProjectMemberRole;
+}
+
+export interface DecomposeProjectResponse {
+  epicTitle: string;
+  epicObjective: string;
+  totalEstimatedHours: number;
+  generatedTasksCount: number;
+  tasks: Array<{
+    id: string;
+    projectId: string;
+    title: string;
+    description?: string;
+    priority: string;
+    status: string;
+    estimateHours?: number;
+  }>;
+}

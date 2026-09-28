@@ -14,6 +14,7 @@ import {
   FlaskConical,
   Repeat,
   Calendar,
+  FolderKanban,
   Share2,
   CreditCard,
   Target,
@@ -86,6 +87,13 @@ export const RootLayout: React.FC = () => {
 
   // Group 2: Ejecución Ágil
   const executionItems: NavDropdownItem[] = [
+    {
+      label: 'Iniciativas & Proyectos',
+      description: 'Cartera estratégica, épicas y descomposición IA',
+      path: '/projects',
+      icon: FolderKanban,
+      iconColor: 'bg-amber-500/10 border-amber-500/20 text-amber-500',
+    },
     {
       label: 'Tablero Kanban',
       description: 'Flujo de tareas de alta velocidad y backlog',

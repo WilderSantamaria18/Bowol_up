@@ -6,6 +6,9 @@ import {
   ProjectStatus,
   Sprint,
   CreateSprintPayload,
+  ProjectMember,
+  AddProjectMemberPayload,
+  DecomposeProjectResponse,
 } from '../types';
 
 export const projectService = {
@@ -36,5 +39,25 @@ export const projectService = {
 
   async createSprint(projectId: string, payload: CreateSprintPayload): Promise<Sprint> {
     return httpClient.post(`/projects/${projectId}/sprints`, payload);
+  },
+
+  async decomposeProject(projectId: string): Promise<DecomposeProjectResponse> {
+    return httpClient.post(`/projects/${projectId}/decompose`);
+  },
+
+  async getProjectMembers(projectId: string): Promise<ProjectMember[]> {
+    return httpClient.get(`/projects/${projectId}/members`);
+  },
+
+  async addProjectMember(projectId: string, payload: AddProjectMemberPayload): Promise<ProjectMember> {
+    return httpClient.post(`/projects/${projectId}/members`, payload);
+  },
+
+  async removeProjectMember(projectId: string, userId: string): Promise<void> {
+    return httpClient.delete(`/projects/${projectId}/members/${userId}`);
+  },
+
+  async getProjectVelocity(projectId: string): Promise<any> {
+    return httpClient.get(`/projects/${projectId}/velocity`);
   },
 };

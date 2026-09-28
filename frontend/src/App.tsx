@@ -18,6 +18,8 @@ const TrendsPage = React.lazy(() => import('@/features/trends/pages/TrendsPage')
 const SwotPage = React.lazy(() => import('@/features/swot/pages/SwotPage').then(m => ({ default: m.SwotPage })));
 const OpportunitiesPage = React.lazy(() => import('@/features/opportunities/pages/OpportunitiesPage').then(m => ({ default: m.OpportunitiesPage })));
 const HypothesesPage = React.lazy(() => import('@/features/hypotheses/pages/HypothesesPage').then(m => ({ default: m.HypothesesPage })));
+const ProjectsPage = React.lazy(() => import('@/features/projects/pages/ProjectsPage').then(m => ({ default: m.ProjectsPage })));
+const ProjectDetailPage = React.lazy(() => import('@/features/projects/pages/ProjectDetailPage').then(m => ({ default: m.ProjectDetailPage })));
 const TaskBoardPage = React.lazy(() => import('@/features/tasks/pages/TaskBoardPage').then(m => ({ default: m.TaskBoardPage })));
 const SprintsPage = React.lazy(() => import('@/features/sprints/pages/SprintsPage').then(m => ({ default: m.SprintsPage })));
 const CalendarPage = React.lazy(() => import('@/features/calendar/pages/CalendarPage').then(m => ({ default: m.CalendarPage })));
@@ -149,7 +151,15 @@ export const App: React.FC = () => {
                 path="projects"
                 element={
                   <ProtectedRoute>
-                    <TaskBoardPage />
+                    <ProjectsPage />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="projects/:id"
+                element={
+                  <ProtectedRoute>
+                    <ProjectDetailPage />
                   </ProtectedRoute>
                 }
               />
