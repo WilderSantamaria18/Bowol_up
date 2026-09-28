@@ -11,6 +11,7 @@ import { BentoRadarTable } from './BentoRadarTable';
 import { BentoSwotSynthesis } from './BentoSwotSynthesis';
 import { BentoExperimentPipeline } from './BentoExperimentPipeline';
 import { BentoAiAssistantCard } from './BentoAiAssistantCard';
+import { RecentActivityStream } from './RecentActivityStream';
 import { NewInitiativeModal } from './NewInitiativeModal';
 
 export const ExecutiveCockpit: React.FC = () => {
@@ -82,7 +83,7 @@ export const ExecutiveCockpit: React.FC = () => {
       {/* 3. Métricas Bento Superiores (Grid 12 col) */}
       <BentoMetricsRow summary={summary} />
 
-      {/* 2. Sección Media Bento: Radar de Tendencias (8 cols) & Síntesis FODA (4 cols) */}
+      {/* 4. Sección Media Bento: Radar de Tendencias (8 cols) & Síntesis FODA (4 cols) */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-5">
         <div className="lg:col-span-8">
           <BentoRadarTable
@@ -95,7 +96,7 @@ export const ExecutiveCockpit: React.FC = () => {
         </div>
       </div>
 
-      {/* 3. Sección Inferior Bento: Pipeline de Experimentación (7 cols) & Asistente BOWOL (5 cols) */}
+      {/* 5. Sección Inferior Bento: Pipeline de Experimentación (7 cols) & Asistente BOWOL (5 cols) */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-5">
         <div className="lg:col-span-7">
           <BentoExperimentPipeline />
@@ -104,6 +105,9 @@ export const ExecutiveCockpit: React.FC = () => {
           <BentoAiAssistantCard />
         </div>
       </div>
+
+      {/* 6. Actividad Reciente del Ciclo de Innovación */}
+      <RecentActivityStream />
 
       {/* Modal para Crear Nueva Iniciativa */}
       <NewInitiativeModal

@@ -86,18 +86,73 @@ const mockSummary: DashboardSummary = {
     maturityScore: 73,
     statusLabel: 'OPTIMAL',
     explanation: 'Score ponderado de ejecución, estrategia, mercado y madurez.',
+    formulaVariables: {
+      completedTasks: 10,
+      totalTasks: 15,
+      activeSprintProgress: 75,
+      approvedOpportunities: 2,
+      totalOpportunities: 6,
+      evaluatedTrends: 4,
+      totalGlobalTrends: 12,
+      digitalMaturity: 85,
+      aiMaturity: 60,
+    },
   },
 };
+
+const mockActivities = [
+  {
+    id: 'act-1',
+    action: 'CREATE_OPPORTUNITY',
+    entityType: 'OPPORTUNITY',
+    entityId: 'opp-1',
+    description: 'Nueva oportunidad RICE agregada al radar',
+    actorEmail: 'alonso@startup.io',
+    createdAt: new Date().toISOString(),
+  },
+  {
+    id: 'act-2',
+    action: 'COMPLETE_TASK',
+    entityType: 'TASK',
+    entityId: 'task-10',
+    description: 'Tarea finalizada en Sprint activo',
+    actorEmail: 'dev@startup.io',
+    createdAt: new Date().toISOString(),
+  },
+];
 
 vi.mock('../services/dashboardService', () => ({
   dashboardService: {
     getSummary: vi.fn(() => Promise.resolve(mockSummary)),
+    getActivity: vi.fn(() => Promise.resolve(mockActivities)),
+    getHealth: vi.fn(() => Promise.resolve(mockSummary.healthScore)),
+    getBrief: vi.fn(() => Promise.resolve(mockSummary.briefing)),
   },
 }));
 
 vi.mock('@/features/trends/services/trendService', () => ({
   trendService: {
     triggerSync: vi.fn(() => Promise.resolve({ created: 5, updated: 0, total: 5 })),
+  },
+}));
+
+vi.mock('@/features/swot/services/swotService', () => ({
+  swotService: {
+    getLatestSwot: vi.fn(() =>
+      Promise.resolve({
+        id: 'swot-1',
+        strengths: [{ id: 's1', text: 'Infraestructura analítica' }],
+        opportunities: [{ id: 'o1', text: 'Expansión Enterprise' }],
+        weaknesses: [{ id: 'w1', text: 'Onboarding' }],
+        threats: [{ id: 't1', text: 'Comoditización' }],
+      })
+    ),
+  },
+}));
+
+vi.mock('@/features/hypotheses/services/hypothesisService', () => ({
+  hypothesisService: {
+    getHypotheses: vi.fn(() => Promise.resolve([])),
   },
 }));
 
@@ -139,5 +194,28 @@ describe('ExecutiveCockpit Component', () => {
     expect(screen.getByText('Sprint 1 — Core Intelligence Engine')).toBeInTheDocument();
     expect(screen.getByText('75%')).toBeInTheDocument();
     expect(screen.getByText('Sincronizar')).toBeInTheDocument();
+
+    // Validar Actividad Reciente del Ciclo
+    expect(await screen.findByText('Actividad Reciente del Ciclo')).toBeInTheDocument();
+    expect(screen.getByText('Nueva oportunidad RICE agregada al radar')).toBeInTheDocument();
+  });
+
+  it('abre el modal de explicabilidad matemática al hacer click en Salud del Negocio', async () => {
+    const { fireEvent } = await import('@testing-library/react');
+    render(
+      <QueryClientProvider client={queryClient}>
+        <BrowserRouter>
+          <ExecutiveCockpit />
+        </BrowserRouter>
+      </QueryClientProvider>
+    );
+
+    expect(await screen.findByText('Ver desglose explicable')).toBeInTheDocument();
+    fireEvent.click(screen.getByText('Ver desglose explicable'));
+
+    expect(await screen.findByTestId('business-health-modal')).toBeInTheDocument();
+    expect(screen.getByText('Transparencia del BusinessHealthScore')).toBeInTheDocument();
+    expect(screen.getByText('Score = (Ejecución × 0.30) + (Estrategia × 0.25) + (Mercado × 0.20) + (Madurez × 0.25)')).toBeInTheDocument();
+    expect(screen.getByText('1. Ejecución Ágil (30%)')).toBeInTheDocument();
   });
 });

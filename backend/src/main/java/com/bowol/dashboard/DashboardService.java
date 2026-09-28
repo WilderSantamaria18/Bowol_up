@@ -1,7 +1,10 @@
 package com.bowol.dashboard;
 
+import com.bowol.audit.AuditLog;
+import com.bowol.audit.AuditLogRepository;
 import com.bowol.businessprofile.BusinessProfile;
 import com.bowol.businessprofile.BusinessProfileRepository;
+import com.bowol.dashboard.dto.DashboardActivityItem;
 import com.bowol.dashboard.dto.DashboardSummaryResponse;
 import com.bowol.opportunity.Opportunity;
 import com.bowol.opportunity.OpportunityRepository;
@@ -49,6 +52,7 @@ public class DashboardService {
     private final ProjectRepository projectRepository;
     private final SprintRepository sprintRepository;
     private final TaskRepository taskRepository;
+    private final AuditLogRepository auditLogRepository;
 
     @Transactional(readOnly = true)
     public DashboardSummaryResponse getSummary(UserPrincipal principal) {
@@ -196,6 +200,26 @@ public class DashboardService {
         String healthExplanation = String.format("Score ponderado: Ejecución %d%% (peso 30%%), Estrategia %d%% (peso 25%%), Mercado %d%% (peso 20%%), Madurez %d%% (peso 25%%).",
                 executionScore, strategyScore, marketScore, maturityScore);
 
+        Map<String, Object> formulaVariables = new LinkedHashMap<>();
+        formulaVariables.put("overallScore", overallScore);
+        formulaVariables.put("executionScore", executionScore);
+        formulaVariables.put("executionWeight", 0.30);
+        formulaVariables.put("strategyScore", strategyScore);
+        formulaVariables.put("strategyWeight", 0.25);
+        formulaVariables.put("marketScore", marketScore);
+        formulaVariables.put("marketWeight", 0.20);
+        formulaVariables.put("maturityScore", maturityScore);
+        formulaVariables.put("maturityWeight", 0.25);
+        formulaVariables.put("totalTasks", totalTasks);
+        formulaVariables.put("completedTasks", completedTasks);
+        formulaVariables.put("activeSprintProgress", activeSprintInfo != null ? activeSprintInfo.getProgressPercent() : 0);
+        formulaVariables.put("approvedOpportunities", approvedCount);
+        formulaVariables.put("totalOpportunities", oppCount);
+        formulaVariables.put("evaluatedTrends", evaluatedCount);
+        formulaVariables.put("totalTrends", totalTrends);
+        formulaVariables.put("digitalMaturity", digitalMaturity);
+        formulaVariables.put("aiMaturity", aiMaturity);
+
         DashboardSummaryResponse.HealthScoreInfo healthScoreInfo = DashboardSummaryResponse.HealthScoreInfo.builder()
                 .overallScore(overallScore)
                 .executionScore(executionScore)
@@ -204,6 +228,7 @@ public class DashboardService {
                 .maturityScore(maturityScore)
                 .statusLabel(healthStatusLabel)
                 .explanation(healthExplanation)
+                .formulaVariables(formulaVariables)
                 .build();
 
         // 6. Briefing Ejecutivo Diario
@@ -221,9 +246,28 @@ public class DashboardService {
             briefingHighlights.add("Sin sprint activo: se recomienda convertir las oportunidades aprobadas en iniciativas de ejecución.");
         }
 
+        List<String> briefingRisks = new ArrayList<>();
+        if (activeSprintInfo != null && activeSprintInfo.getProgressPercent() < 40) {
+            briefingRisks.add("Sprint en riesgo: avance inferior al 40% a mitad de ciclo.");
+        }
+        if (backlogCount > 5) {
+            briefingRisks.add(String.format("Acumulación de backlog: %d oportunidades sin priorizar con RICE.", backlogCount));
+        }
+        if (digitalMaturity < 50) {
+            briefingRisks.add("Madurez digital inicial: oportunidad de automatización con agentes IA.");
+        }
+
+        List<String> suggestedActions = new ArrayList<>();
+        suggestedActions.add("Priorizar oportunidades aprobadas para convertirlas en iniciativas ágiles.");
+        suggestedActions.add("Explorar señales de alta relevancia en el Radar de Tendencias.");
+        suggestedActions.add("Revisar hipótesis activas y registrar conclusiones experimentales.");
+
         DashboardSummaryResponse.ExecutiveBriefing briefing = DashboardSummaryResponse.ExecutiveBriefing.builder()
                 .headline("Briefing Estratégico Ejecutivo")
+                .summary(String.format("Salud global al %d%% (%s) con %d proyectos en marcha y %d señales bajo monitoreo.", overallScore, healthStatusLabel, activeProjectsCount, relevantSignalsCount))
                 .highlights(briefingHighlights)
+                .risks(briefingRisks)
+                .suggestedActions(suggestedActions)
                 .generatedAt(java.time.Instant.now().toString())
                 .build();
 
@@ -262,6 +306,31 @@ public class DashboardService {
                 .briefing(briefing)
                 .healthScore(healthScoreInfo)
                 .build();
+    }
+
+    @Transactional(readOnly = true)
+    public DashboardSummaryResponse.ExecutiveBriefing getBrief(UserPrincipal principal) {
+        return getSummary(principal).getBriefing();
+    }
+
+    @Transactional(readOnly = true)
+    public DashboardSummaryResponse.HealthScoreInfo getHealth(UserPrincipal principal) {
+        return getSummary(principal).getHealthScore();
+    }
+
+    @Transactional(readOnly = true)
+    public List<DashboardActivityItem> getRecentActivity(UserPrincipal principal) {
+        UUID orgId = resolveOrganizationId(principal);
+        List<AuditLog> logs = auditLogRepository.findTop20ByOrganizationIdOrderByCreatedAtDesc(orgId);
+        return logs.stream().map(l -> DashboardActivityItem.builder()
+                .id(l.getId())
+                .action(l.getAction())
+                .entityType(l.getEntityType())
+                .entityId(l.getEntityId())
+                .actorEmail(l.getActorEmail())
+                .description(String.format("%s sobre %s", l.getAction(), l.getEntityType()))
+                .createdAt(l.getCreatedAt())
+                .build()).toList();
     }
 
     private UUID resolveOrganizationId(UserPrincipal principal) {

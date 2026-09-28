@@ -125,7 +125,10 @@ public class DashboardSummaryResponse {
     @Builder
     public static class ExecutiveBriefing {
         private String headline;
+        private String summary;
         private List<String> highlights;
+        private List<String> risks;
+        private List<String> suggestedActions;
         private String generatedAt;
     }
 
@@ -142,5 +145,6 @@ public class DashboardSummaryResponse {
         private int maturityScore;
         private String statusLabel;
         private String explanation;
+        private java.util.Map<String, Object> formulaVariables;
     }
 }

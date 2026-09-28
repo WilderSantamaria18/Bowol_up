@@ -58,7 +58,10 @@ export interface DashboardExecutionSummary {
 
 export interface DashboardExecutiveBriefing {
   headline: string;
+  summary?: string;
   highlights: string[];
+  risks?: string[];
+  suggestedActions?: string[];
   generatedAt: string;
 }
 
@@ -70,6 +73,17 @@ export interface DashboardHealthScoreInfo {
   maturityScore: number;
   statusLabel: 'OPTIMAL' | 'GOOD' | 'ATTENTION_NEEDED';
   explanation: string;
+  formulaVariables?: Record<string, any>;
+}
+
+export interface DashboardActivityItem {
+  id: number;
+  action: string;
+  entityType: string;
+  entityId?: string;
+  actorEmail?: string;
+  description: string;
+  createdAt: string;
 }
 
 export interface DashboardSummary {
@@ -81,3 +95,4 @@ export interface DashboardSummary {
   briefing?: DashboardExecutiveBriefing;
   healthScore?: DashboardHealthScoreInfo;
 }
+
