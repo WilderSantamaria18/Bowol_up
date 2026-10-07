@@ -14,8 +14,8 @@ import { SocialPostCard } from '../components/SocialPostCard';
 import { BrandKitView } from '@/features/brand/components/BrandKitView';
 import { AIGenerateSocialModal } from '../components/AIGenerateSocialModal';
 import { CreateSocialPostModal } from '../components/CreateSocialPostModal';
-import { Loader2, Share2, Sparkles, Filter } from 'lucide-react';
-import { Button } from '@/components/ui/Button';
+import { Loader2, Share2, Sparkles } from 'lucide-react';
+import { Button, CardSkeletonGrid, DataState, EmptyState, ListToolbar, SegmentedTabs } from '@/components/ui';
 
 export const SocialPage: React.FC = () => {
   const queryClient = useQueryClient();
@@ -116,7 +116,7 @@ export const SocialPage: React.FC = () => {
           {isLoadingBrand ? (
             <div className="py-20 flex flex-col items-center justify-center gap-3">
               <Loader2 className="w-8 h-8 text-orange-500 animate-spin" />
-              <p className="text-xs text-zinc-400">Cargando identidad de marca...</p>
+              <p className="text-xs text-zinc-600 dark:text-zinc-400">Cargando identidad de marca...</p>
             </div>
           ) : (
             <BrandKitView
@@ -133,75 +133,46 @@ export const SocialPage: React.FC = () => {
       {/* Tab: Social Feed & Studio */}
       {activeTab === 'feed' && (
         <div className="space-y-6">
-          {/* Filters Bar */}
-          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 p-3.5 rounded-xl bg-surface-subtle border border-white/[0.06]">
-            <div className="flex items-center gap-2 flex-wrap">
-              <span className="text-xs text-zinc-400 flex items-center gap-1 mr-1">
-                <Filter className="w-3.5 h-3.5" />
-                Filtrar:
-              </span>
+          <ListToolbar
+            left={
+              <SegmentedTabs
+                mode="filter"
+                tone="orange"
+                aria-label="Filtrar por canal"
+                value={channelFilter}
+                onChange={setChannelFilter}
+                items={channelOptions.map((o) => ({ id: o.value, label: o.label }))}
+              />
+            }
+          >
+            <SegmentedTabs
+              mode="filter"
+              tone="zinc"
+              aria-label="Filtrar por estado"
+              value={statusFilter}
+              onChange={setStatusFilter}
+              items={statusOptions.map((o) => ({ id: o.value, label: o.label }))}
+            />
+          </ListToolbar>
 
-              {channelOptions.map((opt) => (
-                <button
-                  key={opt.value}
-                  onClick={() => setChannelFilter(opt.value)}
-                  className={`px-2.5 py-1 rounded-lg text-xs font-medium transition-all ${
-                    channelFilter === opt.value
-                      ? 'bg-orange-600 text-white shadow-sm'
-                      : 'text-zinc-400 hover:text-zinc-200 hover:bg-white/[0.04]'
-                  }`}
-                >
-                  {opt.label}
-                </button>
-              ))}
-            </div>
-
-            <div className="flex items-center gap-2 self-end sm:self-auto">
-              {statusOptions.map((opt) => (
-                <button
-                  key={opt.value}
-                  onClick={() => setStatusFilter(opt.value)}
-                  className={`px-2.5 py-1 rounded-md text-xs transition-colors ${
-                    statusFilter === opt.value
-                      ? 'bg-white/[0.1] text-white font-medium'
-                      : 'text-zinc-500 hover:text-zinc-300'
-                  }`}
-                >
-                  {opt.label}
-                </button>
-              ))}
-            </div>
-          </div>
-
-          {/* Posts Grid */}
-          {isLoadingPosts ? (
-            <div className="py-20 flex flex-col items-center justify-center gap-3">
-              <Loader2 className="w-8 h-8 text-orange-500 animate-spin" />
-              <p className="text-xs text-zinc-400">Cargando publicaciones estratégicas...</p>
-            </div>
-          ) : posts.length === 0 ? (
-            <div className="py-20 text-center rounded-2xl border border-dashed border-white/[0.08] bg-surface-subtle space-y-3">
-              <Share2 className="w-10 h-10 mx-auto text-zinc-600" strokeWidth={1.5} />
-              <h3 className="text-sm font-semibold text-zinc-200">
-                No hay publicaciones registradas
-              </h3>
-              <p className="text-xs text-zinc-500 max-w-md mx-auto">
-                Genera tu primer lote de contenidos multicanal con IA a partir de las oportunidades y el Brand Profile, o redacta una publicación manual.
-              </p>
-              <div className="pt-2 flex items-center justify-center gap-3">
-                <Button
-                  size="sm"
-                  variant="primary"
-                  onClick={() => setIsAIModalOpen(true)}
-                  className="gap-1.5"
-                >
-                  <Sparkles className="w-4 h-4" />
-                  Generar con IA (Studio)
-                </Button>
-              </div>
-            </div>
-          ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+          <DataState
+            isLoading={isLoadingPosts}
+            isEmpty={posts.length === 0}
+            loading={<CardSkeletonGrid count={6} className="gap-5 lg:grid-cols-3" />}
+            empty={
+              <EmptyState
+                icon={Share2}
+                title="No hay publicaciones registradas"
+                description="Genera tu primer lote de contenidos multicanal con IA a partir de las oportunidades y el Brand Profile, o redacta una publicación manual."
+                action={
+                  <Button size="sm" variant="primary" leftIcon={Sparkles} onClick={() => setIsAIModalOpen(true)}>
+                    Generar con IA (Studio)
+                  </Button>
+                }
+              />
+            }
+          >
+            <div className="grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3">
               {posts.map((post) => (
                 <SocialPostCard
                   key={post.id}
@@ -215,7 +186,7 @@ export const SocialPage: React.FC = () => {
                 />
               ))}
             </div>
-          )}
+          </DataState>
         </div>
       )}
 

@@ -154,7 +154,7 @@ class SocialControllerTests {
     }
 
     @Test
-    @DisplayName("POST /api/v1/social/posts/{id}/publish publica la entrada y registra la fecha de publicación")
+    @DisplayName("POST /api/v1/social/posts/{id}/publish registra una publicación simulada hasta integrar un proveedor")
     void testPublishPost() throws Exception {
         SocialPost post = SocialPost.builder()
                 .channel(SocialChannel.TWITTER_X)
@@ -169,6 +169,7 @@ class SocialControllerTests {
                         .header("Authorization", "Bearer " + tokenOrgA))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.status").value("PUBLISHED"))
+                .andExpect(jsonPath("$.publicationMode").value("SIMULATED"))
                 .andExpect(jsonPath("$.publishedAt").isNotEmpty());
 
         SocialPost updated = socialPostRepository.findById(post.getId()).orElseThrow();
@@ -244,5 +245,33 @@ class SocialControllerTests {
         mockMvc.perform(delete("/api/v1/social/posts/" + postA.getId())
                         .header("Authorization", "Bearer " + tokenOrgB))
                 .andExpect(status().isNotFound());
+    }
+
+    @Test
+    @DisplayName("Un miembro no puede crear publicaciones aunque el token declare permisos adicionales")
+    void memberCannotCreateSocialPostWithForgedPermission() throws Exception {
+        User member = userRepository.save(User.builder()
+                .email("member-" + UUID.randomUUID() + "@acme.com")
+                .passwordHash("hashed")
+                .name("Member")
+                .build());
+        organizationMemberRepository.save(OrganizationMember.builder()
+                .organization(orgA)
+                .user(member)
+                .role(Role.MEMBER)
+                .build());
+        String memberToken = jwtService.generateAccessToken(member, orgA.getId(), Role.MEMBER, Set.of("social_post.create"));
+
+        CreateSocialPostRequest request = CreateSocialPostRequest.builder()
+                .channel(SocialChannel.LINKEDIN)
+                .title("Post no autorizado")
+                .content("Contenido de prueba")
+                .build();
+
+        mockMvc.perform(post("/api/v1/social/posts")
+                        .header("Authorization", "Bearer " + memberToken)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(request)))
+                .andExpect(status().isForbidden());
     }
 }

@@ -25,7 +25,7 @@ export const MessageItem: React.FC<MessageItemProps> = ({ message }) => {
 
     if (!hasStructuredBlocks) {
       return (
-        <div className="text-xs text-zinc-300 leading-relaxed whitespace-pre-wrap">
+        <div className="text-xs text-zinc-700 dark:text-zinc-300 leading-relaxed whitespace-pre-wrap">
           {content}
         </div>
       );
@@ -51,7 +51,7 @@ export const MessageItem: React.FC<MessageItemProps> = ({ message }) => {
                   <Database className="w-3.5 h-3.5" strokeWidth={1.5} />
                   <span>Dato Observable</span>
                 </div>
-                <p className="text-zinc-300 leading-relaxed whitespace-pre-wrap">{body}</p>
+                <p className="text-zinc-700 dark:text-zinc-300 leading-relaxed whitespace-pre-wrap">{body}</p>
               </div>
             );
           }
@@ -66,7 +66,7 @@ export const MessageItem: React.FC<MessageItemProps> = ({ message }) => {
                   <TrendingUp className="w-3.5 h-3.5" strokeWidth={1.5} />
                   <span>Análisis Estratégico</span>
                 </div>
-                <p className="text-zinc-300 leading-relaxed whitespace-pre-wrap">{body}</p>
+                <p className="text-zinc-700 dark:text-zinc-300 leading-relaxed whitespace-pre-wrap">{body}</p>
               </div>
             );
           }
@@ -81,7 +81,7 @@ export const MessageItem: React.FC<MessageItemProps> = ({ message }) => {
                   <Lightbulb className="w-3.5 h-3.5" strokeWidth={1.5} />
                   <span>Hipótesis Proyectada</span>
                 </div>
-                <p className="text-zinc-300 leading-relaxed whitespace-pre-wrap">{body}</p>
+                <p className="text-zinc-700 dark:text-zinc-300 leading-relaxed whitespace-pre-wrap">{body}</p>
               </div>
             );
           }
@@ -96,13 +96,13 @@ export const MessageItem: React.FC<MessageItemProps> = ({ message }) => {
                   <CheckCircle2 className="w-3.5 h-3.5" strokeWidth={1.5} />
                   <span>Recomendación Táctica (1-4 semanas)</span>
                 </div>
-                <p className="text-zinc-200 leading-relaxed whitespace-pre-wrap font-medium">{body}</p>
+                <p className="text-zinc-900 dark:text-zinc-200 leading-relaxed whitespace-pre-wrap font-medium">{body}</p>
               </div>
             );
           }
 
           return (
-            <div key={idx} className="text-xs text-zinc-300 leading-relaxed whitespace-pre-wrap">
+            <div key={idx} className="text-xs text-zinc-700 dark:text-zinc-300 leading-relaxed whitespace-pre-wrap">
               {sec}
             </div>
           );
@@ -114,7 +114,7 @@ export const MessageItem: React.FC<MessageItemProps> = ({ message }) => {
   if (isUser) {
     return (
       <div className="flex justify-end mb-4 animate-in fade-in slide-in-from-bottom-2 duration-200">
-        <div className="max-w-[85%] rounded-2xl rounded-tr-sm bg-orange-600/15 border border-orange-500/30 p-3.5 text-zinc-100 shadow-md">
+        <div className="max-w-[85%] rounded-2xl rounded-tr-sm bg-orange-600/15 border border-orange-500/30 p-3.5 text-zinc-900 dark:text-zinc-100 shadow-md">
           <div className="flex items-center justify-between gap-3 mb-1">
             <span className="text-[10px] font-semibold text-orange-400 uppercase tracking-wider">
               Tú
@@ -131,20 +131,20 @@ export const MessageItem: React.FC<MessageItemProps> = ({ message }) => {
 
   return (
     <div className="flex justify-start mb-5 animate-in fade-in slide-in-from-bottom-2 duration-200">
-      <div className="max-w-[92%] w-full rounded-2xl rounded-tl-sm bg-[#121318] border border-white/[0.08] p-4 shadow-xl backdrop-blur-md">
-        <div className="flex items-center justify-between gap-3 pb-2 mb-2 border-b border-white/[0.06]">
+      <div className="max-w-[92%] w-full rounded-2xl rounded-tl-sm bg-white dark:bg-[#121318] border border-zinc-900/[0.13] dark:border-white/[0.08] p-4 shadow-xl backdrop-blur-md">
+        <div className="flex items-center justify-between gap-3 pb-2 mb-2 border-b border-zinc-900/[0.1] dark:border-white/[0.06]">
           <div className="flex items-center gap-1.5">
             <div className="w-5 h-5 rounded-md bg-orange-500/20 border border-orange-500/30 flex items-center justify-center text-orange-400">
               <Sparkles className="w-3 h-3" strokeWidth={1.5} />
             </div>
-            <span className="text-xs font-bold text-zinc-200 tracking-tight">
+            <span className="text-xs font-bold text-zinc-900 dark:text-zinc-200 tracking-tight">
               BOWOL Copilot
             </span>
           </div>
 
           <div className="flex items-center gap-2">
             {message.tokensUsed && (
-              <span className="flex items-center gap-1 text-[10px] font-mono text-zinc-500 bg-white/[0.02] px-2 py-0.5 rounded border border-white/[0.04]">
+              <span className="flex items-center gap-1 text-[10px] font-mono text-zinc-500 bg-zinc-900/[0.02] dark:bg-white/[0.02] px-2 py-0.5 rounded border border-zinc-900/[0.08] dark:border-white/[0.04]">
                 <Zap className="w-3 h-3 text-orange-400" strokeWidth={1.5} />
                 {message.tokensUsed} tokens
               </span>

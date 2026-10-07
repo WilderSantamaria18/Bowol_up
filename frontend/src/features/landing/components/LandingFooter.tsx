@@ -11,12 +11,12 @@ export const LandingFooter: React.FC = () => {
           <div className="md:col-span-2 space-y-4">
             <BrandLogo size="md" asLink to="/" />
             <p className="text-xs text-zinc-600 dark:text-zinc-400 max-w-[320px] leading-relaxed">
-              Plataforma corporativa de inteligencia de tendencias y orquestación estratégica. Diseñada bajo la filosofía Liquid Glass.
+              Plataforma inteligente de planificación de actividades y automatización de tareas para emprendimientos y empresas en crecimiento.
             </p>
             <div className="flex items-center gap-3 pt-1">
               <ThemeToggle size="sm" />
               <p className="text-[11px] font-mono text-zinc-500">
-                © {new Date().getFullYear()} BOWOL Inc. Todos los derechos reservados.
+                © {new Date().getFullYear()} BOWOL. Todos los derechos reservados.
               </p>
             </div>
           </div>
@@ -26,34 +26,34 @@ export const LandingFooter: React.FC = () => {
               Plataforma
             </p>
             <ul className="space-y-2 text-xs text-zinc-600 dark:text-zinc-400">
-              <li><a href="#ciclo" className="hover:text-zinc-900 dark:hover:text-white transition-colors">Radar de Tendencias</a></li>
-              <li><a href="#ciclo" className="hover:text-zinc-900 dark:hover:text-white transition-colors">Síntesis FODA</a></li>
-              <li><a href="#ciclo" className="hover:text-zinc-900 dark:hover:text-white transition-colors">Scoring RICE</a></li>
-              <li><a href="#ciclo" className="hover:text-zinc-900 dark:hover:text-white transition-colors">Orquestador de Sprints</a></li>
+              <li><a href="#ciclo" className="hover:text-zinc-900 dark:hover:text-white transition-colors">Planificador con IA</a></li>
+              <li><a href="#interactive-demo" className="hover:text-zinc-900 dark:hover:text-white transition-colors">Diagnóstico FODA</a></li>
+              <li><a href="#interactive-demo" className="hover:text-zinc-900 dark:hover:text-white transition-colors">Priorización RICE</a></li>
+              <li><a href="#ciclo" className="hover:text-zinc-900 dark:hover:text-white transition-colors">Tablero Kanban & Sprints</a></li>
             </ul>
           </div>
 
           <div className="space-y-3">
             <p className="text-xs font-mono uppercase text-zinc-900 dark:text-zinc-300 font-semibold tracking-wider">
-              Seguridad & Cumplimiento
+              Herramientas
             </p>
             <ul className="space-y-2 text-xs text-zinc-600 dark:text-zinc-400">
-              <li><span className="hover:text-zinc-900 dark:hover:text-white transition-colors">Certificación SOC2 Tipo II</span></li>
-              <li><span className="hover:text-zinc-900 dark:hover:text-white transition-colors">Cifrado TLS 1.3 End-to-End</span></li>
-              <li><span className="hover:text-zinc-900 dark:hover:text-white transition-colors">Alineación GDPR & Privacidad</span></li>
-              <li><span className="hover:text-zinc-900 dark:hover:text-white transition-colors">Aislamiento Multi-Tenant RLS</span></li>
+              <li><a href="#plataforma" className="hover:text-zinc-900 dark:hover:text-white transition-colors">Copilot Estratégico</a></li>
+              <li><a href="#plataforma" className="hover:text-zinc-900 dark:hover:text-white transition-colors">Integración Google Calendar</a></li>
+              <li><a href="#plataforma" className="hover:text-zinc-900 dark:hover:text-white transition-colors">Recordatorios por WhatsApp</a></li>
+              <li><a href="#metricas" className="hover:text-zinc-900 dark:hover:text-white transition-colors">Métricas de Cumplimiento</a></li>
             </ul>
           </div>
 
           <div className="space-y-3">
             <p className="text-xs font-mono uppercase text-zinc-900 dark:text-zinc-300 font-semibold tracking-wider">
-              Corporativo
+              Acceso
             </p>
             <ul className="space-y-2 text-xs text-zinc-600 dark:text-zinc-400">
-              <li><a href="#problema" className="hover:text-zinc-900 dark:hover:text-white transition-colors">Acerca de BOWOL</a></li>
-              <li><a href="/login" className="hover:text-zinc-900 dark:hover:text-white transition-colors">Acceso Clientes</a></li>
-              <li><a href="#solicitar" className="hover:text-zinc-900 dark:hover:text-white transition-colors">Contacto Enterprise</a></li>
-              <li><span className="text-emerald-500 dark:text-emerald-400 text-[11px] font-mono">● Sistemas Operativos</span></li>
+              <li><a href="#problema" className="hover:text-zinc-900 dark:hover:text-white transition-colors">¿Por qué Bowol?</a></li>
+              <li><a href="/login" className="hover:text-zinc-900 dark:hover:text-white transition-colors">Iniciar Sesión</a></li>
+              <li><a href="#solicitar" className="hover:text-zinc-900 dark:hover:text-white transition-colors">Probar Gratis</a></li>
+              <li><span className="text-emerald-500 dark:text-emerald-400 text-[11px] font-mono">● Sistema 100% Operativo</span></li>
             </ul>
           </div>
 

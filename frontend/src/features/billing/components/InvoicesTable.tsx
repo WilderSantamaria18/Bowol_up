@@ -31,14 +31,13 @@ export const InvoicesTable: React.FC<InvoicesTableProps> = ({ invoices, isLoadin
             <CheckCircle2 className="w-3 h-3" /> Pagada
           </Badge>
         );
-      case 'DRAFT':
+      case 'PENDING':
         return (
           <Badge variant="warning" className="flex items-center gap-1">
             <Clock className="w-3 h-3" /> Pendiente
           </Badge>
         );
-      case 'VOID':
-      case 'UNCOLLECTIBLE':
+      case 'FAILED':
         return (
           <Badge variant="error" className="flex items-center gap-1">
             <AlertCircle className="w-3 h-3" /> Fallida
@@ -50,19 +49,19 @@ export const InvoicesTable: React.FC<InvoicesTableProps> = ({ invoices, isLoadin
   };
 
   return (
-    <Card className="border border-zinc-800 bg-zinc-900/60 p-0 overflow-hidden">
-      <div className="p-5 border-b border-zinc-800/80 flex items-center justify-between">
+    <Card className="border border-zinc-200 dark:border-zinc-800 bg-zinc-100 dark:bg-zinc-900/60 p-0 overflow-hidden">
+      <div className="p-5 border-b border-zinc-200 dark:border-zinc-800/80 flex items-center justify-between">
         <div className="flex items-center gap-2">
           <Receipt className="w-5 h-5 text-orange-400" strokeWidth={1.5} />
-          <h4 className="text-base font-semibold text-white">Historial de Facturación</h4>
+          <h4 className="text-base font-semibold text-zinc-900 dark:text-white">Historial de Facturación</h4>
         </div>
-        <span className="text-xs text-zinc-400">
+        <span className="text-xs text-zinc-600 dark:text-zinc-400">
           {invoices.length} {invoices.length === 1 ? 'factura registrada' : 'facturas registradas'}
         </span>
       </div>
 
       {isLoading ? (
-        <div className="p-12 text-center text-sm text-zinc-400">
+        <div className="p-12 text-center text-sm text-zinc-600 dark:text-zinc-400">
           Cargando facturas...
         </div>
       ) : invoices.length === 0 ? (
@@ -73,35 +72,33 @@ export const InvoicesTable: React.FC<InvoicesTableProps> = ({ invoices, isLoadin
       ) : (
         <div className="overflow-x-auto">
           <table className="w-full text-left text-xs">
-            <thead className="bg-zinc-900/90 text-zinc-400 border-b border-zinc-800 uppercase tracking-wider font-medium">
+            <thead className="bg-zinc-100 dark:bg-zinc-900/90 text-zinc-600 dark:text-zinc-400 border-b border-zinc-200 dark:border-zinc-800 uppercase tracking-wider font-medium">
               <tr>
                 <th className="py-3 px-5">Factura</th>
                 <th className="py-3 px-5">Fecha</th>
                 <th className="py-3 px-5">Concepto</th>
-                <th className="py-3 px-5">Método</th>
+                <th className="py-3 px-5">Período</th>
                 <th className="py-3 px-5">Monto</th>
                 <th className="py-3 px-5">Estado</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-zinc-800/60">
               {invoices.map((inv) => (
-                <tr key={inv.id} className="hover:bg-zinc-800/30 transition-colors">
-                  <td className="py-3.5 px-5 font-mono text-zinc-300 font-medium">
+                <tr key={inv.id} className="hover:bg-zinc-100 dark:hover:bg-zinc-800/30 transition-colors">
+                  <td className="py-3.5 px-5 font-mono text-zinc-700 dark:text-zinc-300 font-medium">
                     {inv.invoiceNumber}
                   </td>
-                  <td className="py-3.5 px-5 text-zinc-400">
+                  <td className="py-3.5 px-5 text-zinc-600 dark:text-zinc-400">
                     {formatDate(inv.createdAt)}
                   </td>
-                  <td className="py-3.5 px-5 text-zinc-200">
-                    {inv.billingReason || 'Suscripción SaaS'}
+                  <td className="py-3.5 px-5 text-zinc-900 dark:text-zinc-200">
+                    {inv.planName || 'Suscripción SaaS'}
                   </td>
-                  <td className="py-3.5 px-5">
-                    <span className="inline-flex items-center px-2 py-0.5 rounded text-[11px] font-mono bg-zinc-800 text-zinc-300 border border-zinc-700/60">
-                      {inv.paymentGateway}
-                    </span>
+                  <td className="py-3.5 px-5 text-zinc-600 dark:text-zinc-400">
+                    {inv.periodStart ? `${formatDate(inv.periodStart)} – ${formatDate(inv.periodEnd ?? undefined)}` : 'N/A'}
                   </td>
-                  <td className="py-3.5 px-5 font-semibold text-white">
-                    ${inv.amount.toFixed(2)} {inv.currency}
+                  <td className="py-3.5 px-5 font-semibold text-zinc-900 dark:text-white">
+                    ${inv.amountUsd.toFixed(2)} USD
                   </td>
                   <td className="py-3.5 px-5">
                     {getStatusBadge(inv.status)}

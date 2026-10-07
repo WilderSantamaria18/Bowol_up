@@ -21,7 +21,7 @@ public class UserPrincipal implements UserDetails {
     private final Role role;
     private final Collection<? extends GrantedAuthority> authorities;
 
-    public static UserPrincipal create(UUID id, String email, String name, UUID organizationId, Role role, List<String> permissions) {
+    public static UserPrincipal create(UUID id, String email, String name, UUID organizationId, Role role, Collection<String> permissions) {
         Set<GrantedAuthority> authorities = new HashSet<>();
         if (role != null) {
             authorities.add(new SimpleGrantedAuthority("ROLE_" + role.name()));

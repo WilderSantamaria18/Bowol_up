@@ -1,25 +1,32 @@
 import React, { useState, useMemo } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import { 
-  FolderKanban, 
-  Plus, 
-  Search, 
-  Repeat, 
-  CheckSquare, 
-  Activity, 
-  AlertCircle,
-  Lightbulb,
-  CheckCircle2,
-  Clock
-} from 'lucide-react';
-import { Button } from '@/components/ui/Button';
+import { FolderKanban, Plus, Repeat, CheckSquare, Activity, Lightbulb, CheckCircle2, Clock, Sparkles } from 'lucide-react';
+import {
+  Button,
+  CardSkeletonGrid,
+  DataState,
+  EmptyState,
+  ListToolbar,
+  SearchField,
+  SegmentedTabs,
+  StatCard,
+  StatGrid,
+} from '@/components/ui';
 import { projectService } from '../services/projectService';
 import { opportunityService } from '@/features/opportunities/services/opportunityService';
 import { Project, CreateProjectPayload, UpdateProjectPayload } from '../types';
 import { ProjectCard } from '../components/ProjectCard';
 import { CreateProjectModal } from '../components/CreateProjectModal';
 import { AIDecomposeProjectModal } from '../components/AIDecomposeProjectModal';
+
+const STATUS_FILTERS = [
+  { id: 'ALL', label: 'Todos' },
+  { id: 'ACTIVE', label: 'En Ejecución' },
+  { id: 'PLANNING', label: 'Planificación' },
+  { id: 'PAUSED', label: 'Pausados' },
+  { id: 'COMPLETED', label: 'Completados' },
+];
 
 export const ProjectsPage: React.FC = () => {
   const queryClient = useQueryClient();
@@ -144,6 +151,17 @@ export const ProjectsPage: React.FC = () => {
             type="button"
             variant="outline"
             size="sm"
+            onClick={() => navigate('/planning')}
+            className="gap-2 text-orange-600 dark:text-orange-400 border-orange-500/30 hover:bg-orange-500/10"
+          >
+            <Sparkles className="w-4 h-4 text-orange-500" strokeWidth={1.5} />
+            <span>Planificador BOWOL</span>
+          </Button>
+
+          <Button
+            type="button"
+            variant="outline"
+            size="sm"
             onClick={() => navigate('/tasks')}
             className="gap-2"
           >
@@ -175,164 +193,52 @@ export const ProjectsPage: React.FC = () => {
         </div>
       </div>
 
-      {/* KPI Metrics row with Liquid Glass */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-        <div className="p-5 rounded-2xl bg-white/70 dark:bg-zinc-900/60 border border-zinc-200/80 dark:border-white/[0.08] backdrop-blur-xl shadow-sm">
-          <div className="flex items-center justify-between">
-            <span className="text-xs font-medium text-zinc-500 dark:text-zinc-400 uppercase tracking-wider">
-              Total Iniciativas
-            </span>
-            <FolderKanban className="w-4 h-4 text-zinc-400" strokeWidth={1.5} />
-          </div>
-          <p className="text-2xl font-bold text-zinc-900 dark:text-zinc-100 mt-2 font-mono">
-            {metrics.total}
-          </p>
-          <span className="text-[11px] text-zinc-400 mt-1 block">
-            Cartera de innovación
-          </span>
-        </div>
+      <StatGrid columns={4} className="lg:grid-cols-4">
+        <StatCard label="Total Iniciativas" value={metrics.total} icon={FolderKanban} hint="Cartera de innovación" />
+        <StatCard label="En Ejecución" value={metrics.active} icon={Activity} tone="emerald" hint="Sprints activos en curso" />
+        <StatCard label="En Planificación" value={metrics.planning} icon={Clock} tone="blue" hint="Listos para descomponer con IA" />
+        <StatCard label="Completadas" value={metrics.completed} icon={CheckCircle2} tone="violet" hint="Valor entregado a producción" />
+      </StatGrid>
 
-        <div className="p-5 rounded-2xl bg-white/70 dark:bg-zinc-900/60 border border-zinc-200/80 dark:border-white/[0.08] backdrop-blur-xl shadow-sm">
-          <div className="flex items-center justify-between">
-            <span className="text-xs font-medium text-emerald-600 dark:text-emerald-400 uppercase tracking-wider">
-              En Ejecución
-            </span>
-            <Activity className="w-4 h-4 text-emerald-500" strokeWidth={1.5} />
-          </div>
-          <p className="text-2xl font-bold text-emerald-600 dark:text-emerald-400 mt-2 font-mono">
-            {metrics.active}
-          </p>
-          <span className="text-[11px] text-zinc-400 mt-1 block">
-            Sprints activos en curso
-          </span>
-        </div>
-
-        <div className="p-5 rounded-2xl bg-white/70 dark:bg-zinc-900/60 border border-zinc-200/80 dark:border-white/[0.08] backdrop-blur-xl shadow-sm">
-          <div className="flex items-center justify-between">
-            <span className="text-xs font-medium text-blue-600 dark:text-blue-400 uppercase tracking-wider">
-              En Planificación
-            </span>
-            <Clock className="w-4 h-4 text-blue-500" strokeWidth={1.5} />
-          </div>
-          <p className="text-2xl font-bold text-blue-600 dark:text-blue-400 mt-2 font-mono">
-            {metrics.planning}
-          </p>
-          <span className="text-[11px] text-zinc-400 mt-1 block">
-            Listos para descomponer con IA
-          </span>
-        </div>
-
-        <div className="p-5 rounded-2xl bg-white/70 dark:bg-zinc-900/60 border border-zinc-200/80 dark:border-white/[0.08] backdrop-blur-xl shadow-sm">
-          <div className="flex items-center justify-between">
-            <span className="text-xs font-medium text-purple-600 dark:text-purple-400 uppercase tracking-wider">
-              Completadas
-            </span>
-            <CheckCircle2 className="w-4 h-4 text-purple-500" strokeWidth={1.5} />
-          </div>
-          <p className="text-2xl font-bold text-purple-600 dark:text-purple-400 mt-2 font-mono">
-            {metrics.completed}
-          </p>
-          <span className="text-[11px] text-zinc-400 mt-1 block">
-            Valor entregado a producción
-          </span>
-        </div>
-      </div>
-
-      {/* Filter and Search Bar */}
-      <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-4 p-2 rounded-2xl bg-white/50 dark:bg-zinc-900/40 border border-zinc-200/60 dark:border-white/[0.06] backdrop-blur-md">
-        {/* Status Filters */}
-        <div className="flex items-center gap-1.5 overflow-x-auto p-1 text-xs">
-          {[
-            { id: 'ALL', label: 'Todos' },
-            { id: 'ACTIVE', label: 'En Ejecución' },
-            { id: 'PLANNING', label: 'Planificación' },
-            { id: 'PAUSED', label: 'Pausados' },
-            { id: 'COMPLETED', label: 'Completados' },
-          ].map((tab) => (
-            <button
-              key={tab.id}
-              type="button"
-              onClick={() => setSelectedStatus(tab.id)}
-              className={`px-3 py-1.5 rounded-xl font-medium transition-all whitespace-nowrap ${
-                selectedStatus === tab.id
-                  ? 'bg-zinc-900 text-white dark:bg-white dark:text-zinc-950 shadow-sm'
-                  : 'text-zinc-600 dark:text-zinc-400 hover:text-zinc-950 dark:hover:text-white hover:bg-zinc-100 dark:hover:bg-white/5'
-              }`}
-            >
-              {tab.label}
-            </button>
-          ))}
-        </div>
-
-        {/* Search Input */}
-        <div className="relative w-full sm:w-72 p-1">
-          <Search className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-zinc-400" strokeWidth={1.5} />
-          <input
-            type="text"
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            placeholder="Buscar proyectos..."
-            className="w-full pl-9 pr-4 py-1.5 rounded-xl bg-white dark:bg-zinc-900/80 border border-zinc-200 dark:border-white/10 text-xs text-zinc-900 dark:text-zinc-100 placeholder-zinc-400 focus:outline-none focus:ring-2 focus:ring-orange-500/40 focus:border-orange-500 transition-all"
+      <ListToolbar
+        left={
+          <SegmentedTabs
+            mode="filter"
+            tone="zinc"
+            aria-label="Filtrar por estado"
+            value={selectedStatus}
+            onChange={setSelectedStatus}
+            items={STATUS_FILTERS}
           />
-        </div>
-      </div>
+        }
+      >
+        <SearchField value={searchTerm} onValueChange={setSearchTerm} placeholder="Buscar proyectos..." className="sm:max-w-xs" />
+      </ListToolbar>
 
-      {/* Projects Grid */}
-      {loadingProjects ? (
-        <div className="py-24 text-center">
-          <div className="w-8 h-8 rounded-full border-2 border-orange-500/20 border-t-orange-500 animate-spin mx-auto mb-3" />
-          <span className="text-xs font-mono text-zinc-500 uppercase tracking-widest">
-            Cargando iniciativas ágiles...
-          </span>
-        </div>
-      ) : projectsError ? (
-        <div className="p-6 rounded-2xl bg-red-500/10 border border-red-500/20 text-center space-y-2">
-          <AlertCircle className="w-6 h-6 text-red-500 mx-auto" strokeWidth={1.5} />
-          <h3 className="text-sm font-semibold text-red-600 dark:text-red-400">
-            Error al consultar los proyectos
-          </h3>
-          <p className="text-xs text-zinc-500 dark:text-zinc-400">
-            No se pudo conectar con el servicio de proyectos. Intenta recargar la página.
-          </p>
-        </div>
-      ) : filteredProjects.length === 0 ? (
-        <div className="py-20 px-6 rounded-3xl bg-white/40 dark:bg-zinc-900/30 border border-dashed border-zinc-300 dark:border-white/10 text-center max-w-xl mx-auto space-y-4">
-          <div className="w-12 h-12 rounded-2xl bg-orange-500/10 border border-orange-500/20 text-orange-500 flex items-center justify-center mx-auto">
-            <FolderKanban className="w-6 h-6" strokeWidth={1.5} />
-          </div>
-          <div>
-            <h3 className="text-base font-semibold text-zinc-900 dark:text-zinc-100">
-              {searchTerm ? 'No se encontraron iniciativas para tu búsqueda' : 'No hay proyectos registrados aún'}
-            </h3>
-            <p className="text-xs text-zinc-500 dark:text-zinc-400 mt-1 leading-relaxed">
-              Crea una nueva iniciativa directamente o convierte una oportunidad aprobada desde el embudo estratégico RICE.
-            </p>
-          </div>
-          <div className="flex flex-wrap items-center justify-center gap-3 pt-2">
-            <Button
-              type="button"
-              variant="outline"
-              size="sm"
-              onClick={() => navigate('/opportunities')}
-              className="gap-2"
-            >
-              <Lightbulb className="w-4 h-4 text-amber-500" strokeWidth={1.5} />
-              <span>Ver Oportunidades RICE</span>
-            </Button>
-            <Button
-              type="button"
-              variant="primary"
-              size="sm"
-              onClick={() => setIsCreateModalOpen(true)}
-              className="gap-2"
-            >
-              <Plus className="w-4 h-4" strokeWidth={1.5} />
-              <span>Crear Primera Iniciativa</span>
-            </Button>
-          </div>
-        </div>
-      ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+      <DataState
+        isLoading={loadingProjects}
+        error={projectsError ? 'No se pudo conectar con el servicio de proyectos. Intenta recargar la página.' : null}
+        isEmpty={filteredProjects.length === 0}
+        loading={<CardSkeletonGrid count={6} className="gap-5 lg:grid-cols-3" />}
+        empty={
+          <EmptyState
+            icon={FolderKanban}
+            title={searchTerm ? 'No se encontraron iniciativas para tu búsqueda' : 'No hay proyectos registrados aún'}
+            description="Crea una nueva iniciativa directamente o convierte una oportunidad aprobada desde el embudo estratégico RICE."
+            action={
+              <div className="flex flex-wrap items-center justify-center gap-3">
+                <Button type="button" variant="outline" size="sm" leftIcon={Lightbulb} onClick={() => navigate('/opportunities')}>
+                  Ver Oportunidades RICE
+                </Button>
+                <Button type="button" variant="primary" size="sm" leftIcon={Plus} onClick={() => setIsCreateModalOpen(true)}>
+                  Crear Primera Iniciativa
+                </Button>
+              </div>
+            }
+          />
+        }
+      >
+        <div className="grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3">
           {filteredProjects.map((project) => (
             <ProjectCard
               key={project.id}
@@ -347,7 +253,7 @@ export const ProjectsPage: React.FC = () => {
             />
           ))}
         </div>
-      )}
+      </DataState>
 
       {/* Modals */}
       <CreateProjectModal

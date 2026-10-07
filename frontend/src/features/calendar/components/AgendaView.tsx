@@ -15,9 +15,9 @@ export const AgendaView: React.FC<AgendaViewProps> = ({
 }) => {
   if (items.length === 0) {
     return (
-      <div className="py-16 text-center rounded-2xl border border-dashed border-white/[0.08] bg-surface-subtle">
+      <div className="py-16 text-center rounded-2xl border border-dashed border-zinc-900/[0.13] dark:border-white/[0.08] bg-surface-subtle">
         <CalendarIcon className="w-10 h-10 mx-auto text-zinc-600 mb-3" strokeWidth={1.5} />
-        <h3 className="text-sm font-semibold text-zinc-300">No hay eventos en este periodo</h3>
+        <h3 className="text-sm font-semibold text-zinc-700 dark:text-zinc-300">No hay eventos en este periodo</h3>
         <p className="text-xs text-zinc-500 mt-1 max-w-sm mx-auto">
           Crea un nuevo hito o planifica un Sprint en el módulo de ejecución para verlo en este calendario.
         </p>
@@ -53,10 +53,10 @@ export const AgendaView: React.FC<AgendaViewProps> = ({
       case 'rose':
         return 'bg-rose-500/10 text-rose-300 border-rose-500/30';
       case 'amber':
-        return 'bg-amber-500/10 text-amber-300 border-amber-500/30';
+        return 'bg-amber-500/10 text-amber-700 dark:text-amber-300 border-amber-500/30';
       case 'orange':
       default:
-        return 'bg-orange-500/10 text-orange-300 border-orange-500/30';
+        return 'bg-orange-500/10 text-orange-700 dark:text-orange-300 border-orange-500/30';
     }
   };
 
@@ -76,7 +76,7 @@ export const AgendaView: React.FC<AgendaViewProps> = ({
           <div key={dateStr} className="space-y-3">
             <div className="flex items-center gap-2">
               <span className="w-2 h-2 rounded-full bg-orange-500" />
-              <h3 className="text-xs font-semibold text-zinc-300 capitalize tracking-wide">
+              <h3 className="text-xs font-semibold text-zinc-700 dark:text-zinc-300 capitalize tracking-wide">
                 {formattedDate}
               </h3>
             </div>
@@ -86,16 +86,16 @@ export const AgendaView: React.FC<AgendaViewProps> = ({
                 <div
                   key={item.id}
                   onClick={() => onSelectItem?.(item)}
-                  className="group relative p-4 rounded-xl border border-white/[0.08] bg-surface-subtle hover:border-white/[0.15] transition-all flex flex-col sm:flex-row sm:items-center justify-between gap-3 shadow-md cursor-pointer"
+                  className="group relative p-4 rounded-xl border border-zinc-900/[0.13] dark:border-white/[0.08] bg-surface-subtle hover:border-zinc-900/[0.16] dark:hover:border-white/[0.15] transition-all flex flex-col sm:flex-row sm:items-center justify-between gap-3 shadow-md cursor-pointer"
                 >
                   <div className="flex items-start gap-3">
-                    <div className="p-2 rounded-lg bg-black/40 border border-white/[0.06] mt-0.5">
+                    <div className="p-2 rounded-lg bg-black/40 border border-zinc-900/[0.1] dark:border-white/[0.06] mt-0.5">
                       {getSourceIcon(item.source, item.eventType)}
                     </div>
 
                     <div className="space-y-1">
                       <div className="flex items-center gap-2 flex-wrap">
-                        <span className="text-sm font-semibold text-white tracking-tight">
+                        <span className="text-sm font-semibold text-zinc-900 dark:text-white tracking-tight">
                           {item.title}
                         </span>
 
@@ -108,7 +108,7 @@ export const AgendaView: React.FC<AgendaViewProps> = ({
                         </span>
 
                         {item.projectName && (
-                          <span className="text-[10px] text-zinc-400 flex items-center gap-1 bg-white/[0.04] px-2 py-0.5 rounded-md border border-white/[0.04]">
+                          <span className="text-[10px] text-zinc-600 dark:text-zinc-400 flex items-center gap-1 bg-zinc-900/[0.04] dark:bg-white/[0.04] px-2 py-0.5 rounded-md border border-zinc-900/[0.08] dark:border-white/[0.04]">
                             <FolderKanban className="w-3 h-3 text-zinc-500" strokeWidth={1.5} />
                             {item.projectName}
                           </span>
@@ -116,7 +116,7 @@ export const AgendaView: React.FC<AgendaViewProps> = ({
                       </div>
 
                       {item.description && (
-                        <p className="text-xs text-zinc-400 line-clamp-2">
+                        <p className="text-xs text-zinc-600 dark:text-zinc-400 line-clamp-2">
                           {item.description}
                         </p>
                       )}
@@ -128,7 +128,7 @@ export const AgendaView: React.FC<AgendaViewProps> = ({
                         </span>
 
                         {item.status && (
-                          <span className="text-zinc-400 font-mono text-[10px] uppercase">
+                          <span className="text-zinc-600 dark:text-zinc-400 font-mono text-[10px] uppercase">
                             Estado: {item.status}
                           </span>
                         )}
@@ -140,7 +140,7 @@ export const AgendaView: React.FC<AgendaViewProps> = ({
                     <button
                       type="button"
                       onClick={() => onDeleteEvent(item.metadata?.rawEventId)}
-                      className="opacity-0 group-hover:opacity-100 transition-opacity p-1.5 rounded-lg text-zinc-500 hover:text-rose-400 hover:bg-white/[0.05] self-end sm:self-center"
+                      className="opacity-0 group-hover:opacity-100 transition-opacity p-1.5 rounded-lg text-zinc-500 hover:text-rose-400 hover:bg-zinc-900/[0.05] dark:hover:bg-white/[0.05] self-end sm:self-center"
                       title="Eliminar evento"
                       aria-label="Eliminar evento"
                     >

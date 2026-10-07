@@ -2,7 +2,9 @@ package com.bowol.audit;
 
 import com.bowol.shared.multitenancy.TenantContext;
 import com.bowol.shared.security.UserPrincipal;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -56,6 +58,8 @@ public class AuditLogService {
                 detailsJson = "{\"raw\":\"" + details.toString().replace("\"", "\\\"") + "\"}";
             }
         }
+
+        detailsJson = redactSerializedDetails(detailsJson);
 
         AuditLog auditLog = AuditLog.builder()
                 .organizationId(organizationId)
@@ -170,13 +174,60 @@ public class AuditLogService {
         summary.put("totalEvents", totalLogs);
         summary.put("eventsLast24Hours", last24hCount);
         summary.put("recentActivities", recent);
-        summary.put("complianceStatus", "SOC2_TYPE_II_READY");
+        summary.put("complianceStatus", "NOT_ASSESSED");
         return summary;
     }
 
     private String escapeCsv(String value) {
         if (value == null) return "\"\"";
-        String escaped = value.replace("\"", "\"\"");
+        String safeValue = value;
+        if (!safeValue.isEmpty() && "=+-@".indexOf(safeValue.charAt(0)) >= 0) {
+            safeValue = "'" + safeValue;
+        }
+        String escaped = safeValue.replace("\"", "\"\"");
         return "\"" + escaped + "\"";
+    }
+
+    private String redactSerializedDetails(String detailsJson) {
+        try {
+            JsonNode root = objectMapper.readTree(detailsJson);
+            redactSensitiveFields(root);
+            return objectMapper.writeValueAsString(root);
+        } catch (Exception e) {
+            log.warn("Los detalles de auditoría no contienen JSON válido y fueron redactados");
+            return "{\"redacted\":true}";
+        }
+    }
+
+    private void redactSensitiveFields(JsonNode node) {
+        if (node == null) {
+            return;
+        }
+        if (node.isObject()) {
+            ObjectNode object = (ObjectNode) node;
+            Iterator<Map.Entry<String, JsonNode>> fields = object.fields();
+            while (fields.hasNext()) {
+                Map.Entry<String, JsonNode> field = fields.next();
+                if (isSensitiveField(field.getKey())) {
+                    object.put(field.getKey(), "[REDACTED]");
+                } else {
+                    redactSensitiveFields(field.getValue());
+                }
+            }
+        } else if (node.isArray()) {
+            for (JsonNode child : node) {
+                redactSensitiveFields(child);
+            }
+        }
+    }
+
+    private boolean isSensitiveField(String fieldName) {
+        String normalized = fieldName.toLowerCase(Locale.ROOT).replaceAll("[^a-z0-9]", "");
+        return normalized.contains("password")
+                || normalized.contains("token")
+                || normalized.contains("secret")
+                || normalized.contains("apikey")
+                || normalized.contains("authorization")
+                || normalized.contains("credential");
     }
 }

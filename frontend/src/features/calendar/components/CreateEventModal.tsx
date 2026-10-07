@@ -63,21 +63,21 @@ export const CreateEventModal: React.FC<CreateEventModalProps> = ({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm animate-fade-in">
-      <div className="relative w-full max-w-lg rounded-2xl bg-[#0F0F12] border border-white/[0.1] p-6 shadow-2xl">
+      <div className="relative w-full max-w-lg rounded-2xl bg-white dark:bg-[#0F0F12] border border-zinc-900/[0.16] dark:border-white/[0.1] p-6 shadow-2xl">
         {/* Header */}
-        <div className="flex items-center justify-between pb-4 border-b border-white/[0.08]">
+        <div className="flex items-center justify-between pb-4 border-b border-zinc-900/[0.13] dark:border-white/[0.08]">
           <div className="flex items-center gap-2.5">
             <div className="w-8 h-8 rounded-lg bg-orange-600/20 border border-orange-500/40 flex items-center justify-center text-orange-400">
               <CalendarIcon className="w-4 h-4" strokeWidth={1.5} />
             </div>
             <div>
-              <h2 className="text-base font-semibold text-white">Nuevo Hito / Evento</h2>
-              <p className="text-xs text-zinc-400">Agrega un punto de control o fecha clave al roadmap</p>
+              <h2 className="text-base font-semibold text-zinc-900 dark:text-white">Nuevo Hito / Evento</h2>
+              <p className="text-xs text-zinc-600 dark:text-zinc-400">Agrega un punto de control o fecha clave al roadmap</p>
             </div>
           </div>
           <button
             onClick={onClose}
-            className="text-zinc-400 hover:text-white transition-colors p-1"
+            className="text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white transition-colors p-1"
             aria-label="Cerrar modal"
           >
             <X className="w-5 h-5" strokeWidth={1.5} />
@@ -86,7 +86,7 @@ export const CreateEventModal: React.FC<CreateEventModalProps> = ({
 
         <form onSubmit={handleSubmit} className="mt-5 space-y-4">
           <div>
-            <label className="block text-xs font-medium text-zinc-300 mb-1.5">
+            <label className="block text-xs font-medium text-zinc-700 dark:text-zinc-300 mb-1.5">
               Título del Evento o Hito *
             </label>
             <input
@@ -95,19 +95,19 @@ export const CreateEventModal: React.FC<CreateEventModalProps> = ({
               value={title}
               onChange={(e) => setTitle(e.target.value)}
               placeholder="p. ej. Lanzamiento Demo MVP / Reunión Directorio Q3"
-              className="w-full bg-surface-subtle border border-white/[0.1] rounded-lg px-3 py-2 text-xs text-zinc-200 placeholder:text-zinc-600 focus:outline-none focus:border-orange-500"
+              className="w-full bg-surface-subtle border border-zinc-900/[0.16] dark:border-white/[0.1] rounded-lg px-3 py-2 text-xs text-zinc-900 dark:text-zinc-200 placeholder:text-zinc-600 focus:outline-none focus:border-orange-500"
             />
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <div>
-              <label className="block text-xs font-medium text-zinc-300 mb-1.5">
+              <label className="block text-xs font-medium text-zinc-700 dark:text-zinc-300 mb-1.5">
                 Tipo de Entrada
               </label>
               <select
                 value={eventType}
                 onChange={(e) => setEventType(e.target.value as CalendarEventType)}
-                className="w-full bg-surface-subtle border border-white/[0.1] rounded-lg px-3 py-2 text-xs text-zinc-200 focus:outline-none focus:border-orange-500"
+                className="w-full bg-surface-subtle border border-zinc-900/[0.16] dark:border-white/[0.1] rounded-lg px-3 py-2 text-xs text-zinc-900 dark:text-zinc-200 focus:outline-none focus:border-orange-500"
               >
                 <option value="MILESTONE">Hito Estratégico (Milestone)</option>
                 <option value="KEY_EVENT">Evento Clave (Key Event)</option>
@@ -115,13 +115,13 @@ export const CreateEventModal: React.FC<CreateEventModalProps> = ({
             </div>
 
             <div>
-              <label className="block text-xs font-medium text-zinc-300 mb-1.5">
+              <label className="block text-xs font-medium text-zinc-700 dark:text-zinc-300 mb-1.5">
                 Proyecto Asociado (Opcional)
               </label>
               <select
                 value={projectId}
                 onChange={(e) => setProjectId(e.target.value)}
-                className="w-full bg-surface-subtle border border-white/[0.1] rounded-lg px-3 py-2 text-xs text-zinc-200 focus:outline-none focus:border-orange-500"
+                className="w-full bg-surface-subtle border border-zinc-900/[0.16] dark:border-white/[0.1] rounded-lg px-3 py-2 text-xs text-zinc-900 dark:text-zinc-200 focus:outline-none focus:border-orange-500"
               >
                 <option value="">Ninguno (General Organización)</option>
                 {projects.map((p) => (
@@ -135,7 +135,7 @@ export const CreateEventModal: React.FC<CreateEventModalProps> = ({
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <div>
-              <label className="block text-xs font-medium text-zinc-300 mb-1.5">
+              <label className="block text-xs font-medium text-zinc-700 dark:text-zinc-300 mb-1.5">
                 Fecha Inicio *
               </label>
               <input
@@ -146,12 +146,12 @@ export const CreateEventModal: React.FC<CreateEventModalProps> = ({
                   setStartDate(e.target.value);
                   setDateError('');
                 }}
-                className="w-full bg-surface-subtle border border-white/[0.1] rounded-lg px-3 py-2 text-xs text-zinc-200 focus:outline-none focus:border-orange-500"
+                className="w-full bg-surface-subtle border border-zinc-900/[0.16] dark:border-white/[0.1] rounded-lg px-3 py-2 text-xs text-zinc-900 dark:text-zinc-200 focus:outline-none focus:border-orange-500"
               />
             </div>
 
             <div>
-              <label className="block text-xs font-medium text-zinc-300 mb-1.5">
+              <label className="block text-xs font-medium text-zinc-700 dark:text-zinc-300 mb-1.5">
                 Fecha Fin
               </label>
               <input
@@ -161,7 +161,7 @@ export const CreateEventModal: React.FC<CreateEventModalProps> = ({
                   setEndDate(e.target.value);
                   setDateError('');
                 }}
-                className="w-full bg-surface-subtle border border-white/[0.1] rounded-lg px-3 py-2 text-xs text-zinc-200 focus:outline-none focus:border-orange-500"
+                className="w-full bg-surface-subtle border border-zinc-900/[0.16] dark:border-white/[0.1] rounded-lg px-3 py-2 text-xs text-zinc-900 dark:text-zinc-200 focus:outline-none focus:border-orange-500"
               />
             </div>
           </div>
@@ -173,7 +173,7 @@ export const CreateEventModal: React.FC<CreateEventModalProps> = ({
           )}
 
           <div>
-            <label className="block text-xs font-medium text-zinc-300 mb-1.5">
+            <label className="block text-xs font-medium text-zinc-700 dark:text-zinc-300 mb-1.5">
               Color Distintivo
             </label>
             <div className="flex items-center gap-2">
@@ -193,7 +193,7 @@ export const CreateEventModal: React.FC<CreateEventModalProps> = ({
           </div>
 
           <div>
-            <label className="block text-xs font-medium text-zinc-300 mb-1.5">
+            <label className="block text-xs font-medium text-zinc-700 dark:text-zinc-300 mb-1.5">
               Descripción o Notas
             </label>
             <textarea
@@ -201,11 +201,11 @@ export const CreateEventModal: React.FC<CreateEventModalProps> = ({
               value={description}
               onChange={(e) => setDescription(e.target.value)}
               placeholder="Detalles sobre entregables, asistentes o agenda..."
-              className="w-full bg-surface-subtle border border-white/[0.1] rounded-lg px-3 py-2 text-xs text-zinc-200 placeholder:text-zinc-600 focus:outline-none focus:border-orange-500 resize-none"
+              className="w-full bg-surface-subtle border border-zinc-900/[0.16] dark:border-white/[0.1] rounded-lg px-3 py-2 text-xs text-zinc-900 dark:text-zinc-200 placeholder:text-zinc-600 focus:outline-none focus:border-orange-500 resize-none"
             />
           </div>
 
-          <div className="pt-4 border-t border-white/[0.08] flex items-center justify-end gap-3">
+          <div className="pt-4 border-t border-zinc-900/[0.13] dark:border-white/[0.08] flex items-center justify-end gap-3">
             <Button variant="ghost" type="button" onClick={onClose} disabled={isLoading}>
               Cancelar
             </Button>

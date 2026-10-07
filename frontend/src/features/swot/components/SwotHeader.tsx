@@ -23,16 +23,16 @@ export const SwotHeader: React.FC<SwotHeaderProps> = ({
   const { openCopilot } = useCopilot();
 
   return (
-    <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-6 border-b border-white/[0.06]">
+    <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-6 border-b border-zinc-900/[0.1] dark:border-white/[0.06]">
       <div className="flex items-center gap-3">
         <div className="w-12 h-12 rounded-2xl bg-orange-600/10 border border-orange-500/30 flex items-center justify-center text-orange-400 shadow-inner">
           <Grid2X2 className="w-6 h-6" strokeWidth={1.5} />
         </div>
         <div>
-          <h1 className="text-2xl font-bold text-white tracking-tight">
+          <h1 className="text-2xl font-bold text-zinc-900 dark:text-white tracking-tight">
             Matriz FODA Dinámica
           </h1>
-          <p className="text-xs sm:text-sm text-zinc-400 mt-0.5">
+          <p className="text-xs sm:text-sm text-zinc-600 dark:text-zinc-400 mt-0.5">
             Diagnóstico estratégico de capacidades internas cruzadas con tendencias de mercado
           </p>
         </div>
@@ -44,7 +44,7 @@ export const SwotHeader: React.FC<SwotHeaderProps> = ({
             variant="ghost"
             size="sm"
             onClick={onToggleShowDismissed}
-            className="text-xs text-zinc-400 hover:text-white"
+            className="text-xs text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white"
           >
             {showDismissed ? 'Ocultar descartados' : 'Mostrar descartados'}
           </Button>

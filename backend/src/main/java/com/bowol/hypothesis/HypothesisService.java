@@ -21,6 +21,7 @@ import com.bowol.project.ProjectRepository;
 import com.bowol.project.ProjectStatus;
 import com.bowol.project.dto.ProjectResponse;
 import com.bowol.shared.exception.NotFoundException;
+import com.bowol.shared.exception.BadRequestException;
 import com.bowol.shared.security.UserPrincipal;
 import com.fasterxml.jackson.databind.JsonNode;
 import lombok.RequiredArgsConstructor;
@@ -138,11 +139,11 @@ public class HypothesisService {
             hypothesis.setTargetValue(request.getTargetValue().trim());
         }
         if (request.getStatus() != null) {
-            hypothesis.setStatus(request.getStatus());
-            if ((request.getStatus() == HypothesisStatus.VALIDATED || request.getStatus() == HypothesisStatus.INVALIDATED)
-                    && hypothesis.getValidatedAt() == null) {
-                hypothesis.setValidatedAt(Instant.now());
+            validateStatusTransition(hypothesis.getStatus(), request.getStatus());
+            if (request.getStatus() == HypothesisStatus.READY || request.getStatus() == HypothesisStatus.RUNNING) {
+                validateMeasurementFields(hypothesis);
             }
+            hypothesis.setStatus(request.getStatus());
         }
 
         Hypothesis saved = hypothesisRepository.save(hypothesis);
@@ -152,6 +153,10 @@ public class HypothesisService {
     @Transactional
     public HypothesisResponse recordResult(UUID id, RecordHypothesisResultRequest request, UserPrincipal principal) {
         Hypothesis hypothesis = getHypothesisEntity(id, principal.getOrganizationId());
+
+        if (hypothesis.getStatus() != HypothesisStatus.RUNNING) {
+            throw new BadRequestException("HYPOTHESIS_NOT_RUNNING", "Solo una hipótesis en ejecución puede registrar resultados");
+        }
 
         hypothesis.setResult(request.getResult());
         hypothesis.setResultNotes(request.getResultNotes());
@@ -266,17 +271,13 @@ public class HypothesisService {
             return ProjectResponse.from(existingProject.get());
         }
 
-        // Mark opportunity as CONVERTED and hypothesis as VALIDATED if not already
+        if (hypothesis.getStatus() != HypothesisStatus.VALIDATED) {
+            throw new BadRequestException("HYPOTHESIS_NOT_VALIDATED", "Solo una hipótesis validada puede convertirse en proyecto");
+        }
+
+        // Mark the linked opportunity as converted after the validated hypothesis is accepted.
         opp.setStatus(OpportunityStatus.CONVERTED);
         opportunityRepository.save(opp);
-
-        if (hypothesis.getStatus() != HypothesisStatus.VALIDATED) {
-            hypothesis.setStatus(HypothesisStatus.VALIDATED);
-            if (hypothesis.getValidatedAt() == null) {
-                hypothesis.setValidatedAt(Instant.now());
-            }
-            hypothesisRepository.save(hypothesis);
-        }
 
         String projectName = opp.getTitle();
         String projectDescription = hypothesis.getStatement() != null
@@ -306,5 +307,30 @@ public class HypothesisService {
                 savedProject.getId(), hypothesisId, organizationId);
 
         return ProjectResponse.from(savedProject);
+    }
+
+    private void validateMeasurementFields(Hypothesis hypothesis) {
+        if (isBlank(hypothesis.getValidationMethod()) || isBlank(hypothesis.getSuccessMetric()) || isBlank(hypothesis.getTargetValue())) {
+            throw new BadRequestException("HYPOTHESIS_MEASUREMENT_REQUIRED",
+                    "La hipótesis requiere método de validación, métrica de éxito y umbral objetivo");
+        }
+    }
+
+    private void validateStatusTransition(HypothesisStatus current, HypothesisStatus target) {
+        if (current == target) return;
+        boolean allowed = switch (current) {
+            case DRAFT -> target == HypothesisStatus.READY || target == HypothesisStatus.CANCELED;
+            case READY -> target == HypothesisStatus.RUNNING || target == HypothesisStatus.CANCELED;
+            case RUNNING -> target == HypothesisStatus.CANCELED;
+            case VALIDATED, INVALIDATED, CANCELED -> false;
+        };
+        if (!allowed) {
+            throw new BadRequestException("HYPOTHESIS_INVALID_STATUS_TRANSITION",
+                    "No se puede cambiar una hipótesis de " + current + " a " + target);
+        }
+    }
+
+    private boolean isBlank(String value) {
+        return value == null || value.isBlank();
     }
 }

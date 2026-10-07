@@ -69,7 +69,7 @@ export const SocialPostCard: React.FC<SocialPostCardProps> = ({
         return {
           label: 'Twitter / X',
           icon: Twitter,
-          badgeColor: 'bg-zinc-800 text-zinc-300 border-zinc-700',
+          badgeColor: 'bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 border-zinc-300 dark:border-zinc-700',
         };
       case 'INSTAGRAM':
         return {
@@ -103,7 +103,7 @@ export const SocialPostCard: React.FC<SocialPostCardProps> = ({
   const impact = post.predictedImpact;
 
   return (
-    <div className="rounded-2xl bg-surface-subtle border border-white/[0.08] hover:border-white/[0.14] transition-all p-5 space-y-4 shadow-xl backdrop-blur-md flex flex-col justify-between">
+    <div className="rounded-2xl bg-surface-subtle border border-zinc-900/[0.13] dark:border-white/[0.08] hover:border-zinc-900/[0.16] dark:hover:border-white/[0.14] transition-all p-5 space-y-4 shadow-xl backdrop-blur-md flex flex-col justify-between">
       {/* Top Meta Bar */}
       <div className="space-y-3">
         <div className="flex items-center justify-between gap-2">
@@ -128,7 +128,7 @@ export const SocialPostCard: React.FC<SocialPostCardProps> = ({
               </span>
             )}
             {post.status === 'DRAFT' && (
-              <span className="inline-flex items-center text-[11px] font-medium text-zinc-400 bg-zinc-800/80 px-2 py-0.5 rounded-full border border-white/[0.06]">
+              <span className="inline-flex items-center text-[11px] font-medium text-zinc-600 dark:text-zinc-400 bg-zinc-100 dark:bg-zinc-800/80 px-2 py-0.5 rounded-full border border-zinc-900/[0.1] dark:border-white/[0.06]">
                 Borrador
               </span>
             )}
@@ -137,7 +137,7 @@ export const SocialPostCard: React.FC<SocialPostCardProps> = ({
           <div className="flex items-center gap-1">
             <button
               onClick={handleCopy}
-              className="p-1.5 rounded-lg text-zinc-400 hover:text-white hover:bg-white/[0.06] transition-colors"
+              className="p-1.5 rounded-lg text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white hover:bg-zinc-900/[0.06] dark:hover:bg-white/[0.06] transition-colors"
               title="Copiar texto"
               aria-label="Copiar texto"
             >
@@ -157,10 +157,10 @@ export const SocialPostCard: React.FC<SocialPostCardProps> = ({
 
         {/* Title & Copy */}
         <div>
-          <h3 className="text-sm font-semibold text-white tracking-tight line-clamp-1">
+          <h3 className="text-sm font-semibold text-zinc-900 dark:text-white tracking-tight line-clamp-1">
             {post.title}
           </h3>
-          <p className="text-xs text-zinc-300 mt-2 whitespace-pre-wrap line-clamp-4 leading-relaxed bg-black/30 p-3 rounded-xl border border-white/[0.04]">
+          <p className="text-xs text-zinc-700 dark:text-zinc-300 mt-2 whitespace-pre-wrap line-clamp-4 leading-relaxed bg-black/30 p-3 rounded-xl border border-zinc-900/[0.08] dark:border-white/[0.04]">
             {post.content}
           </p>
         </div>
@@ -171,7 +171,7 @@ export const SocialPostCard: React.FC<SocialPostCardProps> = ({
             {post.tags.map((tag) => (
               <span
                 key={tag}
-                className="text-[10px] text-zinc-400 bg-white/[0.04] px-2 py-0.5 rounded-md border border-white/[0.04]"
+                className="text-[10px] text-zinc-600 dark:text-zinc-400 bg-zinc-900/[0.04] dark:bg-white/[0.04] px-2 py-0.5 rounded-md border border-zinc-900/[0.08] dark:border-white/[0.04]"
               >
                 #{tag}
               </span>
@@ -182,8 +182,8 @@ export const SocialPostCard: React.FC<SocialPostCardProps> = ({
 
       {/* Predicted Impact Section */}
       {impact && (
-        <div className="pt-3 border-t border-white/[0.06] space-y-2">
-          <div className="flex items-center justify-between text-[11px] font-semibold text-zinc-400">
+        <div className="pt-3 border-t border-zinc-900/[0.1] dark:border-white/[0.06] space-y-2">
+          <div className="flex items-center justify-between text-[11px] font-semibold text-zinc-600 dark:text-zinc-400">
             <span className="flex items-center gap-1.5 text-orange-400">
               <TrendingUp className="w-3.5 h-3.5" strokeWidth={1.5} />
               Impacto Predictivo
@@ -197,14 +197,14 @@ export const SocialPostCard: React.FC<SocialPostCardProps> = ({
           </div>
 
           <div className="grid grid-cols-3 gap-2 text-center">
-            <div className="p-2 rounded-lg bg-black/25 border border-white/[0.04]">
+            <div className="p-2 rounded-lg bg-black/25 border border-zinc-900/[0.08] dark:border-white/[0.04]">
               <span className="block text-[10px] text-zinc-500">Alcance Est.</span>
-              <span className="text-xs font-bold text-zinc-200">
+              <span className="text-xs font-bold text-zinc-900 dark:text-zinc-200">
                 {(impact.reachEstimateMin / 1000).toFixed(1)}k - {(impact.reachEstimateMax / 1000).toFixed(1)}k
               </span>
             </div>
 
-            <div className="p-2 rounded-lg bg-black/25 border border-white/[0.04]">
+            <div className="p-2 rounded-lg bg-black/25 border border-zinc-900/[0.08] dark:border-white/[0.04]">
               <span className="block text-[10px] text-zinc-500">Engagement</span>
               <span className="text-xs font-bold text-emerald-400 flex items-center justify-center gap-0.5">
                 <BarChart2 className="w-3 h-3" />
@@ -212,7 +212,7 @@ export const SocialPostCard: React.FC<SocialPostCardProps> = ({
               </span>
             </div>
 
-            <div className="p-2 rounded-lg bg-black/25 border border-white/[0.04]">
+            <div className="p-2 rounded-lg bg-black/25 border border-zinc-900/[0.08] dark:border-white/[0.04]">
               <span className="block text-[10px] text-zinc-500">Viralidad</span>
               <span className="text-xs font-bold text-amber-400 flex items-center justify-center gap-0.5">
                 <Flame className="w-3 h-3" />
@@ -222,7 +222,7 @@ export const SocialPostCard: React.FC<SocialPostCardProps> = ({
           </div>
 
           {impact.strategicReasoning && (
-            <p className="text-[11px] text-zinc-400 italic bg-white/[0.02] p-2 rounded-lg border border-white/[0.04] line-clamp-2">
+            <p className="text-[11px] text-zinc-600 dark:text-zinc-400 italic bg-zinc-900/[0.02] dark:bg-white/[0.02] p-2 rounded-lg border border-zinc-900/[0.08] dark:border-white/[0.04] line-clamp-2">
               &quot;{impact.strategicReasoning}&quot;
             </p>
           )}
@@ -230,7 +230,7 @@ export const SocialPostCard: React.FC<SocialPostCardProps> = ({
       )}
 
       {/* Action Footer */}
-      <div className="pt-2 flex items-center justify-between gap-3 border-t border-white/[0.06]">
+      <div className="pt-2 flex items-center justify-between gap-3 border-t border-zinc-900/[0.1] dark:border-white/[0.06]">
         <span className="text-[11px] text-zinc-500">
           {new Date(post.createdAt).toLocaleDateString('es-ES', {
             day: 'numeric',

@@ -12,6 +12,7 @@ import com.bowol.businessprofile.BusinessProfile;
 import com.bowol.businessprofile.BusinessProfileRepository;
 import com.bowol.opportunity.dto.*;
 import com.bowol.shared.dto.PageResponse;
+import com.bowol.shared.exception.BadRequestException;
 import com.bowol.shared.exception.NotFoundException;
 import com.bowol.shared.security.UserPrincipal;
 import com.bowol.swot.EvidenceRef;
@@ -68,6 +69,10 @@ public class OpportunityService {
         Optional<Project> existingProject = projectRepository.findByOpportunityIdAndOrganizationIdAndDeletedAtIsNull(opportunityId, organizationId);
         if (existingProject.isPresent()) {
             return ProjectResponse.from(existingProject.get());
+        }
+
+        if (opp.getStatus() != OpportunityStatus.APPROVED) {
+            throw new BadRequestException("OPPORTUNITY_NOT_APPROVED", "Solo una oportunidad aprobada puede convertirse en proyecto");
         }
 
         opp.setStatus(OpportunityStatus.CONVERTED);
@@ -361,6 +366,7 @@ public class OpportunityService {
             opp.setEffortScore(request.getEffortScore());
         }
         if (request.getStatus() != null) {
+            validateStatusTransition(opp.getStatus(), request.getStatus());
             opp.setStatus(request.getStatus());
         }
         if (request.getEvidence() != null) {
@@ -380,6 +386,7 @@ public class OpportunityService {
         Opportunity opp = opportunityRepository.findByIdAndOrganizationId(id, principal.getOrganizationId())
                 .orElseThrow(() -> new NotFoundException("OPORTUNIDAD_NO_ENCONTRADA", "No se encontró la oportunidad con id: " + id));
 
+        validateStatusTransition(opp.getStatus(), request.getStatus());
         opp.setStatus(request.getStatus());
         Opportunity saved = opportunityRepository.save(opp);
         log.info("Estado de oportunidad {} actualizado a {}", id, request.getStatus());
@@ -410,6 +417,22 @@ public class OpportunityService {
             webhookService.dispatchEventAsync(organizationId, "opportunity.rice_calculated", data);
         } catch (Exception e) {
             log.warn("No se pudo disparar webhook opportunity.rice_calculated: {}", e.getMessage());
+        }
+    }
+
+    private void validateStatusTransition(OpportunityStatus current, OpportunityStatus target) {
+        if (current == target) {
+            return;
+        }
+        boolean allowed = switch (current) {
+            case IDENTIFIED -> target == OpportunityStatus.EVALUATING || target == OpportunityStatus.REJECTED;
+            case EVALUATING -> target == OpportunityStatus.APPROVED || target == OpportunityStatus.REJECTED;
+            case APPROVED -> target == OpportunityStatus.REJECTED || target == OpportunityStatus.CONVERTED;
+            case REJECTED, CONVERTED -> false;
+        };
+        if (!allowed) {
+            throw new BadRequestException("OPPORTUNITY_INVALID_STATUS_TRANSITION",
+                    "No se puede cambiar una oportunidad de " + current + " a " + target);
         }
     }
 }

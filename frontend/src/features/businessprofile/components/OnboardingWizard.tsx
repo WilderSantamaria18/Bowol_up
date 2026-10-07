@@ -261,7 +261,7 @@ export const OnboardingWizard: React.FC<OnboardingWizardProps> = ({ onComplete, 
             <button
               type="button"
               onClick={handleResetDraft}
-              className="inline-flex items-center gap-1 text-[11px] text-zinc-400 hover:text-zinc-200 transition-colors underline underline-offset-2 ml-1"
+              className="inline-flex items-center gap-1 text-[11px] text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-200 transition-colors underline underline-offset-2 ml-1"
             >
               <RotateCcw className="w-3 h-3" />
               Reiniciar
@@ -273,7 +273,7 @@ export const OnboardingWizard: React.FC<OnboardingWizardProps> = ({ onComplete, 
           <button
             type="button"
             onClick={onSaveAndExit}
-            className="inline-flex items-center gap-1 text-[11px] text-zinc-400 hover:text-orange-400 transition-colors"
+            className="inline-flex items-center gap-1 text-[11px] text-zinc-600 dark:text-zinc-400 hover:text-orange-400 transition-colors"
           >
             <LogOut className="w-3 h-3" />
             Continuar después
@@ -283,13 +283,13 @@ export const OnboardingWizard: React.FC<OnboardingWizardProps> = ({ onComplete, 
 
       {/* Progress Header */}
       <div className="space-y-3">
-        <div className="flex items-center justify-between text-xs text-zinc-400">
-          <span className="font-semibold text-zinc-200">
+        <div className="flex items-center justify-between text-xs text-zinc-600 dark:text-zinc-400">
+          <span className="font-semibold text-zinc-900 dark:text-zinc-200">
             Paso {step} de {totalSteps}
           </span>
           <span>{Math.round((step / totalSteps) * 100)}% completado</span>
         </div>
-        <div className="w-full h-1.5 bg-zinc-800 rounded-full overflow-hidden">
+        <div className="w-full h-1.5 bg-zinc-200 dark:bg-zinc-800 rounded-full overflow-hidden">
           <div 
             className="h-full bg-orange-500 transition-all duration-300 ease-out"
             style={{ width: `${(step / totalSteps) * 100}%` }}
@@ -300,7 +300,7 @@ export const OnboardingWizard: React.FC<OnboardingWizardProps> = ({ onComplete, 
       {error && <Alert variant="error" detail={error} />}
 
       {/* Steps Content Card */}
-      <div className="glass-panel p-6 sm:p-8 rounded-2xl border border-white/[0.08] min-h-[360px] flex flex-col justify-between">
+      <div className="glass-panel p-6 sm:p-8 rounded-2xl border border-zinc-900/[0.13] dark:border-white/[0.08] min-h-[360px] flex flex-col justify-between">
         <div>
           {/* PASO 1: Industria */}
           {step === 1 && (
@@ -310,10 +310,10 @@ export const OnboardingWizard: React.FC<OnboardingWizardProps> = ({ onComplete, 
                   <Building2 className="w-5 h-5" strokeWidth={1.5} />
                 </div>
                 <div>
-                  <h2 className="text-base font-semibold text-zinc-100">
+                  <h2 className="text-base font-semibold text-zinc-900 dark:text-zinc-100">
                     ¿Cuál es el sector o industria de tu negocio?
                   </h2>
-                  <p className="text-xs text-zinc-400">
+                  <p className="text-xs text-zinc-600 dark:text-zinc-400">
                     BOWOL adaptará el análisis de mercado e inteligencia estratégica a tu rubro
                   </p>
                 </div>
@@ -329,14 +329,14 @@ export const OnboardingWizard: React.FC<OnboardingWizardProps> = ({ onComplete, 
               />
 
               <div className="space-y-2">
-                <span className="text-xs text-zinc-400">Sugerencias habituales:</span>
+                <span className="text-xs text-zinc-600 dark:text-zinc-400">Sugerencias habituales:</span>
                 <div className="flex flex-wrap gap-2">
                   {['SaaS B2B', 'Fintech', 'Comercio Electrónico', 'Salud & Biotech', 'Logística & Transporte'].map((sug) => (
                     <button
                       key={sug}
                       type="button"
                       onClick={() => setIndustry(sug)}
-                      className="px-3 py-1 rounded-full text-xs bg-white/[0.04] hover:bg-white/[0.08] border border-white/[0.08] text-zinc-300 transition-colors"
+                      className="px-3 py-1 rounded-full text-xs bg-zinc-900/[0.04] dark:bg-white/[0.04] hover:bg-zinc-900/[0.08] dark:hover:bg-white/[0.08] border border-zinc-900/[0.13] dark:border-white/[0.08] text-zinc-700 dark:text-zinc-300 transition-colors"
                     >
                       {sug}
                     </button>
@@ -354,10 +354,10 @@ export const OnboardingWizard: React.FC<OnboardingWizardProps> = ({ onComplete, 
                   <Users className="w-5 h-5" strokeWidth={1.5} />
                 </div>
                 <div>
-                  <h2 className="text-base font-semibold text-zinc-100">
+                  <h2 className="text-base font-semibold text-zinc-900 dark:text-zinc-100">
                     ¿Cuál es el tamaño de tu equipo?
                   </h2>
-                  <p className="text-xs text-zinc-400">
+                  <p className="text-xs text-zinc-600 dark:text-zinc-400">
                     Permite calibrar la capacidad de ejecución y velocidad en sprints
                   </p>
                 </div>
@@ -387,10 +387,10 @@ export const OnboardingWizard: React.FC<OnboardingWizardProps> = ({ onComplete, 
                   <Globe2 className="w-5 h-5" strokeWidth={1.5} />
                 </div>
                 <div>
-                  <h2 className="text-base font-semibold text-zinc-100">
+                  <h2 className="text-base font-semibold text-zinc-900 dark:text-zinc-100">
                     ¿Cuál es tu mercado objetivo o alcance geográfico?
                   </h2>
-                  <p className="text-xs text-zinc-400">
+                  <p className="text-xs text-zinc-600 dark:text-zinc-400">
                     Ayuda a focalizar la búsqueda de competidores y tendencias regionales
                   </p>
                 </div>
@@ -415,10 +415,10 @@ export const OnboardingWizard: React.FC<OnboardingWizardProps> = ({ onComplete, 
                   <Target className="w-5 h-5" strokeWidth={1.5} />
                 </div>
                 <div>
-                  <h2 className="text-base font-semibold text-zinc-100">
+                  <h2 className="text-base font-semibold text-zinc-900 dark:text-zinc-100">
                     ¿Cuáles son tus objetivos estratégicos prioritarios?
                   </h2>
-                  <p className="text-xs text-zinc-400">
+                  <p className="text-xs text-zinc-600 dark:text-zinc-400">
                     Las hipótesis e iniciativas se alinearán para impactar estas metas
                   </p>
                 </div>
@@ -438,12 +438,12 @@ export const OnboardingWizard: React.FC<OnboardingWizardProps> = ({ onComplete, 
 
               <div className="space-y-2">
                 {goals.map((g, idx) => (
-                  <div key={idx} className="flex items-center justify-between p-3 rounded-lg bg-zinc-900/60 border border-white/[0.06] text-xs">
+                  <div key={idx} className="flex items-center justify-between p-3 rounded-lg bg-zinc-100 dark:bg-zinc-900/60 border border-zinc-900/[0.1] dark:border-white/[0.06] text-xs">
                     <div className="flex items-center gap-3">
                       <span className="w-5 h-5 rounded-full bg-orange-500/20 text-orange-400 flex items-center justify-center font-bold text-[10px]">
                         {g.priority}
                       </span>
-                      <span className="text-zinc-200">{g.text}</span>
+                      <span className="text-zinc-900 dark:text-zinc-200">{g.text}</span>
                     </div>
                     <button
                       type="button"
@@ -467,10 +467,10 @@ export const OnboardingWizard: React.FC<OnboardingWizardProps> = ({ onComplete, 
                   <AlertTriangle className="w-5 h-5" strokeWidth={1.5} />
                 </div>
                 <div>
-                  <h2 className="text-base font-semibold text-zinc-100">
+                  <h2 className="text-base font-semibold text-zinc-900 dark:text-zinc-100">
                     ¿Qué problemas o cuellos de botella enfrentas hoy?
                   </h2>
-                  <p className="text-xs text-zinc-400">
+                  <p className="text-xs text-zinc-600 dark:text-zinc-400">
                     El motor de oportunidades buscará soluciones tecnológicas a estas fricciones
                   </p>
                 </div>
@@ -492,7 +492,7 @@ export const OnboardingWizard: React.FC<OnboardingWizardProps> = ({ onComplete, 
                 {problems.map((p, idx) => (
                   <span
                     key={idx}
-                    className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-zinc-900/60 border border-white/[0.08] text-xs text-zinc-300"
+                    className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-zinc-100 dark:bg-zinc-900/60 border border-zinc-900/[0.13] dark:border-white/[0.08] text-xs text-zinc-700 dark:text-zinc-300"
                   >
                     {p}
                     <button
@@ -517,10 +517,10 @@ export const OnboardingWizard: React.FC<OnboardingWizardProps> = ({ onComplete, 
                   <Layers className="w-5 h-5" strokeWidth={1.5} />
                 </div>
                 <div>
-                  <h2 className="text-base font-semibold text-zinc-100">
+                  <h2 className="text-base font-semibold text-zinc-900 dark:text-zinc-100">
                     Herramientas, Competidores y Canales
                   </h2>
-                  <p className="text-xs text-zinc-400">
+                  <p className="text-xs text-zinc-600 dark:text-zinc-400">
                     Software operativo, competidores de referencia y canales de captación
                   </p>
                 </div>
@@ -528,7 +528,7 @@ export const OnboardingWizard: React.FC<OnboardingWizardProps> = ({ onComplete, 
 
               <div className="space-y-4">
                 <div>
-                  <label className="block text-xs font-medium text-zinc-300 mb-1.5">Herramientas en uso</label>
+                  <label className="block text-xs font-medium text-zinc-700 dark:text-zinc-300 mb-1.5">Herramientas en uso</label>
                   <div className="flex gap-2 mb-2">
                     <Input
                       value={newToolText}
@@ -542,7 +542,7 @@ export const OnboardingWizard: React.FC<OnboardingWizardProps> = ({ onComplete, 
                   </div>
                   <div className="flex flex-wrap gap-2">
                     {tools.map((t, idx) => (
-                      <span key={idx} className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-zinc-900 border border-white/[0.08] text-xs text-zinc-300">
+                      <span key={idx} className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-zinc-100 dark:bg-zinc-900 border border-zinc-900/[0.13] dark:border-white/[0.08] text-xs text-zinc-700 dark:text-zinc-300">
                         {t}
                         <button type="button" onClick={() => handleRemoveTool(idx)} className="text-zinc-500 hover:text-rose-400">×</button>
                       </span>
@@ -551,7 +551,7 @@ export const OnboardingWizard: React.FC<OnboardingWizardProps> = ({ onComplete, 
                 </div>
 
                 <div>
-                  <label className="block text-xs font-medium text-zinc-300 mb-1.5">Competidores o alternativas conocidas</label>
+                  <label className="block text-xs font-medium text-zinc-700 dark:text-zinc-300 mb-1.5">Competidores o alternativas conocidas</label>
                   <div className="flex gap-2 mb-2">
                     <Input
                       value={newCompetitorText}
@@ -568,7 +568,7 @@ export const OnboardingWizard: React.FC<OnboardingWizardProps> = ({ onComplete, 
                   ) : (
                     <div className="flex flex-wrap gap-2">
                       {competitors.map((comp, idx) => (
-                        <span key={idx} className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-zinc-900 border border-orange-500/20 text-xs text-orange-200">
+                        <span key={idx} className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-zinc-100 dark:bg-zinc-900 border border-orange-500/20 text-xs text-orange-200">
                           {comp}
                           <button type="button" onClick={() => handleRemoveCompetitor(idx)} className="text-zinc-500 hover:text-rose-400">×</button>
                         </span>
@@ -578,7 +578,7 @@ export const OnboardingWizard: React.FC<OnboardingWizardProps> = ({ onComplete, 
                 </div>
 
                 <div>
-                  <label className="block text-xs font-medium text-zinc-300 mb-1.5">Canales principales</label>
+                  <label className="block text-xs font-medium text-zinc-700 dark:text-zinc-300 mb-1.5">Canales principales</label>
                   <div className="flex gap-2 mb-2">
                     <Input
                       value={newChannelText}
@@ -592,7 +592,7 @@ export const OnboardingWizard: React.FC<OnboardingWizardProps> = ({ onComplete, 
                   </div>
                   <div className="flex flex-wrap gap-2">
                     {channels.map((c, idx) => (
-                      <span key={idx} className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-zinc-900 border border-white/[0.08] text-xs text-zinc-300">
+                      <span key={idx} className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-zinc-100 dark:bg-zinc-900 border border-zinc-900/[0.13] dark:border-white/[0.08] text-xs text-zinc-700 dark:text-zinc-300">
                         {c}
                         <button type="button" onClick={() => handleRemoveChannel(idx)} className="text-zinc-500 hover:text-rose-400">×</button>
                       </span>
@@ -611,19 +611,19 @@ export const OnboardingWizard: React.FC<OnboardingWizardProps> = ({ onComplete, 
                   <Cpu className="w-5 h-5" strokeWidth={1.5} />
                 </div>
                 <div>
-                  <h2 className="text-base font-semibold text-zinc-100">
+                  <h2 className="text-base font-semibold text-zinc-900 dark:text-zinc-100">
                     Autodiagnóstico de Madurez Digital e IA
                   </h2>
-                  <p className="text-xs text-zinc-400">
+                  <p className="text-xs text-zinc-600 dark:text-zinc-400">
                     Establece el punto de partida para medir el progreso de adopción
                   </p>
                 </div>
               </div>
 
               {/* Slider 1: Madurez Digital */}
-              <div className="space-y-2 p-4 rounded-xl bg-zinc-900/50 border border-white/[0.06]">
+              <div className="space-y-2 p-4 rounded-xl bg-zinc-100/70 dark:bg-zinc-900/50 border border-zinc-900/[0.1] dark:border-white/[0.06]">
                 <div className="flex justify-between items-center text-xs">
-                  <span className="font-medium text-zinc-200">Madurez Digital</span>
+                  <span className="font-medium text-zinc-900 dark:text-zinc-200">Madurez Digital</span>
                   <span className="font-bold text-emerald-400">{digitalMaturity}/100</span>
                 </div>
                 <input
@@ -635,13 +635,13 @@ export const OnboardingWizard: React.FC<OnboardingWizardProps> = ({ onComplete, 
                   className="w-full accent-emerald-500 cursor-pointer"
                   aria-label="Nivel de madurez digital"
                 />
-                <p className="text-[11px] text-zinc-400">{getMaturityLabel(digitalMaturity)}</p>
+                <p className="text-[11px] text-zinc-600 dark:text-zinc-400">{getMaturityLabel(digitalMaturity)}</p>
               </div>
 
               {/* Slider 2: Madurez de IA */}
-              <div className="space-y-2 p-4 rounded-xl bg-zinc-900/50 border border-white/[0.06]">
+              <div className="space-y-2 p-4 rounded-xl bg-zinc-100/70 dark:bg-zinc-900/50 border border-zinc-900/[0.1] dark:border-white/[0.06]">
                 <div className="flex justify-between items-center text-xs">
-                  <span className="font-medium text-zinc-200">Adopción de Inteligencia Artificial</span>
+                  <span className="font-medium text-zinc-900 dark:text-zinc-200">Adopción de Inteligencia Artificial</span>
                   <span className="font-bold text-orange-400">{aiMaturity}/100</span>
                 </div>
                 <input
@@ -653,14 +653,14 @@ export const OnboardingWizard: React.FC<OnboardingWizardProps> = ({ onComplete, 
                   className="w-full accent-orange-500 cursor-pointer"
                   aria-label="Nivel de madurez en IA"
                 />
-                <p className="text-[11px] text-zinc-400">{getMaturityLabel(aiMaturity)}</p>
+                <p className="text-[11px] text-zinc-600 dark:text-zinc-400">{getMaturityLabel(aiMaturity)}</p>
               </div>
             </div>
           )}
         </div>
 
         {/* Footer Navigation */}
-        <div className="flex items-center justify-between pt-6 border-t border-white/[0.06] mt-6">
+        <div className="flex items-center justify-between pt-6 border-t border-zinc-900/[0.1] dark:border-white/[0.06] mt-6">
           <Button
             type="button"
             variant="ghost"

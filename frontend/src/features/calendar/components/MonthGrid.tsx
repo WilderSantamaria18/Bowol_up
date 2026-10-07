@@ -100,26 +100,26 @@ export const MonthGrid: React.FC<MonthGridProps> = ({
       case 'rose':
         return 'bg-rose-500/10 text-rose-300 border-rose-500/20 hover:border-rose-500/40';
       case 'amber':
-        return 'bg-amber-500/10 text-amber-300 border-amber-500/20 hover:border-amber-500/40';
+        return 'bg-amber-500/10 text-amber-700 dark:text-amber-300 border-amber-500/20 hover:border-amber-500/40';
       case 'orange':
       default:
-        return 'bg-orange-500/10 text-orange-300 border-orange-500/20 hover:border-orange-500/40';
+        return 'bg-orange-500/10 text-orange-700 dark:text-orange-300 border-orange-500/20 hover:border-orange-500/40';
     }
   };
 
   return (
-    <div className="rounded-2xl border border-white/[0.08] bg-surface-subtle overflow-hidden shadow-2xl backdrop-blur-md">
+    <div className="rounded-2xl border border-zinc-900/[0.13] dark:border-white/[0.08] bg-surface-subtle overflow-hidden shadow-2xl backdrop-blur-md">
       {/* Weekday Headers */}
-      <div className="grid grid-cols-7 border-b border-white/[0.08] bg-black/40 text-center py-2.5">
+      <div className="grid grid-cols-7 border-b border-zinc-900/[0.13] dark:border-white/[0.08] bg-black/40 text-center py-2.5">
         {WEEKDAYS.map((w) => (
-          <div key={w} className="text-xs font-semibold text-zinc-400 uppercase tracking-wider">
+          <div key={w} className="text-xs font-semibold text-zinc-600 dark:text-zinc-400 uppercase tracking-wider">
             {w}
           </div>
         ))}
       </div>
 
       {/* Days Grid */}
-      <div className="grid grid-cols-7 auto-rows-fr divide-x divide-y divide-white/[0.04]">
+      <div className="grid grid-cols-7 auto-rows-fr divide-x divide-y divide-zinc-900/10 dark:divide-white/[0.04]">
         {days.map((day, idx) => {
           const dayItems = getItemsForDate(day.dateStr);
 
@@ -130,8 +130,8 @@ export const MonthGrid: React.FC<MonthGridProps> = ({
                 !day.isCurrentMonth
                   ? 'bg-black/20 text-zinc-600'
                   : day.isToday
-                  ? 'bg-orange-500/[0.04] text-zinc-200'
-                  : 'text-zinc-300 hover:bg-white/[0.015]'
+                  ? 'bg-orange-500/[0.04] text-zinc-900 dark:text-zinc-200'
+                  : 'text-zinc-700 dark:text-zinc-300 hover:bg-zinc-900/[0.015] dark:hover:bg-white/[0.015]'
               }`}
             >
               {/* Day Header */}
@@ -149,7 +149,7 @@ export const MonthGrid: React.FC<MonthGridProps> = ({
                 </span>
 
                 {dayItems.length > 2 && (
-                  <span className="text-[10px] px-1.5 py-0.2 rounded-md bg-white/[0.06] text-zinc-400 font-medium">
+                  <span className="text-[10px] px-1.5 py-0.2 rounded-md bg-zinc-900/[0.06] dark:bg-white/[0.06] text-zinc-600 dark:text-zinc-400 font-medium">
                     +{dayItems.length - 2}
                   </span>
                 )}

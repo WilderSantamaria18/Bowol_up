@@ -110,7 +110,7 @@ export const CreateProjectModal: React.FC<CreateProjectModalProps> = ({
           <button
             type="button"
             onClick={onClose}
-            className="p-1.5 rounded-lg text-zinc-400 hover:text-zinc-700 dark:hover:text-zinc-200 hover:bg-zinc-100 dark:hover:bg-white/5 transition-colors"
+            className="p-1.5 rounded-lg text-zinc-600 dark:text-zinc-400 hover:text-zinc-700 dark:hover:text-zinc-200 hover:bg-zinc-100 dark:hover:bg-white/5 transition-colors"
             aria-label="Cerrar modal"
           >
             <X className="w-5 h-5" strokeWidth={1.5} />
@@ -197,7 +197,7 @@ export const CreateProjectModal: React.FC<CreateProjectModalProps> = ({
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
               <label className="block text-xs font-medium text-zinc-700 dark:text-zinc-300 mb-1.5 flex items-center gap-1.5">
-                <Calendar className="w-3.5 h-3.5 text-zinc-400" />
+                <Calendar className="w-3.5 h-3.5 text-zinc-600 dark:text-zinc-400" />
                 Fecha de Inicio
               </label>
               <input
@@ -210,7 +210,7 @@ export const CreateProjectModal: React.FC<CreateProjectModalProps> = ({
 
             <div>
               <label className="block text-xs font-medium text-zinc-700 dark:text-zinc-300 mb-1.5 flex items-center gap-1.5">
-                <Calendar className="w-3.5 h-3.5 text-zinc-400" />
+                <Calendar className="w-3.5 h-3.5 text-zinc-600 dark:text-zinc-400" />
                 Fecha Estimada de Fin
               </label>
               <input

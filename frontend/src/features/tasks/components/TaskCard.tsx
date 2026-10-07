@@ -21,13 +21,19 @@ export const TaskCard: React.FC<TaskCardProps> = ({ task, onMove, onDelete }) =>
   const priorityStyle = priorityStyles[task.priority] || priorityStyles.MEDIUM;
 
   const currentIndex = statusOrder.indexOf(task.status);
-  const prevStatus = currentIndex > 0 ? statusOrder[currentIndex - 1] : null;
-  const nextStatus = currentIndex < statusOrder.length - 1 ? statusOrder[currentIndex + 1] : null;
+  // BLOCKED no está en el flujo lineal: solo puede reanudarse.
+  const isBlocked = task.status === 'BLOCKED';
+  const prevStatus: TaskStatus | null = currentIndex > 0 ? statusOrder[currentIndex - 1] : null;
+  const nextStatus: TaskStatus | null = isBlocked
+    ? 'IN_PROGRESS'
+    : currentIndex >= 0 && currentIndex < statusOrder.length - 1
+      ? statusOrder[currentIndex + 1]
+      : null;
 
   return (
     <div
       data-testid={`task-card-${task.id}`}
-      className="group relative rounded-xl border border-white/[0.08] bg-slate-900/60 p-4 backdrop-blur-md transition-all duration-200 hover:border-white/[0.18] hover:shadow-lg hover:shadow-cyan-500/[0.03]"
+      className="group relative rounded-xl border border-zinc-900/[0.13] dark:border-white/[0.08] bg-slate-900/60 p-4 backdrop-blur-md transition-all duration-200 hover:border-zinc-900/[0.16] dark:hover:border-white/[0.18] hover:shadow-lg hover:shadow-cyan-500/[0.03]"
     >
       <div className="flex items-start justify-between gap-2">
         <span
@@ -57,7 +63,7 @@ export const TaskCard: React.FC<TaskCardProps> = ({ task, onMove, onDelete }) =>
         </p>
       )}
 
-      <div className="mt-3.5 flex items-center justify-between border-t border-white/[0.06] pt-3 text-[11px] text-slate-400">
+      <div className="mt-3.5 flex items-center justify-between border-t border-zinc-900/[0.1] dark:border-white/[0.06] pt-3 text-[11px] text-slate-400">
         <div className="flex items-center gap-1.5">
           <Clock className="h-3.5 w-3.5 text-slate-500" strokeWidth={1.5} />
           <span>{task.estimateHours ? `${task.estimateHours}h` : 'Sin estimar'}</span>
@@ -69,7 +75,7 @@ export const TaskCard: React.FC<TaskCardProps> = ({ task, onMove, onDelete }) =>
               <button
                 onClick={() => onMove(task.id, prevStatus)}
                 title={`Mover a ${prevStatus}`}
-                className="flex items-center gap-0.5 rounded px-1.5 py-0.5 text-[10px] text-slate-400 hover:bg-white/[0.08] hover:text-slate-200 transition-colors"
+                className="flex items-center gap-0.5 rounded px-1.5 py-0.5 text-[10px] text-slate-400 hover:bg-zinc-900/[0.08] dark:hover:bg-white/[0.08] hover:text-slate-200 transition-colors"
               >
                 <ArrowLeft className="h-3 w-3" strokeWidth={1.5} />
               </button>

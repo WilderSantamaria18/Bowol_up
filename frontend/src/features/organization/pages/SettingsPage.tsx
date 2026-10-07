@@ -80,10 +80,10 @@ export const SettingsPage: React.FC = () => {
   return (
     <div className="space-y-8 animate-fade-in">
       <div>
-        <h1 className="text-2xl font-bold tracking-tight text-zinc-100">
+        <h1 className="text-2xl font-bold tracking-tight text-zinc-900 dark:text-zinc-100">
           Configuración del Workspace
         </h1>
-        <p className="text-sm text-zinc-400 mt-1">
+        <p className="text-sm text-zinc-600 dark:text-zinc-400 mt-1">
           Administra la identidad corporativa y los miembros de tu equipo
         </p>
       </div>
@@ -91,13 +91,13 @@ export const SettingsPage: React.FC = () => {
       {error && <Alert variant="error" detail={error} />}
 
       {/* Tabs */}
-      <div className="flex flex-wrap border-b border-white/[0.08] gap-4 sm:gap-6">
+      <div className="flex flex-wrap border-b border-zinc-900/[0.13] dark:border-white/[0.08] gap-4 sm:gap-6">
         <button
           onClick={() => setActiveTab('profile')}
           className={`pb-3 text-sm font-medium flex items-center gap-2 border-b-2 transition-colors ${
             activeTab === 'profile'
               ? 'border-orange-500 text-orange-400'
-              : 'border-transparent text-zinc-400 hover:text-zinc-200'
+              : 'border-transparent text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-200'
           }`}
         >
           <Building className="w-4 h-4" strokeWidth={1.5} />
@@ -109,7 +109,7 @@ export const SettingsPage: React.FC = () => {
           className={`pb-3 text-sm font-medium flex items-center gap-2 border-b-2 transition-colors ${
             activeTab === 'members'
               ? 'border-orange-500 text-orange-400'
-              : 'border-transparent text-zinc-400 hover:text-zinc-200'
+              : 'border-transparent text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-200'
           }`}
         >
           <Users className="w-4 h-4" strokeWidth={1.5} />
@@ -121,7 +121,7 @@ export const SettingsPage: React.FC = () => {
           className={`pb-3 text-sm font-medium flex items-center gap-2 border-b-2 transition-colors ${
             activeTab === 'sso'
               ? 'border-orange-500 text-orange-400'
-              : 'border-transparent text-zinc-400 hover:text-zinc-200'
+              : 'border-transparent text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-200'
           }`}
         >
           <ShieldCheck className="w-4 h-4" strokeWidth={1.5} />
@@ -133,7 +133,7 @@ export const SettingsPage: React.FC = () => {
           className={`pb-3 text-sm font-medium flex items-center gap-2 border-b-2 transition-colors ${
             activeTab === 'api-keys'
               ? 'border-orange-500 text-orange-400'
-              : 'border-transparent text-zinc-400 hover:text-zinc-200'
+              : 'border-transparent text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-200'
           }`}
         >
           <Key className="w-4 h-4" strokeWidth={1.5} />
@@ -145,7 +145,7 @@ export const SettingsPage: React.FC = () => {
           className={`pb-3 text-sm font-medium flex items-center gap-2 border-b-2 transition-colors ${
             activeTab === 'webhooks'
               ? 'border-orange-500 text-orange-400'
-              : 'border-transparent text-zinc-400 hover:text-zinc-200'
+              : 'border-transparent text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-200'
           }`}
         >
           <Webhook className="w-4 h-4" strokeWidth={1.5} />
@@ -154,7 +154,7 @@ export const SettingsPage: React.FC = () => {
 
         <Link
           to="/audit-logs"
-          className="pb-3 text-sm font-medium flex items-center gap-1.5 border-b-2 border-transparent text-zinc-400 hover:text-orange-400 ml-auto transition-colors"
+          className="pb-3 text-sm font-medium flex items-center gap-1.5 border-b-2 border-transparent text-zinc-600 dark:text-zinc-400 hover:text-orange-400 ml-auto transition-colors"
         >
           <Shield className="w-4 h-4" strokeWidth={1.5} />
           Auditoría & Compliance
@@ -163,7 +163,7 @@ export const SettingsPage: React.FC = () => {
       </div>
 
       {/* Content */}
-      <div className="glass-panel p-6 sm:p-8 rounded-2xl border border-white/[0.08]">
+      <div className="glass-panel p-6 sm:p-8 rounded-2xl border border-zinc-900/[0.13] dark:border-white/[0.08]">
         {activeTab === 'profile' && organization && (
           <OrgProfileForm
             organization={organization}

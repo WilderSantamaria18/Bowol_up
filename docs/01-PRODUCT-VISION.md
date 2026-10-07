@@ -1,21 +1,21 @@
 # 01 - Visión del Producto: BOWOL Platform
 
-> **AI Business Copilot & Innovation Operating System**
+> **Planificador Inteligente de Actividades & Sistema de Automatización de Tareas para Emprendimientos y Pequeñas Empresas (PYMES)**
 >
-> v1.0 · Última actualización: 2026-01-XX · Autor: Equipo BOWOL · Estado: Aprobado
+> v1.1 · Autor: Equipo BOWOL · Estado: Aprobado
 
 ---
 
-> **CONTEXTO PARA EL PROGRAMADOR**
+> **CONTEXTO PARA EL PROGRAMADOR Y FUNDADORES**
 >
 > Este documento es la fuente de verdad sobre **qué es BOWOL, para quién es y por qué existe**. Todo lo demás en `/docs` deriva de aquí.
 >
-> Léelo completo antes de escribir código. Si en cualquier momento una decisión técnica parece contradecir este documento, para y pregunta. La visión manda sobre la implementación.
+> Léelo completo antes de escribir código o diseñar nuevas funciones.
 >
 > Reglas clave que se derivan de este documento:
-> - BOWOL no es un buscador de tendencias. Es un sistema operativo de innovación.
-> - BOWOL no es un wrapper de ChatGPT. La IA está orquestada por el ciclo Intelligence → Strategy → Execution.
-> - Todo lo que construimos debe reducir la distancia entre "tengo una idea" y "está ejecutada, medida y aprendida".
+> - BOWOL es un **planificador de actividades inteligente** diseñado para automatizar las tareas básicas de planificación de un emprendimiento o pequeña empresa.
+> - Su misión es permitir que un pequeño negocio cree e implemente su propio sistema de trabajo ágil, visual y automático sin sufrir la complejidad de suites corporativas pesadas.
+> - La IA actúa como un copiloto de planificación que toma un objetivo o iniciativa de negocio y lo desglosa en actividades cotidianas, estimaciones de tiempo, prioridades y asignaciones de equipo.
 >
 > Referencias cruzadas:
 > - Arquitectura técnica: `02-ARCHITECTURE.md`
@@ -30,42 +30,45 @@
 
 ## 1. El Problema
 
-Las startups, PYMES y equipos de innovación enfrentan cuatro barreras críticas:
+Los emprendedores y dueños de pequeñas empresas (PYMES) enfrentan cuatro grandes dolores al intentar planificar y operar:
 
-### 1.1 Sobrecarga de información sin contexto
-Hay cientos de tendencias de IA y tecnología emergente cada mes, pero las empresas no saben cuáles aplican a su industria, tamaño o mercado. El resultado: parálisis, FOMO tecnológico o adopción tardía.
+### 1.1 Caos operativo y tareas dispersas
+Las tareas del día a día se gestionan en chats de WhatsApp, mensajes de voz, hojas sueltas de papel o post-its. No existe un único lugar confiable donde el equipo vea qué actividades deben completarse hoy.
 
-### 1.2 Parálisis por análisis
-Tienen ideas pero carecen de una metodología para validarlas. Convierten intuiciones en proyectos costosos sin pasar por hipótesis ni experimentos, y descubren tarde que la idea no tenía tracción.
+### 1.2 Horas perdidas planificando manualmente
+Armar cronogramas, definir qué paso va primero, estimar fechas de entrega y coordinar quién hace qué toma horas de reuniones y hojas de cálculo que un equipo pequeño no tiene tiempo de mantener.
 
-### 1.3 Desconexión entre estrategia y ejecución
-El diagnóstico estratégico (FODA, análisis competitivo, research) suele terminar en un PDF archivado. Nadie lo convierte en tareas concretas asignadas a personas con fechas reales.
+### 1.3 Metas de negocio que nunca se ejecutan
+Ideas valiosas (lanzar un nuevo producto, aumentar ventas del mes, ordenar proveedores o mejorar la atención) se quedan en buenas intenciones porque no hay un sistema automático que las convierta en actividades prácticas asignadas día por día.
 
-### 1.4 Descoordinación operativa
-Los equipos operan en 8-12 herramientas aisladas (Notion para docs, Trello para tareas, Google Calendar para fechas, Metricool para redes, ChatGPT para ideas, GitHub para código). El contexto se pierde entre aplicaciones y nadie tiene la foto completa.
+### 1.4 Complejidad excesiva de herramientas corporativas
+Herramientas como Jira, SAP o Enterprise Asana están pensadas para corporaciones de cientos de empleados con roles burocráticos. Para un emprendimiento de 2 a 15 personas, resultan abrumadoras, lentas de configurar y caras.
 
-**Consecuencia agregada:** el 70% de las startups fracasan por falta de metodología, no por falta de ideas. BOWOL cierra esa brecha.
+**Consecuencia agregada:** El 70% de los emprendimientos y pequeños negocios fracasan por desorden operativo y falta de seguimiento diario, no por falta de talento. BOWOL resuelve esta brecha automatizando la planificación.
 
 ---
 
-## 2. La Solución: el Ciclo de Innovación Continua
+## 2. La Solución: El Sistema Automatizado de Planificación BOWOL
 
-BOWOL no es un buscador de tendencias ni un ChatGPT integrado. Es una plataforma SaaS que **orquesta el ciclo completo** desde la señal hasta el aprendizaje:
+BOWOL es una plataforma SaaS que **automatiza las tareas básicas de planificación** y provee a cualquier negocio su propio sistema de gestión:
 
 ```mermaid
 flowchart TD
-    A[EMPRESA<br/>Industria · Tamaño · Recursos · Objetivos] --> B[BUSINESS PROFILE<br/>Contexto que alimenta a la IA]
-    B --> C[MARKET & TREND INTELLIGENCE<br/>GitHub · YouTube · Reddit · HackerNews]
-    C --> D[AI RESEARCH<br/>Evaluación de aplicabilidad e impacto]
-    D --> E[DYNAMIC SWOT<br/>Fortalezas · Oportunidades · Debilidades · Amenazas]
-    E --> F[OPPORTUNITY ENGINE<br/>Scoring RICE · Priorización]
-    F --> G[HYPOTHESIS & EXPERIMENT<br/>Validación antes de construir]
-    G --> H[EXECUTION & PLANNING<br/>Proyecto → Sprint → Backlog → Tareas → Métricas]
-    H --> I[LEARNING LOOP<br/>Feedback para nuevo análisis]
-    I --> B
+    A[EMPRENDIMIENTO / PYME<br/>Rubro · Tamaño · Equipo · Objetivos] --> B[PERFIL DEL NEGOCIO<br/>Contexto operativo que guía a la IA]
+    B --> C[METAS & OPORTUNIDADES<br/>Lanzamientos · Ventas · Operaciones · Mejoras]
+    C --> D[PLANIFICADOR INTELIGENTE IA<br/>Desglose automático en actividades paso a paso]
+    D --> E[PRIORIZACIÓN ÁGIL<br/>Impacto vs Esfuerzo · Fechas sugeridas]
+    E --> F[TABLERO KANBAN & CALENDARIO<br/>Tareas diarias · Responsables · Recordatorios]
+    F --> G[SPRINTS SEMANALES & SEGUIMIENTO<br/>Avance en tiempo real · Métricas de cumplimiento]
+    G --> H[AJUSTES & RETROALIMENTACIÓN<br/>Reprogramación automática de tareas pendientes]
+    H --> B
 ```
 
-**Cada paso está conectado.** El output de un paso alimenta el siguiente. El FODA no vive aislado: se construye con tendencias reales, genera oportunidades con score, se convierte en hipótesis validadas, y termina en tareas asignadas a personas con fechas concretas.
+**Todo está conectado:**
+1. El usuario define un objetivo (por ejemplo: "Campaña de ventas de primavera").
+2. BOWOL genera automáticamente el desglose de actividades, duraciones y dependencias.
+3. Las actividades pasan directamente al tablero Kanban y al calendario del equipo.
+4. El sistema alerta sobre tareas pendientes y recalibra prioridades automáticamente.
 
 ---
 
@@ -73,17 +76,17 @@ flowchart TD
 
 ### 3.1 Tagline
 
-> **"Convierte señales del mercado en ejecución medible."**
+> **"El planificador inteligente de actividades para emprendimientos y pequeñas empresas: automatiza tu planificación y haz crecer tu negocio con un sistema ágil."**
 
-### 3.2 El ciclo en 5 preguntas
+### 3.2 El valor en 5 respuestas claras
 
-| Pregunta del negocio | Cómo BOWOL la responde |
+| Necesidad del Emprendedor | Cómo BOWOL lo automatiza |
 |---|---|
-| ¿Qué está pasando en mi industria? | Trend Intelligence ingesta fuentes reales (GitHub, YouTube, Reddit, HackerNews) y las filtra por relevancia para tu perfil. |
-| ¿Me afecta o no? | Correlación automática con tu business profile mediante IA contextual. |
-| ¿Qué oportunidad concreta existe? | Opportunity Engine genera iniciativas priorizadas por scoring RICE. |
-| ¿Cómo lo ejecutamos? | AI Planner desglosa en hipótesis, experimentos, sprints y tareas asignables. |
-| ¿Qué aprendimos? | Cierre del loop con métricas que retroalimentan el siguiente análisis. |
+| ¿Qué tareas debemos hacer para lograr este objetivo? | El Planificador IA desglosa cualquier meta en actividades concretas, estimaciones y entregables. |
+| ¿Qué es lo más urgente e importante hoy? | Priorizador visual que clasifica actividades por impacto inmediato vs. esfuerzo requerido. |
+| ¿Quién hace cada tarea y cuándo se entrega? | Tablero Kanban integrado con calendario, asignaciones de equipo y fechas límites claras. |
+| ¿Cómo evitamos olvidar tareas rutinarias? | Automatización de tareas recurrentes (cierres semanales, compras, inventario, publicaciones). |
+| ¿Cómo sabemos si estamos avanzando? | Métricas simples de cumplimiento semanal y avance de sprint sin reportes engorrosos. |
 
 ---
 

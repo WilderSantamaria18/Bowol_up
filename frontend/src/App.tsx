@@ -18,6 +18,7 @@ const TrendsPage = React.lazy(() => import('@/features/trends/pages/TrendsPage')
 const SwotPage = React.lazy(() => import('@/features/swot/pages/SwotPage').then(m => ({ default: m.SwotPage })));
 const OpportunitiesPage = React.lazy(() => import('@/features/opportunities/pages/OpportunitiesPage').then(m => ({ default: m.OpportunitiesPage })));
 const HypothesesPage = React.lazy(() => import('@/features/hypotheses/pages/HypothesesPage').then(m => ({ default: m.HypothesesPage })));
+const PlanningPage = React.lazy(() => import('@/features/planning/pages/PlanningPage').then(m => ({ default: m.PlanningPage })));
 const ProjectsPage = React.lazy(() => import('@/features/projects/pages/ProjectsPage').then(m => ({ default: m.ProjectsPage })));
 const ProjectDetailPage = React.lazy(() => import('@/features/projects/pages/ProjectDetailPage').then(m => ({ default: m.ProjectDetailPage })));
 const TaskBoardPage = React.lazy(() => import('@/features/tasks/pages/TaskBoardPage').then(m => ({ default: m.TaskBoardPage })));
@@ -145,6 +146,14 @@ export const App: React.FC = () => {
                 element={
                   <ProtectedRoute>
                     <TaskBoardPage />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="planning"
+                element={
+                  <ProtectedRoute>
+                    <PlanningPage />
                   </ProtectedRoute>
                 }
               />

@@ -5,6 +5,7 @@ import com.bowol.hypothesis.Hypothesis;
 import com.bowol.hypothesis.HypothesisRepository;
 import com.bowol.project.Project;
 import com.bowol.project.ProjectRepository;
+import com.bowol.shared.exception.BadRequestException;
 import com.bowol.shared.exception.NotFoundException;
 import com.bowol.shared.security.UserPrincipal;
 import com.bowol.sprint.Sprint;
@@ -36,7 +37,7 @@ public class CalendarService {
         if (startDate != null || endDate != null) {
             events = calendarEventRepository.findByDateRange(organizationId, startDate, endDate);
         } else {
-            events = calendarEventRepository.findAllByOrganizationIdOrderByStartDateAsc(organizationId);
+            events = calendarEventRepository.findAllByOrganizationIdAndDeletedAtIsNullOrderByStartDateAsc(organizationId);
         }
         return events.stream().map(CalendarEventResponse::from).collect(Collectors.toList());
     }
@@ -61,7 +62,7 @@ public class CalendarService {
         if (typeFilter == null || typeFilter == CalendarEventType.KEY_EVENT || typeFilter == CalendarEventType.MILESTONE) {
             List<CalendarEvent> events = (startDate != null || endDate != null)
                     ? calendarEventRepository.findByDateRange(organizationId, startDate, endDate)
-                    : calendarEventRepository.findAllByOrganizationIdOrderByStartDateAsc(organizationId);
+                    : calendarEventRepository.findAllByOrganizationIdAndDeletedAtIsNullOrderByStartDateAsc(organizationId);
 
             for (CalendarEvent e : events) {
                 if (projectIdFilter != null && !Objects.equals(e.getProjectId(), projectIdFilter)) {
@@ -171,6 +172,7 @@ public class CalendarService {
     @Transactional
     public CalendarEventResponse createEvent(CreateCalendarEventRequest request, UserPrincipal principal) {
         UUID organizationId = principal.getOrganizationId();
+        validateDateRange(request.getStartDate(), request.getEndDate());
 
         if (request.getProjectId() != null) {
             projectRepository.findByIdAndOrganizationIdAndDeletedAtIsNull(request.getProjectId(), organizationId)
@@ -197,7 +199,7 @@ public class CalendarService {
     @Transactional
     public CalendarEventResponse updateEvent(UUID id, UpdateCalendarEventRequest request, UserPrincipal principal) {
         UUID organizationId = principal.getOrganizationId();
-        CalendarEvent event = calendarEventRepository.findByIdAndOrganizationId(id, organizationId)
+        CalendarEvent event = calendarEventRepository.findByIdAndOrganizationIdAndDeletedAtIsNull(id, organizationId)
                 .orElseThrow(() -> new NotFoundException("EVENTO_NO_ENCONTRADO", "No se encontró el evento con id: " + id));
 
         if (request.getTitle() != null && !request.getTitle().isBlank()) {
@@ -215,6 +217,7 @@ public class CalendarService {
         if (request.getEndDate() != null) {
             event.setEndDate(request.getEndDate());
         }
+        validateDateRange(event.getStartDate(), event.getEndDate());
         if (request.getColor() != null) {
             event.setColor(request.getColor());
         }
@@ -231,10 +234,11 @@ public class CalendarService {
     @Transactional
     public void deleteEvent(UUID id, UserPrincipal principal) {
         UUID organizationId = principal.getOrganizationId();
-        CalendarEvent event = calendarEventRepository.findByIdAndOrganizationId(id, organizationId)
+        CalendarEvent event = calendarEventRepository.findByIdAndOrganizationIdAndDeletedAtIsNull(id, organizationId)
                 .orElseThrow(() -> new NotFoundException("EVENTO_NO_ENCONTRADO", "No se encontró el evento con id: " + id));
-        calendarEventRepository.delete(event);
-        log.info("Evento de calendario eliminado {}", id);
+        event.markDeleted();
+        calendarEventRepository.save(event);
+        log.info("Evento de calendario eliminado lógicamente {}", id);
     }
 
     @Transactional(readOnly = true)
@@ -277,5 +281,11 @@ public class CalendarService {
                    .replace(",", "\\,")
                    .replace("\n", "\\n")
                    .replace("\r", "");
+    }
+
+    private void validateDateRange(LocalDate startDate, LocalDate endDate) {
+        if (endDate != null && endDate.isBefore(startDate)) {
+            throw new BadRequestException("CALENDAR_INVALID_DATE_RANGE", "La fecha de fin no puede ser anterior a la fecha de inicio");
+        }
     }
 }

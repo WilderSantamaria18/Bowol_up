@@ -112,7 +112,29 @@ class AuditLogServiceTests {
         Map<String, Object> summary = auditLogService.getAuditSummary(testOrgId);
 
         assertThat(summary).isNotNull();
-        assertThat(summary.get("complianceStatus")).isEqualTo("SOC2_TYPE_II_READY");
+        assertThat(summary.get("complianceStatus")).isEqualTo("NOT_ASSESSED");
         assertThat(((Number) summary.get("totalEvents")).longValue()).isGreaterThanOrEqualTo(1);
+    }
+
+    @Test
+    @DisplayName("Debe redactar secretos y neutralizar formulas al exportar CSV")
+    void redactsSecretsAndPreventsCsvFormulaInjection() {
+        auditLogService.record(
+                testOrgId,
+                testUserId,
+                "security@enterprise.com",
+                "=SUM(1+1)",
+                "API_KEY",
+                "key-1",
+                Map.of("apiKey", "super-secret", "password", "another-secret"),
+                "127.0.0.1",
+                "curl/8.0"
+        );
+
+        String csv = auditLogService.exportToCsv(testOrgId, null, null, null, null, null);
+
+        assertThat(csv).contains("'=SUM(1+1)");
+        assertThat(csv).contains("[REDACTED]");
+        assertThat(csv).doesNotContain("super-secret", "another-secret");
     }
 }

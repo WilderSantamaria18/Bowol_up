@@ -22,7 +22,7 @@ interface SprintCardProps {
 }
 
 const statusBadgeStyles: Record<SprintStatus, string> = {
-  PLANNED: 'bg-zinc-800 text-zinc-400 border-zinc-700',
+  PLANNED: 'bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 border-zinc-300 dark:border-zinc-700',
   ACTIVE: 'bg-emerald-500/10 text-emerald-400 border-emerald-500/30',
   COMPLETED: 'bg-cyan-500/10 text-cyan-400 border-cyan-500/30',
   CANCELED: 'bg-rose-500/10 text-rose-400 border-rose-500/30',
@@ -49,7 +49,7 @@ export const SprintCard: React.FC<SprintCardProps> = ({
   const progressPercent = totalTasks > 0 ? Math.round((completedTasks / totalTasks) * 100) : 0;
 
   return (
-    <div className="group relative rounded-xl bg-[#0F0F12] border border-white/[0.08] hover:border-white/[0.15] p-5 transition-all duration-200 shadow-lg flex flex-col justify-between">
+    <div className="group relative rounded-xl bg-white dark:bg-[#0F0F12] border border-zinc-900/[0.13] dark:border-white/[0.08] hover:border-zinc-900/[0.16] dark:hover:border-white/[0.15] p-5 transition-all duration-200 shadow-lg flex flex-col justify-between">
       <div>
         <div className="flex items-start justify-between gap-3 mb-3">
           <div className="flex-1 min-w-0">
@@ -68,7 +68,7 @@ export const SprintCard: React.FC<SprintCardProps> = ({
                 </span>
               </div>
             </div>
-            <h3 className="text-sm font-semibold text-white group-hover:text-orange-400 transition-colors line-clamp-1">
+            <h3 className="text-sm font-semibold text-zinc-900 dark:text-white group-hover:text-orange-400 transition-colors line-clamp-1">
               {sprint.name}
             </h3>
           </div>
@@ -89,7 +89,7 @@ export const SprintCard: React.FC<SprintCardProps> = ({
         </div>
 
         {sprint.goal && (
-          <div className="flex items-start gap-1.5 text-xs text-zinc-400 bg-white/[0.02] border border-white/[0.04] rounded-lg p-2.5 mb-4">
+          <div className="flex items-start gap-1.5 text-xs text-zinc-600 dark:text-zinc-400 bg-zinc-900/[0.02] dark:bg-white/[0.02] border border-zinc-900/[0.08] dark:border-white/[0.04] rounded-lg p-2.5 mb-4">
             <Target className="w-3.5 h-3.5 text-orange-400 shrink-0 mt-0.5" strokeWidth={1.5} />
             <p className="line-clamp-2">{sprint.goal}</p>
           </div>
@@ -98,12 +98,12 @@ export const SprintCard: React.FC<SprintCardProps> = ({
         {/* Progress Bar & KPIs */}
         <div className="space-y-2 mb-4">
           <div className="flex items-center justify-between text-xs">
-            <span className="text-zinc-400">Progreso de Tareas</span>
-            <span className="font-mono text-zinc-200">
+            <span className="text-zinc-600 dark:text-zinc-400">Progreso de Tareas</span>
+            <span className="font-mono text-zinc-900 dark:text-zinc-200">
               {completedTasks}/{totalTasks} ({progressPercent}%)
             </span>
           </div>
-          <div className="w-full h-1.5 rounded-full bg-white/[0.06] overflow-hidden">
+          <div className="w-full h-1.5 rounded-full bg-zinc-900/[0.06] dark:bg-white/[0.06] overflow-hidden">
             <div
               className={`h-full transition-all duration-500 rounded-full ${
                 sprint.status === 'COMPLETED'
@@ -128,14 +128,14 @@ export const SprintCard: React.FC<SprintCardProps> = ({
       </div>
 
       {/* Actions */}
-      <div className="pt-3 border-t border-white/[0.06] flex items-center justify-between gap-2">
+      <div className="pt-3 border-t border-zinc-900/[0.1] dark:border-white/[0.06] flex items-center justify-between gap-2">
         <div>
           {onViewBurndown && (
             <Button
               variant="ghost"
               size="sm"
               onClick={() => onViewBurndown(sprint)}
-              className="text-xs gap-1.5 text-zinc-400 hover:text-cyan-400 px-2 h-7"
+              className="text-xs gap-1.5 text-zinc-600 dark:text-zinc-400 hover:text-cyan-400 px-2 h-7"
             >
               <BarChart2 className="w-3.5 h-3.5" strokeWidth={1.5} />
               Burndown

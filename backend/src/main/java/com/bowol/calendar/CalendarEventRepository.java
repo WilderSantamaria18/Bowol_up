@@ -13,11 +13,11 @@ import java.util.UUID;
 @Repository
 public interface CalendarEventRepository extends JpaRepository<CalendarEvent, UUID> {
 
-    List<CalendarEvent> findAllByOrganizationIdOrderByStartDateAsc(UUID organizationId);
+    List<CalendarEvent> findAllByOrganizationIdAndDeletedAtIsNullOrderByStartDateAsc(UUID organizationId);
 
-    Optional<CalendarEvent> findByIdAndOrganizationId(UUID id, UUID organizationId);
+    Optional<CalendarEvent> findByIdAndOrganizationIdAndDeletedAtIsNull(UUID id, UUID organizationId);
 
-    @Query("SELECT e FROM CalendarEvent e WHERE e.organizationId = :orgId " +
+    @Query("SELECT e FROM CalendarEvent e WHERE e.organizationId = :orgId AND e.deletedAt IS NULL " +
            "AND e.startDate <= :endDate " +
            "AND (e.startDate >= :startDate OR (e.endDate IS NOT NULL AND e.endDate >= :startDate)) " +
            "ORDER BY e.startDate ASC")
@@ -27,7 +27,7 @@ public interface CalendarEventRepository extends JpaRepository<CalendarEvent, UU
             @Param("endDate") LocalDate endDate
     );
 
-    @Query("SELECT e FROM CalendarEvent e WHERE e.organizationId = :orgId " +
+    @Query("SELECT e FROM CalendarEvent e WHERE e.organizationId = :orgId AND e.deletedAt IS NULL " +
            "AND (e.startDate >= :startDate OR (e.endDate IS NOT NULL AND e.endDate >= :startDate)) " +
            "ORDER BY e.startDate ASC")
     List<CalendarEvent> findFromDate(
@@ -35,7 +35,7 @@ public interface CalendarEventRepository extends JpaRepository<CalendarEvent, UU
             @Param("startDate") LocalDate startDate
     );
 
-    @Query("SELECT e FROM CalendarEvent e WHERE e.organizationId = :orgId " +
+    @Query("SELECT e FROM CalendarEvent e WHERE e.organizationId = :orgId AND e.deletedAt IS NULL " +
            "AND e.startDate <= :endDate " +
            "ORDER BY e.startDate ASC")
     List<CalendarEvent> findUntilDate(
@@ -51,9 +51,9 @@ public interface CalendarEventRepository extends JpaRepository<CalendarEvent, UU
         } else if (endDate != null) {
             return findUntilDate(orgId, endDate);
         } else {
-            return findAllByOrganizationIdOrderByStartDateAsc(orgId);
+            return findAllByOrganizationIdAndDeletedAtIsNullOrderByStartDateAsc(orgId);
         }
     }
 
-    List<CalendarEvent> findAllByOrganizationIdAndProjectIdOrderByStartDateAsc(UUID organizationId, UUID projectId);
+    List<CalendarEvent> findAllByOrganizationIdAndProjectIdAndDeletedAtIsNullOrderByStartDateAsc(UUID organizationId, UUID projectId);
 }

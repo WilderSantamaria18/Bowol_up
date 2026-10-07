@@ -17,9 +17,9 @@ public interface AuditLogRepository extends JpaRepository<AuditLog, Long> {
     @Query("""
         SELECT a FROM AuditLog a
         WHERE a.organizationId = :organizationId
-          AND (:action IS NULL OR a.action = :action)
-          AND (:entityType IS NULL OR a.entityType = :entityType)
-          AND (:actorEmail IS NULL OR LOWER(a.actorEmail) LIKE LOWER(CONCAT('%', :actorEmail, '%')))
+          AND (CAST(:action AS string) IS NULL OR a.action = :action)
+          AND (CAST(:entityType AS string) IS NULL OR a.entityType = :entityType)
+          AND (CAST(:actorEmail AS string) IS NULL OR LOWER(a.actorEmail) LIKE LOWER(CONCAT('%', CAST(:actorEmail AS string), '%')))
           AND (CAST(:fromDate AS timestamp) IS NULL OR a.createdAt >= :fromDate)
           AND (CAST(:toDate AS timestamp) IS NULL OR a.createdAt <= :toDate)
         ORDER BY a.createdAt DESC
@@ -37,9 +37,9 @@ public interface AuditLogRepository extends JpaRepository<AuditLog, Long> {
     @Query("""
         SELECT a FROM AuditLog a
         WHERE a.organizationId = :organizationId
-          AND (:action IS NULL OR a.action = :action)
-          AND (:entityType IS NULL OR a.entityType = :entityType)
-          AND (:actorEmail IS NULL OR LOWER(a.actorEmail) LIKE LOWER(CONCAT('%', :actorEmail, '%')))
+          AND (CAST(:action AS string) IS NULL OR a.action = :action)
+          AND (CAST(:entityType AS string) IS NULL OR a.entityType = :entityType)
+          AND (CAST(:actorEmail AS string) IS NULL OR LOWER(a.actorEmail) LIKE LOWER(CONCAT('%', CAST(:actorEmail AS string), '%')))
           AND (CAST(:fromDate AS timestamp) IS NULL OR a.createdAt >= :fromDate)
           AND (CAST(:toDate AS timestamp) IS NULL OR a.createdAt <= :toDate)
         ORDER BY a.createdAt DESC

@@ -258,7 +258,9 @@ class CalendarControllerTests {
                         .header("Authorization", "Bearer " + tokenA))
                 .andExpect(status().isNoContent());
 
-        assertThat(calendarEventRepository.findById(event.getId())).isEmpty();
+        CalendarEvent deletedEvent = calendarEventRepository.findById(event.getId()).orElseThrow();
+        assertThat(deletedEvent.getDeletedAt()).isNotNull();
+        assertThat(calendarEventRepository.findByIdAndOrganizationIdAndDeletedAtIsNull(event.getId(), orgA.getId())).isEmpty();
     }
 
     @Test

@@ -13,6 +13,7 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -29,6 +30,7 @@ public class ProjectController {
     private final com.bowol.task.TaskService taskService;
 
     @PostMapping("/{projectId}/decompose")
+    @PreAuthorize("hasAuthority('task.create')")
     public ResponseEntity<com.bowol.task.dto.DecomposeProjectResponse> decomposeProject(
             @PathVariable UUID projectId,
             @AuthenticationPrincipal UserPrincipal principal) {
@@ -37,6 +39,7 @@ public class ProjectController {
     }
 
     @GetMapping
+    @PreAuthorize("hasAuthority('project.read')")
     public ResponseEntity<PageResponse<ProjectResponse>> getProjects(
             @RequestParam(required = false) ProjectStatus status,
             @PageableDefault(size = 20) Pageable pageable,
@@ -46,6 +49,7 @@ public class ProjectController {
     }
 
     @GetMapping("/{id}")
+    @PreAuthorize("hasAuthority('project.read')")
     public ResponseEntity<ProjectResponse> getProjectById(
             @PathVariable UUID id,
             @AuthenticationPrincipal UserPrincipal principal) {
@@ -54,6 +58,7 @@ public class ProjectController {
     }
 
     @PostMapping
+    @PreAuthorize("hasAuthority('project.create')")
     public ResponseEntity<ProjectResponse> createProject(
             @Valid @RequestBody CreateProjectRequest request,
             @AuthenticationPrincipal UserPrincipal principal) {
@@ -62,6 +67,7 @@ public class ProjectController {
     }
 
     @PatchMapping("/{id}")
+    @PreAuthorize("hasAuthority('project.update')")
     public ResponseEntity<ProjectResponse> updateProject(
             @PathVariable UUID id,
             @RequestBody UpdateProjectRequest request,
@@ -71,6 +77,7 @@ public class ProjectController {
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasAuthority('project.delete')")
     public ResponseEntity<Void> deleteProject(
             @PathVariable UUID id,
             @AuthenticationPrincipal UserPrincipal principal) {
@@ -79,6 +86,7 @@ public class ProjectController {
     }
 
     @GetMapping("/{id}/members")
+    @PreAuthorize("hasAuthority('project.read')")
     public ResponseEntity<List<ProjectMemberResponse>> getProjectMembers(
             @PathVariable UUID id,
             @AuthenticationPrincipal UserPrincipal principal) {
@@ -87,6 +95,7 @@ public class ProjectController {
     }
 
     @PostMapping("/{id}/members")
+    @PreAuthorize("hasAuthority('project.manage_members')")
     public ResponseEntity<ProjectMemberResponse> addProjectMember(
             @PathVariable UUID id,
             @Valid @RequestBody AddProjectMemberRequest request,
@@ -96,6 +105,7 @@ public class ProjectController {
     }
 
     @DeleteMapping("/{id}/members/{userId}")
+    @PreAuthorize("hasAuthority('project.manage_members')")
     public ResponseEntity<Void> removeProjectMember(
             @PathVariable UUID id,
             @PathVariable UUID userId,
@@ -105,6 +115,7 @@ public class ProjectController {
     }
 
     @GetMapping("/{projectId}/sprints")
+    @PreAuthorize("hasAuthority('sprint.read')")
     public ResponseEntity<List<SprintResponse>> getProjectSprints(
             @PathVariable UUID projectId,
             @RequestParam(required = false) com.bowol.sprint.SprintStatus status,
@@ -114,6 +125,7 @@ public class ProjectController {
     }
 
     @PostMapping("/{projectId}/sprints")
+    @PreAuthorize("hasAuthority('sprint.create')")
     public ResponseEntity<SprintResponse> createProjectSprint(
             @PathVariable UUID projectId,
             @Valid @RequestBody CreateSprintRequest request,
@@ -123,6 +135,7 @@ public class ProjectController {
     }
 
     @PostMapping("/{projectId}/sprints/ai-plan")
+    @PreAuthorize("hasAuthority('ai.use')")
     public ResponseEntity<com.bowol.sprint.dto.AiSprintPlanResponse> planSprintWithAi(
             @PathVariable UUID projectId,
             @AuthenticationPrincipal UserPrincipal principal) {
@@ -131,6 +144,7 @@ public class ProjectController {
     }
 
     @GetMapping("/{id}/velocity")
+    @PreAuthorize("hasAuthority('project.read')")
     public ResponseEntity<com.bowol.sprint.dto.ProjectVelocityResponse> getProjectVelocity(
             @PathVariable UUID id,
             @AuthenticationPrincipal UserPrincipal principal) {

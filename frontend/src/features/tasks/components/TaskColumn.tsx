@@ -19,6 +19,7 @@ const statusBadgeColors: Record<TaskStatus, string> = {
   REVIEW: 'bg-purple-500/10 text-purple-400 border-purple-500/20',
   DONE: 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20',
   CANCELED: 'bg-rose-500/10 text-rose-400 border-rose-500/20',
+  BLOCKED: 'bg-red-500/10 text-red-500 dark:text-red-400 border-red-500/20',
 };
 
 export const TaskColumn: React.FC<TaskColumnProps> = ({
@@ -34,7 +35,7 @@ export const TaskColumn: React.FC<TaskColumnProps> = ({
   return (
     <div
       data-testid={`task-column-${status}`}
-      className="flex min-w-[280px] max-w-[320px] flex-1 flex-col rounded-2xl border border-white/[0.06] bg-slate-950/40 p-3.5 backdrop-blur-xl"
+      className="flex min-w-[280px] max-w-[320px] flex-1 flex-col rounded-2xl border border-zinc-900/[0.1] dark:border-white/[0.06] bg-slate-950/40 p-3.5 backdrop-blur-xl"
     >
       {/* Column Header */}
       <div className="mb-3.5 flex items-center justify-between">
@@ -53,7 +54,7 @@ export const TaskColumn: React.FC<TaskColumnProps> = ({
           <button
             onClick={() => onQuickAdd(status)}
             title="Añadir tarea a esta columna"
-            className="rounded-lg p-1 text-slate-400 hover:bg-white/[0.08] hover:text-slate-100 transition-colors"
+            className="rounded-lg p-1 text-slate-400 hover:bg-zinc-900/[0.08] dark:hover:bg-white/[0.08] hover:text-slate-100 transition-colors"
           >
             <Plus className="h-4 w-4" strokeWidth={1.5} />
           </button>
@@ -72,7 +73,7 @@ export const TaskColumn: React.FC<TaskColumnProps> = ({
         ))}
 
         {tasks.length === 0 && (
-          <div className="flex flex-1 flex-col items-center justify-center rounded-xl border border-dashed border-white/[0.06] py-10 text-center">
+          <div className="flex flex-1 flex-col items-center justify-center rounded-xl border border-dashed border-zinc-900/[0.1] dark:border-white/[0.06] py-10 text-center">
             <ListTodo className="h-7 w-7 text-slate-600 mb-2" strokeWidth={1.5} />
             <p className="text-xs text-slate-500">Sin tareas</p>
           </div>

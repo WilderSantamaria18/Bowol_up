@@ -38,23 +38,23 @@ export const ScrollDebug: React.FC<ScrollDebugProps> = ({ mode, isDocked, master
   return (
     <div
       aria-label="Panel de depuración Scroll BOWOL"
-      className="fixed bottom-4 right-4 z-50 bg-zinc-950/90 border border-zinc-800 text-zinc-300 font-mono text-[11px] p-3 rounded-xl shadow-2xl backdrop-blur-md pointer-events-none select-none flex flex-col gap-1 w-52"
+      className="fixed bottom-4 right-4 z-50 bg-zinc-950/90 border border-zinc-200 dark:border-zinc-800 text-zinc-700 dark:text-zinc-300 font-mono text-[11px] p-3 rounded-xl shadow-2xl backdrop-blur-md pointer-events-none select-none flex flex-col gap-1 w-52"
     >
-      <div className="flex items-center justify-between pb-1 border-b border-zinc-800 text-orange-400 font-bold">
+      <div className="flex items-center justify-between pb-1 border-b border-zinc-200 dark:border-zinc-800 text-orange-400 font-bold">
         <span>GSAP MONITOR</span>
         <span className={fps >= 55 ? 'text-emerald-400' : 'text-amber-400'}>{fps} FPS</span>
       </div>
       <div className="flex justify-between">
         <span className="text-zinc-500">STs activos:</span>
-        <span className="text-zinc-200">{activeTriggers}</span>
+        <span className="text-zinc-900 dark:text-zinc-200">{activeTriggers}</span>
       </div>
       <div className="flex justify-between">
         <span className="text-zinc-500">Tweens:</span>
-        <span className="text-zinc-200">{activeTweens}</span>
+        <span className="text-zinc-900 dark:text-zinc-200">{activeTweens}</span>
       </div>
       <div className="flex justify-between">
         <span className="text-zinc-500">Master Prog:</span>
-        <span className="text-zinc-200">{(masterProgress * 100).toFixed(0)}%</span>
+        <span className="text-zinc-900 dark:text-zinc-200">{(masterProgress * 100).toFixed(0)}%</span>
       </div>
       <div className="flex justify-between">
         <span className="text-zinc-500">Modo:</span>

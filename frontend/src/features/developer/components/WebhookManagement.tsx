@@ -142,17 +142,17 @@ export const WebhookManagement: React.FC = () => {
   return (
     <div className="space-y-6">
       {/* Top Banner */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-5 rounded-2xl bg-gradient-to-r from-blue-500/10 via-zinc-900/40 to-white/[0.02] border border-blue-500/20 backdrop-blur-md">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-5 rounded-2xl bg-gradient-to-r from-blue-500/10 via-zinc-200/60 to-transparent dark:via-zinc-900/40 dark:to-white/[0.02] border border-blue-500/20 backdrop-blur-md">
         <div className="space-y-1">
           <div className="flex items-center gap-2">
             <div className="p-2 rounded-xl bg-blue-500/20 text-blue-400">
               <Webhook className="w-5 h-5" />
             </div>
-            <h3 className="text-base font-semibold text-zinc-100">
+            <h3 className="text-base font-semibold text-zinc-900 dark:text-zinc-100">
               Webhooks Salientes (Outbound Webhooks)
             </h3>
           </div>
-          <p className="text-xs text-zinc-400 max-w-xl">
+          <p className="text-xs text-zinc-600 dark:text-zinc-400 max-w-xl">
             Recibe eventos en tiempo real firmados con <code className="text-blue-300 bg-blue-500/10 px-1.5 py-0.5 rounded">HMAC-SHA256</code> en tu servidor cuando ocurran tendencias críticas, cálculos de RICE o cierres de sprint.
           </p>
         </div>
@@ -195,9 +195,9 @@ export const WebhookManagement: React.FC = () => {
           <Loader2 className="w-8 h-8 animate-spin text-blue-500" />
         </div>
       ) : endpoints.length === 0 ? (
-        <div className="text-center py-12 rounded-2xl border border-dashed border-white/[0.08] p-8">
+        <div className="text-center py-12 rounded-2xl border border-dashed border-zinc-900/[0.13] dark:border-white/[0.08] p-8">
           <Radio className="w-12 h-12 text-zinc-600 mx-auto mb-3" />
-          <h4 className="text-sm font-medium text-zinc-300">No hay endpoints de Webhook configurados</h4>
+          <h4 className="text-sm font-medium text-zinc-700 dark:text-zinc-300">No hay endpoints de Webhook configurados</h4>
           <p className="text-xs text-zinc-500 mt-1 max-w-sm mx-auto">
             Configura una URL destino para sincronizar eventos en tiempo real con Slack, Zapier, Make o tus microservicios internos.
           </p>
@@ -207,12 +207,12 @@ export const WebhookManagement: React.FC = () => {
           {endpoints.map((ep) => (
             <div
               key={ep.id}
-              className="p-5 rounded-2xl bg-zinc-900/40 border border-white/[0.08] hover:border-white/[0.15] transition-all space-y-4"
+              className="p-5 rounded-2xl bg-zinc-100/70 dark:bg-zinc-900/40 border border-zinc-900/[0.13] dark:border-white/[0.08] hover:border-zinc-900/[0.16] dark:hover:border-white/[0.15] transition-all space-y-4"
             >
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                 <div className="space-y-1">
                   <div className="flex items-center gap-2">
-                    <span className="font-mono text-sm font-semibold text-zinc-100">
+                    <span className="font-mono text-sm font-semibold text-zinc-900 dark:text-zinc-100">
                       {ep.url}
                     </span>
                     <span className="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-medium bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
@@ -220,7 +220,7 @@ export const WebhookManagement: React.FC = () => {
                     </span>
                   </div>
                   {ep.description && (
-                    <p className="text-xs text-zinc-400">{ep.description}</p>
+                    <p className="text-xs text-zinc-600 dark:text-zinc-400">{ep.description}</p>
                   )}
                 </div>
 
@@ -240,7 +240,7 @@ export const WebhookManagement: React.FC = () => {
                     variant="ghost"
                     size="sm"
                     onClick={() => openDeliveriesModal(ep)}
-                    className="text-zinc-300 hover:text-white"
+                    className="text-zinc-700 dark:text-zinc-300 hover:text-zinc-900 dark:hover:text-white"
                   >
                     <Clock className="w-3.5 h-3.5" />
                     <span className="ml-1 text-xs">Entregas</span>
@@ -263,7 +263,7 @@ export const WebhookManagement: React.FC = () => {
                 {ep.events.map((evt) => (
                   <span
                     key={evt}
-                    className="px-2 py-0.5 rounded-md text-[11px] font-mono bg-white/[0.04] border border-white/[0.08] text-zinc-300"
+                    className="px-2 py-0.5 rounded-md text-[11px] font-mono bg-zinc-900/[0.04] dark:bg-white/[0.04] border border-zinc-900/[0.13] dark:border-white/[0.08] text-zinc-700 dark:text-zinc-300"
                   >
                     {evt}
                   </span>
@@ -271,8 +271,8 @@ export const WebhookManagement: React.FC = () => {
               </div>
 
               {/* Secret Bar */}
-              <div className="flex items-center justify-between p-2.5 rounded-xl bg-black/40 border border-white/[0.06] text-xs">
-                <div className="flex items-center gap-2 text-zinc-400 font-mono text-[11px] truncate">
+              <div className="flex items-center justify-between p-2.5 rounded-xl bg-black/40 border border-zinc-900/[0.1] dark:border-white/[0.06] text-xs">
+                <div className="flex items-center gap-2 text-zinc-600 dark:text-zinc-400 font-mono text-[11px] truncate">
                   <Key className="w-3.5 h-3.5 text-zinc-500 shrink-0" />
                   <span className="text-zinc-500">HMAC Secret:</span>
                   <span className="truncate">
@@ -281,7 +281,7 @@ export const WebhookManagement: React.FC = () => {
                 </div>
                 <button
                   onClick={() => copySecret(ep.id, ep.secret)}
-                  className="flex items-center gap-1 text-[11px] text-zinc-400 hover:text-zinc-200 transition-colors ml-2 shrink-0"
+                  className="flex items-center gap-1 text-[11px] text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-200 transition-colors ml-2 shrink-0"
                 >
                   {copiedSecretId === ep.id ? (
                     <span className="text-emerald-400 flex items-center gap-1">
@@ -302,20 +302,20 @@ export const WebhookManagement: React.FC = () => {
       {/* Modal: Crear Webhook */}
       {isCreateOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-fade-in">
-          <div className="w-full max-w-lg rounded-2xl bg-zinc-950 border border-white/[0.1] shadow-2xl p-6 space-y-5">
+          <div className="w-full max-w-lg rounded-2xl bg-white dark:bg-zinc-950 border border-zinc-900/[0.16] dark:border-white/[0.1] shadow-2xl p-6 space-y-5">
             <div className="flex items-center gap-3">
               <div className="p-2.5 rounded-xl bg-blue-500/20 text-blue-400">
                 <Webhook className="w-5 h-5" />
               </div>
               <div>
-                <h3 className="text-base font-bold text-zinc-100">Registrar Webhook Saliente</h3>
-                <p className="text-xs text-zinc-400">Transmisión de eventos en tiempo real hacia tus sistemas</p>
+                <h3 className="text-base font-bold text-zinc-900 dark:text-zinc-100">Registrar Webhook Saliente</h3>
+                <p className="text-xs text-zinc-600 dark:text-zinc-400">Transmisión de eventos en tiempo real hacia tus sistemas</p>
               </div>
             </div>
 
             <form onSubmit={handleCreateWebhook} className="space-y-4">
               <div>
-                <label className="block text-xs font-medium text-zinc-300 mb-1.5">
+                <label className="block text-xs font-medium text-zinc-700 dark:text-zinc-300 mb-1.5">
                   URL del Endpoint (HTTPS recomendado)
                 </label>
                 <input
@@ -324,12 +324,12 @@ export const WebhookManagement: React.FC = () => {
                   value={url}
                   onChange={(e) => setUrl(e.target.value)}
                   required
-                  className="w-full px-3.5 py-2 rounded-xl bg-white/[0.04] border border-white/[0.1] text-zinc-200 text-xs focus:outline-none focus:border-blue-500/50"
+                  className="w-full px-3.5 py-2 rounded-xl bg-zinc-900/[0.04] dark:bg-white/[0.04] border border-zinc-900/[0.16] dark:border-white/[0.1] text-zinc-900 dark:text-zinc-200 text-xs focus:outline-none focus:border-blue-500/50"
                 />
               </div>
 
               <div>
-                <label className="block text-xs font-medium text-zinc-300 mb-1.5">
+                <label className="block text-xs font-medium text-zinc-700 dark:text-zinc-300 mb-1.5">
                   Descripción (Opcional)
                 </label>
                 <input
@@ -337,12 +337,12 @@ export const WebhookManagement: React.FC = () => {
                   placeholder="ej. Pipeline de alertas en Slack o sincronización con CRM"
                   value={description}
                   onChange={(e) => setDescription(e.target.value)}
-                  className="w-full px-3.5 py-2 rounded-xl bg-white/[0.04] border border-white/[0.1] text-zinc-200 text-xs focus:outline-none focus:border-blue-500/50"
+                  className="w-full px-3.5 py-2 rounded-xl bg-zinc-900/[0.04] dark:bg-white/[0.04] border border-zinc-900/[0.16] dark:border-white/[0.1] text-zinc-900 dark:text-zinc-200 text-xs focus:outline-none focus:border-blue-500/50"
                 />
               </div>
 
               <div>
-                <label className="block text-xs font-medium text-zinc-300 mb-2">
+                <label className="block text-xs font-medium text-zinc-700 dark:text-zinc-300 mb-2">
                   Eventos Suscritos ({selectedEvents.length})
                 </label>
                 <div className="space-y-2 max-h-48 overflow-y-auto pr-1">
@@ -354,20 +354,20 @@ export const WebhookManagement: React.FC = () => {
                         className={`flex items-start gap-3 p-2.5 rounded-xl border cursor-pointer transition-colors ${
                           isChecked
                             ? 'bg-blue-500/10 border-blue-500/30'
-                            : 'bg-white/[0.02] border-white/[0.06] hover:bg-white/[0.04]'
+                            : 'bg-zinc-900/[0.02] dark:bg-white/[0.02] border-zinc-900/[0.1] dark:border-white/[0.06] hover:bg-zinc-900/[0.04] dark:hover:bg-white/[0.04]'
                         }`}
                       >
                         <input
                           type="checkbox"
                           checked={isChecked}
                           onChange={() => handleToggleEvent(evt.id)}
-                          className="mt-0.5 rounded border-zinc-700 text-blue-500 focus:ring-0"
+                          className="mt-0.5 rounded border-zinc-300 dark:border-zinc-700 text-blue-500 focus:ring-0"
                         />
                         <div className="space-y-0.5">
-                          <span className="text-xs font-medium text-zinc-200 block">
+                          <span className="text-xs font-medium text-zinc-900 dark:text-zinc-200 block">
                             {evt.label}
                           </span>
-                          <span className="text-[11px] text-zinc-400 block">
+                          <span className="text-[11px] text-zinc-600 dark:text-zinc-400 block">
                             {evt.description}
                           </span>
                           <code className="text-[10px] text-blue-300 font-mono">
@@ -381,7 +381,7 @@ export const WebhookManagement: React.FC = () => {
               </div>
 
               <div>
-                <label className="block text-xs font-medium text-zinc-300 mb-1.5">
+                <label className="block text-xs font-medium text-zinc-700 dark:text-zinc-300 mb-1.5">
                   HMAC Secret Personalizado (Opcional)
                 </label>
                 <input
@@ -389,7 +389,7 @@ export const WebhookManagement: React.FC = () => {
                   placeholder="Dejar en blanco para auto-generar 'whsec_...'"
                   value={customSecret}
                   onChange={(e) => setCustomSecret(e.target.value)}
-                  className="w-full px-3.5 py-2 rounded-xl bg-white/[0.04] border border-white/[0.1] text-zinc-200 text-xs focus:outline-none focus:border-blue-500/50"
+                  className="w-full px-3.5 py-2 rounded-xl bg-zinc-900/[0.04] dark:bg-white/[0.04] border border-zinc-900/[0.16] dark:border-white/[0.1] text-zinc-900 dark:text-zinc-200 text-xs focus:outline-none focus:border-blue-500/50"
                 />
               </div>
 
@@ -417,13 +417,13 @@ export const WebhookManagement: React.FC = () => {
       {/* Modal: Historial de Entregas */}
       {deliveriesEndpoint && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/85 backdrop-blur-md animate-fade-in">
-          <div className="w-full max-w-2xl rounded-2xl bg-zinc-950 border border-white/[0.1] shadow-2xl p-6 space-y-4 max-h-[85vh] flex flex-col">
-            <div className="flex items-center justify-between pb-3 border-b border-white/[0.08]">
+          <div className="w-full max-w-2xl rounded-2xl bg-white dark:bg-zinc-950 border border-zinc-900/[0.16] dark:border-white/[0.1] shadow-2xl p-6 space-y-4 max-h-[85vh] flex flex-col">
+            <div className="flex items-center justify-between pb-3 border-b border-zinc-900/[0.13] dark:border-white/[0.08]">
               <div>
-                <h3 className="text-base font-bold text-zinc-100">
+                <h3 className="text-base font-bold text-zinc-900 dark:text-zinc-100">
                   Historial de Entregas
                 </h3>
-                <p className="text-xs text-zinc-400 font-mono truncate max-w-md">
+                <p className="text-xs text-zinc-600 dark:text-zinc-400 font-mono truncate max-w-md">
                   {deliveriesEndpoint.url}
                 </p>
               </div>
@@ -449,7 +449,7 @@ export const WebhookManagement: React.FC = () => {
                 deliveries.map((del) => (
                   <div
                     key={del.id}
-                    className="p-3.5 rounded-xl bg-white/[0.02] border border-white/[0.06] space-y-2 text-xs"
+                    className="p-3.5 rounded-xl bg-zinc-900/[0.02] dark:bg-white/[0.02] border border-zinc-900/[0.1] dark:border-white/[0.06] space-y-2 text-xs"
                   >
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-2">
@@ -462,7 +462,7 @@ export const WebhookManagement: React.FC = () => {
                             HTTP {del.statusCode || 'ERR'}
                           </span>
                         )}
-                        <span className="font-mono text-zinc-300 font-semibold">
+                        <span className="font-mono text-zinc-700 dark:text-zinc-300 font-semibold">
                           {del.eventType}
                         </span>
                         <span className="text-[11px] text-zinc-500">
@@ -481,7 +481,7 @@ export const WebhookManagement: React.FC = () => {
                     )}
 
                     {del.responseBody && (
-                      <div className="p-2 rounded bg-black/60 font-mono text-[10px] text-zinc-400 truncate">
+                      <div className="p-2 rounded bg-black/60 font-mono text-[10px] text-zinc-600 dark:text-zinc-400 truncate">
                         Resp: {del.responseBody}
                       </div>
                     )}

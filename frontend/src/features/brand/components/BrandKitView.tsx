@@ -90,13 +90,13 @@ export const BrandKitView: React.FC<BrandKitViewProps> = ({
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
       {/* Header Bar */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-5 rounded-2xl bg-surface-subtle border border-white/[0.08] backdrop-blur-md">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-5 rounded-2xl bg-surface-subtle border border-zinc-900/[0.13] dark:border-white/[0.08] backdrop-blur-md">
         <div>
-          <h2 className="text-base font-bold text-white flex items-center gap-2">
+          <h2 className="text-base font-bold text-zinc-900 dark:text-white flex items-center gap-2">
             <Palette className="w-4 h-4 text-orange-400" strokeWidth={1.5} />
             Kit de Identidad de Marca (Brand Profile)
           </h2>
-          <p className="text-xs text-zinc-400 mt-0.5">
+          <p className="text-xs text-zinc-600 dark:text-zinc-400 mt-0.5">
             Define la personalidad, tonos de voz y directrices visuales que el motor de IA usará para generar contenido.
           </p>
         </div>
@@ -130,11 +130,11 @@ export const BrandKitView: React.FC<BrandKitViewProps> = ({
         {/* Left Column: Visual Tokens & Identity (2 cols) */}
         <div className="lg:col-span-2 space-y-6">
           {/* General Information */}
-          <div className="p-5 rounded-2xl bg-surface-subtle border border-white/[0.08] space-y-4">
-            <h3 className="text-sm font-semibold text-zinc-200">Información General</h3>
+          <div className="p-5 rounded-2xl bg-surface-subtle border border-zinc-900/[0.13] dark:border-white/[0.08] space-y-4">
+            <h3 className="text-sm font-semibold text-zinc-900 dark:text-zinc-200">Información General</h3>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
-                <label className="block text-xs font-medium text-zinc-400 mb-1">
+                <label className="block text-xs font-medium text-zinc-600 dark:text-zinc-400 mb-1">
                   Nombre de la Marca *
                 </label>
                 <input
@@ -142,12 +142,12 @@ export const BrandKitView: React.FC<BrandKitViewProps> = ({
                   required
                   value={brandName}
                   onChange={(e) => setBrandName(e.target.value)}
-                  className="w-full bg-black/40 border border-white/[0.1] rounded-lg px-3 py-2 text-xs text-zinc-200 focus:outline-none focus:border-orange-500"
+                  className="w-full bg-black/40 border border-zinc-900/[0.16] dark:border-white/[0.1] rounded-lg px-3 py-2 text-xs text-zinc-900 dark:text-zinc-200 focus:outline-none focus:border-orange-500"
                 />
               </div>
 
               <div>
-                <label className="block text-xs font-medium text-zinc-400 mb-1">
+                <label className="block text-xs font-medium text-zinc-600 dark:text-zinc-400 mb-1">
                   Slogan / Tagline
                 </label>
                 <input
@@ -155,13 +155,13 @@ export const BrandKitView: React.FC<BrandKitViewProps> = ({
                   value={tagline}
                   onChange={(e) => setTagline(e.target.value)}
                   placeholder="p. ej. Innovación acelerada con rigor estratégico"
-                  className="w-full bg-black/40 border border-white/[0.1] rounded-lg px-3 py-2 text-xs text-zinc-200 placeholder:text-zinc-600 focus:outline-none focus:border-orange-500"
+                  className="w-full bg-black/40 border border-zinc-900/[0.16] dark:border-white/[0.1] rounded-lg px-3 py-2 text-xs text-zinc-900 dark:text-zinc-200 placeholder:text-zinc-600 focus:outline-none focus:border-orange-500"
                 />
               </div>
             </div>
 
             <div>
-              <label className="block text-xs font-medium text-zinc-400 mb-1">
+              <label className="block text-xs font-medium text-zinc-600 dark:text-zinc-400 mb-1">
                 Audiencia Objetivo (Target Audience)
               </label>
               <textarea
@@ -169,15 +169,15 @@ export const BrandKitView: React.FC<BrandKitViewProps> = ({
                 value={targetAudience}
                 onChange={(e) => setTargetAudience(e.target.value)}
                 placeholder="Describe quiénes son tus clientes clave, tomadores de decisión o usuarios objetivo..."
-                className="w-full bg-black/40 border border-white/[0.1] rounded-lg px-3 py-2 text-xs text-zinc-200 placeholder:text-zinc-600 focus:outline-none focus:border-orange-500 resize-none"
+                className="w-full bg-black/40 border border-zinc-900/[0.16] dark:border-white/[0.1] rounded-lg px-3 py-2 text-xs text-zinc-900 dark:text-zinc-200 placeholder:text-zinc-600 focus:outline-none focus:border-orange-500 resize-none"
               />
             </div>
           </div>
 
           {/* Color Palette */}
-          <div className="p-5 rounded-2xl bg-surface-subtle border border-white/[0.08] space-y-4">
+          <div className="p-5 rounded-2xl bg-surface-subtle border border-zinc-900/[0.13] dark:border-white/[0.08] space-y-4">
             <div className="flex items-center justify-between">
-              <h3 className="text-sm font-semibold text-zinc-200 flex items-center gap-2">
+              <h3 className="text-sm font-semibold text-zinc-900 dark:text-zinc-200 flex items-center gap-2">
                 <Palette className="w-4 h-4 text-orange-400" strokeWidth={1.5} />
                 Paleta Cromática de Marca
               </h3>
@@ -185,8 +185,8 @@ export const BrandKitView: React.FC<BrandKitViewProps> = ({
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-              <div className="p-3.5 rounded-xl bg-black/30 border border-white/[0.06] space-y-2">
-                <span className="text-xs font-medium text-zinc-400">Color Primario</span>
+              <div className="p-3.5 rounded-xl bg-black/30 border border-zinc-900/[0.1] dark:border-white/[0.06] space-y-2">
+                <span className="text-xs font-medium text-zinc-600 dark:text-zinc-400">Color Primario</span>
                 <div className="flex items-center gap-2.5">
                   <input
                     type="color"
@@ -198,13 +198,13 @@ export const BrandKitView: React.FC<BrandKitViewProps> = ({
                     type="text"
                     value={primaryColor}
                     onChange={(e) => setPrimaryColor(e.target.value)}
-                    className="w-full bg-surface-subtle border border-white/[0.08] rounded px-2 py-1 text-xs text-zinc-300 font-mono"
+                    className="w-full bg-surface-subtle border border-zinc-900/[0.13] dark:border-white/[0.08] rounded px-2 py-1 text-xs text-zinc-700 dark:text-zinc-300 font-mono"
                   />
                 </div>
               </div>
 
-              <div className="p-3.5 rounded-xl bg-black/30 border border-white/[0.06] space-y-2">
-                <span className="text-xs font-medium text-zinc-400">Color Secundario</span>
+              <div className="p-3.5 rounded-xl bg-black/30 border border-zinc-900/[0.1] dark:border-white/[0.06] space-y-2">
+                <span className="text-xs font-medium text-zinc-600 dark:text-zinc-400">Color Secundario</span>
                 <div className="flex items-center gap-2.5">
                   <input
                     type="color"
@@ -216,13 +216,13 @@ export const BrandKitView: React.FC<BrandKitViewProps> = ({
                     type="text"
                     value={secondaryColor}
                     onChange={(e) => setSecondaryColor(e.target.value)}
-                    className="w-full bg-surface-subtle border border-white/[0.08] rounded px-2 py-1 text-xs text-zinc-300 font-mono"
+                    className="w-full bg-surface-subtle border border-zinc-900/[0.13] dark:border-white/[0.08] rounded px-2 py-1 text-xs text-zinc-700 dark:text-zinc-300 font-mono"
                   />
                 </div>
               </div>
 
-              <div className="p-3.5 rounded-xl bg-black/30 border border-white/[0.06] space-y-2">
-                <span className="text-xs font-medium text-zinc-400">Color Acento</span>
+              <div className="p-3.5 rounded-xl bg-black/30 border border-zinc-900/[0.1] dark:border-white/[0.06] space-y-2">
+                <span className="text-xs font-medium text-zinc-600 dark:text-zinc-400">Color Acento</span>
                 <div className="flex items-center gap-2.5">
                   <input
                     type="color"
@@ -234,7 +234,7 @@ export const BrandKitView: React.FC<BrandKitViewProps> = ({
                     type="text"
                     value={accentColor}
                     onChange={(e) => setAccentColor(e.target.value)}
-                    className="w-full bg-surface-subtle border border-white/[0.08] rounded px-2 py-1 text-xs text-zinc-300 font-mono"
+                    className="w-full bg-surface-subtle border border-zinc-900/[0.13] dark:border-white/[0.08] rounded px-2 py-1 text-xs text-zinc-700 dark:text-zinc-300 font-mono"
                   />
                 </div>
               </div>
@@ -242,14 +242,14 @@ export const BrandKitView: React.FC<BrandKitViewProps> = ({
           </div>
 
           {/* Typography */}
-          <div className="p-5 rounded-2xl bg-surface-subtle border border-white/[0.08] space-y-4">
-            <h3 className="text-sm font-semibold text-zinc-200 flex items-center gap-2">
+          <div className="p-5 rounded-2xl bg-surface-subtle border border-zinc-900/[0.13] dark:border-white/[0.08] space-y-4">
+            <h3 className="text-sm font-semibold text-zinc-900 dark:text-zinc-200 flex items-center gap-2">
               <Type className="w-4 h-4 text-purple-400" strokeWidth={1.5} />
               Tipografía Corporativa
             </h3>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
-                <label className="block text-xs font-medium text-zinc-400 mb-1">
+                <label className="block text-xs font-medium text-zinc-600 dark:text-zinc-400 mb-1">
                   Fuente para Títulos (Heading)
                 </label>
                 <input
@@ -257,12 +257,12 @@ export const BrandKitView: React.FC<BrandKitViewProps> = ({
                   value={fontHeading}
                   onChange={(e) => setFontHeading(e.target.value)}
                   placeholder="p. ej. Plus Jakarta Sans, Outfit, Montserrat"
-                  className="w-full bg-black/40 border border-white/[0.1] rounded-lg px-3 py-2 text-xs text-zinc-200 focus:outline-none focus:border-orange-500"
+                  className="w-full bg-black/40 border border-zinc-900/[0.16] dark:border-white/[0.1] rounded-lg px-3 py-2 text-xs text-zinc-900 dark:text-zinc-200 focus:outline-none focus:border-orange-500"
                 />
               </div>
 
               <div>
-                <label className="block text-xs font-medium text-zinc-400 mb-1">
+                <label className="block text-xs font-medium text-zinc-600 dark:text-zinc-400 mb-1">
                   Fuente para Textos (Body)
                 </label>
                 <input
@@ -270,7 +270,7 @@ export const BrandKitView: React.FC<BrandKitViewProps> = ({
                   value={fontBody}
                   onChange={(e) => setFontBody(e.target.value)}
                   placeholder="p. ej. Inter, Roboto, Open Sans"
-                  className="w-full bg-black/40 border border-white/[0.1] rounded-lg px-3 py-2 text-xs text-zinc-200 focus:outline-none focus:border-orange-500"
+                  className="w-full bg-black/40 border border-zinc-900/[0.16] dark:border-white/[0.1] rounded-lg px-3 py-2 text-xs text-zinc-900 dark:text-zinc-200 focus:outline-none focus:border-orange-500"
                 />
               </div>
             </div>
@@ -288,7 +288,7 @@ export const BrandKitView: React.FC<BrandKitViewProps> = ({
                 value={doGuidelines}
                 onChange={(e) => setDoGuidelines(e.target.value)}
                 placeholder="Principios de comunicación recomendados: usar datos, tono propositivo, historias reales..."
-                className="w-full bg-black/30 border border-emerald-500/20 rounded-lg p-2.5 text-xs text-zinc-200 placeholder:text-zinc-600 focus:outline-none focus:border-emerald-500 resize-none"
+                className="w-full bg-black/30 border border-emerald-500/20 rounded-lg p-2.5 text-xs text-zinc-900 dark:text-zinc-200 placeholder:text-zinc-600 focus:outline-none focus:border-emerald-500 resize-none"
               />
             </div>
 
@@ -302,7 +302,7 @@ export const BrandKitView: React.FC<BrandKitViewProps> = ({
                 value={dontGuidelines}
                 onChange={(e) => setDontGuidelines(e.target.value)}
                 placeholder="Prácticas a evitar: promesas desmedidas, tecnicismos innecesarios, emojis excesivos..."
-                className="w-full bg-black/30 border border-rose-500/20 rounded-lg p-2.5 text-xs text-zinc-200 placeholder:text-zinc-600 focus:outline-none focus:border-rose-500 resize-none"
+                className="w-full bg-black/30 border border-rose-500/20 rounded-lg p-2.5 text-xs text-zinc-900 dark:text-zinc-200 placeholder:text-zinc-600 focus:outline-none focus:border-rose-500 resize-none"
               />
             </div>
           </div>
@@ -311,8 +311,8 @@ export const BrandKitView: React.FC<BrandKitViewProps> = ({
         {/* Right Column: Voice Tone & Values (1 col) */}
         <div className="space-y-6">
           {/* Voice Tone Selector */}
-          <div className="p-5 rounded-2xl bg-surface-subtle border border-white/[0.08] space-y-4">
-            <h3 className="text-sm font-semibold text-zinc-200 flex items-center gap-2">
+          <div className="p-5 rounded-2xl bg-surface-subtle border border-zinc-900/[0.13] dark:border-white/[0.08] space-y-4">
+            <h3 className="text-sm font-semibold text-zinc-900 dark:text-zinc-200 flex items-center gap-2">
               <Volume2 className="w-4 h-4 text-orange-400" strokeWidth={1.5} />
               Tono de Voz Principal
             </h3>
@@ -327,7 +327,7 @@ export const BrandKitView: React.FC<BrandKitViewProps> = ({
                     className={`w-full text-left p-3 rounded-xl border transition-all text-xs ${
                       isSelected
                         ? 'bg-orange-600/15 border-orange-500/40 text-white shadow-sm'
-                        : 'bg-black/30 border-white/[0.06] text-zinc-400 hover:text-zinc-200 hover:border-white/[0.12]'
+                        : 'bg-black/30 border-zinc-900/[0.1] dark:border-white/[0.06] text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-200 hover:border-zinc-900/[0.16] dark:hover:border-white/[0.12]'
                     }`}
                   >
                     <div className="font-semibold flex items-center justify-between">
@@ -342,8 +342,8 @@ export const BrandKitView: React.FC<BrandKitViewProps> = ({
           </div>
 
           {/* Key Values */}
-          <div className="p-5 rounded-2xl bg-surface-subtle border border-white/[0.08] space-y-3">
-            <h3 className="text-sm font-semibold text-zinc-200 flex items-center gap-2">
+          <div className="p-5 rounded-2xl bg-surface-subtle border border-zinc-900/[0.13] dark:border-white/[0.08] space-y-3">
+            <h3 className="text-sm font-semibold text-zinc-900 dark:text-zinc-200 flex items-center gap-2">
               <Sparkles className="w-4 h-4 text-amber-400" strokeWidth={1.5} />
               Valores Clave de Marca
             </h3>
@@ -359,12 +359,12 @@ export const BrandKitView: React.FC<BrandKitViewProps> = ({
                   }
                 }}
                 placeholder="Añadir valor corporativo..."
-                className="flex-1 bg-black/40 border border-white/[0.1] rounded-lg px-2.5 py-1.5 text-xs text-zinc-200 placeholder:text-zinc-600 focus:outline-none focus:border-orange-500"
+                className="flex-1 bg-black/40 border border-zinc-900/[0.16] dark:border-white/[0.1] rounded-lg px-2.5 py-1.5 text-xs text-zinc-900 dark:text-zinc-200 placeholder:text-zinc-600 focus:outline-none focus:border-orange-500"
               />
               <button
                 type="button"
                 onClick={handleAddValue}
-                className="p-1.5 rounded-lg bg-white/[0.08] hover:bg-white/[0.15] text-zinc-300 transition-colors"
+                className="p-1.5 rounded-lg bg-zinc-900/[0.08] dark:bg-white/[0.08] hover:bg-zinc-900/[0.15] dark:hover:bg-white/[0.15] text-zinc-700 dark:text-zinc-300 transition-colors"
                 aria-label="Añadir valor"
               >
                 <Plus className="w-4 h-4" strokeWidth={1.5} />
@@ -375,7 +375,7 @@ export const BrandKitView: React.FC<BrandKitViewProps> = ({
               {keyValues.map((val) => (
                 <span
                   key={val}
-                  className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-white/[0.06] border border-white/[0.08] text-xs text-zinc-300 font-medium"
+                  className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-zinc-900/[0.06] dark:bg-white/[0.06] border border-zinc-900/[0.13] dark:border-white/[0.08] text-xs text-zinc-700 dark:text-zinc-300 font-medium"
                 >
                   {val}
                   <button

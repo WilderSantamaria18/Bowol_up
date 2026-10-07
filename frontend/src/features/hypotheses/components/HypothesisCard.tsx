@@ -23,12 +23,12 @@ interface HypothesisCardProps {
 }
 
 const statusBadgeStyles: Record<HypothesisStatus, string> = {
-  DRAFT: 'bg-zinc-800 text-zinc-400 border-zinc-700',
+  DRAFT: 'bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 border-zinc-300 dark:border-zinc-700',
   READY: 'bg-cyan-500/10 text-cyan-400 border-cyan-500/30',
   RUNNING: 'bg-blue-500/10 text-blue-400 border-blue-500/30',
   VALIDATED: 'bg-emerald-500/10 text-emerald-400 border-emerald-500/30',
   INVALIDATED: 'bg-rose-500/10 text-rose-400 border-rose-500/30',
-  CANCELED: 'bg-zinc-900 text-zinc-500 border-zinc-800',
+  CANCELED: 'bg-zinc-100 dark:bg-zinc-900 text-zinc-500 border-zinc-200 dark:border-zinc-800',
 };
 
 const resultBadgeStyles: Record<HypothesisResult, { label: string; icon: React.ElementType; style: string }> = {
@@ -48,7 +48,7 @@ export const HypothesisCard: React.FC<HypothesisCardProps> = ({
   const resultInfo = hypothesis.result ? resultBadgeStyles[hypothesis.result] : null;
 
   return (
-    <div className="group relative rounded-xl bg-surface-subtle/80 backdrop-blur-md border border-white/[0.08] p-5 hover:border-white/[0.16] transition-all flex flex-col justify-between gap-4">
+    <div className="group relative rounded-xl bg-surface-subtle/80 backdrop-blur-md border border-zinc-900/[0.13] dark:border-white/[0.08] p-5 hover:border-zinc-900/[0.16] dark:hover:border-white/[0.16] transition-all flex flex-col justify-between gap-4">
       {/* Top Header */}
       <div>
         <div className="flex items-center justify-between gap-2 mb-3">
@@ -84,7 +84,7 @@ export const HypothesisCard: React.FC<HypothesisCardProps> = ({
         </div>
 
         {/* Statement */}
-        <p className="text-sm font-medium text-zinc-100 leading-relaxed mb-3">
+        <p className="text-sm font-medium text-zinc-900 dark:text-zinc-100 leading-relaxed mb-3">
           {hypothesis.statement}
         </p>
 
@@ -110,13 +110,13 @@ export const HypothesisCard: React.FC<HypothesisCardProps> = ({
         )}
 
         {/* Details Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5 text-xs bg-white/[0.02] border border-white/[0.04] p-3 rounded-lg">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5 text-xs bg-zinc-900/[0.02] dark:bg-white/[0.02] border border-zinc-900/[0.08] dark:border-white/[0.04] p-3 rounded-lg">
           <div>
             <span className="text-zinc-500 block mb-0.5 flex items-center gap-1 font-mono uppercase tracking-wider text-[10px]">
               <FlaskConical className="w-3 h-3 text-cyan-400" strokeWidth={1.5} />
               Método
             </span>
-            <span className="text-zinc-300 font-medium line-clamp-2">
+            <span className="text-zinc-700 dark:text-zinc-300 font-medium line-clamp-2">
               {hypothesis.validationMethod || 'No especificado'}
             </span>
           </div>
@@ -126,7 +126,7 @@ export const HypothesisCard: React.FC<HypothesisCardProps> = ({
               <Gauge className="w-3 h-3 text-amber-400" strokeWidth={1.5} />
               Métrica
             </span>
-            <span className="text-zinc-300 font-medium line-clamp-2">
+            <span className="text-zinc-700 dark:text-zinc-300 font-medium line-clamp-2">
               {hypothesis.successMetric || 'No especificada'}
             </span>
           </div>
@@ -144,15 +144,15 @@ export const HypothesisCard: React.FC<HypothesisCardProps> = ({
 
         {/* Notes if recorded */}
         {hypothesis.resultNotes && (
-          <div className="mt-3 p-2.5 rounded-lg bg-white/[0.03] border border-white/[0.06] text-xs text-zinc-400">
-            <span className="font-semibold text-zinc-300 block mb-1">Resultados y Aprendizajes:</span>
+          <div className="mt-3 p-2.5 rounded-lg bg-zinc-900/[0.03] dark:bg-white/[0.03] border border-zinc-900/[0.1] dark:border-white/[0.06] text-xs text-zinc-600 dark:text-zinc-400">
+            <span className="font-semibold text-zinc-700 dark:text-zinc-300 block mb-1">Resultados y Aprendizajes:</span>
             {hypothesis.resultNotes}
           </div>
         )}
       </div>
 
       {/* Action Footer */}
-      <div className="pt-3 border-t border-white/[0.06] flex flex-wrap items-center justify-between gap-2">
+      <div className="pt-3 border-t border-zinc-900/[0.1] dark:border-white/[0.06] flex flex-wrap items-center justify-between gap-2">
         <div className="flex items-center gap-2">
           <Button
             variant="secondary"

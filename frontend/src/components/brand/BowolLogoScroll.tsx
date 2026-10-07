@@ -402,7 +402,7 @@ export function BowolLogoScroll() {
         >
           <span className="w-1.5 h-1.5 rounded-full bg-orange-500 animate-pulse" />
           <span>{ctaLabel}</span>
-          <ArrowUpRight className="w-3.5 h-3.5 text-zinc-400" strokeWidth={1.5} />
+          <ArrowUpRight className="w-3.5 h-3.5 text-zinc-600 dark:text-zinc-400" strokeWidth={1.5} />
         </a>
       )}
 

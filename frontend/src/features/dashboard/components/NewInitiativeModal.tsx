@@ -57,7 +57,7 @@ export const NewInitiativeModal: React.FC<NewInitiativeModalProps> = ({ isOpen, 
           </div>
           <button
             onClick={onClose}
-            className="p-1 rounded-lg text-zinc-400 hover:text-zinc-700 dark:hover:text-white hover:bg-zinc-100 dark:hover:bg-white/[0.06] transition-colors"
+            className="p-1 rounded-lg text-zinc-600 dark:text-zinc-400 hover:text-zinc-700 dark:hover:text-white hover:bg-zinc-100 dark:hover:bg-white/[0.06] transition-colors"
           >
             <X className="w-4 h-4" />
           </button>

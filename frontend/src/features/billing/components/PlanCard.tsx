@@ -3,11 +3,10 @@ import { Check, Sparkles, Zap, ShieldCheck } from 'lucide-react';
 import { Card } from '@/components/ui/Card';
 import { Badge } from '@/components/ui/Badge';
 import { Button } from '@/components/ui/Button';
-import { SubscriptionPlan, BillingCycle } from '../types';
+import { SubscriptionPlan } from '../types';
 
 interface PlanCardProps {
   plan: SubscriptionPlan;
-  billingCycle: BillingCycle;
   isCurrent: boolean;
   onSelect: (plan: SubscriptionPlan) => void;
   isLoading?: boolean;
@@ -15,47 +14,22 @@ interface PlanCardProps {
 
 export const PlanCard: React.FC<PlanCardProps> = ({
   plan,
-  billingCycle,
   isCurrent,
   onSelect,
   isLoading = false,
 }) => {
-  const isPro = plan.planKey === 'PRO';
-  const isBusiness = plan.planKey === 'BUSINESS';
+  const isPro = plan.id === 'PRO';
+  const isBusiness = plan.id === 'BUSINESS';
 
-  const price = billingCycle === 'ANNUAL' ? plan.annualPrice : plan.monthlyPrice;
-  const periodLabel = billingCycle === 'ANNUAL' ? '/año' : '/mes';
+  const price = plan.priceUsdMonthly;
+  const isFree = plan.id === 'FREE';
 
-  const features = [
-    {
-      text: `${plan.maxMonthlyCredits.toLocaleString()} créditos de IA al mes`,
-      highlight: true,
-      icon: Zap,
-    },
-    {
-      text: plan.maxProjects === -1 ? 'Proyectos ilimitados' : `Hasta ${plan.maxProjects} proyectos`,
-      highlight: false,
-    },
-    {
-      text: plan.maxSocialProfiles === -1 ? 'Perfiles sociales ilimitados' : `Hasta ${plan.maxSocialProfiles} perfiles sociales`,
-      highlight: false,
-    },
-    {
-      text: plan.unlimitedResearch ? 'Investigación de mercado profunda con IA' : 'Investigación de mercado estándar',
-      highlight: plan.unlimitedResearch,
-    },
-    {
-      text: plan.unlimitedCompetitors ? 'Análisis ilimitado de competidores' : 'Seguimiento básico de competencia',
-      highlight: false,
-    },
-    {
-      text: plan.hasApiAccess ? 'Acceso completo a la API REST' : 'Sin acceso a API',
-      available: plan.hasApiAccess,
-    },
-    {
-      text: plan.hasDedicatedSupport ? 'Soporte prioritario y consultoría' : 'Soporte comunitario estándar',
-      available: plan.hasDedicatedSupport,
-    },
+  // Datos reales del catálogo del backend + lista de características del plan.
+  const features: { text: string; highlight?: boolean; icon?: typeof Zap }[] = [
+    { text: `${plan.aiCreditsMonthly.toLocaleString()} créditos de IA al mes`, highlight: true, icon: Zap },
+    { text: plan.maxProjects < 0 ? 'Proyectos ilimitados' : `Hasta ${plan.maxProjects} proyectos` },
+    { text: plan.maxMembers < 0 ? 'Miembros ilimitados' : `Hasta ${plan.maxMembers} miembros` },
+    ...(plan.features ?? []).map((text) => ({ text })),
   ];
 
   return (
@@ -93,17 +67,12 @@ export const PlanCard: React.FC<PlanCardProps> = ({
         <div className="my-6 pb-6 border-b border-zinc-200 dark:border-zinc-800/80">
           <div className="flex items-baseline gap-1">
             <span className="text-4xl font-extrabold text-zinc-900 dark:text-zinc-100 tracking-tight font-display">
-              ${price}
+              ${price % 1 === 0 ? price : price.toFixed(2)}
             </span>
             <span className="text-sm font-medium text-zinc-500 dark:text-zinc-400">
-              {plan.planKey === 'FREE' ? 'para siempre' : periodLabel}
+              {isFree ? 'para siempre' : '/mes'}
             </span>
           </div>
-          {billingCycle === 'ANNUAL' && plan.planKey !== 'FREE' && (
-            <span className="text-[11px] text-emerald-600 dark:text-emerald-400 font-medium inline-block mt-1">
-              Ahorro de ~15% comparado al plan mensual
-            </span>
-          )}
         </div>
 
         {/* Features Checklist */}
@@ -113,7 +82,7 @@ export const PlanCard: React.FC<PlanCardProps> = ({
           </span>
           <ul className="space-y-2.5">
             {features.map((item, idx) => {
-              const isAvailable = item.available ?? true;
+              const isAvailable = true;
               return (
                 <li
                   key={idx}
@@ -149,7 +118,7 @@ export const PlanCard: React.FC<PlanCardProps> = ({
           onClick={() => onSelect(plan)}
           className={`w-full justify-center ${
             isCurrent
-              ? 'opacity-60 cursor-default border-zinc-200 dark:border-zinc-700 text-zinc-400'
+              ? 'opacity-60 cursor-default border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-400'
               : isPro
               ? 'shadow-lg shadow-orange-500/20'
               : ''

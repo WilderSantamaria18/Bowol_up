@@ -194,4 +194,24 @@ class JwtSecurityEdgeCaseTests {
         mockMvc.perform(get("/api/v1/auth/me"))
                 .andExpect(status().isUnauthorized());
     }
+
+    @Test
+    @DisplayName("Revoked membership invalidates an otherwise valid access token")
+    void removedMember_cannotUsePreviouslyIssuedAccessToken() throws Exception {
+        String accessToken = jwtService.generateAccessToken(
+                testUser,
+                testOrg.getId(),
+                Role.OWNER,
+                Set.of("organization.read")
+        );
+
+        OrganizationMember membership = organizationMemberRepository
+                .findByUserIdAndOrganizationId(testUser.getId(), testOrg.getId())
+                .orElseThrow();
+        organizationMemberRepository.delete(membership);
+
+        mockMvc.perform(get("/api/v1/auth/me")
+                        .header("Authorization", "Bearer " + accessToken))
+                .andExpect(status().isUnauthorized());
+    }
 }

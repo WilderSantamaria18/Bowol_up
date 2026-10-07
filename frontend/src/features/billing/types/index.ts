@@ -1,25 +1,27 @@
+/**
+ * Contrato de facturación alineado con el backend (com.bowol.subscription.dto).
+ * Los planes se identifican por su id de catálogo ('FREE', 'PRO', 'BUSINESS').
+ */
 export type PlanKey = 'FREE' | 'PRO' | 'BUSINESS';
-export type SubscriptionStatus = 'ACTIVE' | 'PAST_DUE' | 'CANCELED' | 'INCOMPLETE' | 'TRIALING';
-export type BillingCycle = 'MONTHLY' | 'ANNUAL';
-export type PaymentGateway = 'STRIPE' | 'MERCADOPAGO' | 'MANUAL';
-export type InvoiceStatus = 'DRAFT' | 'PAID' | 'VOID' | 'UNCOLLECTIBLE';
+export type SubscriptionStatus = 'ACTIVE' | 'PAST_DUE' | 'CANCELED' | 'TRIALING';
+export type PaymentGateway = 'STRIPE' | 'MERCADOPAGO' | 'MOCK_STRIPE';
+export type InvoiceStatus = 'PAID' | 'PENDING' | 'FAILED';
+
+/** Mínimo de créditos por compra que acepta el backend (BuyCreditsRequest). */
+export const MIN_CREDITS_PACK = 500;
+/** Precio por crédito adicional que aplica el backend (USD). */
+export const CREDIT_PRICE_USD = 0.01;
 
 export interface SubscriptionPlan {
   id: string;
-  planKey: PlanKey;
   name: string;
   description: string;
-  monthlyPrice: number;
-  annualPrice: number;
-  currency: string;
-  maxMonthlyCredits: number;
+  priceUsdMonthly: number;
+  aiCreditsMonthly: number;
   maxProjects: number;
-  maxSocialProfiles: number;
-  unlimitedResearch: boolean;
-  unlimitedCompetitors: boolean;
-  hasApiAccess: boolean;
-  hasDedicatedSupport: boolean;
-  active: boolean;
+  maxMembers: number;
+  features: string[];
+  isActive: boolean;
 }
 
 export interface OrganizationSubscription {
@@ -27,39 +29,35 @@ export interface OrganizationSubscription {
   organizationId: string;
   plan: SubscriptionPlan;
   status: SubscriptionStatus;
-  billingCycle: BillingCycle;
   currentPeriodStart: string;
   currentPeriodEnd: string;
+  aiCreditsTotal: number;
+  aiCreditsUsed: number;
+  aiCreditsRemaining: number;
+  usagePercentage: number;
+  paymentGateway?: PaymentGateway | null;
   cancelAtPeriodEnd: boolean;
-  canceledAt?: string | null;
-  creditsBalance: number;
-  creditsUsedThisCycle: number;
-  externalSubscriptionId?: string | null;
+  createdAt: string;
 }
 
 export interface BillingInvoice {
   id: string;
   organizationId: string;
   invoiceNumber: string;
-  amount: number;
-  currency: string;
+  amountUsd: number;
   status: InvoiceStatus;
-  billingReason: string;
-  paymentGateway: PaymentGateway;
-  paidAt?: string | null;
-  invoicePdfUrl?: string | null;
+  planName: string;
+  periodStart?: string | null;
+  periodEnd?: string | null;
+  pdfUrl?: string | null;
   createdAt: string;
 }
 
 export interface UpgradeSubscriptionPayload {
-  planKey: PlanKey;
-  billingCycle: BillingCycle;
+  planId: string;
   paymentGateway?: PaymentGateway;
-  paymentMethodId?: string;
 }
 
 export interface BuyCreditsPayload {
-  packSize: number;
-  paymentGateway?: PaymentGateway;
-  paymentMethodId?: string;
+  credits: number;
 }

@@ -10,7 +10,7 @@ export const SprintBurndownChart: React.FC<SprintBurndownChartProps> = ({ burndo
   const points = burndown.dataPoints || [];
   if (points.length === 0) {
     return (
-      <div className="p-8 text-center text-xs text-zinc-500 rounded-xl bg-surface-subtle border border-white/[0.06]">
+      <div className="p-8 text-center text-xs text-zinc-500 rounded-xl bg-surface-subtle border border-zinc-900/[0.1] dark:border-white/[0.06]">
         No hay datos de burndown disponibles para este sprint.
       </div>
     );
@@ -62,15 +62,15 @@ export const SprintBurndownChart: React.FC<SprintBurndownChartProps> = ({ burndo
     .join(' ');
 
   return (
-    <div className="rounded-xl bg-[#0F0F12] border border-white/[0.08] p-5 shadow-lg space-y-4">
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-white/[0.06]">
+    <div className="rounded-xl bg-white dark:bg-[#0F0F12] border border-zinc-900/[0.13] dark:border-white/[0.08] p-5 shadow-lg space-y-4">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-zinc-900/[0.1] dark:border-white/[0.06]">
         <div>
           <div className="flex items-center gap-2 mb-1">
             <span className="text-[10px] font-mono uppercase tracking-wider text-orange-400">
               Burndown Chart
             </span>
           </div>
-          <h3 className="text-sm font-semibold text-white flex items-center gap-2">
+          <h3 className="text-sm font-semibold text-zinc-900 dark:text-white flex items-center gap-2">
             <TrendingDown className="w-4 h-4 text-cyan-400" strokeWidth={1.5} />
             {burndown.sprintName}
           </h3>
@@ -79,14 +79,14 @@ export const SprintBurndownChart: React.FC<SprintBurndownChartProps> = ({ burndo
         <div className="flex items-center gap-4 text-xs font-mono">
           <div className="flex items-center gap-1.5">
             <span className="w-3 h-0.5 bg-zinc-500 border-b border-dashed border-zinc-400 inline-block" />
-            <span className="text-zinc-400 text-[11px]">Línea Ideal</span>
+            <span className="text-zinc-600 dark:text-zinc-400 text-[11px]">Línea Ideal</span>
           </div>
           <div className="flex items-center gap-1.5">
             <span className="w-3 h-1 bg-cyan-400 rounded-full inline-block" />
             <span className="text-cyan-300 text-[11px]">Horas Restantes</span>
           </div>
-          <div className="text-[11px] text-zinc-400 pl-2 border-l border-white/[0.08]">
-            Restante: <span className="text-white font-bold">{burndown.remainingHours}h</span>
+          <div className="text-[11px] text-zinc-600 dark:text-zinc-400 pl-2 border-l border-zinc-900/[0.13] dark:border-white/[0.08]">
+            Restante: <span className="text-zinc-900 dark:text-white font-bold">{burndown.remainingHours}h</span>
           </div>
         </div>
       </div>

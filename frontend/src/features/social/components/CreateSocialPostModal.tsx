@@ -45,22 +45,22 @@ export const CreateSocialPostModal: React.FC<CreateSocialPostModalProps> = ({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/75 backdrop-blur-md animate-fade-in">
-      <div className="relative w-full max-w-lg rounded-2xl bg-[#0F0F12] border border-white/[0.1] p-6 shadow-2xl">
+      <div className="relative w-full max-w-lg rounded-2xl bg-white dark:bg-[#0F0F12] border border-zinc-900/[0.16] dark:border-white/[0.1] p-6 shadow-2xl">
         {/* Header */}
-        <div className="flex items-center justify-between pb-4 border-b border-white/[0.08]">
+        <div className="flex items-center justify-between pb-4 border-b border-zinc-900/[0.13] dark:border-white/[0.08]">
           <div className="flex items-center gap-2.5">
             <div className="w-8 h-8 rounded-lg bg-orange-600/20 border border-orange-500/40 flex items-center justify-center text-orange-400">
               <Send className="w-4 h-4" strokeWidth={1.5} />
             </div>
             <div>
-              <h2 className="text-base font-semibold text-white">Nueva Publicación</h2>
-              <p className="text-xs text-zinc-400">Redacta una publicación manual para tus canales</p>
+              <h2 className="text-base font-semibold text-zinc-900 dark:text-white">Nueva Publicación</h2>
+              <p className="text-xs text-zinc-600 dark:text-zinc-400">Redacta una publicación manual para tus canales</p>
             </div>
           </div>
 
           <button
             onClick={onClose}
-            className="text-zinc-400 hover:text-white transition-colors p-1"
+            className="text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white transition-colors p-1"
             aria-label="Cerrar modal"
           >
             <X className="w-5 h-5" strokeWidth={1.5} />
@@ -70,13 +70,13 @@ export const CreateSocialPostModal: React.FC<CreateSocialPostModalProps> = ({
         <form onSubmit={handleSubmit} className="mt-5 space-y-4">
           <div className="grid grid-cols-2 gap-3">
             <div>
-              <label className="block text-xs font-medium text-zinc-300 mb-1.5">
+              <label className="block text-xs font-medium text-zinc-700 dark:text-zinc-300 mb-1.5">
                 Canal Destino
               </label>
               <select
                 value={channel}
                 onChange={(e) => setChannel(e.target.value as SocialChannel)}
-                className="w-full bg-surface-subtle border border-white/[0.1] rounded-lg px-3 py-2 text-xs text-zinc-200 focus:outline-none focus:border-orange-500"
+                className="w-full bg-surface-subtle border border-zinc-900/[0.16] dark:border-white/[0.1] rounded-lg px-3 py-2 text-xs text-zinc-900 dark:text-zinc-200 focus:outline-none focus:border-orange-500"
               >
                 <option value="LINKEDIN">LinkedIn</option>
                 <option value="TWITTER_X">Twitter / X</option>
@@ -87,13 +87,13 @@ export const CreateSocialPostModal: React.FC<CreateSocialPostModalProps> = ({
             </div>
 
             <div>
-              <label className="block text-xs font-medium text-zinc-300 mb-1.5">
+              <label className="block text-xs font-medium text-zinc-700 dark:text-zinc-300 mb-1.5">
                 Estado Inicial
               </label>
               <select
                 value={status}
                 onChange={(e) => setStatus(e.target.value as SocialPostStatus)}
-                className="w-full bg-surface-subtle border border-white/[0.1] rounded-lg px-3 py-2 text-xs text-zinc-200 focus:outline-none focus:border-orange-500"
+                className="w-full bg-surface-subtle border border-zinc-900/[0.16] dark:border-white/[0.1] rounded-lg px-3 py-2 text-xs text-zinc-900 dark:text-zinc-200 focus:outline-none focus:border-orange-500"
               >
                 <option value="DRAFT">Borrador</option>
                 <option value="PUBLISHED">Publicado</option>
@@ -102,7 +102,7 @@ export const CreateSocialPostModal: React.FC<CreateSocialPostModalProps> = ({
           </div>
 
           <div>
-            <label className="block text-xs font-medium text-zinc-300 mb-1.5">
+            <label className="block text-xs font-medium text-zinc-700 dark:text-zinc-300 mb-1.5">
               Título o Asunto *
             </label>
             <input
@@ -111,12 +111,12 @@ export const CreateSocialPostModal: React.FC<CreateSocialPostModalProps> = ({
               value={title}
               onChange={(e) => setTitle(e.target.value)}
               placeholder="p. ej. Reflexiones sobre la escalabilidad con IA"
-              className="w-full bg-surface-subtle border border-white/[0.1] rounded-lg px-3 py-2 text-xs text-zinc-200 placeholder:text-zinc-600 focus:outline-none focus:border-orange-500"
+              className="w-full bg-surface-subtle border border-zinc-900/[0.16] dark:border-white/[0.1] rounded-lg px-3 py-2 text-xs text-zinc-900 dark:text-zinc-200 placeholder:text-zinc-600 focus:outline-none focus:border-orange-500"
             />
           </div>
 
           <div>
-            <label className="block text-xs font-medium text-zinc-300 mb-1.5">
+            <label className="block text-xs font-medium text-zinc-700 dark:text-zinc-300 mb-1.5">
               Cuerpo / Copy de la Publicación *
             </label>
             <textarea
@@ -125,12 +125,12 @@ export const CreateSocialPostModal: React.FC<CreateSocialPostModalProps> = ({
               value={content}
               onChange={(e) => setContent(e.target.value)}
               placeholder="Escribe el texto de tu publicación aquí..."
-              className="w-full bg-surface-subtle border border-white/[0.1] rounded-lg p-3 text-xs text-zinc-200 placeholder:text-zinc-600 focus:outline-none focus:border-orange-500 resize-none leading-relaxed"
+              className="w-full bg-surface-subtle border border-zinc-900/[0.16] dark:border-white/[0.1] rounded-lg p-3 text-xs text-zinc-900 dark:text-zinc-200 placeholder:text-zinc-600 focus:outline-none focus:border-orange-500 resize-none leading-relaxed"
             />
           </div>
 
           <div>
-            <label className="block text-xs font-medium text-zinc-300 mb-1.5">
+            <label className="block text-xs font-medium text-zinc-700 dark:text-zinc-300 mb-1.5">
               Hashtags / Tags (separados por coma)
             </label>
             <input
@@ -138,11 +138,11 @@ export const CreateSocialPostModal: React.FC<CreateSocialPostModalProps> = ({
               value={tagsInput}
               onChange={(e) => setTagsInput(e.target.value)}
               placeholder="Innovacion, AI, TechLead, Growth"
-              className="w-full bg-surface-subtle border border-white/[0.1] rounded-lg px-3 py-2 text-xs text-zinc-200 placeholder:text-zinc-600 focus:outline-none focus:border-orange-500"
+              className="w-full bg-surface-subtle border border-zinc-900/[0.16] dark:border-white/[0.1] rounded-lg px-3 py-2 text-xs text-zinc-900 dark:text-zinc-200 placeholder:text-zinc-600 focus:outline-none focus:border-orange-500"
             />
           </div>
 
-          <div className="flex justify-end gap-2.5 pt-3 border-t border-white/[0.08]">
+          <div className="flex justify-end gap-2.5 pt-3 border-t border-zinc-900/[0.13] dark:border-white/[0.08]">
             <Button
               type="button"
               variant="outline"

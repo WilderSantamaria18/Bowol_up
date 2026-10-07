@@ -8,6 +8,7 @@ import org.aspectj.lang.annotation.Before;
 import org.hibernate.Session;
 import org.springframework.stereotype.Component;
 
+import java.sql.PreparedStatement;
 import java.util.UUID;
 
 @Slf4j
@@ -21,6 +22,7 @@ public class TenantFilterAspect {
     @Before("execution(* org.springframework.data.repository.Repository+.*(..))")
     public void enableTenantFilter() {
         UUID tenantId = TenantContext.getTenantId();
+        UUID userId = TenantContext.getUserId();
         if (tenantId != null) {
             try {
                 Session session = entityManager.unwrap(Session.class);
@@ -30,8 +32,18 @@ public class TenantFilterAspect {
 
                     // 2. Seteo de variable de sesión para Row Level Security (RLS) en PostgreSQL
                     session.doWork(connection -> {
-                        try (java.sql.Statement stmt = connection.createStatement()) {
-                            stmt.execute("SET LOCAL app.current_organization_id = '" + tenantId + "'");
+                        try (PreparedStatement statement = connection.prepareStatement(
+                                "SELECT set_config('app.current_organization_id', ?, true)")) {
+                            statement.setString(1, tenantId.toString());
+                            statement.execute();
+
+                            if (userId != null) {
+                                try (PreparedStatement userStatement = connection.prepareStatement(
+                                        "SELECT set_config('app.current_user_id', ?, true)")) {
+                                    userStatement.setString(1, userId.toString());
+                                    userStatement.execute();
+                                }
+                            }
                         } catch (Exception e) {
                             // En entornos de test H2 las variables GUC de Postgres se ignoran limpiamente
                             log.trace("Variable RLS de Postgres no requerida en test H2: {}", e.getMessage());

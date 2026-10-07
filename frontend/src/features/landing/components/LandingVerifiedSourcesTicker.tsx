@@ -1,25 +1,25 @@
 import React from 'react';
 import { 
-  GitBranch, 
+  Calendar, 
+  MessageSquare, 
+  CheckSquare, 
+  Zap, 
   FileText, 
-  Award, 
-  Globe, 
-  Terminal,
-  Cpu,
-  Layers,
-  Database
+  Share2, 
+  Clock, 
+  Grid
 } from 'lucide-react';
 
 export const LandingVerifiedSourcesTicker: React.FC = () => {
   const sources = [
-    { name: 'GitHub Enterprise', icon: GitBranch },
-    { name: 'arXiv Research Papers', icon: FileText },
-    { name: 'Product Hunt API', icon: Award },
-    { name: 'Global Patent Filings', icon: Globe },
-    { name: 'Hacker News Tech', icon: Terminal },
-    { name: 'HuggingFace Hub', icon: Cpu },
-    { name: 'IEEE Xplore', icon: Layers },
-    { name: 'Edgar SEC Filings', icon: Database },
+    { name: 'Google Calendar', icon: Calendar },
+    { name: 'WhatsApp Business', icon: MessageSquare },
+    { name: 'Tableros Kanban', icon: CheckSquare },
+    { name: 'Sprints Semanales', icon: Zap },
+    { name: 'Excel & Hojas de Cálculo', icon: Grid },
+    { name: 'Instagram & Redes', icon: Share2 },
+    { name: 'Documentos & Notas', icon: FileText },
+    { name: 'Recordatorios Inteligentes', icon: Clock },
   ];
 
   // Duplicated list for seamless infinite loop
@@ -33,7 +33,7 @@ export const LandingVerifiedSourcesTicker: React.FC = () => {
 
       <div className="max-w-[1440px] mx-auto px-6 flex flex-col md:flex-row items-center gap-6">
         <p className="text-xs font-mono text-zinc-600 dark:text-zinc-400 uppercase tracking-widest shrink-0 hidden md:block font-semibold">
-          Fuentes verificadas en tiempo real:
+          Canales e integraciones para tu negocio:
         </p>
 
         {/* Marquee Track */}

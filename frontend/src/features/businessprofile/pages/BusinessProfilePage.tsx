@@ -40,10 +40,10 @@ export const BusinessProfilePage: React.FC = () => {
           <Sparkles className="w-7 h-7" strokeWidth={1.5} />
         </div>
         <div className="space-y-2">
-          <h2 className="text-xl font-bold text-zinc-100">
+          <h2 className="text-xl font-bold text-zinc-900 dark:text-zinc-100">
             Perfil Estratégico Pendiente de Configuración
           </h2>
-          <p className="text-xs text-zinc-400">
+          <p className="text-xs text-zinc-600 dark:text-zinc-400">
             Aún no has completado el onboarding de tu organización. Configura el perfil para habilitar recomendaciones de IA personalizadas.
           </p>
         </div>

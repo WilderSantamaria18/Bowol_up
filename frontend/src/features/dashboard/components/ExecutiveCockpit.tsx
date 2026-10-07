@@ -39,7 +39,7 @@ export const ExecutiveCockpit: React.FC = () => {
     return (
       <div className="py-24 flex flex-col items-center justify-center space-y-4 text-center">
         <div className="w-10 h-10 border-2 border-orange-500 border-t-transparent rounded-full animate-spin" />
-        <p className="text-zinc-400 text-sm animate-pulse">Cargando Visión Estratégica...</p>
+        <p className="text-zinc-600 dark:text-zinc-400 text-sm animate-pulse">Cargando Visión Estratégica...</p>
       </div>
     );
   }

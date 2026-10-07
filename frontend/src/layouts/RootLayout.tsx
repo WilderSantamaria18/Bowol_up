@@ -29,6 +29,7 @@ import { BrandLogo } from '@/components/ui/BrandLogo';
 import { ThemeToggle } from '@/components/ui/ThemeToggle';
 import { NavDropdown, NavDropdownItem } from './NavDropdown';
 import { MobileNavDrawer } from './MobileNavDrawer';
+import { AppSidebar, SIDEBAR_WIDTH, useSidebarCollapsed } from './AppSidebar';
 import { CommandPalette } from '@/components/layout/CommandPalette';
 import { useAuth } from '@/features/auth/context/AuthContext';
 import { useCopilot } from '@/features/copilot/context/CopilotContext';
@@ -41,6 +42,8 @@ export const RootLayout: React.FC = () => {
   const { openCopilot } = useCopilot();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isCommandPaletteOpen, setIsCommandPaletteOpen] = useState(false);
+  const [sidebarCollapsed, setSidebarCollapsed] = useSidebarCollapsed();
+  const sidebarOffset = (sidebarCollapsed ? SIDEBAR_WIDTH.collapsed : SIDEBAR_WIDTH.expanded) + 24;
 
   // Global shortcut: Cmd+K / Ctrl+K
   React.useEffect(() => {
@@ -150,9 +153,25 @@ export const RootLayout: React.FC = () => {
   ];
 
   return (
-    <div className="min-h-screen flex flex-col bg-slate-100 dark:bg-[#09090B] text-zinc-900 dark:text-zinc-100 transition-colors duration-200">
+    <div
+      className={`min-h-screen flex flex-col bg-slate-100 dark:bg-[#09090B] text-zinc-900 dark:text-zinc-100 transition-colors duration-200 ${isAuthenticated ? 'ios-canvas' : ''}`}
+      style={isAuthenticated ? ({ '--app-sidebar-offset': `${sidebarOffset}px` } as React.CSSProperties) : undefined}
+    >
+      {/* Sidebar de escritorio (autenticado) */}
+      {isAuthenticated && (
+        <AppSidebar
+          collapsed={sidebarCollapsed}
+          onToggleCollapsed={() => setSidebarCollapsed(!sidebarCollapsed)}
+          userName={user?.name}
+          organizationName={organization?.name}
+          onOpenCommandPalette={() => setIsCommandPaletteOpen(true)}
+          onOpenAssistant={() => openCopilot({ contextType: 'GENERAL' })}
+          onLogout={() => logout()}
+        />
+      )}
+
       {/* Header with Liquid Glass styling */}
-      <header className="sticky top-0 z-40 liquid-glass border-b border-zinc-200/80 dark:border-white/[0.08]">
+      <header className={`sticky top-0 z-40 liquid-glass border-b border-zinc-200/80 dark:border-white/[0.08] ${isAuthenticated ? 'lg:hidden' : ''}`}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
           <div className="flex items-center gap-6">
             {/* Minimalist Logo */}
@@ -347,13 +366,21 @@ export const RootLayout: React.FC = () => {
 
       {/* Main Content */}
       <main
-        className={`flex-1 w-full ${
+        className={`flex-1 w-full transition-[padding] duration-300 ${
           location.pathname === '/' && !isAuthenticated
             ? 'p-0 max-w-none'
-            : 'max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8'
+            : isAuthenticated
+              ? 'lg:pl-[var(--app-sidebar-offset)] lg:pr-3'
+              : 'max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8'
         }`}
       >
-        <Outlet />
+        {isAuthenticated ? (
+          <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-6 lg:py-8">
+            <Outlet />
+          </div>
+        ) : (
+          <Outlet />
+        )}
       </main>
 
       {/* Strategic Copilot Drawer & Global Floating Trigger */}
@@ -377,7 +404,11 @@ export const RootLayout: React.FC = () => {
 
       {/* Footer only when not in landing mode (landing has its own rich footer) */}
       {(location.pathname !== '/' || isAuthenticated) && (
-        <footer className="border-t border-zinc-200 dark:border-white/[0.06] bg-white/70 dark:bg-zinc-950/40 py-8 text-center text-xs text-zinc-600 dark:text-zinc-400">
+        <footer
+          className={`border-t border-zinc-200 dark:border-white/[0.06] bg-white/70 dark:bg-zinc-950/40 py-8 text-center text-xs text-zinc-600 dark:text-zinc-400 ${
+            isAuthenticated ? 'lg:pl-[var(--app-sidebar-offset)]' : ''
+          }`}
+        >
           <div className="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-4">
             <div className="flex items-center gap-2">
               <BrandLogo size="sm" asLink to="/" />

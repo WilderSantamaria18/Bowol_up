@@ -10,6 +10,7 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -23,8 +24,9 @@ public class SwotController {
     private final SwotAnalysisService swotAnalysisService;
 
     @PostMapping("/generate")
+    @PreAuthorize("hasAuthority('swot.create')")
     public ResponseEntity<SwotAnalysisResponse> generateSwot(
-            @RequestBody(required = false) GenerateSwotRequest request,
+            @Valid @RequestBody(required = false) GenerateSwotRequest request,
             @AuthenticationPrincipal UserPrincipal principal) {
         GenerateSwotRequest req = request != null ? request : new GenerateSwotRequest();
         SwotAnalysisResponse response = swotAnalysisService.generateSwot(principal, req);
@@ -32,6 +34,7 @@ public class SwotController {
     }
 
     @GetMapping("/latest")
+    @PreAuthorize("hasAuthority('swot.read')")
     public ResponseEntity<SwotAnalysisResponse> getLatestSwot(
             @AuthenticationPrincipal UserPrincipal principal) {
         SwotAnalysisResponse response = swotAnalysisService.getLatestSwot(principal);
@@ -39,6 +42,7 @@ public class SwotController {
     }
 
     @GetMapping
+    @PreAuthorize("hasAuthority('swot.read')")
     public ResponseEntity<PageResponse<SwotAnalysisResponse>> getAllSwots(
             @PageableDefault(size = 10) Pageable pageable,
             @AuthenticationPrincipal UserPrincipal principal) {
@@ -47,6 +51,7 @@ public class SwotController {
     }
 
     @GetMapping("/{id}")
+    @PreAuthorize("hasAuthority('swot.read')")
     public ResponseEntity<SwotAnalysisResponse> getSwotById(
             @PathVariable UUID id,
             @AuthenticationPrincipal UserPrincipal principal) {
@@ -55,6 +60,7 @@ public class SwotController {
     }
 
     @PatchMapping("/{id}")
+    @PreAuthorize("hasAuthority('swot.update')")
     public ResponseEntity<SwotAnalysisResponse> updateSwot(
             @PathVariable UUID id,
             @RequestBody UpdateSwotRequest request,
@@ -64,6 +70,7 @@ public class SwotController {
     }
 
     @PostMapping("/{id}/items")
+    @PreAuthorize("hasAuthority('swot.update')")
     public ResponseEntity<SwotAnalysisResponse> addItem(
             @PathVariable UUID id,
             @Valid @RequestBody AddSwotItemRequest request,
@@ -73,6 +80,7 @@ public class SwotController {
     }
 
     @DeleteMapping("/{id}/items/{itemId}")
+    @PreAuthorize("hasAuthority('swot.update')")
     public ResponseEntity<SwotAnalysisResponse> removeItem(
             @PathVariable UUID id,
             @PathVariable String itemId,
@@ -82,6 +90,7 @@ public class SwotController {
     }
 
     @PatchMapping("/{id}/items/{itemId}/status")
+    @PreAuthorize("hasAuthority('swot.update')")
     public ResponseEntity<SwotAnalysisResponse> updateItemStatus(
             @PathVariable UUID id,
             @PathVariable String itemId,
@@ -92,6 +101,7 @@ public class SwotController {
     }
 
     @GetMapping("/{id}/evidence")
+    @PreAuthorize("hasAuthority('swot.read')")
     public ResponseEntity<List<EvidenceRefResponse>> getEvidence(
             @PathVariable UUID id,
             @AuthenticationPrincipal UserPrincipal principal) {
@@ -100,6 +110,7 @@ public class SwotController {
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasAuthority('swot.delete')")
     public ResponseEntity<Void> deleteSwot(
             @PathVariable UUID id,
             @AuthenticationPrincipal UserPrincipal principal) {

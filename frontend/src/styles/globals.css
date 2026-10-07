@@ -3,7 +3,22 @@
 @tailwind utilities;
 
 :root {
+  /* Altura real del header sticky (RootLayout: h-16). Referencia del carril del logo. */
+  --bowol-header-h: 4rem;
+  /* Acento de marca (regla 60-30-10): naranja 600 sobre claro para contraste AA. */
+  --bowol-accent: #ea580c;
+  --bowol-flame-top: #fb923c;
+  --bowol-flame-bottom: #c2410c;
+  --bowol-flame-core: #fff7ed;
+  --bowol-engine-glow: 0.14;
   color-scheme: light dark;
+}
+
+html.dark {
+  --bowol-accent: #f97316;
+  --bowol-flame-top: #fed7aa;
+  --bowol-flame-bottom: #ea580c;
+  --bowol-engine-glow: 0.4;
 }
 
 html.light,
@@ -152,6 +167,25 @@ html:not(.dark) .liquid-pill {
   border-color: rgba(249, 115, 22, 0.3);
   transform: translateY(-2px);
   box-shadow: 0 16px 32px -10px rgba(0, 0, 0, 0.6);
+}
+
+/* Variantes claras de los paneles de cristal (modo oscuro es el predeterminado) */
+html:not(.dark) .glass-panel {
+  background: rgba(255, 255, 255, 0.86);
+  border: 1px solid rgba(9, 9, 11, 0.08);
+  box-shadow: 0 1px 2px rgba(9, 9, 11, 0.05), inset 0 1px 0 rgba(255, 255, 255, 0.9);
+}
+
+html:not(.dark) .glass-card {
+  background: rgba(255, 255, 255, 0.9);
+  border: 1px solid rgba(9, 9, 11, 0.08);
+  box-shadow: 0 1px 2px rgba(9, 9, 11, 0.04);
+}
+
+html:not(.dark) .glass-card-hover:hover {
+  background: #ffffff;
+  border-color: rgba(234, 88, 12, 0.35);
+  box-shadow: 0 14px 28px -12px rgba(9, 9, 11, 0.16);
 }
 
 /* Glowing background ambient spots */
@@ -324,3 +358,127 @@ html:not(.dark) .liquid-floating {
 }
 
 
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   Sistema iOS · Liquid Glass
+   Superficies translúcidas con desenfoque, brillo interior de 1 px y sombras suaves.
+   Los módulos usan estas clases a través de los componentes de components/ui.
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+/* Lienzo: luz ambiental muy tenue detrás de las superficies de cristal (sin ella el desenfoque no se aprecia). */
+.ios-canvas {
+  position: relative;
+  isolation: isolate;
+}
+
+.ios-canvas::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    radial-gradient(60rem 38rem at 6% -8%, rgba(249, 115, 22, 0.13), transparent 62%),
+    radial-gradient(50rem 40rem at 104% 6%, rgba(59, 130, 246, 0.11), transparent 58%),
+    radial-gradient(44rem 30rem at 52% 112%, rgba(168, 85, 247, 0.09), transparent 62%);
+}
+
+html.dark .ios-canvas::before {
+  background:
+    radial-gradient(60rem 38rem at 6% -8%, rgba(249, 115, 22, 0.16), transparent 62%),
+    radial-gradient(50rem 40rem at 104% 6%, rgba(59, 130, 246, 0.13), transparent 58%),
+    radial-gradient(44rem 30rem at 52% 112%, rgba(168, 85, 247, 0.12), transparent 62%);
+}
+
+/* Superficie principal (sidebar, barras, paneles flotantes). */
+.ios-glass {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.78), rgba(255, 255, 255, 0.58));
+  backdrop-filter: blur(28px) saturate(190%);
+  -webkit-backdrop-filter: blur(28px) saturate(190%);
+  border: 1px solid rgba(255, 255, 255, 0.7);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.95),
+    0 0 0 0.5px rgba(9, 9, 11, 0.06),
+    0 10px 40px -12px rgba(9, 9, 11, 0.16);
+}
+
+html.dark .ios-glass {
+  background: linear-gradient(180deg, rgba(46, 46, 54, 0.58), rgba(22, 22, 28, 0.52));
+  border-color: rgba(255, 255, 255, 0.1);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.1),
+    0 0 0 0.5px rgba(0, 0, 0, 0.6),
+    0 18px 50px -14px rgba(0, 0, 0, 0.65);
+}
+
+/* Tarjetas y celdas de contenido: más ligeras que el sidebar. */
+.ios-card {
+  background: rgba(255, 255, 255, 0.72);
+  backdrop-filter: blur(20px) saturate(170%);
+  -webkit-backdrop-filter: blur(20px) saturate(170%);
+  border: 1px solid rgba(255, 255, 255, 0.75);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.9),
+    0 0 0 0.5px rgba(9, 9, 11, 0.06),
+    0 4px 18px -8px rgba(9, 9, 11, 0.12);
+}
+
+html.dark .ios-card {
+  background: rgba(38, 38, 46, 0.5);
+  border-color: rgba(255, 255, 255, 0.08);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.07),
+    0 0 0 0.5px rgba(0, 0, 0, 0.55),
+    0 8px 26px -10px rgba(0, 0, 0, 0.55);
+}
+
+/* Baldosa de icono estilo Ajustes de iOS: degradado vivo + brillo superior. */
+.ios-tile {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  border-radius: 10px;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.38),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.14),
+    0 1px 2px rgba(0, 0, 0, 0.2);
+}
+
+.ios-tile-orange { background: linear-gradient(160deg, #fb923c, #ea580c); }
+.ios-tile-amber { background: linear-gradient(160deg, #fbbf24, #d97706); }
+.ios-tile-emerald { background: linear-gradient(160deg, #34d399, #059669); }
+.ios-tile-blue { background: linear-gradient(160deg, #60a5fa, #2563eb); }
+.ios-tile-sky { background: linear-gradient(160deg, #38bdf8, #0284c7); }
+.ios-tile-violet { background: linear-gradient(160deg, #a78bfa, #7c3aed); }
+.ios-tile-rose { background: linear-gradient(160deg, #fb7185, #e11d48); }
+.ios-tile-cyan { background: linear-gradient(160deg, #22d3ee, #0891b2); }
+.ios-tile-indigo { background: linear-gradient(160deg, #818cf8, #4f46e5); }
+.ios-tile-zinc { background: linear-gradient(160deg, #a1a1aa, #52525b); }
+
+/* Fondo de las hojas modales: cristal más denso para mantener el texto legible. */
+.ios-sheet {
+  background: rgba(255, 255, 255, 0.86);
+  backdrop-filter: blur(32px) saturate(180%);
+  -webkit-backdrop-filter: blur(32px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.8);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 1),
+    0 0 0 0.5px rgba(9, 9, 11, 0.08),
+    0 30px 80px -20px rgba(9, 9, 11, 0.35);
+}
+
+html.dark .ios-sheet {
+  background: rgba(28, 28, 34, 0.82);
+  border-color: rgba(255, 255, 255, 0.1);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.09),
+    0 0 0 0.5px rgba(0, 0, 0, 0.7),
+    0 30px 90px -20px rgba(0, 0, 0, 0.8);
+}
+
+/* Movimiento reducido: sin transiciones decorativas en las superficies. */
+@media (prefers-reduced-motion: reduce) {
+  .ios-glass, .ios-card, .ios-sheet, .ios-tile { transition: none !important; }
+}

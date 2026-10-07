@@ -33,7 +33,7 @@ export const ExperimentCard: React.FC<ExperimentCardProps> = ({
   onDelete,
 }) => {
   return (
-    <div className="group relative rounded-xl bg-surface-subtle/80 backdrop-blur-md border border-white/[0.08] p-5 hover:border-white/[0.16] transition-all flex flex-col justify-between gap-4">
+    <div className="group relative rounded-xl bg-surface-subtle/80 backdrop-blur-md border border-zinc-900/[0.13] dark:border-white/[0.08] p-5 hover:border-zinc-900/[0.16] dark:hover:border-white/[0.16] transition-all flex flex-col justify-between gap-4">
       <div>
         <div className="flex items-center justify-between gap-2 mb-2">
           <div className="flex items-center gap-2 flex-wrap">
@@ -46,7 +46,7 @@ export const ExperimentCard: React.FC<ExperimentCardProps> = ({
             </span>
 
             {experiment.ownerName && (
-              <span className="inline-flex items-center gap-1 text-[11px] text-zinc-400 px-2 py-0.5 rounded bg-white/[0.02] border border-white/[0.04]">
+              <span className="inline-flex items-center gap-1 text-[11px] text-zinc-600 dark:text-zinc-400 px-2 py-0.5 rounded bg-zinc-900/[0.02] dark:bg-white/[0.02] border border-zinc-900/[0.08] dark:border-white/[0.04]">
                 <User className="w-2.5 h-2.5 text-orange-400" strokeWidth={1.5} />
                 <span>{experiment.ownerName}</span>
               </span>
@@ -70,24 +70,24 @@ export const ExperimentCard: React.FC<ExperimentCardProps> = ({
           </button>
         </div>
 
-        <h3 className="text-sm font-semibold text-zinc-100 mb-1.5">{experiment.name}</h3>
+        <h3 className="text-sm font-semibold text-zinc-900 dark:text-zinc-100 mb-1.5">{experiment.name}</h3>
 
         {experiment.description && (
-          <p className="text-xs text-zinc-400 mb-3 line-clamp-2">{experiment.description}</p>
+          <p className="text-xs text-zinc-600 dark:text-zinc-400 mb-3 line-clamp-2">{experiment.description}</p>
         )}
 
-        <div className="grid grid-cols-2 gap-2 text-xs bg-white/[0.02] border border-white/[0.04] p-2.5 rounded-lg mb-3">
+        <div className="grid grid-cols-2 gap-2 text-xs bg-zinc-900/[0.02] dark:bg-white/[0.02] border border-zinc-900/[0.08] dark:border-white/[0.04] p-2.5 rounded-lg mb-3">
           <div>
             <span className="text-zinc-500 block text-[10px] uppercase font-mono">Método</span>
-            <span className="text-zinc-300 font-medium truncate block">
+            <span className="text-zinc-700 dark:text-zinc-300 font-medium truncate block">
               {experiment.method || 'No especificado'}
             </span>
           </div>
 
           <div>
             <span className="text-zinc-500 block text-[10px] uppercase font-mono">Período</span>
-            <span className="text-zinc-300 font-medium truncate flex items-center gap-1 text-[11px]">
-              <Calendar className="w-3 h-3 text-zinc-400" strokeWidth={1.5} />
+            <span className="text-zinc-700 dark:text-zinc-300 font-medium truncate flex items-center gap-1 text-[11px]">
+              <Calendar className="w-3 h-3 text-zinc-600 dark:text-zinc-400" strokeWidth={1.5} />
               {experiment.startDate || 'TBD'} - {experiment.endDate || 'TBD'}
             </span>
           </div>
@@ -97,17 +97,17 @@ export const ExperimentCard: React.FC<ExperimentCardProps> = ({
         {(experiment.resultMetric || experiment.targetMetric) && (
           <div className="p-2.5 rounded-lg bg-cyan-500/5 border border-cyan-500/20 text-xs space-y-1 mb-2">
             {experiment.targetMetric && (
-              <div className="flex items-center justify-between text-zinc-400 text-[11px]">
+              <div className="flex items-center justify-between text-zinc-600 dark:text-zinc-400 text-[11px]">
                 <span className="flex items-center gap-1">
                   <Target className="w-3 h-3 text-sky-400" strokeWidth={1.5} />
                   Meta:
                 </span>
-                <span className="text-zinc-200 font-medium">{experiment.targetMetric}</span>
+                <span className="text-zinc-900 dark:text-zinc-200 font-medium">{experiment.targetMetric}</span>
               </div>
             )}
             {experiment.resultMetric && (
               <div className="flex items-center justify-between text-cyan-300">
-                <span className="text-zinc-400">Resultado:</span>
+                <span className="text-zinc-600 dark:text-zinc-400">Resultado:</span>
                 <span className="font-semibold">
                   {experiment.resultMetric} {experiment.resultValue && `(${experiment.resultValue})`}
                 </span>
@@ -118,7 +118,7 @@ export const ExperimentCard: React.FC<ExperimentCardProps> = ({
 
         {/* Evidence Notes */}
         {experiment.evidenceNotes && (
-          <div className="p-2 rounded bg-white/[0.02] border border-white/[0.04] text-[11px] text-zinc-400 flex items-start gap-1.5 mb-2">
+          <div className="p-2 rounded bg-zinc-900/[0.02] dark:bg-white/[0.02] border border-zinc-900/[0.08] dark:border-white/[0.04] text-[11px] text-zinc-600 dark:text-zinc-400 flex items-start gap-1.5 mb-2">
             <FileText className="w-3 h-3 text-zinc-500 mt-0.5 shrink-0" strokeWidth={1.5} />
             <span className="line-clamp-2">{experiment.evidenceNotes}</span>
           </div>
@@ -126,14 +126,14 @@ export const ExperimentCard: React.FC<ExperimentCardProps> = ({
 
         {/* Conclusion */}
         {experiment.conclusion && (
-          <div className="p-2.5 rounded-lg bg-emerald-500/5 border border-emerald-500/20 text-xs text-zinc-300">
+          <div className="p-2.5 rounded-lg bg-emerald-500/5 border border-emerald-500/20 text-xs text-zinc-700 dark:text-zinc-300">
             <span className="text-emerald-400 font-semibold block mb-0.5">Conclusión:</span>
-            <p className="text-zinc-300 leading-relaxed">{experiment.conclusion}</p>
+            <p className="text-zinc-700 dark:text-zinc-300 leading-relaxed">{experiment.conclusion}</p>
           </div>
         )}
       </div>
 
-      <div className="pt-3 border-t border-white/[0.06] flex items-center justify-between gap-2">
+      <div className="pt-3 border-t border-zinc-900/[0.1] dark:border-white/[0.06] flex items-center justify-between gap-2">
         {experiment.status === 'PLANNED' && (
           <Button
             variant="secondary"

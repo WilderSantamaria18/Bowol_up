@@ -39,28 +39,28 @@ export const TrendFilters: React.FC<TrendFiltersProps> = ({
       {/* Top row: search + min score + sync */}
       <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3">
         <div className="relative flex-1">
-          <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-zinc-400" strokeWidth={1.5} />
+          <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-zinc-600 dark:text-zinc-400" strokeWidth={1.5} />
           <Input
             value={query}
             onChange={(e) => onQueryChange(e.target.value)}
             placeholder="Buscar por tecnología, palabras clave, modelos..."
-            className="pl-10 text-xs h-10 bg-white/[0.03] border-white/[0.08] focus:border-orange-500/50"
+            className="pl-10 text-xs h-10 bg-zinc-900/[0.03] dark:bg-white/[0.03] border-zinc-900/[0.13] dark:border-white/[0.08] focus:border-orange-500/50"
           />
         </div>
 
         <div className="flex items-center gap-2">
           {/* Min Score filter */}
-          <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white/[0.03] border border-white/[0.08] text-xs text-zinc-300">
-            <Filter className="w-3.5 h-3.5 text-zinc-400" strokeWidth={1.5} />
+          <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-zinc-900/[0.03] dark:bg-white/[0.03] border border-zinc-900/[0.13] dark:border-white/[0.08] text-xs text-zinc-700 dark:text-zinc-300">
+            <Filter className="w-3.5 h-3.5 text-zinc-600 dark:text-zinc-400" strokeWidth={1.5} />
             <select
               value={minScore || ''}
               onChange={(e) => onMinScoreChange(e.target.value ? Number(e.target.value) : undefined)}
-              className="bg-transparent border-none text-xs text-zinc-200 focus:outline-none cursor-pointer"
+              className="bg-transparent border-none text-xs text-zinc-900 dark:text-zinc-200 focus:outline-none cursor-pointer"
               aria-label="Filtro de puntuación mínima"
             >
-              <option value="" className="bg-zinc-900 text-zinc-300">Cualquier Score</option>
-              <option value="70" className="bg-zinc-900 text-zinc-300">Score &gt;= 70 (Alta tracción)</option>
-              <option value="85" className="bg-zinc-900 text-zinc-300">Score &gt;= 85 (Viral / Crítico)</option>
+              <option value="" className="bg-zinc-100 dark:bg-zinc-900 text-zinc-700 dark:text-zinc-300">Cualquier Score</option>
+              <option value="70" className="bg-zinc-100 dark:bg-zinc-900 text-zinc-700 dark:text-zinc-300">Score &gt;= 70 (Alta tracción)</option>
+              <option value="85" className="bg-zinc-100 dark:bg-zinc-900 text-zinc-700 dark:text-zinc-300">Score &gt;= 85 (Viral / Crítico)</option>
             </select>
           </div>
 
@@ -90,8 +90,8 @@ export const TrendFilters: React.FC<TrendFiltersProps> = ({
               onClick={() => onSourceChange(s.code)}
               className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-medium transition-all whitespace-nowrap ${
                 isSelected
-                  ? 'bg-orange-500/20 text-orange-300 border border-orange-500/40 shadow-sm shadow-orange-500/10'
-                  : 'bg-white/[0.02] text-zinc-400 border border-white/[0.06] hover:text-zinc-200 hover:bg-white/[0.05]'
+                  ? 'bg-orange-500/20 text-orange-700 dark:text-orange-300 border border-orange-500/40 shadow-sm shadow-orange-500/10'
+                  : 'bg-zinc-900/[0.02] dark:bg-white/[0.02] text-zinc-600 dark:text-zinc-400 border border-zinc-900/[0.1] dark:border-white/[0.06] hover:text-zinc-900 dark:hover:text-zinc-200 hover:bg-zinc-900/[0.05] dark:hover:bg-white/[0.05]'
               }`}
             >
               {s.icon}

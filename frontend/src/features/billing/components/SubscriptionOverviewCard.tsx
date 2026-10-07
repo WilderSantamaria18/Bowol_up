@@ -20,11 +20,9 @@ export const SubscriptionOverviewCard: React.FC<SubscriptionOverviewCardProps> =
   onCancelClick,
   isCancelling = false,
 }) => {
-  const { plan, status, billingCycle, creditsBalance, creditsUsedThisCycle, currentPeriodEnd, cancelAtPeriodEnd } =
-    subscription;
+  const { plan, status, aiCreditsRemaining, aiCreditsUsed, currentPeriodEnd, cancelAtPeriodEnd } = subscription;
 
-  const totalCredits = creditsBalance + creditsUsedThisCycle;
-  const usagePercentage = totalCredits > 0 ? Math.min(100, Math.round((creditsUsedThisCycle / totalCredits) * 100)) : 0;
+  const usagePercentage = Math.min(100, Math.round(subscription.usagePercentage ?? 0));
   const isNearLimit = usagePercentage >= 80;
 
   const formatDate = (isoString?: string) => {
@@ -54,16 +52,13 @@ export const SubscriptionOverviewCard: React.FC<SubscriptionOverviewCardProps> =
               <Badge variant={status === 'ACTIVE' ? 'success' : 'warning'}>
                 {status === 'ACTIVE' ? 'Activo' : status}
               </Badge>
-              <Badge variant="brand">
-                {billingCycle === 'ANNUAL' ? 'Anual' : 'Mensual'}
-              </Badge>
             </div>
           </div>
 
           <div>
             <h3 className="text-2xl font-bold text-zinc-900 dark:text-zinc-100 tracking-tight flex items-center gap-2 font-display">
               {plan.name}
-              {plan.planKey !== 'FREE' && (
+              {plan.id !== 'FREE' && (
                 <Sparkles className="w-5 h-5 text-amber-500 dark:text-amber-400 animate-pulse" strokeWidth={1.5} />
               )}
             </h3>
@@ -94,7 +89,7 @@ export const SubscriptionOverviewCard: React.FC<SubscriptionOverviewCardProps> =
               Créditos de Inteligencia Artificial
             </span>
             <span className="text-xs font-medium text-zinc-700 dark:text-zinc-300">
-              {creditsBalance} disponibles
+              {aiCreditsRemaining} disponibles
             </span>
           </div>
 
@@ -109,7 +104,7 @@ export const SubscriptionOverviewCard: React.FC<SubscriptionOverviewCardProps> =
               />
             </div>
             <div className="flex justify-between text-xs text-zinc-500 dark:text-zinc-400">
-              <span>{creditsUsedThisCycle} usados en este ciclo</span>
+              <span>{aiCreditsUsed} usados en este ciclo</span>
               <span className={isNearLimit ? 'text-rose-500 dark:text-rose-400 font-semibold' : 'text-zinc-500 dark:text-zinc-400'}>
                 {usagePercentage}% consumido
               </span>
@@ -130,7 +125,7 @@ export const SubscriptionOverviewCard: React.FC<SubscriptionOverviewCardProps> =
             className="w-full justify-center shadow-lg shadow-orange-500/10"
           >
             <Sparkles className="w-4 h-4 mr-2" strokeWidth={1.5} />
-            {plan.planKey === 'BUSINESS' ? 'Gestionar Plan' : 'Mejorar a Pro / Business'}
+            {plan.id === 'BUSINESS' ? 'Gestionar Plan' : 'Mejorar a Pro / Business'}
             <ArrowUpRight className="w-4 h-4 ml-1" strokeWidth={1.5} />
           </Button>
 
@@ -143,7 +138,7 @@ export const SubscriptionOverviewCard: React.FC<SubscriptionOverviewCardProps> =
             Comprar Paquete de Créditos
           </Button>
 
-          {!cancelAtPeriodEnd && plan.planKey !== 'FREE' && (
+          {!cancelAtPeriodEnd && plan.id !== 'FREE' && (
             <button
               type="button"
               disabled={isCancelling}

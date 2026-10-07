@@ -5,33 +5,32 @@ import { AnimatedCounter } from './AnimatedCounter';
 export const LandingImpactNumbers: React.FC = () => {
   const metrics = [
     {
-      valueComponent: <AnimatedCounter to={28} suffix="+" duration={1.6} />,
-      label: 'Fuentes globales monitoreadas en tiempo continuo.',
+      valueComponent: <AnimatedCounter to={85} suffix="%" duration={1.6} />,
+      label: 'Ahorro de tiempo semanal en coordinación y armado de planes.',
       accent: true,
     },
     {
       valueComponent: (
         <span className="flex items-baseline">
-          <AnimatedCounter to={14} duration={1.8} />
-          <span className="text-2xl sm:text-4xl font-semibold ml-2">Días</span>
+          <AnimatedCounter to={3} suffix="x" duration={1.8} />
         </span>
       ),
-      label: 'Tiempo promedio de detección de señal a inicio de sprint.',
+      label: 'Mayor tasa de cumplimiento de metas y tareas a tiempo.',
       accent: false,
     },
     {
       valueComponent: <AnimatedCounter to={100} suffix="%" duration={2.0} />,
-      label: 'Trazabilidad con fuentes originales y evidencia.',
+      label: 'Visibilidad del avance de tu equipo en un solo lugar.',
       accent: false,
     },
     {
       valueComponent: (
         <span className="flex items-baseline">
-          <span>1</span>
-          <span className="text-2xl sm:text-4xl font-semibold ml-2">Solo</span>
+          <AnimatedCounter to={3} duration={1.5} />
+          <span className="text-2xl sm:text-4xl font-semibold ml-2">Seg</span>
         </span>
       ),
-      label: 'Ciclo unificado para dirección, estrategia y desarrollo.',
+      label: 'Para convertir cualquier objetivo en un plan ejecutable con IA.',
       accent: false,
     },
   ];

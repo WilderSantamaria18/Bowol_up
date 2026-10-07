@@ -59,7 +59,7 @@ export const ExecutiveDailyBriefing: React.FC<ExecutiveDailyBriefingProps> = ({
 
   return (
     <>
-      <div className="relative overflow-hidden rounded-3xl bg-gradient-to-r from-zinc-900/90 via-zinc-900/80 to-zinc-950 p-6 sm:p-7 border border-zinc-200/90 dark:border-white/[0.08] shadow-lg dark:shadow-[0_12px_40px_-8px_rgba(0,0,0,0.6)] backdrop-blur-xl">
+      <div className="relative overflow-hidden rounded-3xl bg-gradient-to-r from-white via-zinc-50 to-zinc-100 dark:from-zinc-900/90 dark:via-zinc-900/80 dark:to-zinc-950 p-6 sm:p-7 border border-zinc-200/90 dark:border-white/[0.08] shadow-lg dark:shadow-[0_12px_40px_-8px_rgba(0,0,0,0.6)] backdrop-blur-xl">
         {/* Background ambient radial glow */}
         <div className="absolute right-0 top-0 w-80 h-80 bg-orange-500/10 rounded-full blur-3xl pointer-events-none -z-0" />
 
@@ -74,18 +74,18 @@ export const ExecutiveDailyBriefing: React.FC<ExecutiveDailyBriefingProps> = ({
                 Briefing Ejecutivo Diario
               </span>
               <span className="text-zinc-600 dark:text-zinc-500">•</span>
-              <span className="text-xs text-zinc-400 font-medium">
+              <span className="text-xs text-zinc-600 dark:text-zinc-400 font-medium">
                 Sincronizado hoy
               </span>
             </div>
 
             <div className="space-y-2">
-              <h2 className="text-lg sm:text-xl font-extrabold text-zinc-100 tracking-tight font-display">
+              <h2 className="text-lg sm:text-xl font-extrabold text-zinc-900 dark:text-zinc-100 tracking-tight font-display">
                 {briefing?.headline || `Visión del Ciclo de Innovación — ${organizationName}`}
               </h2>
               <ul className="space-y-1.5 pt-1">
                 {highlights.map((item, idx) => (
-                  <li key={idx} className="flex items-start gap-2.5 text-xs sm:text-sm text-zinc-300">
+                  <li key={idx} className="flex items-start gap-2.5 text-xs sm:text-sm text-zinc-700 dark:text-zinc-300">
                     <span className="w-1.5 h-1.5 rounded-full bg-orange-500 mt-2 shrink-0" />
                     <span>{item}</span>
                   </li>
@@ -99,7 +99,7 @@ export const ExecutiveDailyBriefing: React.FC<ExecutiveDailyBriefingProps> = ({
                 <div className="p-3.5 rounded-2xl bg-amber-500/10 border border-amber-500/25 flex items-start gap-3 text-xs">
                   <AlertTriangle className="w-4 h-4 text-amber-400 shrink-0 mt-0.5" strokeWidth={1.5} />
                   <div className="space-y-1">
-                    <span className="font-bold text-amber-300 uppercase tracking-wider text-[10px]">
+                    <span className="font-bold text-amber-700 dark:text-amber-300 uppercase tracking-wider text-[10px]">
                       Atención Estratégica
                     </span>
                     <ul className="space-y-0.5">
@@ -117,7 +117,7 @@ export const ExecutiveDailyBriefing: React.FC<ExecutiveDailyBriefingProps> = ({
             {/* Suggested Actions */}
             {suggestedActions.length > 0 && (
               <div className="pt-1 flex flex-wrap items-center gap-2">
-                <span className="text-[11px] font-mono uppercase text-zinc-400 font-semibold mr-1">
+                <span className="text-[11px] font-mono uppercase text-zinc-600 dark:text-zinc-400 font-semibold mr-1">
                   Acciones recomendadas:
                 </span>
                 {suggestedActions.map((action, aIdx) => (
@@ -125,7 +125,7 @@ export const ExecutiveDailyBriefing: React.FC<ExecutiveDailyBriefingProps> = ({
                     key={aIdx}
                     type="button"
                     onClick={() => handleActionClick(action)}
-                    className="inline-flex items-center gap-1.5 px-3 py-1 rounded-xl bg-white/[0.06] hover:bg-white/[0.12] border border-white/10 text-[11px] font-medium text-zinc-200 hover:text-white transition-all group"
+                    className="inline-flex items-center gap-1.5 px-3 py-1 rounded-xl bg-zinc-900/[0.06] dark:bg-white/[0.06] hover:bg-zinc-900/[0.12] dark:hover:bg-white/[0.12] border border-zinc-900/[0.16] dark:border-white/10 text-[11px] font-medium text-zinc-900 dark:text-zinc-200 hover:text-zinc-900 dark:hover:text-white transition-all group"
                   >
                     <span>{action}</span>
                     <ArrowUpRight className="w-3 h-3 text-orange-400 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" strokeWidth={1.5} />
@@ -136,24 +136,24 @@ export const ExecutiveDailyBriefing: React.FC<ExecutiveDailyBriefingProps> = ({
           </div>
 
           {/* Right: BusinessHealthScore Badge & Quick Action */}
-          <div className="flex flex-col sm:flex-row lg:flex-col items-start lg:items-end justify-between gap-4 shrink-0 pt-4 lg:pt-0 border-t lg:border-t-0 border-zinc-800/80">
+          <div className="flex flex-col sm:flex-row lg:flex-col items-start lg:items-end justify-between gap-4 shrink-0 pt-4 lg:pt-0 border-t lg:border-t-0 border-zinc-200 dark:border-zinc-800/80">
             <button
               type="button"
               onClick={() => setIsHealthModalOpen(true)}
-              className="p-3.5 rounded-2xl bg-white/[0.04] hover:bg-white/[0.08] border border-white/[0.06] hover:border-emerald-500/30 flex items-center gap-4 w-full sm:w-auto text-left transition-all group cursor-pointer"
+              className="p-3.5 rounded-2xl bg-zinc-900/[0.04] dark:bg-white/[0.04] hover:bg-zinc-900/[0.08] dark:hover:bg-white/[0.08] border border-zinc-900/[0.1] dark:border-white/[0.06] hover:border-emerald-500/30 flex items-center gap-4 w-full sm:w-auto text-left transition-all group cursor-pointer"
               title={explanation}
             >
               <div className="space-y-0.5 flex-1">
-                <div className="flex items-center gap-1.5 text-[11px] text-zinc-400 font-medium">
+                <div className="flex items-center gap-1.5 text-[11px] text-zinc-600 dark:text-zinc-400 font-medium">
                   <Activity className="w-3.5 h-3.5 text-emerald-400" strokeWidth={1.5} />
                   <span>Salud del Negocio</span>
                   <HelpCircle className="w-3 h-3 text-zinc-500 group-hover:text-emerald-400 transition-colors ml-0.5" strokeWidth={1.5} />
                 </div>
                 <div className="flex items-baseline gap-1.5">
-                  <span className="text-2xl font-black text-zinc-100 font-display tabular-nums">
+                  <span className="text-2xl font-black text-zinc-900 dark:text-zinc-100 font-display tabular-nums">
                     {overallScore}
                   </span>
-                  <span className="text-xs text-zinc-400">/ 100</span>
+                  <span className="text-xs text-zinc-600 dark:text-zinc-400">/ 100</span>
                   <span className="ml-1 text-[10px] font-bold px-1.5 py-0.5 rounded bg-emerald-500/15 text-emerald-400 border border-emerald-500/30">
                     {statusLabel === 'OPTIMAL' ? 'ÓPTIMO' : statusLabel === 'GOOD' ? 'ESTABLE' : 'ATENCIÓN'}
                   </span>

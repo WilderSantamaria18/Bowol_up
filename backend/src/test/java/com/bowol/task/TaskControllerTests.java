@@ -206,6 +206,30 @@ class TaskControllerTests {
     }
 
     @Test
+    @DisplayName("POST /api/v1/tasks rechaza un sprint que pertenece a otro proyecto")
+    void createTask_rejectsSprintFromAnotherProject() throws Exception {
+        Sprint foreignSprint = sprintRepository.save(Sprint.builder()
+                .projectId(otherProject.getId())
+                .name("Sprint privado")
+                .startDate(LocalDate.now())
+                .endDate(LocalDate.now().plusWeeks(1))
+                .build());
+
+        CreateTaskRequest request = CreateTaskRequest.builder()
+                .projectId(testProject.getId())
+                .sprintId(foreignSprint.getId())
+                .title("Tarea con sprint ajeno")
+                .build();
+
+        mockMvc.perform(post("/api/v1/tasks")
+                        .header("Authorization", "Bearer " + jwtToken)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(request)))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.code").value("SPRINT_PROJECT_MISMATCH"));
+    }
+
+    @Test
     @DisplayName("GET /api/v1/tasks/board - Obtener tablero Kanban agrupado por estados")
     void getBoard_success() throws Exception {
         taskRepository.save(Task.builder()

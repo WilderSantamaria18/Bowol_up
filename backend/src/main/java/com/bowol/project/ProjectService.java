@@ -1,6 +1,11 @@
 package com.bowol.project;
 
 import com.bowol.project.dto.*;
+import com.bowol.experiment.ExperimentRepository;
+import com.bowol.organization.MemberStatus;
+import com.bowol.organization.OrganizationMemberRepository;
+import com.bowol.opportunity.OpportunityRepository;
+import com.bowol.shared.exception.BadRequestException;
 import com.bowol.shared.dto.PageResponse;
 import com.bowol.shared.exception.NotFoundException;
 import com.bowol.shared.security.UserPrincipal;
@@ -12,6 +17,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.time.LocalDate;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -22,6 +28,9 @@ public class ProjectService {
 
     private final ProjectRepository projectRepository;
     private final ProjectMemberRepository projectMemberRepository;
+    private final OrganizationMemberRepository organizationMemberRepository;
+    private final OpportunityRepository opportunityRepository;
+    private final ExperimentRepository experimentRepository;
 
     @Transactional(readOnly = true)
     public PageResponse<ProjectResponse> getProjects(UserPrincipal principal, ProjectStatus status, Pageable pageable) {
@@ -46,6 +55,8 @@ public class ProjectService {
     public ProjectResponse createProject(CreateProjectRequest request, UserPrincipal principal) {
         UUID organizationId = principal.getOrganizationId();
         UUID userId = principal.getId();
+        validateOrigin(request.getOpportunityId(), request.getExperimentId(), organizationId);
+        validateDates(request.getStartDate(), request.getEndDate());
 
         Project project = Project.builder()
                 .name(request.getName().trim())
@@ -86,6 +97,7 @@ public class ProjectService {
             project.setDescription(request.getDescription());
         }
         if (request.getStatus() != null) {
+            validateStatusTransition(project.getStatus(), request.getStatus());
             project.setStatus(request.getStatus());
         }
         if (request.getStartDate() != null) {
@@ -94,6 +106,7 @@ public class ProjectService {
         if (request.getEndDate() != null) {
             project.setEndDate(request.getEndDate());
         }
+        validateDates(project.getStartDate(), project.getEndDate());
 
         Project updated = projectRepository.save(project);
         log.info("Proyecto actualizado {} en organización {}", updated.getId(), principal.getOrganizationId());
@@ -122,6 +135,14 @@ public class ProjectService {
     public ProjectMemberResponse addProjectMember(UUID projectId, AddProjectMemberRequest request, UserPrincipal principal) {
         // Verify project belongs to tenant
         getProjectEntity(projectId, principal.getOrganizationId());
+        boolean activeOrganizationMember = organizationMemberRepository
+                .findByUserIdAndOrganizationId(request.getUserId(), principal.getOrganizationId())
+                .map(member -> member.getStatus() == MemberStatus.ACTIVE)
+                .orElse(false);
+        if (!activeOrganizationMember) {
+            throw new BadRequestException("PROJECT_MEMBER_NOT_IN_ORGANIZATION",
+                    "El usuario debe ser un miembro activo de la organización para unirse al proyecto");
+        }
 
         ProjectMember member = projectMemberRepository.findByProjectIdAndUserId(projectId, request.getUserId())
                 .orElse(ProjectMember.builder()
@@ -150,5 +171,37 @@ public class ProjectService {
     public Project getProjectEntity(UUID id, UUID organizationId) {
         return projectRepository.findByIdAndOrganizationIdAndDeletedAtIsNull(id, organizationId)
                 .orElseThrow(() -> new NotFoundException("PROJECT_NO_ENCONTRADO", "No se encontró el proyecto con id: " + id));
+    }
+
+    private void validateOrigin(UUID opportunityId, UUID experimentId, UUID organizationId) {
+        if (opportunityId != null && experimentId != null) {
+            throw new BadRequestException("PROJECT_MULTIPLE_ORIGINS", "Un proyecto debe tener un único origen estratégico");
+        }
+        if (opportunityId != null && opportunityRepository.findByIdAndOrganizationId(opportunityId, organizationId).isEmpty()) {
+            throw new BadRequestException("PROJECT_OPPORTUNITY_NOT_FOUND", "La oportunidad de origen no pertenece a la organización");
+        }
+        if (experimentId != null && experimentRepository.findByIdAndOrganizationId(experimentId, organizationId).isEmpty()) {
+            throw new BadRequestException("PROJECT_EXPERIMENT_NOT_FOUND", "El experimento de origen no pertenece a la organización");
+        }
+    }
+
+    private void validateDates(LocalDate startDate, LocalDate endDate) {
+        if (startDate != null && endDate != null && endDate.isBefore(startDate)) {
+            throw new BadRequestException("PROJECT_INVALID_DATE_RANGE", "La fecha de fin no puede ser anterior a la fecha de inicio");
+        }
+    }
+
+    private void validateStatusTransition(ProjectStatus current, ProjectStatus target) {
+        if (current == target) return;
+        boolean allowed = switch (current) {
+            case PLANNING -> target == ProjectStatus.ACTIVE || target == ProjectStatus.ARCHIVED;
+            case ACTIVE -> target == ProjectStatus.PAUSED || target == ProjectStatus.COMPLETED || target == ProjectStatus.ARCHIVED;
+            case PAUSED -> target == ProjectStatus.ACTIVE || target == ProjectStatus.ARCHIVED;
+            case COMPLETED, ARCHIVED -> false;
+        };
+        if (!allowed) {
+            throw new BadRequestException("PROJECT_INVALID_STATUS_TRANSITION",
+                    "No se puede cambiar un proyecto de " + current + " a " + target);
+        }
     }
 }

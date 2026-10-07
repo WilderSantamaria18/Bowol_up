@@ -26,6 +26,7 @@ import {
   ArrowUp, 
   ArrowDown, 
   X,
+  Target,
   type LucideIcon 
 } from 'lucide-react';
 import { useTheme } from '@/contexts/ThemeContext';
@@ -109,6 +110,16 @@ export const CommandPalette: React.FC<CommandPaletteProps> = ({ isOpen, onClose 
       keywords: ['hipótesis', 'experimentos', 'validación', 'lean'],
       action: () => { navigate('/hypotheses'); onClose(); },
       shortcut: 'G H'
+    },
+    {
+      id: 'nav-planning',
+      title: 'Planificador BOWOL Plans 2.0',
+      description: 'Metodología de 6 fases, ficha de contexto y prompts operativos',
+      category: 'Navegación',
+      icon: Target,
+      keywords: ['planificador', 'planning', 'fases', 'prompts', 'metas', 'wbs', 'actividades'],
+      action: () => { navigate('/planning'); onClose(); },
+      shortcut: 'G L'
     },
     {
       id: 'nav-projects',
@@ -345,7 +356,7 @@ export const CommandPalette: React.FC<CommandPaletteProps> = ({ isOpen, onClose 
             <button
               type="button"
               onClick={() => setQuery('')}
-              className="p-1 rounded text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-200"
+              className="p-1 rounded text-zinc-600 dark:text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-200"
               aria-label="Borrar búsqueda"
             >
               <X className="w-4 h-4" strokeWidth={1.5} />

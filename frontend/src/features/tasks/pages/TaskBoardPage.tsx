@@ -120,7 +120,7 @@ export const TaskBoardPage: React.FC = () => {
   if (projects.length === 0) {
     return (
       <div className="mx-auto max-w-4xl py-12 px-4 text-center">
-        <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl border border-white/[0.08] bg-slate-900/60 backdrop-blur-xl shadow-xl">
+        <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl border border-zinc-900/[0.13] dark:border-white/[0.08] bg-slate-900/60 backdrop-blur-xl shadow-xl">
           <Sparkles className="h-8 w-8 text-cyan-400" strokeWidth={1.5} />
         </div>
         <h2 className="mt-6 text-xl font-bold text-slate-100 sm:text-2xl">
@@ -232,6 +232,17 @@ export const TaskBoardPage: React.FC = () => {
             onDelete={deleteTask}
             onQuickAdd={handleQuickAdd}
           />
+
+          {(board.BLOCKED?.length ?? 0) > 0 && (
+            <TaskColumn
+              status="BLOCKED"
+              title="Bloqueadas"
+              tasks={board.BLOCKED || []}
+              onMove={moveTask}
+              onDelete={deleteTask}
+              onQuickAdd={handleQuickAdd}
+            />
+          )}
         </div>
       </div>
 

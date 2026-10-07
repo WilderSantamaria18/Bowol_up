@@ -14,8 +14,14 @@ import com.bowol.opportunity.Opportunity;
 import com.bowol.opportunity.OpportunityRepository;
 import com.bowol.project.Project;
 import com.bowol.project.ProjectService;
+import com.bowol.organization.MemberStatus;
+import com.bowol.organization.OrganizationMemberRepository;
+import com.bowol.shared.exception.BadRequestException;
 import com.bowol.shared.exception.NotFoundException;
 import com.bowol.shared.security.UserPrincipal;
+import com.bowol.sprint.Sprint;
+import com.bowol.sprint.SprintRepository;
+import com.bowol.sprint.SprintStatus;
 import com.bowol.task.dto.*;
 import com.fasterxml.jackson.databind.JsonNode;
 import lombok.RequiredArgsConstructor;
@@ -34,6 +40,8 @@ public class TaskService {
 
     private final TaskRepository taskRepository;
     private final ProjectService projectService;
+    private final SprintRepository sprintRepository;
+    private final OrganizationMemberRepository organizationMemberRepository;
     private final BusinessProfileRepository businessProfileRepository;
     private final OpportunityRepository opportunityRepository;
     private final StrategicContextService strategicContextService;
@@ -93,6 +101,8 @@ public class TaskService {
             throw new IllegalArgumentException("El projectId es obligatorio para crear una tarea");
         }
         projectService.getProjectEntity(request.getProjectId(), principal.getOrganizationId());
+        validateSprintAssignment(request.getSprintId(), request.getProjectId());
+        validateAssignee(request.getAssigneeId(), principal.getOrganizationId());
 
         Integer maxPos = taskRepository.findMaxPositionByProjectId(request.getProjectId());
         int position = request.getPosition() != null ? request.getPosition() : (maxPos != null ? maxPos + 1000 : 1000);
@@ -126,6 +136,7 @@ public class TaskService {
             task.setDescription(request.getDescription());
         }
         if (request.getSprintId() != null) {
+            validateSprintAssignment(request.getSprintId(), task.getProjectId());
             task.setSprintId(request.getSprintId());
         }
         if (request.getStatus() != null) {
@@ -135,6 +146,7 @@ public class TaskService {
             task.setPriority(request.getPriority());
         }
         if (request.getAssigneeId() != null) {
+            validateAssignee(request.getAssigneeId(), principal.getOrganizationId());
             task.setAssigneeId(request.getAssigneeId());
         }
         if (request.getEstimateHours() != null) {
@@ -162,6 +174,7 @@ public class TaskService {
     @Transactional
     public TaskResponse assignTask(UUID id, AssignTaskRequest request, UserPrincipal principal) {
         Task task = getTaskEntity(id, principal.getOrganizationId());
+        validateAssignee(request.getAssigneeId(), principal.getOrganizationId());
         task.setAssigneeId(request.getAssigneeId());
         Task saved = taskRepository.save(task);
         log.info("Tarea {} asignada a usuario {}", id, request.getAssigneeId());
@@ -185,6 +198,7 @@ public class TaskService {
                 }
             }
             if (move.getSprintId() != null) {
+                validateSprintAssignment(move.getSprintId(), task.getProjectId());
                 task.setSprintId(move.getSprintId());
             }
             if (move.getPosition() != null) {
@@ -334,6 +348,35 @@ public class TaskService {
             } catch (Exception e) {
                 log.warn("No se pudo disparar webhook task.blocked: {}", e.getMessage());
             }
+        }
+    }
+
+    private void validateSprintAssignment(UUID sprintId, UUID projectId) {
+        if (sprintId == null) {
+            return;
+        }
+
+        Sprint sprint = sprintRepository.findById(sprintId)
+                .orElseThrow(() -> new NotFoundException("SPRINT_NO_ENCONTRADO", "No se encontró el sprint seleccionado"));
+        if (!projectId.equals(sprint.getProjectId())) {
+            throw new BadRequestException("SPRINT_PROJECT_MISMATCH", "El sprint seleccionado pertenece a otro proyecto");
+        }
+        if (sprint.getStatus() == SprintStatus.COMPLETED || sprint.getStatus() == SprintStatus.CANCELED) {
+            throw new BadRequestException("SPRINT_CLOSED", "No se pueden asignar tareas a un sprint finalizado");
+        }
+    }
+
+    private void validateAssignee(UUID userId, UUID organizationId) {
+        if (userId == null) {
+            return;
+        }
+
+        boolean isActiveMember = organizationMemberRepository
+                .findByUserIdAndOrganizationId(userId, organizationId)
+                .map(member -> member.getStatus() == MemberStatus.ACTIVE)
+                .orElse(false);
+        if (!isActiveMember) {
+            throw new BadRequestException("TASK_ASSIGNEE_NOT_MEMBER", "La persona asignada no es miembro activo de la organización");
         }
     }
 }

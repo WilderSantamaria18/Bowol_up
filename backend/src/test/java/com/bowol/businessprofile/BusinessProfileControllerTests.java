@@ -197,4 +197,35 @@ class BusinessProfileControllerTests {
                 .andExpect(jsonPath("$.code").value("VALIDATION_FAILED"))
                 .andExpect(jsonPath("$.errors[0].field").value("digitalMaturity"));
     }
+
+    @Test
+    @DisplayName("PATCH /api/v1/business-profile rechaza a un miembro sin permiso de edición")
+    void patchProfile_memberWithoutUpdatePermission_isForbidden() throws Exception {
+        User member = userRepository.save(User.builder()
+                .email("member@biotech.com")
+                .name("Read-only member")
+                .passwordHash(passwordEncoder.encode("Secure123!"))
+                .build());
+        organizationMemberRepository.save(OrganizationMember.builder()
+                .user(member)
+                .organization(organization)
+                .role(Role.MEMBER)
+                .build());
+
+        String memberToken = jwtService.generateAccessToken(
+                member,
+                organization.getId(),
+                Role.MEMBER,
+                Set.of("business_profile.update")
+        );
+        UpdateBusinessProfileRequest request = UpdateBusinessProfileRequest.builder()
+                .industry("No autorizado")
+                .build();
+
+        mockMvc.perform(patch("/api/v1/business-profile")
+                        .header("Authorization", "Bearer " + memberToken)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(request)))
+                .andExpect(status().isForbidden());
+    }
 }

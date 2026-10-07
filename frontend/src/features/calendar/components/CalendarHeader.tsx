@@ -62,13 +62,13 @@ export const CalendarHeader: React.FC<CalendarHeaderProps> = ({
             <CalendarIcon className="w-5 h-5" strokeWidth={1.5} />
           </div>
           <div>
-            <h1 className="text-xl font-bold text-white tracking-tight flex items-center gap-2">
+            <h1 className="text-xl font-bold text-zinc-900 dark:text-white tracking-tight flex items-center gap-2">
               Calendario Estratégico
               <span className="text-xs px-2 py-0.5 rounded-full bg-orange-500/10 text-orange-400 border border-orange-500/20 font-medium">
                 Fase 10
               </span>
             </h1>
-            <p className="text-xs text-zinc-400">
+            <p className="text-xs text-zinc-600 dark:text-zinc-400">
               Vista unificada de sprints, hitos de producto, experimentos y eventos clave
             </p>
           </div>
@@ -82,7 +82,7 @@ export const CalendarHeader: React.FC<CalendarHeaderProps> = ({
             onClick={onExportICal}
             disabled={isExporting}
             leftIcon={Download}
-            className="text-xs border-white/[0.08] hover:border-white/[0.15]"
+            className="text-xs border-zinc-900/[0.13] dark:border-white/[0.08] hover:border-zinc-900/[0.16] dark:hover:border-white/[0.15]"
           >
             {isExporting ? 'Exportando...' : 'Exportar .ics (Outlook / Google)'}
           </Button>
@@ -101,33 +101,33 @@ export const CalendarHeader: React.FC<CalendarHeaderProps> = ({
       </div>
 
       {/* Navigation & Controls Bar */}
-      <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-3 p-3 rounded-xl bg-surface-subtle border border-white/[0.06]">
+      <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-3 p-3 rounded-xl bg-surface-subtle border border-zinc-900/[0.1] dark:border-white/[0.06]">
         {/* Month Navigator */}
         <div className="flex items-center gap-2">
-          <div className="flex items-center rounded-lg border border-white/[0.08] bg-black/30 p-0.5">
+          <div className="flex items-center rounded-lg border border-zinc-900/[0.13] dark:border-white/[0.08] bg-black/30 p-0.5">
             <button
               onClick={onPrevMonth}
-              className="p-1.5 rounded text-zinc-400 hover:text-white hover:bg-white/[0.05] transition-colors"
+              className="p-1.5 rounded text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white hover:bg-zinc-900/[0.05] dark:hover:bg-white/[0.05] transition-colors"
               aria-label="Mes anterior"
             >
               <ChevronLeft className="w-4 h-4" strokeWidth={1.5} />
             </button>
             <button
               onClick={onNextMonth}
-              className="p-1.5 rounded text-zinc-400 hover:text-white hover:bg-white/[0.05] transition-colors"
+              className="p-1.5 rounded text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white hover:bg-zinc-900/[0.05] dark:hover:bg-white/[0.05] transition-colors"
               aria-label="Mes siguiente"
             >
               <ChevronRight className="w-4 h-4" strokeWidth={1.5} />
             </button>
           </div>
 
-          <h2 className="text-sm font-semibold text-white tracking-wide min-w-[140px]">
+          <h2 className="text-sm font-semibold text-zinc-900 dark:text-white tracking-wide min-w-[140px]">
             {monthLabel}
           </h2>
 
           <button
             onClick={onToday}
-            className="px-2.5 py-1 text-xs font-medium rounded-lg text-zinc-300 hover:text-white border border-white/[0.08] hover:bg-white/[0.05] transition-colors"
+            className="px-2.5 py-1 text-xs font-medium rounded-lg text-zinc-700 dark:text-zinc-300 hover:text-zinc-900 dark:hover:text-white border border-zinc-900/[0.13] dark:border-white/[0.08] hover:bg-zinc-900/[0.05] dark:hover:bg-white/[0.05] transition-colors"
           >
             Hoy
           </button>
@@ -143,8 +143,8 @@ export const CalendarHeader: React.FC<CalendarHeaderProps> = ({
                 onClick={() => onTypeFilterChange(f.value)}
                 className={`px-2.5 py-1 rounded-lg text-xs font-medium transition-all ${
                   typeFilter === f.value
-                    ? 'bg-orange-500/15 text-orange-300 border border-orange-500/30'
-                    : 'text-zinc-400 hover:text-zinc-200 hover:bg-white/[0.04]'
+                    ? 'bg-orange-500/15 text-orange-700 dark:text-orange-300 border border-orange-500/30'
+                    : 'text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-200 hover:bg-zinc-900/[0.04] dark:hover:bg-white/[0.04]'
                 }`}
               >
                 {f.label}
@@ -153,13 +153,13 @@ export const CalendarHeader: React.FC<CalendarHeaderProps> = ({
           </div>
 
           {/* View Mode Toggle */}
-          <div className="flex items-center rounded-lg border border-white/[0.08] bg-black/40 p-0.5">
+          <div className="flex items-center rounded-lg border border-zinc-900/[0.13] dark:border-white/[0.08] bg-black/40 p-0.5">
             <button
               onClick={() => onViewModeChange('month')}
               className={`flex items-center gap-1.5 px-2.5 py-1 rounded-md text-xs font-medium transition-colors ${
                 viewMode === 'month'
-                  ? 'bg-white/[0.1] text-white shadow-sm'
-                  : 'text-zinc-400 hover:text-zinc-200'
+                  ? 'bg-zinc-900/[0.1] dark:bg-white/[0.1] text-zinc-900 dark:text-white shadow-sm'
+                  : 'text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-200'
               }`}
             >
               <Grid3X3 className="w-3.5 h-3.5" strokeWidth={1.5} />
@@ -169,8 +169,8 @@ export const CalendarHeader: React.FC<CalendarHeaderProps> = ({
               onClick={() => onViewModeChange('agenda')}
               className={`flex items-center gap-1.5 px-2.5 py-1 rounded-md text-xs font-medium transition-colors ${
                 viewMode === 'agenda'
-                  ? 'bg-white/[0.1] text-white shadow-sm'
-                  : 'text-zinc-400 hover:text-zinc-200'
+                  ? 'bg-zinc-900/[0.1] dark:bg-white/[0.1] text-zinc-900 dark:text-white shadow-sm'
+                  : 'text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-200'
               }`}
             >
               <List className="w-3.5 h-3.5" strokeWidth={1.5} />

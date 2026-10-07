@@ -295,6 +295,9 @@ class ExperimentControllerTests {
     @Test
     @DisplayName("POST /api/v1/hypotheses/{id}/convert-to-project convierte la hipótesis en un proyecto ejecutable")
     void convertHypothesisToProject_success() throws Exception {
+        testHypothesis.setStatus(HypothesisStatus.VALIDATED);
+        hypothesisRepository.save(testHypothesis);
+
         mockMvc.perform(post("/api/v1/hypotheses/" + testHypothesis.getId() + "/convert-to-project")
                         .header("Authorization", "Bearer " + jwtToken))
                 .andExpect(status().isCreated())

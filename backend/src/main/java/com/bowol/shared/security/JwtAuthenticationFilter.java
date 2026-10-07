@@ -1,8 +1,13 @@
 package com.bowol.shared.security;
 
 import com.bowol.auth.JwtService;
+import com.bowol.organization.MemberStatus;
+import com.bowol.organization.OrganizationMember;
+import com.bowol.organization.OrganizationMemberRepository;
 import com.bowol.organization.Role;
 import com.bowol.shared.multitenancy.TenantContext;
+import com.bowol.user.UserRepository;
+import com.bowol.user.UserStatus;
 import io.jsonwebtoken.Claims;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -18,7 +23,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
-import java.util.List;
 import java.util.UUID;
 
 @Slf4j
@@ -27,6 +31,8 @@ import java.util.UUID;
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private final JwtService jwtService;
+    private final UserRepository userRepository;
+    private final OrganizationMemberRepository organizationMemberRepository;
 
     @Override
     protected void doFilterInternal(
@@ -55,12 +61,34 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                     String name = claims.get("name", String.class);
                     String orgIdStr = claims.get("org_id", String.class);
                     UUID orgId = orgIdStr != null ? UUID.fromString(orgIdStr) : null;
-                    String roleStr = claims.get("role", String.class);
-                    Role role = roleStr != null ? Role.valueOf(roleStr) : null;
-                    @SuppressWarnings("unchecked")
-                    List<String> permissions = claims.get("permissions", List.class);
+                    if (orgId == null) {
+                        throw new IllegalArgumentException("Token without an active organization");
+                    }
 
-                    UserPrincipal principal = UserPrincipal.create(userId, email, name, orgId, role, permissions);
+                    TenantContext.setTenantId(orgId);
+                    TenantContext.setUserId(userId);
+
+                    UserStatus userStatus = userRepository.findByIdAndDeletedAtIsNull(userId)
+                            .map(user -> user.getStatus())
+                            .orElseThrow(() -> new IllegalArgumentException("Unknown user"));
+                    if (userStatus != UserStatus.ACTIVE) {
+                        throw new IllegalArgumentException("Inactive user");
+                    }
+
+                    OrganizationMember membership = organizationMemberRepository
+                            .findByUserIdAndOrganizationId(userId, orgId)
+                            .filter(member -> member.getStatus() == MemberStatus.ACTIVE)
+                            .orElseThrow(() -> new IllegalArgumentException("Inactive membership"));
+
+                    Role role = membership.getRole();
+                    UserPrincipal principal = UserPrincipal.create(
+                            userId,
+                            email,
+                            name,
+                            orgId,
+                            role,
+                            RolePermissions.getPermissionValues(role)
+                    );
 
                     UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
                             principal,
@@ -70,14 +98,10 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                     authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
 
                     SecurityContextHolder.getContext().setAuthentication(authentication);
-
-                    // Establecer TenantContext para el request
-                    if (orgId != null) {
-                        TenantContext.setTenantId(orgId);
-                    }
                 } catch (Exception e) {
                     log.debug("Token JWT no válido o expirado: {}", e.getMessage());
                     SecurityContextHolder.clearContext();
+                    TenantContext.clear();
                 }
             }
 

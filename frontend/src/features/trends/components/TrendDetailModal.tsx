@@ -114,12 +114,12 @@ export const TrendDetailModal: React.FC<TrendDetailModalProps> = ({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md animate-in fade-in duration-200">
-      <div className="relative w-full max-w-2xl bg-[#0D0E12] border border-white/[0.1] rounded-2xl shadow-2xl p-6 overflow-hidden flex flex-col max-h-[90vh]">
+      <div className="relative w-full max-w-2xl bg-white dark:bg-[#0D0E12] border border-zinc-900/[0.16] dark:border-white/[0.1] rounded-2xl shadow-2xl p-6 overflow-hidden flex flex-col max-h-[90vh]">
         {/* Header */}
-        <div className="flex items-start justify-between gap-4 pb-4 border-b border-white/[0.08]">
+        <div className="flex items-start justify-between gap-4 pb-4 border-b border-zinc-900/[0.13] dark:border-white/[0.08]">
           <div>
             <div className="flex items-center gap-2 mb-2">
-              <span className="flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-zinc-900 border border-zinc-800 text-xs font-medium text-zinc-300">
+              <span className="flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-zinc-100 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 text-xs font-medium text-zinc-700 dark:text-zinc-300">
                 {trend.sourceCode === 'GITHUB' ? (
                   <Cpu className="w-3.5 h-3.5" strokeWidth={1.5} />
                 ) : trend.sourceCode === 'YOUTUBE' ? (
@@ -134,13 +134,13 @@ export const TrendDetailModal: React.FC<TrendDetailModalProps> = ({
                 <span>Score Global: {trend.score}</span>
               </div>
             </div>
-            <h2 className="text-xl font-bold text-white tracking-tight leading-snug">
+            <h2 className="text-xl font-bold text-zinc-900 dark:text-white tracking-tight leading-snug">
               {trend.title}
             </h2>
           </div>
           <button
             onClick={onClose}
-            className="p-1.5 rounded-lg text-zinc-400 hover:text-white hover:bg-white/[0.05] transition-colors"
+            className="p-1.5 rounded-lg text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white hover:bg-zinc-900/[0.05] dark:hover:bg-white/[0.05] transition-colors"
             aria-label="Cerrar modal"
           >
             <X className="w-5 h-5" strokeWidth={1.5} />
@@ -150,16 +150,16 @@ export const TrendDetailModal: React.FC<TrendDetailModalProps> = ({
         {/* Content Body */}
         <div className="flex-1 overflow-y-auto py-4 space-y-5 pr-1">
           <div>
-            <h4 className="text-xs font-semibold uppercase tracking-wider text-zinc-400 mb-1.5">
+            <h4 className="text-xs font-semibold uppercase tracking-wider text-zinc-600 dark:text-zinc-400 mb-1.5">
               Descripción
             </h4>
-            <p className="text-sm text-zinc-300 leading-relaxed bg-white/[0.02] border border-white/[0.04] p-3 rounded-xl">
+            <p className="text-sm text-zinc-700 dark:text-zinc-300 leading-relaxed bg-zinc-900/[0.02] dark:bg-white/[0.02] border border-zinc-900/[0.08] dark:border-white/[0.04] p-3 rounded-xl">
               {trend.description || 'Sin descripción disponible.'}
             </p>
           </div>
 
           <div>
-            <h4 className="text-xs font-semibold uppercase tracking-wider text-zinc-400 mb-2">
+            <h4 className="text-xs font-semibold uppercase tracking-wider text-zinc-600 dark:text-zinc-400 mb-2">
               Recurso Original
             </h4>
             <a
@@ -178,7 +178,7 @@ export const TrendDetailModal: React.FC<TrendDetailModalProps> = ({
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-orange-500/20">
               <div className="flex items-center gap-2">
                 <Sparkles className="w-4 h-4 text-orange-400" strokeWidth={1.5} />
-                <h4 className="text-sm font-semibold text-orange-300">
+                <h4 className="text-sm font-semibold text-orange-700 dark:text-orange-300">
                   Evaluación Estratégica con IA
                 </h4>
                 {aiInsights?.strategicAlignment && (
@@ -203,7 +203,7 @@ export const TrendDetailModal: React.FC<TrendDetailModalProps> = ({
                     onClick={handleEvaluateAi}
                     disabled={isEvaluatingAi || isSubmitting}
                     isLoading={isEvaluatingAi}
-                    className="text-xs text-orange-300 hover:text-orange-200 border-orange-500/30 hover:bg-orange-500/10"
+                    className="text-xs text-orange-700 dark:text-orange-300 hover:text-orange-200 border-orange-500/30 hover:bg-orange-500/10"
                     leftIcon={Sparkles}
                   >
                     Evaluar con IA
@@ -223,7 +223,7 @@ export const TrendDetailModal: React.FC<TrendDetailModalProps> = ({
                       initialMessage: `Hola Copilot, quiero analizar la tendencia "${trend.title}" y evaluar cómo implementarla de forma prioritaria en nuestra empresa.`
                     });
                   }}
-                  className="text-xs text-zinc-300 hover:text-white border border-white/[0.08] hover:bg-white/[0.05]"
+                  className="text-xs text-zinc-700 dark:text-zinc-300 hover:text-zinc-900 dark:hover:text-white border border-zinc-900/[0.13] dark:border-white/[0.08] hover:bg-zinc-900/[0.05] dark:hover:bg-white/[0.05]"
                   leftIcon={MessageSquare}
                   title="Abrir diálogo estratégico con BOWOL Copilot"
                 >
@@ -251,14 +251,14 @@ export const TrendDetailModal: React.FC<TrendDetailModalProps> = ({
             {/* Recommended Actions from AI */}
             {aiInsights?.recommendedActions && aiInsights.recommendedActions.length > 0 && (
               <div className="space-y-2">
-                <label className="block text-xs font-medium text-orange-300">
+                <label className="block text-xs font-medium text-orange-700 dark:text-orange-300">
                   Acciones Tácticas Recomendadas por la IA:
                 </label>
                 <div className="space-y-1.5">
                   {aiInsights.recommendedActions.map((action, idx) => (
                     <div
                       key={idx}
-                      className="flex items-start gap-2 p-2 rounded-lg bg-black/30 border border-orange-500/15 text-xs text-zinc-200 leading-relaxed"
+                      className="flex items-start gap-2 p-2 rounded-lg bg-black/30 border border-orange-500/15 text-xs text-zinc-900 dark:text-zinc-200 leading-relaxed"
                     >
                       <ArrowRight className="w-3.5 h-3.5 text-orange-400 shrink-0 mt-0.5" strokeWidth={1.5} />
                       <span>{action}</span>
@@ -269,7 +269,7 @@ export const TrendDetailModal: React.FC<TrendDetailModalProps> = ({
             )}
 
             <div>
-              <label className="block text-xs text-zinc-400 mb-1">
+              <label className="block text-xs text-zinc-600 dark:text-zinc-400 mb-1">
                 Alineación / Relevancia Interna (0 a 100):
               </label>
               <input
@@ -278,12 +278,12 @@ export const TrendDetailModal: React.FC<TrendDetailModalProps> = ({
                 max="100"
                 value={score}
                 onChange={(e) => setScore(Number(e.target.value))}
-                className="w-full h-2 bg-zinc-800 rounded-lg appearance-none cursor-pointer accent-orange-500"
+                className="w-full h-2 bg-zinc-100 dark:bg-zinc-800 rounded-lg appearance-none cursor-pointer accent-orange-500"
               />
             </div>
 
             <div>
-              <label className="block text-xs text-zinc-400 mb-1">
+              <label className="block text-xs text-zinc-600 dark:text-zinc-400 mb-1">
                 Hipótesis de Aplicabilidad o Notas de Análisis:
               </label>
               <textarea
@@ -291,12 +291,12 @@ export const TrendDetailModal: React.FC<TrendDetailModalProps> = ({
                 onChange={(e) => setAiSummary(e.target.value)}
                 placeholder="Ej: Utilizar este modelo localmente para automatizar la extracción de datos sin incurrir en costes de API por token..."
                 rows={3}
-                className="w-full text-xs p-3 rounded-lg bg-zinc-900 border border-zinc-700/80 text-zinc-200 placeholder-zinc-500 focus:outline-none focus:border-orange-500/50"
+                className="w-full text-xs p-3 rounded-lg bg-zinc-100 dark:bg-zinc-900 border border-zinc-700/80 text-zinc-900 dark:text-zinc-200 placeholder-zinc-500 focus:outline-none focus:border-orange-500/50"
               />
             </div>
 
             <div>
-              <label className="block text-xs text-zinc-400 mb-1">
+              <label className="block text-xs text-zinc-600 dark:text-zinc-400 mb-1">
                 Etiquetas de Priorización:
               </label>
               <div className="flex gap-2 mb-2">
@@ -326,7 +326,7 @@ export const TrendDetailModal: React.FC<TrendDetailModalProps> = ({
                 {tags.map((t, idx) => (
                   <span
                     key={idx}
-                    className="inline-flex items-center gap-1 text-[11px] px-2 py-0.5 rounded bg-zinc-800 text-zinc-300 border border-zinc-700"
+                    className="inline-flex items-center gap-1 text-[11px] px-2 py-0.5 rounded bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 border border-zinc-300 dark:border-zinc-700"
                   >
                     #{t}
                     <button
@@ -344,7 +344,7 @@ export const TrendDetailModal: React.FC<TrendDetailModalProps> = ({
         </div>
 
         {/* Footer Actions */}
-        <div className="pt-4 border-t border-white/[0.08] flex items-center justify-between gap-3 flex-wrap">
+        <div className="pt-4 border-t border-zinc-900/[0.13] dark:border-white/[0.08] flex items-center justify-between gap-3 flex-wrap">
           <div className="flex items-center gap-2">
             {trend.isRelevantForTenant && (
               <Button
@@ -373,7 +373,7 @@ export const TrendDetailModal: React.FC<TrendDetailModalProps> = ({
                 }
               }}
               leftIcon={Target}
-              className="text-xs text-amber-300 hover:text-amber-200 border-amber-500/30 hover:bg-amber-500/10"
+              className="text-xs text-amber-700 dark:text-amber-300 hover:text-amber-200 border-amber-500/30 hover:bg-amber-500/10"
             >
               Crear Oportunidad RICE
             </Button>

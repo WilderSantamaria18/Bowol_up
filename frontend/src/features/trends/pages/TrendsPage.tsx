@@ -130,28 +130,28 @@ export const TrendsPage: React.FC = () => {
   return (
     <div className="space-y-8 animate-in fade-in duration-300">
       {/* Top Header & Strategic Stat Cards */}
-      <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6 pb-6 border-b border-white/[0.06]">
+      <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6 pb-6 border-b border-zinc-900/[0.1] dark:border-white/[0.06]">
         <div>
           <div className="flex items-center gap-2 mb-2">
             <span className="px-2.5 py-0.5 rounded-full bg-orange-500/10 border border-orange-500/20 text-orange-400 text-xs font-semibold uppercase tracking-wider">
               Intelligence Engine
             </span>
           </div>
-          <h1 className="text-3xl font-extrabold text-white tracking-tight">
+          <h1 className="text-3xl font-extrabold text-zinc-900 dark:text-white tracking-tight">
             Explorador de Tendencias & Señales
           </h1>
-          <p className="text-sm text-zinc-400 mt-1 max-w-2xl leading-relaxed">
-            Detección continua de tecnología, algoritmos y repositorios de alta tracción normalizados mediante el algoritmo <strong className="text-zinc-200">TrendScore</strong>.
+          <p className="text-sm text-zinc-600 dark:text-zinc-400 mt-1 max-w-2xl leading-relaxed">
+            Detección continua de tecnología, algoritmos y repositorios de alta tracción normalizados mediante el algoritmo <strong className="text-zinc-900 dark:text-zinc-200">TrendScore</strong>.
           </p>
         </div>
 
         {/* Mini stats cards */}
         <div className="grid grid-cols-3 gap-3">
-          <div className="rounded-xl bg-white/[0.02] border border-white/[0.06] p-3 text-center min-w-[100px]">
+          <div className="rounded-xl bg-zinc-900/[0.02] dark:bg-white/[0.02] border border-zinc-900/[0.1] dark:border-white/[0.06] p-3 text-center min-w-[100px]">
             <span className="text-[10px] text-zinc-500 font-medium uppercase tracking-wider block">
               Detectadas
             </span>
-            <span className="text-lg font-bold text-white font-mono">
+            <span className="text-lg font-bold text-zinc-900 dark:text-white font-mono">
               {trendsPage?.totalElements || allTrends.length}
             </span>
           </div>
@@ -160,7 +160,7 @@ export const TrendsPage: React.FC = () => {
             <span className="text-[10px] text-orange-400 font-medium uppercase tracking-wider block">
               Alta Señal (&gt;70)
             </span>
-            <span className="text-lg font-bold text-orange-300 font-mono">
+            <span className="text-lg font-bold text-orange-700 dark:text-orange-300 font-mono">
               {highTractionCount}
             </span>
           </div>
@@ -185,19 +185,19 @@ export const TrendsPage: React.FC = () => {
       )}
 
       {/* View Switcher Tabs */}
-      <div className="flex items-center gap-2 border-b border-white/[0.08] pb-1">
+      <div className="flex items-center gap-2 border-b border-zinc-900/[0.13] dark:border-white/[0.08] pb-1">
         <button
           type="button"
           onClick={() => setActiveTab('all')}
           className={`flex items-center gap-2 px-4 py-2 rounded-t-xl text-xs font-semibold transition-all relative ${
             activeTab === 'all'
-              ? 'text-orange-400 border-b-2 border-orange-500 bg-white/[0.02]'
-              : 'text-zinc-400 hover:text-zinc-200'
+              ? 'text-orange-400 border-b-2 border-orange-500 bg-zinc-900/[0.02] dark:bg-white/[0.02]'
+              : 'text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-200'
           }`}
         >
           <Globe className="w-4 h-4" strokeWidth={1.5} />
           <span>Todas las Tendencias</span>
-          <span className="px-1.5 py-0.2 rounded-full bg-white/[0.05] text-[10px] font-mono text-zinc-400">
+          <span className="px-1.5 py-0.2 rounded-full bg-zinc-900/[0.05] dark:bg-white/[0.05] text-[10px] font-mono text-zinc-600 dark:text-zinc-400">
             {trendsPage?.totalElements || allTrends.length}
           </span>
         </button>
@@ -207,13 +207,13 @@ export const TrendsPage: React.FC = () => {
           onClick={() => setActiveTab('for-me')}
           className={`flex items-center gap-2 px-4 py-2 rounded-t-xl text-xs font-semibold transition-all relative ${
             activeTab === 'for-me'
-              ? 'text-orange-400 border-b-2 border-orange-500 bg-white/[0.02]'
-              : 'text-zinc-400 hover:text-zinc-200'
+              ? 'text-orange-400 border-b-2 border-orange-500 bg-zinc-900/[0.02] dark:bg-white/[0.02]'
+              : 'text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-200'
           }`}
         >
           <BookmarkCheck className="w-4 h-4" strokeWidth={1.5} />
           <span>Estratégicas para mi Empresa</span>
-          <span className="px-1.5 py-0.2 rounded-full bg-orange-500/20 text-[10px] font-mono text-orange-300">
+          <span className="px-1.5 py-0.2 rounded-full bg-orange-500/20 text-[10px] font-mono text-orange-700 dark:text-orange-300">
             {strategicCount}
           </span>
         </button>

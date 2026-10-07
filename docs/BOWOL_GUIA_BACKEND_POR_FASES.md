@@ -17,7 +17,7 @@ El backend ya está construido como monolito modular. Incluye autenticación, or
 
 - 267 archivos Java y 55 archivos de pruebas.
 - API versionada bajo `/api/v1` y manejo RFC 7807.
-- PostgreSQL administrado con 22 migraciones Flyway.
+- PostgreSQL administrado con 26 migraciones Flyway.
 - RLS, índices, soft delete y separación por `organization_id` ya planteados.
 - JWT RS256, refresh tokens, RBAC y auditoría.
 - Testcontainers y Spring Security Test están declarados.
@@ -36,7 +36,7 @@ El backend ya está construido como monolito modular. Incluye autenticación, or
 | P1 | IA real no es el camino por defecto | Mantener `mock` solo en local/test y habilitar un proveedor real con timeouts, límites, auditoría y presupuesto. |
 | P1 | Alcance funcional demasiado ancho | Congelar billing, social, developer platform y enterprise hasta cerrar el ciclo principal. |
 | P1 | CI duplicado y parcialmente comentado | Consolidar en un workflow único; usar `npm ci` y ejecutar backend con PostgreSQL real. |
-| P1 | Contrato y migraciones documentadas quedaron atrás | `03-DATABASE.md` termina en V14, pero existen V15–V22. Actualizar catálogo, ERD y contrato OpenAPI. |
+| P1 | Contrato y migraciones documentadas quedaron atrás | `03-DATABASE.md` termina en V14, pero existen V15–V26. Actualizar catálogo, ERD y contrato OpenAPI. |
 | P2 | Falta observabilidad operativa completa | Añadir métricas de negocio, trazas, logs JSON y alertas con SLO. |
 
 ## 3. Alcance recomendado del MVP backend
@@ -89,7 +89,7 @@ curl -fsS http://localhost:8080/actuator/health
 ### Criterios de aceptación
 
 - CI verde con pruebas unitarias e integración.
-- La base vacía llega de V1 a V22 sin intervención manual.
+- La base vacía llega de V1 a V26 sin intervención manual.
 - Swagger, health y API usan el mismo puerto.
 - No existen claves privadas reales o de prueba dentro de la imagen de producción.
 
@@ -130,7 +130,7 @@ Ninguna historia funcional avanza si falla una prueba de aislamiento o autentica
 - Mantener `pgvector/pgvector:pg16` en Compose con volumen nombrado.
 - Flyway como única autoridad del esquema; mantener `ddl-auto=validate`.
 - Agregar seeds explícitos solo para perfil local.
-- Actualizar `03-DATABASE.md` a V22 y generar ERD actual.
+- Actualizar `03-DATABASE.md` a V26 y generar ERD actual.
 - Revisar duplicación conceptual entre `plans/subscriptions` y `subscription_plans/organization_subscriptions`.
 - Revisar todas las FKs, índices compuestos, constraints y soft deletes.
 - Probar RLS con el rol real que usará la aplicación, no con superusuario.
@@ -288,6 +288,6 @@ Una fase solo termina cuando:
 3. Consolidar CI y ejecutar PostgreSQL/Testcontainers.
 4. Crear suite de aislamiento entre dos organizaciones.
 5. Migrar refresh token a cookie segura.
-6. Actualizar documentación DB V15–V22.
+6. Actualizar documentación DB V15–V26.
 7. Congelar módulos no MVP con feature flags.
 8. Implementar un conector real y un recorrido E2E del ciclo principal.

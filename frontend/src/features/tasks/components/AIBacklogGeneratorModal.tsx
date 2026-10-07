@@ -42,9 +42,9 @@ export const AIBacklogGeneratorModal: React.FC<AIBacklogGeneratorModalProps> = (
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-fade-in">
-      <div className="relative w-full max-w-2xl rounded-2xl border border-white/[0.1] bg-slate-900/95 p-6 shadow-2xl backdrop-blur-2xl">
+      <div className="relative w-full max-w-2xl rounded-2xl border border-zinc-900/[0.16] dark:border-white/[0.1] bg-slate-900/95 p-6 shadow-2xl backdrop-blur-2xl">
         {/* Header */}
-        <div className="flex items-center justify-between border-b border-white/[0.08] pb-4">
+        <div className="flex items-center justify-between border-b border-zinc-900/[0.13] dark:border-white/[0.08] pb-4">
           <div className="flex items-center gap-2.5">
             <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-cyan-500/20 to-blue-500/20 border border-cyan-500/30 text-cyan-400">
               <Sparkles className="h-5 w-5" strokeWidth={1.5} />
@@ -60,7 +60,7 @@ export const AIBacklogGeneratorModal: React.FC<AIBacklogGeneratorModalProps> = (
           </div>
           <button
             onClick={handleClose}
-            className="rounded-lg p-1.5 text-slate-400 hover:bg-white/[0.08] hover:text-slate-100 transition-colors"
+            className="rounded-lg p-1.5 text-slate-400 hover:bg-zinc-900/[0.08] dark:hover:bg-white/[0.08] hover:text-slate-100 transition-colors"
           >
             <X className="h-4 w-4" strokeWidth={1.5} />
           </button>
@@ -96,11 +96,11 @@ export const AIBacklogGeneratorModal: React.FC<AIBacklogGeneratorModalProps> = (
               </ul>
             </div>
 
-            <div className="mt-6 flex items-center justify-end gap-3 pt-3 border-t border-white/[0.08]">
+            <div className="mt-6 flex items-center justify-end gap-3 pt-3 border-t border-zinc-900/[0.13] dark:border-white/[0.08]">
               <button
                 type="button"
                 onClick={handleClose}
-                className="rounded-xl border border-white/[0.08] px-4 py-2 text-xs font-medium text-slate-300 hover:bg-white/[0.06] transition-colors"
+                className="rounded-xl border border-zinc-900/[0.13] dark:border-white/[0.08] px-4 py-2 text-xs font-medium text-slate-300 hover:bg-zinc-900/[0.06] dark:hover:bg-white/[0.06] transition-colors"
               >
                 Cancelar
               </button>
@@ -168,7 +168,7 @@ export const AIBacklogGeneratorModal: React.FC<AIBacklogGeneratorModalProps> = (
               {result.tasks.map((task, idx) => (
                 <div
                   key={task.id || idx}
-                  className="rounded-lg border border-white/[0.06] bg-slate-950/40 p-3 flex items-start justify-between gap-3 text-xs"
+                  className="rounded-lg border border-zinc-900/[0.1] dark:border-white/[0.06] bg-slate-950/40 p-3 flex items-start justify-between gap-3 text-xs"
                 >
                   <div>
                     <h5 className="font-medium text-slate-200">{task.title}</h5>
@@ -177,7 +177,7 @@ export const AIBacklogGeneratorModal: React.FC<AIBacklogGeneratorModalProps> = (
                     )}
                   </div>
                   <div className="flex items-center gap-2 shrink-0">
-                    <span className="text-[10px] rounded px-1.5 py-0.5 border border-white/[0.08] text-slate-400">
+                    <span className="text-[10px] rounded px-1.5 py-0.5 border border-zinc-900/[0.13] dark:border-white/[0.08] text-slate-400">
                       {task.priority}
                     </span>
                     <span className="text-[10px] text-cyan-400 font-medium">
@@ -188,7 +188,7 @@ export const AIBacklogGeneratorModal: React.FC<AIBacklogGeneratorModalProps> = (
               ))}
             </div>
 
-            <div className="mt-6 flex items-center justify-end gap-3 pt-3 border-t border-white/[0.08]">
+            <div className="mt-6 flex items-center justify-end gap-3 pt-3 border-t border-zinc-900/[0.13] dark:border-white/[0.08]">
               <button
                 type="button"
                 onClick={handleClose}

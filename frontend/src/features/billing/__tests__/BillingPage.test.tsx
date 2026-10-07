@@ -21,57 +21,40 @@ vi.mock('../services/billingService', () => ({
   },
 }));
 
+// Datos con la forma exacta de los DTO del backend (com.bowol.subscription.dto).
 const mockPlans: SubscriptionPlan[] = [
   {
     id: 'FREE',
-    planKey: 'FREE',
     name: 'Free Starter',
     description: 'Para profesionales y startups explorando la plataforma',
-    monthlyPrice: 0,
-    annualPrice: 0,
-    currency: 'USD',
-    maxMonthlyCredits: 500,
-    maxProjects: 1,
-    maxSocialProfiles: 1,
-    unlimitedResearch: false,
-    unlimitedCompetitors: false,
-    hasApiAccess: false,
-    hasDedicatedSupport: false,
-    active: true,
+    priceUsdMonthly: 0,
+    aiCreditsMonthly: 500,
+    maxProjects: 3,
+    maxMembers: 5,
+    features: ['Matriz FODA dinámica'],
+    isActive: true,
   },
   {
     id: 'PRO',
-    planKey: 'PRO',
     name: 'Growth Pro',
     description: 'Para scaleups y equipos de producto con alta cadencia',
-    monthlyPrice: 49,
-    annualPrice: 490,
-    currency: 'USD',
-    maxMonthlyCredits: 5000,
-    maxProjects: 10,
-    maxSocialProfiles: 5,
-    unlimitedResearch: true,
-    unlimitedCompetitors: true,
-    hasApiAccess: false,
-    hasDedicatedSupport: false,
-    active: true,
+    priceUsdMonthly: 49,
+    aiCreditsMonthly: 5000,
+    maxProjects: 25,
+    maxMembers: 20,
+    features: ['Investigación de mercado profunda'],
+    isActive: true,
   },
   {
     id: 'BUSINESS',
-    planKey: 'BUSINESS',
     name: 'Enterprise Scale',
     description: 'Para organizaciones consolidadas y agencias',
-    monthlyPrice: 199,
-    annualPrice: 1990,
-    currency: 'USD',
-    maxMonthlyCredits: 25000,
+    priceUsdMonthly: 199,
+    aiCreditsMonthly: 25000,
     maxProjects: -1,
-    maxSocialProfiles: -1,
-    unlimitedResearch: true,
-    unlimitedCompetitors: true,
-    hasApiAccess: true,
-    hasDedicatedSupport: true,
-    active: true,
+    maxMembers: -1,
+    features: ['Soporte prioritario'],
+    isActive: true,
   },
 ];
 
@@ -80,14 +63,15 @@ const mockSubscription: OrganizationSubscription = {
   organizationId: 'org-1',
   plan: mockPlans[0],
   status: 'ACTIVE',
-  billingCycle: 'MONTHLY',
   currentPeriodStart: '2026-09-01T00:00:00Z',
   currentPeriodEnd: '2026-10-01T00:00:00Z',
+  aiCreditsTotal: 500,
+  aiCreditsUsed: 100,
+  aiCreditsRemaining: 400,
+  usagePercentage: 20,
+  paymentGateway: 'MOCK_STRIPE',
   cancelAtPeriodEnd: false,
-  canceledAt: null,
-  creditsBalance: 400,
-  creditsUsedThisCycle: 100,
-  externalSubscriptionId: null,
+  createdAt: '2026-09-01T00:00:00Z',
 };
 
 const mockInvoices: BillingInvoice[] = [
@@ -95,13 +79,12 @@ const mockInvoices: BillingInvoice[] = [
     id: 'inv-1',
     organizationId: 'org-1',
     invoiceNumber: 'INV-2026-0001',
-    amount: 49.0,
-    currency: 'USD',
+    amountUsd: 49.0,
     status: 'PAID',
-    billingReason: 'Suscripción Growth Pro (MONTHLY)',
-    paymentGateway: 'STRIPE',
-    paidAt: '2026-09-01T00:00:00Z',
-    invoicePdfUrl: null,
+    planName: 'Growth Pro',
+    periodStart: '2026-09-01T00:00:00Z',
+    periodEnd: '2026-10-01T00:00:00Z',
+    pdfUrl: null,
     createdAt: '2026-09-01T00:00:00Z',
   },
 ];
@@ -143,7 +126,7 @@ describe('BillingPage Component (SaaS Subscriptions & Monetization)', () => {
     renderComponent();
 
     await waitFor(() => {
-      expect(screen.getByText('Growth Pro')).toBeInTheDocument();
+      expect(screen.getAllByText('Growth Pro').length).toBeGreaterThan(0);
       expect(screen.getByText('Enterprise Scale')).toBeInTheDocument();
       expect(screen.getByText('$49')).toBeInTheDocument();
       expect(screen.getByText('$199')).toBeInTheDocument();
@@ -164,7 +147,7 @@ describe('BillingPage Component (SaaS Subscriptions & Monetization)', () => {
     const upgradedSub: OrganizationSubscription = {
       ...mockSubscription,
       plan: mockPlans[1],
-      creditsBalance: 5000,
+      aiCreditsRemaining: 5000,
     };
     vi.mocked(billingService.upgradeSubscription).mockResolvedValue(upgradedSub);
 
@@ -185,8 +168,7 @@ describe('BillingPage Component (SaaS Subscriptions & Monetization)', () => {
 
     await waitFor(() => {
       expect(billingService.upgradeSubscription).toHaveBeenCalledWith({
-        planKey: 'PRO',
-        billingCycle: 'MONTHLY',
+        planId: 'PRO',
         paymentGateway: 'STRIPE',
       });
     });
@@ -195,7 +177,8 @@ describe('BillingPage Component (SaaS Subscriptions & Monetization)', () => {
   it('opens buy credits modal and purchases credit pack', async () => {
     const updatedCreditsSub: OrganizationSubscription = {
       ...mockSubscription,
-      creditsBalance: 1400,
+      aiCreditsTotal: 1500,
+      aiCreditsRemaining: 1400,
     };
     vi.mocked(billingService.buyCredits).mockResolvedValue(updatedCreditsSub);
 
@@ -216,8 +199,7 @@ describe('BillingPage Component (SaaS Subscriptions & Monetization)', () => {
 
     await waitFor(() => {
       expect(billingService.buyCredits).toHaveBeenCalledWith({
-        packSize: 1000,
-        paymentGateway: 'STRIPE',
+        credits: 1000,
       });
     });
   });

@@ -213,7 +213,10 @@ class HypothesisControllerTests {
                 .organizationId(testOrg.getId())
                 .opportunityId(testOpportunity.getId())
                 .statement("Enunciado inicial")
-                .status(HypothesisStatus.DRAFT)
+                .validationMethod("Entrevistas con clientes")
+                .successMetric("Tasa de conversión")
+                .targetValue(">= 25%")
+                .status(HypothesisStatus.READY)
                 .build());
 
         UpdateHypothesisRequest request = UpdateHypothesisRequest.builder()

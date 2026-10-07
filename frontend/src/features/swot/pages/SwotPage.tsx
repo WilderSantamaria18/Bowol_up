@@ -78,13 +78,13 @@ export const SwotPage: React.FC = () => {
   if (isLoading) {
     return (
       <div className="space-y-8 animate-pulse">
-        <div className="h-16 bg-white/[0.04] rounded-2xl w-full" />
-        <div className="h-28 bg-white/[0.04] rounded-2xl w-full" />
+        <div className="h-16 bg-zinc-900/[0.04] dark:bg-white/[0.04] rounded-2xl w-full" />
+        <div className="h-28 bg-zinc-900/[0.04] dark:bg-white/[0.04] rounded-2xl w-full" />
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          <div className="h-72 bg-white/[0.04] rounded-2xl" />
-          <div className="h-72 bg-white/[0.04] rounded-2xl" />
-          <div className="h-72 bg-white/[0.04] rounded-2xl" />
-          <div className="h-72 bg-white/[0.04] rounded-2xl" />
+          <div className="h-72 bg-zinc-900/[0.04] dark:bg-white/[0.04] rounded-2xl" />
+          <div className="h-72 bg-zinc-900/[0.04] dark:bg-white/[0.04] rounded-2xl" />
+          <div className="h-72 bg-zinc-900/[0.04] dark:bg-white/[0.04] rounded-2xl" />
+          <div className="h-72 bg-zinc-900/[0.04] dark:bg-white/[0.04] rounded-2xl" />
         </div>
       </div>
     );
@@ -104,15 +104,15 @@ export const SwotPage: React.FC = () => {
 
       {/* Empty State */}
       {!swot ? (
-        <div className="glass-panel p-10 sm:p-14 rounded-3xl border border-white/[0.08] text-center max-w-3xl mx-auto space-y-6 bg-gradient-to-b from-white/[0.03] to-transparent shadow-2xl">
+        <div className="glass-panel p-10 sm:p-14 rounded-3xl border border-zinc-900/[0.13] dark:border-white/[0.08] text-center max-w-3xl mx-auto space-y-6 bg-gradient-to-b from-white/[0.03] to-transparent shadow-2xl">
           <div className="w-16 h-16 rounded-2xl bg-orange-500/10 border border-orange-500/30 flex items-center justify-center text-orange-400 mx-auto shadow-inner">
             <Sparkles className="w-8 h-8 animate-pulse" strokeWidth={1.5} />
           </div>
           <div className="space-y-2">
-            <h2 className="text-xl sm:text-2xl font-bold text-white tracking-tight">
+            <h2 className="text-xl sm:text-2xl font-bold text-zinc-900 dark:text-white tracking-tight">
               Aún no tienes una Matriz FODA activa
             </h2>
-            <p className="text-sm text-zinc-400 max-w-lg mx-auto leading-relaxed">
+            <p className="text-sm text-zinc-600 dark:text-zinc-400 max-w-lg mx-auto leading-relaxed">
               El motor estratégico de BOWOL analizará tu perfil de negocio y las señales de mercado más relevantes para generar tu primer diagnóstico FODA en segundos.
             </p>
           </div>

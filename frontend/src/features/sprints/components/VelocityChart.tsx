@@ -11,7 +11,7 @@ export const VelocityChart: React.FC<VelocityChartProps> = ({ velocity }) => {
 
   if (history.length === 0) {
     return (
-      <div className="p-8 text-center text-xs text-zinc-500 rounded-xl bg-surface-subtle border border-white/[0.06]">
+      <div className="p-8 text-center text-xs text-zinc-500 rounded-xl bg-surface-subtle border border-zinc-900/[0.1] dark:border-white/[0.06]">
         No hay sprints registrados para calcular la velocidad histórica de este proyecto.
       </div>
     );
@@ -45,16 +45,16 @@ export const VelocityChart: React.FC<VelocityChartProps> = ({ velocity }) => {
   const avgY = getY(Number(velocity.averageVelocityHours) || 0);
 
   return (
-    <div className="rounded-xl bg-[#0F0F12] border border-white/[0.08] p-5 shadow-lg space-y-4">
+    <div className="rounded-xl bg-white dark:bg-[#0F0F12] border border-zinc-900/[0.13] dark:border-white/[0.08] p-5 shadow-lg space-y-4">
       {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-white/[0.06]">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-zinc-900/[0.1] dark:border-white/[0.06]">
         <div>
           <div className="flex items-center gap-2 mb-1">
             <span className="text-[10px] font-mono uppercase tracking-wider text-orange-400">
               Velocity Engine
             </span>
           </div>
-          <h3 className="text-sm font-semibold text-white flex items-center gap-2">
+          <h3 className="text-sm font-semibold text-zinc-900 dark:text-white flex items-center gap-2">
             <Zap className="w-4 h-4 text-amber-400" strokeWidth={1.5} />
             Velocidad por Sprint & Rendimiento del Equipo
           </h3>
@@ -63,7 +63,7 @@ export const VelocityChart: React.FC<VelocityChartProps> = ({ velocity }) => {
         <div className="flex flex-wrap items-center gap-4 text-xs font-mono">
           <div className="flex items-center gap-1.5">
             <span className="w-3 h-3 bg-zinc-600 rounded-sm inline-block" />
-            <span className="text-zinc-400 text-[11px]">Comprometidas</span>
+            <span className="text-zinc-600 dark:text-zinc-400 text-[11px]">Comprometidas</span>
           </div>
           <div className="flex items-center gap-1.5">
             <span className="w-3 h-3 bg-emerald-500 rounded-sm inline-block" />
@@ -71,11 +71,11 @@ export const VelocityChart: React.FC<VelocityChartProps> = ({ velocity }) => {
           </div>
           <div className="flex items-center gap-1.5">
             <span className="w-3 h-0.5 bg-amber-400 border-b border-dashed border-amber-300 inline-block" />
-            <span className="text-amber-300 text-[11px]">Promedio ({velocity.averageVelocityHours}h)</span>
+            <span className="text-amber-700 dark:text-amber-300 text-[11px]">Promedio ({velocity.averageVelocityHours}h)</span>
           </div>
           {velocity.averageCompletionRate !== undefined && (
-            <div className="text-[11px] text-zinc-400 pl-2 border-l border-white/[0.08]">
-              Tasa Promedio: <span className="text-white font-bold">{velocity.averageCompletionRate}%</span>
+            <div className="text-[11px] text-zinc-600 dark:text-zinc-400 pl-2 border-l border-zinc-900/[0.13] dark:border-white/[0.08]">
+              Tasa Promedio: <span className="text-zinc-900 dark:text-white font-bold">{velocity.averageCompletionRate}%</span>
             </div>
           )}
         </div>
@@ -198,22 +198,22 @@ export const VelocityChart: React.FC<VelocityChartProps> = ({ velocity }) => {
       </div>
 
       {/* Footer stats summary */}
-      <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-3 border-t border-white/[0.06]">
-        <div className="p-3 rounded-lg bg-white/[0.02] border border-white/[0.04]">
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-3 border-t border-zinc-900/[0.1] dark:border-white/[0.06]">
+        <div className="p-3 rounded-lg bg-zinc-900/[0.02] dark:bg-white/[0.02] border border-zinc-900/[0.08] dark:border-white/[0.04]">
           <span className="text-[10px] text-zinc-500 uppercase font-mono">Sprints Evaluados</span>
-          <p className="text-lg font-bold text-white mt-0.5">{history.length}</p>
+          <p className="text-lg font-bold text-zinc-900 dark:text-white mt-0.5">{history.length}</p>
         </div>
-        <div className="p-3 rounded-lg bg-white/[0.02] border border-white/[0.04]">
+        <div className="p-3 rounded-lg bg-zinc-900/[0.02] dark:bg-white/[0.02] border border-zinc-900/[0.08] dark:border-white/[0.04]">
           <span className="text-[10px] text-zinc-500 uppercase font-mono">Velocidad Promedio</span>
           <p className="text-lg font-bold text-amber-400 mt-0.5">{velocity.averageVelocityHours}h</p>
         </div>
-        <div className="p-3 rounded-lg bg-white/[0.02] border border-white/[0.04]">
+        <div className="p-3 rounded-lg bg-zinc-900/[0.02] dark:bg-white/[0.02] border border-zinc-900/[0.08] dark:border-white/[0.04]">
           <span className="text-[10px] text-zinc-500 uppercase font-mono">Efectividad Global</span>
           <p className="text-lg font-bold text-emerald-400 mt-0.5">
             {velocity.averageCompletionRate !== undefined ? `${velocity.averageCompletionRate}%` : 'N/A'}
           </p>
         </div>
-        <div className="p-3 rounded-lg bg-white/[0.02] border border-white/[0.04]">
+        <div className="p-3 rounded-lg bg-zinc-900/[0.02] dark:bg-white/[0.02] border border-zinc-900/[0.08] dark:border-white/[0.04]">
           <span className="text-[10px] text-zinc-500 uppercase font-mono">Último Sprint</span>
           <p className="text-lg font-bold text-cyan-400 mt-0.5 truncate">
             {history[history.length - 1]?.completedHours ?? 0}h

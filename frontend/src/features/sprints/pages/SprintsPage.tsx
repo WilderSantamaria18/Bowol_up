@@ -184,18 +184,18 @@ export const SprintsPage: React.FC = () => {
   return (
     <div className="space-y-6">
       {/* Page Header */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-4 border-b border-white/[0.08]">
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-4 border-b border-zinc-900/[0.13] dark:border-white/[0.08]">
         <div>
           <div className="flex items-center gap-2 mb-1">
             <span className="text-xs font-mono uppercase tracking-wider text-orange-400">
               Scrum & Agile Cycles
             </span>
           </div>
-          <h1 className="text-2xl font-bold tracking-tight text-white flex items-center gap-2.5">
+          <h1 className="text-2xl font-bold tracking-tight text-zinc-900 dark:text-white flex items-center gap-2.5">
             <Repeat className="w-6 h-6 text-orange-400" strokeWidth={1.5} />
             Gestión de Sprints & Velocidad
           </h1>
-          <p className="text-sm text-zinc-400 mt-1">
+          <p className="text-sm text-zinc-600 dark:text-zinc-400 mt-1">
             Planifica ciclos ágiles, monitorea el burndown diario y optimiza el rendimiento del equipo.
           </p>
         </div>
@@ -203,16 +203,16 @@ export const SprintsPage: React.FC = () => {
         {/* Controls: Project selector & New Sprint CTA */}
         <div className="flex flex-wrap items-center gap-3">
           {projects.length > 0 && (
-            <div className="flex items-center gap-2 bg-white/[0.04] border border-white/[0.08] rounded-xl px-3 py-1.5">
-              <FolderKanban className="w-4 h-4 text-zinc-400" strokeWidth={1.5} />
+            <div className="flex items-center gap-2 bg-zinc-900/[0.04] dark:bg-white/[0.04] border border-zinc-900/[0.13] dark:border-white/[0.08] rounded-xl px-3 py-1.5">
+              <FolderKanban className="w-4 h-4 text-zinc-600 dark:text-zinc-400" strokeWidth={1.5} />
               <select
                 value={selectedProjectId}
                 onChange={(e) => setSelectedProjectId(e.target.value)}
-                className="bg-transparent text-xs text-white focus:outline-none cursor-pointer pr-2"
+                className="bg-transparent text-xs text-zinc-900 dark:text-white focus:outline-none cursor-pointer pr-2"
                 aria-label="Seleccionar Proyecto"
               >
                 {projects.map((p) => (
-                  <option key={p.id} value={p.id} className="bg-zinc-900 text-white">
+                  <option key={p.id} value={p.id} className="bg-zinc-100 dark:bg-zinc-900 text-white">
                     {p.name}
                   </option>
                 ))}
@@ -242,12 +242,12 @@ export const SprintsPage: React.FC = () => {
 
       {/* No projects state */}
       {!loading && projects.length === 0 && (
-        <div className="rounded-2xl border border-white/[0.08] bg-[#0F0F12] p-12 text-center max-w-lg mx-auto space-y-4">
+        <div className="rounded-2xl border border-zinc-900/[0.13] dark:border-white/[0.08] bg-white dark:bg-[#0F0F12] p-12 text-center max-w-lg mx-auto space-y-4">
           <div className="w-12 h-12 rounded-xl bg-orange-500/10 border border-orange-500/20 flex items-center justify-center text-orange-400 mx-auto">
             <Layers className="w-6 h-6" strokeWidth={1.5} />
           </div>
-          <h2 className="text-lg font-semibold text-white">No hay proyectos activos</h2>
-          <p className="text-xs text-zinc-400 leading-relaxed">
+          <h2 className="text-lg font-semibold text-zinc-900 dark:text-white">No hay proyectos activos</h2>
+          <p className="text-xs text-zinc-600 dark:text-zinc-400 leading-relaxed">
             Para gestionar sprints e iteraciones ágiles, primero crea un proyecto en el módulo de Ejecución o Tareas.
           </p>
         </div>
@@ -257,13 +257,13 @@ export const SprintsPage: React.FC = () => {
       {projects.length > 0 && (
         <div className="space-y-6">
           {/* Navigation Tabs */}
-          <div className="flex border-b border-white/[0.08] gap-6">
+          <div className="flex border-b border-zinc-900/[0.13] dark:border-white/[0.08] gap-6">
             <button
               onClick={() => setActiveTab('ACTIVE_SPRINT')}
               className={`pb-3 text-xs font-medium border-b-2 flex items-center gap-2 transition-colors ${
                 activeTab === 'ACTIVE_SPRINT'
                   ? 'border-orange-500 text-orange-400 font-semibold'
-                  : 'border-transparent text-zinc-400 hover:text-zinc-200'
+                  : 'border-transparent text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-200'
               }`}
             >
               <Activity className="w-3.5 h-3.5" strokeWidth={1.5} />
@@ -278,7 +278,7 @@ export const SprintsPage: React.FC = () => {
               className={`pb-3 text-xs font-medium border-b-2 flex items-center gap-2 transition-colors ${
                 activeTab === 'PLANNING'
                   ? 'border-orange-500 text-orange-400 font-semibold'
-                  : 'border-transparent text-zinc-400 hover:text-zinc-200'
+                  : 'border-transparent text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-200'
               }`}
             >
               <Calendar className="w-3.5 h-3.5" strokeWidth={1.5} />
@@ -290,7 +290,7 @@ export const SprintsPage: React.FC = () => {
               className={`pb-3 text-xs font-medium border-b-2 flex items-center gap-2 transition-colors ${
                 activeTab === 'METRICS_VELOCITY'
                   ? 'border-orange-500 text-orange-400 font-semibold'
-                  : 'border-transparent text-zinc-400 hover:text-zinc-200'
+                  : 'border-transparent text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-200'
               }`}
             >
               <Zap className="w-3.5 h-3.5" strokeWidth={1.5} />
@@ -314,13 +314,13 @@ export const SprintsPage: React.FC = () => {
                   {activeSprintBurndown && <SprintBurndownChart burndown={activeSprintBurndown} />}
                 </>
               ) : (
-                <div className="rounded-xl border border-white/[0.08] bg-[#0F0F12] p-10 text-center space-y-4">
-                  <div className="w-12 h-12 rounded-xl bg-zinc-800/80 border border-white/[0.06] flex items-center justify-center text-zinc-400 mx-auto">
+                <div className="rounded-xl border border-zinc-900/[0.13] dark:border-white/[0.08] bg-white dark:bg-[#0F0F12] p-10 text-center space-y-4">
+                  <div className="w-12 h-12 rounded-xl bg-zinc-100 dark:bg-zinc-800/80 border border-zinc-900/[0.1] dark:border-white/[0.06] flex items-center justify-center text-zinc-600 dark:text-zinc-400 mx-auto">
                     <Activity className="w-6 h-6" strokeWidth={1.5} />
                   </div>
                   <div>
-                    <h3 className="text-base font-semibold text-white">No hay sprint activo actualmente</h3>
-                    <p className="text-xs text-zinc-400 mt-1 max-w-md mx-auto">
+                    <h3 className="text-base font-semibold text-zinc-900 dark:text-white">No hay sprint activo actualmente</h3>
+                    <p className="text-xs text-zinc-600 dark:text-zinc-400 mt-1 max-w-md mx-auto">
                       Inicia un sprint planificado desde la pestaña de Planificación para activar el seguimiento de burndown y métricas en tiempo real.
                     </p>
                   </div>
@@ -354,7 +354,7 @@ export const SprintsPage: React.FC = () => {
               {/* Planned Sprints */}
               <div className="space-y-4">
                 <div className="flex items-center justify-between">
-                  <h2 className="text-sm font-semibold text-white flex items-center gap-2">
+                  <h2 className="text-sm font-semibold text-zinc-900 dark:text-white flex items-center gap-2">
                     <Calendar className="w-4 h-4 text-orange-400" strokeWidth={1.5} />
                     Sprints Planificados ({plannedSprints.length})
                   </h2>
@@ -369,7 +369,7 @@ export const SprintsPage: React.FC = () => {
                 </div>
 
                 {plannedSprints.length === 0 ? (
-                  <div className="p-6 text-center text-xs text-zinc-500 rounded-xl bg-surface-subtle border border-white/[0.06]">
+                  <div className="p-6 text-center text-xs text-zinc-500 rounded-xl bg-surface-subtle border border-zinc-900/[0.1] dark:border-white/[0.06]">
                     No hay sprints planificados en cola. Crea uno para comenzar a organizar tu backlog.
                   </div>
                 ) : (
@@ -387,14 +387,14 @@ export const SprintsPage: React.FC = () => {
               </div>
 
               {/* Completed Sprints History */}
-              <div className="space-y-4 pt-4 border-t border-white/[0.06]">
-                <h2 className="text-sm font-semibold text-zinc-300 flex items-center gap-2">
+              <div className="space-y-4 pt-4 border-t border-zinc-900/[0.1] dark:border-white/[0.06]">
+                <h2 className="text-sm font-semibold text-zinc-700 dark:text-zinc-300 flex items-center gap-2">
                   <CheckCircle2 className="w-4 h-4 text-emerald-400" strokeWidth={1.5} />
                   Historial de Sprints Completados ({completedSprints.length})
                 </h2>
 
                 {completedSprints.length === 0 ? (
-                  <div className="p-6 text-center text-xs text-zinc-500 rounded-xl bg-surface-subtle border border-white/[0.06]">
+                  <div className="p-6 text-center text-xs text-zinc-500 rounded-xl bg-surface-subtle border border-zinc-900/[0.1] dark:border-white/[0.06]">
                     Aún no se han completado ciclos de sprint en este proyecto.
                   </div>
                 ) : (
@@ -415,14 +415,14 @@ export const SprintsPage: React.FC = () => {
               {projectVelocity && <VelocityChart velocity={projectVelocity} />}
 
               {/* Sprint Burndown Explorer */}
-              <div className="space-y-4 pt-4 border-t border-white/[0.06]">
+              <div className="space-y-4 pt-4 border-t border-zinc-900/[0.1] dark:border-white/[0.06]">
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                   <div>
-                    <h2 className="text-sm font-semibold text-white flex items-center gap-2">
+                    <h2 className="text-sm font-semibold text-zinc-900 dark:text-white flex items-center gap-2">
                       <TrendingDown className="w-4 h-4 text-cyan-400" strokeWidth={1.5} />
                       Explorador de Burndown por Sprint
                     </h2>
-                    <p className="text-xs text-zinc-400 mt-0.5">
+                    <p className="text-xs text-zinc-600 dark:text-zinc-400 mt-0.5">
                       Inspecciona el gráfico de horas ideales vs reales de cualquier sprint del proyecto.
                     </p>
                   </div>
@@ -431,7 +431,7 @@ export const SprintsPage: React.FC = () => {
                     <select
                       value={selectedBurndownSprintId || activeSprint?.id || sprints[0]?.id || ''}
                       onChange={(e) => setSelectedBurndownSprintId(e.target.value)}
-                      className="bg-[#0F0F12] border border-white/[0.08] text-xs text-zinc-200 rounded-lg px-3 py-1.5 focus:outline-none"
+                      className="bg-zinc-100 dark:bg-[#0F0F12] border border-zinc-900/[0.13] dark:border-white/[0.08] text-xs text-zinc-900 dark:text-zinc-200 rounded-lg px-3 py-1.5 focus:outline-none"
                     >
                       {sprints.map((s) => (
                         <option key={s.id} value={s.id}>
@@ -447,7 +447,7 @@ export const SprintsPage: React.FC = () => {
                 ) : activeSprintBurndown ? (
                   <SprintBurndownChart burndown={activeSprintBurndown} />
                 ) : (
-                  <div className="p-8 text-center text-xs text-zinc-500 rounded-xl bg-surface-subtle border border-white/[0.06]">
+                  <div className="p-8 text-center text-xs text-zinc-500 rounded-xl bg-surface-subtle border border-zinc-900/[0.1] dark:border-white/[0.06]">
                     Selecciona un sprint para visualizar su burndown.
                   </div>
                 )}

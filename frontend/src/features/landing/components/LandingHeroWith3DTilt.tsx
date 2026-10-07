@@ -1,24 +1,23 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { motion, AnimatePresence, useMotionValue, useSpring, useTransform } from 'framer-motion';
+import { motion, AnimatePresence, useMotionValue, useSpring, useTransform, useReducedMotion, useInView } from 'framer-motion';
 import { 
   ArrowRight, 
   Play, 
   Lock, 
   CheckCircle2, 
-  ShieldCheck, 
   Activity, 
   Target, 
   Zap, 
   LayoutDashboard, 
-  TrendingUp, 
   Bot, 
-  Grid2X2,
-  Layers,
-  ChevronRight,
-  ChevronLeft
+  ChevronRight, 
+  ChevronLeft, 
+  Calendar, 
+  Sparkles 
 } from 'lucide-react';
 import { AnimatedCounter } from './AnimatedCounter';
+import { landingSlideVariants } from '../landingMotion';
 
 interface HeroSlide {
   id: string;
@@ -35,52 +34,52 @@ interface HeroSlide {
 
 const heroSlides: HeroSlide[] = [
   {
-    id: 'orquestacion',
-    badge: 'Enterprise Strategy Workspace 2026',
-    tag: 'Fase 01 a 04 • Ciclo Continuo',
-    titlePrefix: 'Del ruido del mercado a la',
-    titleHighlight: 'ejecución estratégica real.',
-    subtitle: 'BOWOL conecta señales vivas de mercado, análisis competitivo FODA y formulación de hipótesis con los sprints ejecutables de tu equipo. Un solo ciclo continuo.',
-    primaryCtaText: 'Comenzar prueba empresarial',
+    id: 'planificador',
+    badge: 'Planificador Inteligente de Actividades',
+    tag: 'Automatización con IA para Emprendimientos & PYMES',
+    titlePrefix: 'De una idea o meta al plan de',
+    titleHighlight: 'actividades listo en segundos.',
+    subtitle: 'BOWOL desglosa tus proyectos, lanzamientos y tareas operativas con IA, asigna responsables y crea cronogramas claros para tu equipo sin hojas de cálculo interminables.',
+    primaryCtaText: 'Comenzar a planificar gratis',
     primaryCtaLink: '/register',
-    secondaryCtaText: 'Ver terminal de producto',
+    secondaryCtaText: 'Ver demostración en vivo',
     secondaryCtaLink: '#interactive-demo',
   },
   {
-    id: 'radar',
-    badge: 'Detección Temprana Multi-Fuente',
-    tag: '28+ Fuentes Científicas & Mercado',
-    titlePrefix: 'De la señal competitiva al',
-    titleHighlight: 'descubrimiento empírico continuo.',
-    subtitle: 'Monitoreo de papers arXiv, repositorios de código y registros regulatorios. Transforma datos dispersos en evidencia estructurada para decisiones corporativas inmediatas.',
-    primaryCtaText: 'Explorar radar de señales',
-    primaryCtaLink: '#ciclo',
-    secondaryCtaText: 'Ver fuentes verificadas',
+    id: 'dia-a-dia',
+    badge: 'Organización del Día a Día',
+    tag: 'Tareas recurrentes & Flujos ágiles',
+    titlePrefix: 'Organiza las actividades diarias sin',
+    titleHighlight: 'olvidos ni fricción de equipo.',
+    subtitle: 'Cierra el ciclo de tareas sueltas en WhatsApp o notas perdidas. Tableros Kanban visuales, fechas límite claras y sincronización en tiempo real.',
+    primaryCtaText: 'Probar tablero de actividades',
+    primaryCtaLink: '/register',
+    secondaryCtaText: 'Explorar flujo de trabajo',
+    secondaryCtaLink: '#ciclo',
+  },
+  {
+    id: 'metas',
+    badge: 'Priorización Inteligente de Metas',
+    tag: 'Enfoque semanal en lo que más impacta',
+    titlePrefix: 'De metas mensuales dispersas a',
+    titleHighlight: 'sprints semanales que se cumplen.',
+    subtitle: 'Identifica qué actividades generan mayor impacto en tus ventas y operaciones. Menos reuniones improductivas, más resultados tangibles.',
+    primaryCtaText: 'Crear sistema para mi negocio',
+    primaryCtaLink: '/register',
+    secondaryCtaText: 'Ver ejemplo interactivo',
     secondaryCtaLink: '#interactive-demo',
   },
   {
-    id: 'sprints',
-    badge: 'Priorización Matemática RICE',
-    tag: 'Descomposición Algorítmica de Backlog',
-    titlePrefix: 'De la hipótesis estratégica al',
-    titleHighlight: 'sprint ejecutable sin fricción.',
-    subtitle: 'Descompón epics en tareas listas para producción con estimación objetiva de impacto, confianza y esfuerzo. Sin reuniones infinitas ni documentos muertos.',
-    primaryCtaText: 'Solicitar acceso enterprise',
-    primaryCtaLink: '#solicitar',
-    secondaryCtaText: 'Simular sprint activo',
-    secondaryCtaLink: '#interactive-demo',
-  },
-  {
-    id: 'seguridad',
-    badge: 'Arquitectura Enterprise Blindada',
-    tag: 'SOC2 Type II • Multi-Tenant RLS',
-    titlePrefix: 'Gobierno de datos y compliance',
-    titleHighlight: 'con aislamiento criptográfico.',
-    subtitle: 'Aislamiento estricto de tenants con Row-Level Security, firmas criptográficas RS256, auditoría inmutable y cumplimiento pleno con GDPR y soberanía de datos.',
-    primaryCtaText: 'Conocer arquitectura de seguridad',
-    primaryCtaLink: '#plataforma',
-    secondaryCtaText: 'Contactar a soporte enterprise',
-    secondaryCtaLink: '#solicitar',
+    id: 'sistema',
+    badge: 'Tu Negocio en un Solo Sistema',
+    tag: 'Todo organizado • Simple & Escalable',
+    titlePrefix: 'El sistema de planificación ágil que tu',
+    titleHighlight: 'emprendimiento necesita para crecer.',
+    subtitle: 'Un espacio moderno y accesible para operar ordenadamente desde el primer día: proyectos, calendario, métricas de avance y roles de equipo.',
+    primaryCtaText: 'Empezar ahora',
+    primaryCtaLink: '/register',
+    secondaryCtaText: 'Ver módulos del sistema',
+    secondaryCtaLink: '#plataforma',
   },
 ];
 
@@ -88,21 +87,26 @@ export const LandingHeroWith3DTilt: React.FC = () => {
   const wrapRef = useRef<HTMLDivElement>(null);
   const [activeSlide, setActiveSlide] = useState(0);
   const [isCarouselPaused, setIsCarouselPaused] = useState(false);
+  const carouselRef = useRef<HTMLDivElement>(null);
+  const carouselVisible = useInView(carouselRef, { amount: 0.25 });
+  const reducedMotion = useReducedMotion();
+  const [hasCarouselFocus, setHasCarouselFocus] = useState(false);
+  const autoplay = carouselVisible && !isCarouselPaused && !hasCarouselFocus && !reducedMotion;
 
   // Framer motion values for buttery smooth 3D tilt
   const x = useMotionValue(0);
   const y = useMotionValue(0);
 
-  const mouseXSpring = useSpring(x, { stiffness: 150, damping: 20 });
-  const mouseYSpring = useSpring(y, { stiffness: 150, damping: 20 });
+  const mouseXSpring = useSpring(x, { stiffness: 110, damping: 26 });
+  const mouseYSpring = useSpring(y, { stiffness: 110, damping: 26 });
 
-  const rotateX = useTransform(mouseYSpring, [-0.5, 0.5], ['7.5deg', '-7.5deg']);
-  const rotateY = useTransform(mouseXSpring, [-0.5, 0.5], ['-7.5deg', '7.5deg']);
+  const rotateX = useTransform(mouseYSpring, [-0.5, 0.5], ['4deg', '-4deg']);
+  const rotateY = useTransform(mouseXSpring, [-0.5, 0.5], ['-4deg', '4deg']);
   const glareX = useTransform(mouseXSpring, [-0.5, 0.5], ['0%', '100%']);
   const glareY = useTransform(mouseYSpring, [-0.5, 0.5], ['0%', '100%']);
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (!wrapRef.current) return;
+    if (!wrapRef.current || reducedMotion || !window.matchMedia('(hover: hover) and (pointer: fine)').matches) return;
     const rect = wrapRef.current.getBoundingClientRect();
     const width = rect.width;
     const height = rect.height;
@@ -121,12 +125,12 @@ export const LandingHeroWith3DTilt: React.FC = () => {
 
   // Autoplay for Hero Title Carousel (5.5s per slide)
   useEffect(() => {
-    if (isCarouselPaused) return;
+    if (!autoplay) return;
     const timer = setInterval(() => {
       setActiveSlide((prev) => (prev + 1) % heroSlides.length);
     }, 5500);
     return () => clearInterval(timer);
-  }, [isCarouselPaused]);
+  }, [autoplay, activeSlide]);
 
   const currentSlide = heroSlides[activeSlide];
 
@@ -139,7 +143,7 @@ export const LandingHeroWith3DTilt: React.FC = () => {
   };
 
   return (
-    <section className="relative min-h-[100vh] pt-28 pb-24 overflow-hidden flex flex-col items-center justify-center">
+    <section id="landing-overview" className="relative min-h-[100vh] pt-28 pb-24 overflow-hidden flex flex-col items-center justify-center scroll-mt-20">
       {/* Dynamic Calibrated Atmospheric Ambient Background Animations (Soft, non-blinding) */}
       <motion.div
         animate={{ scale: [1, 1.06, 1], opacity: [0.10, 0.18, 0.10] }}
@@ -160,6 +164,11 @@ export const LandingHeroWith3DTilt: React.FC = () => {
 
       {/* ==================== TITLE & VALUE PROPOSITION CAROUSEL ==================== */}
       <div 
+        ref={carouselRef}
+        onFocusCapture={() => setHasCarouselFocus(true)}
+        onBlurCapture={(event) => {
+          if (!event.currentTarget.contains(event.relatedTarget as Node | null)) setHasCarouselFocus(false);
+        }}
         onMouseEnter={() => setIsCarouselPaused(true)}
         onMouseLeave={() => setIsCarouselPaused(false)}
         className="max-w-[1100px] mx-auto px-6 text-center w-full"
@@ -169,10 +178,10 @@ export const LandingHeroWith3DTilt: React.FC = () => {
           <AnimatePresence mode="wait">
             <motion.div
               key={`badge-${currentSlide.id}`}
-              initial={{ opacity: 0, y: -12, filter: 'blur(4px)' }}
-              animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
-              exit={{ opacity: 0, y: 12, filter: 'blur(4px)' }}
-              transition={{ duration: 0.35 }}
+              variants={landingSlideVariants}
+              initial="enter"
+              animate="visible"
+              exit="exit"
               className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-zinc-200/80 dark:bg-white/[0.06] border border-zinc-300/80 dark:border-white/[0.08] backdrop-blur-md text-xs text-zinc-800 dark:text-zinc-200 shadow-sm"
             >
               <span className="relative flex h-2 w-2">
@@ -191,10 +200,10 @@ export const LandingHeroWith3DTilt: React.FC = () => {
           <AnimatePresence mode="wait">
             <motion.h1
               key={`title-${currentSlide.id}`}
-              initial={{ opacity: 0, y: 20, filter: 'blur(8px)' }}
-              animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
-              exit={{ opacity: 0, y: -20, filter: 'blur(8px)' }}
-              transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
+              variants={landingSlideVariants}
+              initial="enter"
+              animate="visible"
+              exit="exit"
               className="text-4xl sm:text-6xl lg:text-7xl font-bold tracking-tight text-zinc-950 dark:text-white leading-[1.08] font-display max-w-[960px] mx-auto"
             >
               {currentSlide.titlePrefix} <br className="hidden sm:inline" />
@@ -210,10 +219,10 @@ export const LandingHeroWith3DTilt: React.FC = () => {
           <AnimatePresence mode="wait">
             <motion.p
               key={`sub-${currentSlide.id}`}
-              initial={{ opacity: 0, y: 15, filter: 'blur(4px)' }}
-              animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
-              exit={{ opacity: 0, y: -15, filter: 'blur(4px)' }}
-              transition={{ duration: 0.4, delay: 0.05 }}
+              variants={landingSlideVariants}
+              initial="enter"
+              animate="visible"
+              exit="exit"
               className="text-base sm:text-lg lg:text-xl text-zinc-600 dark:text-zinc-300 max-w-[760px] mx-auto font-normal leading-relaxed"
             >
               {currentSlide.subtitle}
@@ -247,13 +256,13 @@ export const LandingHeroWith3DTilt: React.FC = () => {
                   }`}
                 >
                   {/* Progress Line for the Active Slide */}
-                  {isActive && !isCarouselPaused && (
+                  {isActive && autoplay && (
                     <motion.div
                       key={`hero-bar-${idx}`}
-                      initial={{ width: '0%' }}
-                      animate={{ width: '100%' }}
+                      initial={{ scaleX: 0 }}
+                      animate={{ scaleX: 1 }}
                       transition={{ duration: 5.5, ease: 'linear' }}
-                      className="absolute bottom-0 left-0 h-[2px] bg-orange-500"
+                      className="absolute bottom-0 left-0 w-full origin-left h-[2px] bg-orange-500"
                     />
                   )}
                   <span>0{idx + 1}</span>
@@ -295,19 +304,19 @@ export const LandingHeroWith3DTilt: React.FC = () => {
           </motion.div>
         </div>
 
-        {/* High-Contrast Security & Status Micro-Bar */}
+        {/* High-Contrast Micro-Bar */}
         <div className="mt-8 flex flex-wrap items-center justify-center gap-6 text-xs text-zinc-600 dark:text-zinc-400 font-mono">
           <div className="flex items-center gap-1.5">
-            <ShieldCheck className="w-4 h-4 text-emerald-500" />
-            <span>Multi-Tenant RLS Aislado</span>
+            <Sparkles className="w-4 h-4 text-orange-500" />
+            <span>Planificación Automática con IA</span>
           </div>
           <div className="flex items-center gap-1.5">
-            <CheckCircle2 className="w-4 h-4 text-orange-500" />
-            <span>Scoring RICE Automatizado</span>
+            <CheckCircle2 className="w-4 h-4 text-emerald-500" />
+            <span>Tableros Kanban & Calendario Ágil</span>
           </div>
           <div className="flex items-center gap-1.5">
-            <Activity className="w-4 h-4 text-amber-500" />
-            <span>99.9% Uptime SLA</span>
+            <Target className="w-4 h-4 text-amber-500" />
+            <span>Ideal para Emprendimientos & PYMES</span>
           </div>
         </div>
       </div>
@@ -344,12 +353,12 @@ export const LandingHeroWith3DTilt: React.FC = () => {
               <span className="w-3 h-3 rounded-full bg-emerald-500/80 hover:opacity-100 transition-opacity" />
               <div className="ml-4 h-6 px-3 rounded-md bg-white dark:bg-zinc-900/90 border border-zinc-200 dark:border-white/[0.06] flex items-center gap-2 text-[11px] text-zinc-600 dark:text-zinc-400 font-mono shadow-inner">
                 <Lock className="w-3 h-3 text-emerald-500" />
-                <span>app.bowol.ai/workspace/enterprise</span>
+                <span>app.bowol.ai/workspace/mi-negocio</span>
               </div>
             </div>
             <div className="flex items-center gap-3">
               <span className="text-[11px] font-mono text-zinc-600 dark:text-zinc-400 hidden sm:inline">
-                Sprint 14 • 94% Completado
+                Plan Semanal • 18 de 20 Tareas al Día (90%)
               </span>
               <span className="relative flex h-2 w-2">
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
@@ -365,43 +374,43 @@ export const LandingHeroWith3DTilt: React.FC = () => {
               <div className="space-y-4">
                 <div className="flex items-center gap-3 p-2.5 rounded-xl bg-zinc-100 dark:bg-white/[0.03] border border-zinc-200/80 dark:border-white/[0.05]">
                   <div className="w-7 h-7 rounded-lg bg-orange-500/20 flex items-center justify-center text-orange-600 dark:text-orange-400 font-bold text-xs">
-                    AC
+                    BN
                   </div>
                   <div className="leading-tight">
-                    <p className="text-xs font-semibold text-zinc-900 dark:text-white">Acme Corp</p>
-                    <p className="text-[10px] font-mono text-zinc-500">ENTERPRISE TIER</p>
+                    <p className="text-xs font-semibold text-zinc-900 dark:text-white">Mi Negocio</p>
+                    <p className="text-[10px] font-mono text-zinc-500">PLAN PYME ACTIVO</p>
                   </div>
                 </div>
 
                 <div className="space-y-1">
-                  <p className="px-2 text-[10px] font-mono text-zinc-500 uppercase tracking-wider">Inteligencia</p>
+                  <p className="px-2 text-[10px] font-mono text-zinc-500 uppercase tracking-wider">Planificación</p>
                   <div className="flex items-center gap-2.5 px-3 py-2 rounded-lg bg-white dark:bg-white/[0.08] text-zinc-900 dark:text-white text-xs font-medium border border-zinc-200 dark:border-white/5 shadow-sm">
                     <LayoutDashboard className="w-3.5 h-3.5 text-orange-500 dark:text-orange-400" />
-                    <span>Dashboard Ejecutivo</span>
+                    <span>Dashboard del Negocio</span>
                   </div>
                   <div className="flex items-center gap-2.5 px-3 py-2 rounded-lg text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white text-xs font-medium transition-colors">
-                    <TrendingUp className="w-3.5 h-3.5 text-zinc-500" />
-                    <span>Radar de Tendencias</span>
+                    <Zap className="w-3.5 h-3.5 text-zinc-500" />
+                    <span>Planificador de Actividades</span>
                   </div>
                   <div className="flex items-center gap-2.5 px-3 py-2 rounded-lg text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white text-xs font-medium transition-colors">
                     <Bot className="w-3.5 h-3.5 text-zinc-500" />
-                    <span>Asistente IA</span>
+                    <span>Copilot IA de Planificación</span>
                   </div>
                   <div className="flex items-center gap-2.5 px-3 py-2 rounded-lg text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white text-xs font-medium transition-colors">
-                    <Grid2X2 className="w-3.5 h-3.5 text-zinc-500" />
-                    <span>Matriz FODA</span>
+                    <Target className="w-3.5 h-3.5 text-zinc-500" />
+                    <span>Metas & Prioridades</span>
                   </div>
                 </div>
 
                 <div className="space-y-1 pt-2 border-t border-zinc-200 dark:border-white/5">
-                  <p className="px-2 text-[10px] font-mono text-zinc-500 uppercase tracking-wider">Estrategia & Ejecución</p>
+                  <p className="px-2 text-[10px] font-mono text-zinc-500 uppercase tracking-wider">Flujo de Trabajo</p>
                   <div className="flex items-center gap-2.5 px-3 py-2 rounded-lg text-zinc-600 dark:text-zinc-400 text-xs font-medium">
-                    <Target className="w-3.5 h-3.5 text-zinc-500" />
-                    <span>Oportunidades RICE</span>
+                    <CheckCircle2 className="w-3.5 h-3.5 text-zinc-500" />
+                    <span>Tablero Kanban Diario</span>
                   </div>
                   <div className="flex items-center gap-2.5 px-3 py-2 rounded-lg text-zinc-600 dark:text-zinc-400 text-xs font-medium">
-                    <Layers className="w-3.5 h-3.5 text-zinc-500" />
-                    <span>Sprints de Validación</span>
+                    <Calendar className="w-3.5 h-3.5 text-zinc-500" />
+                    <span>Calendario & Entregas</span>
                   </div>
                 </div>
               </div>
@@ -409,9 +418,9 @@ export const LandingHeroWith3DTilt: React.FC = () => {
               <div className="p-2 rounded-lg bg-zinc-100 dark:bg-white/[0.02] border border-zinc-200 dark:border-white/5 flex items-center justify-between text-[11px] text-zinc-600 dark:text-zinc-400">
                 <div className="flex items-center gap-2">
                   <span className="w-2 h-2 rounded-full bg-emerald-500" />
-                  <span>Conexión Segura</span>
+                  <span>Sistema Sincronizado</span>
                 </div>
-                <span className="font-mono text-zinc-500">v2.4 Enterprise</span>
+                <span className="font-mono text-zinc-500">v2.4 Cloud</span>
               </div>
             </div>
 
@@ -421,99 +430,99 @@ export const LandingHeroWith3DTilt: React.FC = () => {
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                 <div className="p-5 rounded-2xl bg-white dark:bg-white/[0.03] border border-zinc-200/80 dark:border-white/[0.06] backdrop-blur-sm hover:border-orange-500/30 transition-colors shadow-sm">
                   <div className="flex justify-between items-start text-xs text-zinc-600 dark:text-zinc-400 font-medium">
-                    <span>Índice de Señal de Mercado</span>
-                    <Activity className="w-4 h-4 text-orange-500 dark:text-orange-400" />
+                    <span>Actividades de la Semana</span>
+                    <CheckCircle2 className="w-4 h-4 text-orange-500 dark:text-orange-400" />
                   </div>
                   <div className="mt-3 flex items-baseline gap-2">
                     <span className="text-3xl font-extrabold text-zinc-950 dark:text-white tracking-tight tabular-nums font-display">
-                      <AnimatedCounter to={88.4} decimals={1} duration={2.2} />
+                      <AnimatedCounter to={28} duration={2.0} />
                     </span>
-                    <span className="text-xs text-zinc-500 font-mono">/ 100</span>
+                    <span className="text-xs text-zinc-500 font-mono">/ 30 tareas</span>
                   </div>
                   <p className="mt-2 text-xs text-orange-600 dark:text-orange-400 flex items-center gap-1 font-semibold">
-                    <span>+12.6% vs mes anterior</span>
+                    <span>+14% completadas a tiempo</span>
                   </p>
                 </div>
 
                 <div className="p-5 rounded-2xl bg-white dark:bg-white/[0.03] border border-zinc-200/80 dark:border-white/[0.06] backdrop-blur-sm hover:border-amber-500/30 transition-colors shadow-sm">
                   <div className="flex justify-between items-start text-xs text-zinc-600 dark:text-zinc-400 font-medium">
-                    <span>Iniciativas RICE Activas</span>
-                    <Target className="w-4 h-4 text-amber-500 dark:text-amber-400" />
+                    <span>Planes IA Automatizados</span>
+                    <Zap className="w-4 h-4 text-amber-500 dark:text-amber-400" />
                   </div>
                   <div className="mt-3 flex items-baseline gap-2">
                     <span className="text-3xl font-extrabold text-zinc-950 dark:text-white tracking-tight tabular-nums font-display">
-                      <AnimatedCounter to={24} duration={1.8} />
+                      <AnimatedCounter to={4} duration={1.8} />
                     </span>
-                    <span className="text-xs text-zinc-500">en roadmap</span>
+                    <span className="text-xs text-zinc-500">en marcha</span>
                   </div>
                   <div className="mt-3 flex items-center gap-2 text-[10px] text-zinc-600 dark:text-zinc-400 font-medium">
-                    <span className="w-2 h-2 rounded-full bg-orange-500" /> 4 Alta
-                    <span className="w-2 h-2 rounded-full bg-amber-400 ml-2" /> 12 Media
+                    <span className="w-2 h-2 rounded-full bg-orange-500" /> 2 Ventas
+                    <span className="w-2 h-2 rounded-full bg-amber-400 ml-2" /> 2 Operativos
                   </div>
                 </div>
 
                 <div className="p-5 rounded-2xl bg-white dark:bg-white/[0.03] border border-zinc-200/80 dark:border-white/[0.06] backdrop-blur-sm hover:border-emerald-500/30 transition-colors shadow-sm">
                   <div className="flex justify-between items-start text-xs text-zinc-600 dark:text-zinc-400 font-medium">
-                    <span>Velocidad de Sprints</span>
-                    <Zap className="w-4 h-4 text-emerald-500 dark:text-emerald-400" />
+                    <span>Cumplimiento del Equipo</span>
+                    <Activity className="w-4 h-4 text-emerald-500 dark:text-emerald-400" />
                   </div>
                   <div className="mt-3 flex items-baseline gap-2">
                     <span className="text-3xl font-extrabold text-zinc-950 dark:text-white tracking-tight tabular-nums font-display">
                       <AnimatedCounter to={94} suffix="%" duration={2.0} />
                     </span>
-                    <span className="text-xs text-emerald-600 dark:text-emerald-400 font-semibold">cumplimiento</span>
+                    <span className="text-xs text-emerald-600 dark:text-emerald-400 font-semibold">a tiempo</span>
                   </div>
-                  <p className="mt-2 text-xs text-zinc-600 dark:text-zinc-400">Sprint 14: Validación IA</p>
+                  <p className="mt-2 text-xs text-zinc-600 dark:text-zinc-400">Sprint Semanal 06: En curso</p>
                 </div>
               </div>
 
               {/* Bento Detail Box */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                {/* Radar Table Snippet */}
+                {/* Tareas Prioritarias */}
                 <div className="p-5 rounded-2xl bg-white dark:bg-white/[0.025] border border-zinc-200/80 dark:border-white/[0.06] shadow-sm">
                   <div className="flex justify-between items-center mb-4">
-                    <span className="text-xs font-semibold text-zinc-900 dark:text-white tracking-tight">Radar de Señales Tecnológicas</span>
-                    <span className="text-[10px] font-mono text-zinc-600 dark:text-zinc-400 bg-zinc-100 dark:bg-white/[0.04] px-2 py-0.5 rounded font-medium">TIEMPO REAL</span>
+                    <span className="text-xs font-semibold text-zinc-900 dark:text-white tracking-tight">Actividades Prioritarias de Hoy</span>
+                    <span className="text-[10px] font-mono text-zinc-600 dark:text-zinc-400 bg-zinc-100 dark:bg-white/[0.04] px-2 py-0.5 rounded font-medium">HOY</span>
                   </div>
                   <div className="space-y-2.5">
                     <div className="flex items-center justify-between p-2.5 rounded-xl bg-zinc-50 dark:bg-white/[0.02] border border-zinc-200/80 dark:border-white/[0.04] hover:border-orange-500/30 transition-colors">
                       <div>
-                        <p className="text-xs font-semibold text-zinc-900 dark:text-zinc-200">Modelos SLM Perimetrales</p>
-                        <p className="text-[10px] text-zinc-500">Inferencia local optimizada</p>
+                        <p className="text-xs font-semibold text-zinc-900 dark:text-zinc-200">Lanzamiento de campaña en redes</p>
+                        <p className="text-[10px] text-zinc-500">Marketing • 3 posts programados</p>
                       </div>
                       <div className="flex items-center gap-2.5">
-                        <span className="text-xs font-mono text-zinc-700 dark:text-zinc-300">82%</span>
-                        <span className="px-2 py-0.5 rounded text-[10px] font-semibold bg-orange-500/15 text-orange-600 dark:text-orange-400 border border-orange-500/30">Crítico</span>
+                        <span className="text-xs font-mono text-zinc-700 dark:text-zinc-300">90%</span>
+                        <span className="px-2 py-0.5 rounded text-[10px] font-semibold bg-orange-500/15 text-orange-600 dark:text-orange-400 border border-orange-500/30">Alta</span>
                       </div>
                     </div>
                     <div className="flex items-center justify-between p-2.5 rounded-xl bg-zinc-50 dark:bg-white/[0.02] border border-zinc-200/80 dark:border-white/[0.04] hover:border-amber-500/30 transition-colors">
                       <div>
-                        <p className="text-xs font-semibold text-zinc-900 dark:text-zinc-200">Orquestación Multi-Agente</p>
-                        <p className="text-[10px] text-zinc-500">SaaS loop execution</p>
+                        <p className="text-xs font-semibold text-zinc-900 dark:text-zinc-200">Revisión de pedidos y stock</p>
+                        <p className="text-[10px] text-zinc-500">Operaciones • Despachos de la tarde</p>
                       </div>
                       <div className="flex items-center gap-2.5">
-                        <span className="text-xs font-mono text-zinc-700 dark:text-zinc-300">68%</span>
-                        <span className="px-2 py-0.5 rounded text-[10px] font-semibold bg-zinc-200 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300">Alto</span>
+                        <span className="text-xs font-mono text-zinc-700 dark:text-zinc-300">En curso</span>
+                        <span className="px-2 py-0.5 rounded text-[10px] font-semibold bg-zinc-200 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300">Media</span>
                       </div>
                     </div>
                   </div>
                 </div>
 
-                {/* FODA Synthesis Snippet */}
+                {/* Copilot Sugerencia Box */}
                 <div className="p-5 rounded-2xl bg-white dark:bg-white/[0.025] border border-zinc-200/80 dark:border-white/[0.06] flex flex-col justify-between shadow-sm">
                   <div>
                     <div className="flex justify-between items-center mb-4">
-                      <span className="text-xs font-semibold text-zinc-900 dark:text-white tracking-tight">Síntesis FODA Automática</span>
-                      <span className="text-[10px] font-mono text-orange-600 dark:text-orange-400 bg-orange-500/10 px-2 py-0.5 rounded border border-orange-500/20 font-semibold">4 CUADRANTES</span>
+                      <span className="text-xs font-semibold text-zinc-900 dark:text-white tracking-tight">Sugerencia de Planificación IA</span>
+                      <span className="text-[10px] font-mono text-orange-600 dark:text-orange-400 bg-orange-500/10 px-2 py-0.5 rounded border border-orange-500/20 font-semibold">AUTOMATIZACIÓN</span>
                     </div>
                     <p className="text-xs text-zinc-700 dark:text-zinc-300 leading-relaxed">
-                      "Se detecta una divergencia positiva del 14% entre la adopción de modelos locales por competidores tier-1 y nuestra capacidad técnica en Sprint 14."
+                      "Detectamos 3 actividades clave para alcanzar la meta de ventas de esta semana: programar el recordatorio de seguimiento a clientes y automatizar el cierre de pedidos del viernes."
                     </p>
                   </div>
                   <div className="mt-4 pt-3 border-t border-zinc-200/80 dark:border-white/5 flex items-center justify-between text-xs text-zinc-500">
-                    <span>Fuente: Engine BOWOL IA</span>
+                    <span>Generado por Bowol AI Planner</span>
                     <span className="text-orange-600 dark:text-orange-400 font-semibold flex items-center gap-1 cursor-pointer hover:text-orange-500">
-                      Ver matriz <ChevronRight className="w-3 h-3" />
+                      Ver plan completo <ChevronRight className="w-3 h-3" />
                     </span>
                   </div>
                 </div>

@@ -59,7 +59,7 @@ export const BusinessHealthDetailModal: React.FC<BusinessHealthDetailModalProps>
           <button
             type="button"
             onClick={onClose}
-            className="p-1.5 rounded-lg text-zinc-400 hover:text-zinc-700 dark:hover:text-zinc-200 hover:bg-zinc-100 dark:hover:bg-white/5 transition-colors"
+            className="p-1.5 rounded-lg text-zinc-600 dark:text-zinc-400 hover:text-zinc-700 dark:hover:text-zinc-200 hover:bg-zinc-100 dark:hover:bg-white/5 transition-colors"
             aria-label="Cerrar modal"
           >
             <X className="w-5 h-5" strokeWidth={1.5} />
@@ -78,7 +78,7 @@ export const BusinessHealthDetailModal: React.FC<BusinessHealthDetailModalProps>
                 <span className="text-4xl font-black text-zinc-900 dark:text-zinc-100 font-mono">
                   {overall}
                 </span>
-                <span className="text-sm text-zinc-400">/ 100</span>
+                <span className="text-sm text-zinc-600 dark:text-zinc-400">/ 100</span>
                 <span className={`ml-2 text-xs font-bold px-2 py-0.5 rounded-full border ${statusColor}`}>
                   {healthScore.statusLabel === 'OPTIMAL' ? 'ÓPTIMO' : healthScore.statusLabel === 'GOOD' ? 'ESTABLE' : 'REQUIERE ATENCIÓN'}
                 </span>
@@ -190,7 +190,7 @@ export const BusinessHealthDetailModal: React.FC<BusinessHealthDetailModalProps>
 
         {/* Footer */}
         <div className="px-6 py-4 border-t border-zinc-200 dark:border-white/10 bg-zinc-50/50 dark:bg-white/[0.02] flex items-center justify-between">
-          <span className="text-[11px] text-zinc-400">
+          <span className="text-[11px] text-zinc-600 dark:text-zinc-400">
             Cumple con el principio de explicabilidad algorítmica de BOWOL
           </span>
           <Button variant="outline" size="sm" onClick={onClose}>

@@ -1,4 +1,4 @@
-export type TaskStatus = 'BACKLOG' | 'TODO' | 'IN_PROGRESS' | 'REVIEW' | 'DONE' | 'CANCELED';
+export type TaskStatus = 'BACKLOG' | 'TODO' | 'IN_PROGRESS' | 'REVIEW' | 'DONE' | 'CANCELED' | 'BLOCKED';
 
 export type TaskPriority = 'LOW' | 'MEDIUM' | 'HIGH' | 'URGENT';
 
@@ -56,4 +56,4 @@ export interface DecomposeProjectResponse {
   tasks: Task[];
 }
 
-export type TaskBoardData = Record<TaskStatus, Task[]>;
+export type TaskBoardData = Partial<Record<TaskStatus, Task[]>>;

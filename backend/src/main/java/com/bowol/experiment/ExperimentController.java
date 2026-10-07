@@ -22,6 +22,7 @@ public class ExperimentController {
     private final ExperimentService experimentService;
 
     @GetMapping
+    @PreAuthorize("hasAuthority('experiment.read')")
     public ResponseEntity<List<ExperimentResponse>> getExperiments(
             @RequestParam(required = false) UUID hypothesisId,
             @RequestParam(required = false) ExperimentStatus status,
@@ -31,6 +32,7 @@ public class ExperimentController {
     }
 
     @GetMapping("/{id}")
+    @PreAuthorize("hasAuthority('experiment.read')")
     public ResponseEntity<ExperimentResponse> getExperimentById(
             @PathVariable UUID id,
             @AuthenticationPrincipal UserPrincipal principal) {
@@ -39,6 +41,7 @@ public class ExperimentController {
     }
 
     @PostMapping
+    @PreAuthorize("hasAuthority('experiment.create')")
     public ResponseEntity<ExperimentResponse> createExperiment(
             @Valid @RequestBody CreateExperimentRequest request,
             @AuthenticationPrincipal UserPrincipal principal) {
@@ -47,6 +50,7 @@ public class ExperimentController {
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasAuthority('experiment.update')")
     public ResponseEntity<ExperimentResponse> updateExperiment(
             @PathVariable UUID id,
             @Valid @RequestBody UpdateExperimentRequest request,
@@ -56,6 +60,7 @@ public class ExperimentController {
     }
 
     @PatchMapping("/{id}/status")
+    @PreAuthorize("hasAuthority('experiment.update')")
     public ResponseEntity<ExperimentResponse> updateStatus(
             @PathVariable UUID id,
             @Valid @RequestBody UpdateExperimentStatusRequest request,
@@ -65,6 +70,7 @@ public class ExperimentController {
     }
 
     @PostMapping("/{id}/conclusion")
+    @PreAuthorize("hasAuthority('experiment.update')")
     public ResponseEntity<ExperimentResponse> recordConclusion(
             @PathVariable UUID id,
             @Valid @RequestBody RecordExperimentConclusionRequest request,
@@ -74,6 +80,7 @@ public class ExperimentController {
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasAuthority('experiment.delete')")
     public ResponseEntity<Void> deleteExperiment(
             @PathVariable UUID id,
             @AuthenticationPrincipal UserPrincipal principal) {

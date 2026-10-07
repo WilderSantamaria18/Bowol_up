@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -17,6 +18,7 @@ public class BusinessProfileController {
     private final BusinessProfileService businessProfileService;
 
     @GetMapping
+    @PreAuthorize("hasAuthority('business_profile.read')")
     public ResponseEntity<BusinessProfileResponse> getProfile(
             @AuthenticationPrincipal UserPrincipal principal) {
         BusinessProfileResponse response = businessProfileService.getProfile(principal);
@@ -24,6 +26,7 @@ public class BusinessProfileController {
     }
 
     @PutMapping
+    @PreAuthorize("hasAuthority('business_profile.update')")
     public ResponseEntity<BusinessProfileResponse> replaceProfile(
             @Valid @RequestBody UpdateBusinessProfileRequest request,
             @AuthenticationPrincipal UserPrincipal principal) {
@@ -32,6 +35,7 @@ public class BusinessProfileController {
     }
 
     @PatchMapping
+    @PreAuthorize("hasAuthority('business_profile.update')")
     public ResponseEntity<BusinessProfileResponse> patchProfile(
             @Valid @RequestBody UpdateBusinessProfileRequest request,
             @AuthenticationPrincipal UserPrincipal principal) {
@@ -40,6 +44,7 @@ public class BusinessProfileController {
     }
 
     @PostMapping("/onboarding")
+    @PreAuthorize("hasAuthority('business_profile.update')")
     public ResponseEntity<BusinessProfileResponse> completeOnboarding(
             @Valid @RequestBody OnboardingRequest request,
             @AuthenticationPrincipal UserPrincipal principal) {

@@ -80,7 +80,7 @@ export const RecentActivityStream: React.FC = () => {
             <h3 className="text-sm font-semibold text-zinc-900 dark:text-zinc-100">
               Actividad Reciente del Ciclo
             </h3>
-            <span className="text-[11px] text-zinc-400">
+            <span className="text-[11px] text-zinc-600 dark:text-zinc-400">
               Eventos estratégicos, auditoría y ejecución en tiempo real
             </span>
           </div>
@@ -90,7 +90,7 @@ export const RecentActivityStream: React.FC = () => {
           type="button"
           onClick={() => refetch()}
           disabled={isRefetching}
-          className="p-1.5 rounded-lg text-zinc-400 hover:text-zinc-700 dark:hover:text-zinc-200 hover:bg-zinc-100 dark:hover:bg-white/5 transition-colors"
+          className="p-1.5 rounded-lg text-zinc-600 dark:text-zinc-400 hover:text-zinc-700 dark:hover:text-zinc-200 hover:bg-zinc-100 dark:hover:bg-white/5 transition-colors"
           title="Actualizar actividad"
           aria-label="Refrescar actividad"
         >
@@ -100,7 +100,7 @@ export const RecentActivityStream: React.FC = () => {
 
       {/* Search Filter */}
       <div className="relative">
-        <Search className="w-3.5 h-3.5 absolute left-3 top-1/2 -translate-y-1/2 text-zinc-400" strokeWidth={1.5} />
+        <Search className="w-3.5 h-3.5 absolute left-3 top-1/2 -translate-y-1/2 text-zinc-600 dark:text-zinc-400" strokeWidth={1.5} />
         <input
           type="text"
           value={filter}
@@ -114,10 +114,10 @@ export const RecentActivityStream: React.FC = () => {
       {isLoading ? (
         <div className="py-12 text-center">
           <div className="w-6 h-6 rounded-full border-2 border-orange-500/20 border-t-orange-500 animate-spin mx-auto mb-2" />
-          <span className="text-xs text-zinc-400 font-mono">Cargando eventos...</span>
+          <span className="text-xs text-zinc-600 dark:text-zinc-400 font-mono">Cargando eventos...</span>
         </div>
       ) : filteredActivities.length === 0 ? (
-        <div className="py-8 text-center text-xs text-zinc-400 space-y-1">
+        <div className="py-8 text-center text-xs text-zinc-600 dark:text-zinc-400 space-y-1">
           <p>No hay eventos registrados en este periodo.</p>
           <span className="text-[11px] text-zinc-500">
             Las acciones en el radar, oportunidades o tareas se registrarán aquí automáticamente.
@@ -143,7 +143,7 @@ export const RecentActivityStream: React.FC = () => {
                     <span className="font-semibold text-zinc-900 dark:text-zinc-100 truncate">
                       {act.action}
                     </span>
-                    <span className="text-[10px] font-mono text-zinc-400 shrink-0">
+                    <span className="text-[10px] font-mono text-zinc-600 dark:text-zinc-400 shrink-0">
                       {formatRelativeTime(act.createdAt)}
                     </span>
                   </div>
@@ -153,7 +153,7 @@ export const RecentActivityStream: React.FC = () => {
                   </p>
 
                   {act.actorEmail && (
-                    <div className="flex items-center gap-1 text-[10px] text-zinc-400 pt-0.5 font-mono">
+                    <div className="flex items-center gap-1 text-[10px] text-zinc-600 dark:text-zinc-400 pt-0.5 font-mono">
                       <User className="w-3 h-3" strokeWidth={1.5} />
                       <span className="truncate">{act.actorEmail}</span>
                     </div>

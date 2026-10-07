@@ -39,7 +39,7 @@ export const BentoExperimentPipeline: React.FC = () => {
       statement: 'Pricing dinámico basado en consumo de tokens',
       targetMetric: 'ARPU expansión (+24%)',
       ownerInitials: 'LC',
-      ownerColor: 'bg-amber-400/20 text-amber-300 border border-amber-400/30',
+      ownerColor: 'bg-amber-400/20 text-amber-700 dark:text-amber-300 border border-amber-400/30',
       stage: 'Día 3 / 21',
       active: true,
     },
@@ -49,7 +49,7 @@ export const BentoExperimentPipeline: React.FC = () => {
       statement: 'Integración nativa con Data Warehouse corporativo',
       targetMetric: 'Reducción fricción setup (-40%)',
       ownerInitials: 'SK',
-      ownerColor: 'bg-zinc-700/60 text-zinc-300 border border-zinc-600/40',
+      ownerColor: 'bg-zinc-700/60 text-zinc-700 dark:text-zinc-300 border border-zinc-600/40',
       stage: 'Diseño',
       active: false,
     },
@@ -65,8 +65,8 @@ export const BentoExperimentPipeline: React.FC = () => {
         ownerColor: index === 0
           ? 'bg-orange-500/20 text-orange-400 border border-orange-500/30'
           : index === 1
-          ? 'bg-amber-400/20 text-amber-300 border border-amber-400/30'
-          : 'bg-zinc-700/60 text-zinc-300 border border-zinc-600/40',
+          ? 'bg-amber-400/20 text-amber-700 dark:text-amber-300 border border-amber-400/30'
+          : 'bg-zinc-700/60 text-zinc-700 dark:text-zinc-300 border border-zinc-600/40',
         stage: h.status === 'RUNNING' ? 'En ejecución' : h.status === 'VALIDATED' ? 'Validada' : 'Diseño',
         active: h.status === 'RUNNING' || h.status === 'VALIDATED',
       }))

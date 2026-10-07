@@ -41,8 +41,8 @@ services:
       DB_NAME: ${DB_NAME:-bowol_db}
       DB_USER: ${DB_USER:-bowol_app}
       DB_PASSWORD: ${DB_PASSWORD:-bowol_secret}
-      JWT_PUBLIC_KEY_PATH: classpath:keys/test-public.pem
-      JWT_PRIVATE_KEY_PATH: classpath:keys/test-private.pem
+      JWT_PUBLIC_KEY_PATH: file:/run/secrets/jwt_public_key.pem
+      JWT_PRIVATE_KEY_PATH: file:/run/secrets/jwt_private_key.pem
       OPENAI_API_KEY: ${OPENAI_API_KEY:-}
       ANTHROPIC_API_KEY: ${ANTHROPIC_API_KEY:-}
     ports:

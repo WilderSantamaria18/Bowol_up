@@ -118,19 +118,19 @@ export const SsoManagement: React.FC<SsoManagementProps> = ({ organizationId }) 
   return (
     <div className="space-y-6">
       {/* Enterprise Header */}
-      <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-6">
+      <div className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-xl p-6">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div className="space-y-1">
             <div className="flex items-center gap-2">
               <ShieldCheck className="h-6 w-6 text-orange-500" strokeWidth={1.5} />
-              <h3 className="text-lg font-bold text-white font-display">
+              <h3 className="text-lg font-bold text-zinc-900 dark:text-white font-display">
                 Single Sign-On (SSO) Corporativo
               </h3>
               <span className="bg-orange-500/10 text-orange-400 border border-orange-500/20 text-[10px] font-mono font-semibold px-2 py-0.5 rounded-full uppercase">
                 Enterprise
               </span>
             </div>
-            <p className="text-xs text-zinc-400 max-w-2xl leading-relaxed">
+            <p className="text-xs text-zinc-600 dark:text-zinc-400 max-w-2xl leading-relaxed">
               Permite a los miembros de tu organización autenticarse de forma centralizada mediante Google Workspace, Microsoft Azure AD, Okta o SAML 2.0.
             </p>
           </div>
@@ -147,11 +147,11 @@ export const SsoManagement: React.FC<SsoManagementProps> = ({ organizationId }) 
         </div>
 
         {/* Redirect URI hint */}
-        <div className="mt-5 pt-4 border-t border-zinc-800/80 flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-zinc-950/40 -mx-6 -mb-6 p-4 rounded-b-xl">
-          <div className="flex items-center gap-2 text-xs text-zinc-400 font-mono">
+        <div className="mt-5 pt-4 border-t border-zinc-200 dark:border-zinc-800/80 flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-zinc-100/70 dark:bg-zinc-950/40 -mx-6 -mb-6 p-4 rounded-b-xl">
+          <div className="flex items-center gap-2 text-xs text-zinc-600 dark:text-zinc-400 font-mono">
             <Globe className="h-4 w-4 text-zinc-500" />
             <span>Redirect URI (ACS URL):</span>
-            <code className="text-zinc-200 bg-zinc-800/80 px-2 py-0.5 rounded text-[11px]">
+            <code className="text-zinc-900 dark:text-zinc-200 bg-zinc-100 dark:bg-zinc-800/80 px-2 py-0.5 rounded text-[11px]">
               {redirectUri}
             </code>
           </div>
@@ -172,9 +172,9 @@ export const SsoManagement: React.FC<SsoManagementProps> = ({ organizationId }) 
       )}
 
       {/* Configured SSO Providers List */}
-      <div className="bg-zinc-900 border border-zinc-800 rounded-xl overflow-hidden">
-        <div className="px-6 py-4 border-b border-zinc-800 flex items-center justify-between">
-          <h4 className="text-sm font-semibold text-zinc-200">Proveedores de Identidad Conectados</h4>
+      <div className="bg-zinc-100 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-xl overflow-hidden">
+        <div className="px-6 py-4 border-b border-zinc-200 dark:border-zinc-800 flex items-center justify-between">
+          <h4 className="text-sm font-semibold text-zinc-900 dark:text-zinc-200">Proveedores de Identidad Conectados</h4>
           <span className="text-xs text-zinc-500 font-mono">{configs.length} activo(s)</span>
         </div>
 
@@ -187,7 +187,7 @@ export const SsoManagement: React.FC<SsoManagementProps> = ({ organizationId }) 
           <div className="p-10 text-center space-y-3">
             <KeyRound className="h-10 w-10 text-zinc-600 mx-auto" strokeWidth={1.5} />
             <div className="space-y-1">
-              <p className="text-sm font-medium text-zinc-300">No hay proveedores SSO configurados</p>
+              <p className="text-sm font-medium text-zinc-700 dark:text-zinc-300">No hay proveedores SSO configurados</p>
               <p className="text-xs text-zinc-500 max-w-sm mx-auto">
                 Conecta Google Workspace, Microsoft Entra ID o tu proveedor SAML para habilitar inicio de sesión unificado.
               </p>
@@ -205,11 +205,11 @@ export const SsoManagement: React.FC<SsoManagementProps> = ({ organizationId }) 
         ) : (
           <div className="divide-y divide-zinc-800/80">
             {configs.map((cfg) => (
-              <div key={cfg.id} className="p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4 hover:bg-zinc-800/30 transition-colors">
+              <div key={cfg.id} className="p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4 hover:bg-zinc-100 dark:hover:bg-zinc-800/30 transition-colors">
                 <div className="space-y-1.5">
                   <div className="flex items-center gap-2.5">
-                    <span className="text-sm font-bold text-white">{cfg.displayName}</span>
-                    <span className="text-[10px] font-mono uppercase bg-zinc-800 text-zinc-300 px-2 py-0.5 rounded border border-zinc-700">
+                    <span className="text-sm font-bold text-zinc-900 dark:text-white">{cfg.displayName}</span>
+                    <span className="text-[10px] font-mono uppercase bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 px-2 py-0.5 rounded border border-zinc-300 dark:border-zinc-700">
                       {cfg.provider}
                     </span>
                     {cfg.enforceSso && (
@@ -218,10 +218,10 @@ export const SsoManagement: React.FC<SsoManagementProps> = ({ organizationId }) 
                       </span>
                     )}
                   </div>
-                  <div className="flex flex-wrap items-center gap-4 text-xs text-zinc-400 font-mono">
+                  <div className="flex flex-wrap items-center gap-4 text-xs text-zinc-600 dark:text-zinc-400 font-mono">
                     <div>
                       <span className="text-zinc-500">Client ID:</span>{' '}
-                      <span className="text-zinc-300">{cfg.clientId.slice(0, 18)}...</span>
+                      <span className="text-zinc-700 dark:text-zinc-300">{cfg.clientId.slice(0, 18)}...</span>
                     </div>
                     {cfg.domainRestriction && (
                       <div>
@@ -238,7 +238,7 @@ export const SsoManagement: React.FC<SsoManagementProps> = ({ organizationId }) 
                       href={cfg.authorizationUrl}
                       target="_blank"
                       rel="noreferrer"
-                      className="p-2 text-zinc-400 hover:text-zinc-200 transition-colors"
+                      className="p-2 text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-200 transition-colors"
                       title="Probar URL de autorización"
                     >
                       <ExternalLink className="h-4 w-4" />
@@ -263,15 +263,15 @@ export const SsoManagement: React.FC<SsoManagementProps> = ({ organizationId }) 
       {/* Modal de Configuración SSO */}
       {isModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm">
-          <div className="bg-zinc-900 border border-zinc-800 rounded-2xl max-w-lg w-full p-6 space-y-5 shadow-2xl">
-            <div className="flex items-center justify-between border-b border-zinc-800 pb-3">
+          <div className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-2xl max-w-lg w-full p-6 space-y-5 shadow-2xl">
+            <div className="flex items-center justify-between border-b border-zinc-200 dark:border-zinc-800 pb-3">
               <div className="flex items-center gap-2">
                 <ShieldCheck className="h-5 w-5 text-orange-500" />
-                <h3 className="text-base font-bold text-white">Configurar Proveedor de Identidad</h3>
+                <h3 className="text-base font-bold text-zinc-900 dark:text-white">Configurar Proveedor de Identidad</h3>
               </div>
               <button
                 onClick={() => setIsModalOpen(false)}
-                className="text-zinc-500 hover:text-zinc-300 text-lg leading-none"
+                className="text-zinc-500 hover:text-zinc-700 dark:hover:text-zinc-300 text-lg leading-none"
               >
                 &times;
               </button>
@@ -279,11 +279,11 @@ export const SsoManagement: React.FC<SsoManagementProps> = ({ organizationId }) 
 
             <form onSubmit={handleSaveConfig} className="space-y-4">
               <div className="space-y-1">
-                <label className="text-xs font-medium text-zinc-300">Tipo de Proveedor</label>
+                <label className="text-xs font-medium text-zinc-700 dark:text-zinc-300">Tipo de Proveedor</label>
                 <select
                   value={provider}
                   onChange={(e) => setProvider(e.target.value as SsoProvider)}
-                  className="w-full bg-zinc-950 border border-zinc-800 rounded-lg px-3 py-2 text-xs text-white focus:outline-none focus:border-orange-500"
+                  className="w-full bg-zinc-100 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 rounded-lg px-3 py-2 text-xs text-zinc-900 dark:text-white focus:outline-none focus:border-orange-500"
                 >
                   <option value="GOOGLE">Google Workspace (OAuth 2.0 / OIDC)</option>
                   <option value="AZURE_AD">Microsoft Entra ID / Azure AD</option>
@@ -293,18 +293,18 @@ export const SsoManagement: React.FC<SsoManagementProps> = ({ organizationId }) 
               </div>
 
               <div className="space-y-1">
-                <label className="text-xs font-medium text-zinc-300">Nombre de Visualización</label>
+                <label className="text-xs font-medium text-zinc-700 dark:text-zinc-300">Nombre de Visualización</label>
                 <input
                   type="text"
                   placeholder="ej. Google Workspace Acme Corp"
                   value={displayName}
                   onChange={(e) => setDisplayName(e.target.value)}
-                  className="w-full bg-zinc-950 border border-zinc-800 rounded-lg px-3 py-2 text-xs text-white focus:outline-none focus:border-orange-500"
+                  className="w-full bg-zinc-100 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 rounded-lg px-3 py-2 text-xs text-zinc-900 dark:text-white focus:outline-none focus:border-orange-500"
                 />
               </div>
 
               <div className="space-y-1">
-                <label className="text-xs font-medium text-zinc-300">
+                <label className="text-xs font-medium text-zinc-700 dark:text-zinc-300">
                   Client ID / Entity ID <span className="text-red-400">*</span>
                 </label>
                 <input
@@ -313,29 +313,29 @@ export const SsoManagement: React.FC<SsoManagementProps> = ({ organizationId }) 
                   placeholder="ej. 123456789-abc.apps.googleusercontent.com"
                   value={clientId}
                   onChange={(e) => setClientId(e.target.value)}
-                  className="w-full bg-zinc-950 border border-zinc-800 rounded-lg px-3 py-2 text-xs text-white font-mono focus:outline-none focus:border-orange-500"
+                  className="w-full bg-zinc-100 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 rounded-lg px-3 py-2 text-xs text-zinc-900 dark:text-white font-mono focus:outline-none focus:border-orange-500"
                 />
               </div>
 
               <div className="space-y-1">
-                <label className="text-xs font-medium text-zinc-300">Client Secret (Opcional si es PKCE)</label>
+                <label className="text-xs font-medium text-zinc-700 dark:text-zinc-300">Client Secret (Opcional si es PKCE)</label>
                 <input
                   type="password"
                   placeholder="••••••••••••••••"
                   value={clientSecret}
                   onChange={(e) => setClientSecret(e.target.value)}
-                  className="w-full bg-zinc-950 border border-zinc-800 rounded-lg px-3 py-2 text-xs text-white font-mono focus:outline-none focus:border-orange-500"
+                  className="w-full bg-zinc-100 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 rounded-lg px-3 py-2 text-xs text-zinc-900 dark:text-white font-mono focus:outline-none focus:border-orange-500"
                 />
               </div>
 
               <div className="space-y-1">
-                <label className="text-xs font-medium text-zinc-300">Restricción de Dominio (Recomendado)</label>
+                <label className="text-xs font-medium text-zinc-700 dark:text-zinc-300">Restricción de Dominio (Recomendado)</label>
                 <input
                   type="text"
                   placeholder="ej. miempresa.com"
                   value={domainRestriction}
                   onChange={(e) => setDomainRestriction(e.target.value)}
-                  className="w-full bg-zinc-950 border border-zinc-800 rounded-lg px-3 py-2 text-xs text-white font-mono focus:outline-none focus:border-orange-500"
+                  className="w-full bg-zinc-100 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 rounded-lg px-3 py-2 text-xs text-zinc-900 dark:text-white font-mono focus:outline-none focus:border-orange-500"
                 />
                 <p className="text-[11px] text-zinc-500 flex items-center gap-1 mt-0.5">
                   <Info className="h-3 w-3 inline" />
@@ -349,14 +349,14 @@ export const SsoManagement: React.FC<SsoManagementProps> = ({ organizationId }) 
                   id="enforceSso"
                   checked={enforceSso}
                   onChange={(e) => setEnforceSso(e.target.checked)}
-                  className="rounded border-zinc-800 text-orange-500 focus:ring-orange-500 bg-zinc-950"
+                  className="rounded border-zinc-200 dark:border-zinc-800 text-orange-500 focus:ring-orange-500 bg-zinc-100 dark:bg-zinc-950"
                 />
-                <label htmlFor="enforceSso" className="text-xs text-zinc-300 cursor-pointer">
+                <label htmlFor="enforceSso" className="text-xs text-zinc-700 dark:text-zinc-300 cursor-pointer">
                   Exigir SSO obligatorio para todos los miembros con este dominio
                 </label>
               </div>
 
-              <div className="flex justify-end gap-3 pt-3 border-t border-zinc-800">
+              <div className="flex justify-end gap-3 pt-3 border-t border-zinc-200 dark:border-zinc-800">
                 <Button
                   type="button"
                   variant="outline"

@@ -28,10 +28,13 @@ public class CreateHypothesisRequest {
 
     private String expectedOutcome;
 
+    @NotBlank(message = "El método de validación es obligatorio")
     private String validationMethod;
 
+    @NotBlank(message = "La métrica de éxito es obligatoria")
     private String successMetric;
 
+    @NotBlank(message = "El umbral objetivo es obligatorio")
     private String targetValue;
 
     private HypothesisStatus status;

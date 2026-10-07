@@ -60,14 +60,14 @@ export const CreateTaskModal: React.FC<CreateTaskModalProps> = ({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-fade-in">
-      <div className="relative w-full max-w-lg rounded-2xl border border-white/[0.1] bg-slate-900/95 p-6 shadow-2xl backdrop-blur-2xl">
-        <div className="flex items-center justify-between border-b border-white/[0.08] pb-4">
+      <div className="relative w-full max-w-lg rounded-2xl border border-zinc-900/[0.16] dark:border-white/[0.1] bg-slate-900/95 p-6 shadow-2xl backdrop-blur-2xl">
+        <div className="flex items-center justify-between border-b border-zinc-900/[0.13] dark:border-white/[0.08] pb-4">
           <h2 className="text-base font-semibold text-slate-100">
             Nueva Tarea de Backlog
           </h2>
           <button
             onClick={onClose}
-            className="rounded-lg p-1.5 text-slate-400 hover:bg-white/[0.08] hover:text-slate-100 transition-colors"
+            className="rounded-lg p-1.5 text-slate-400 hover:bg-zinc-900/[0.08] dark:hover:bg-white/[0.08] hover:text-slate-100 transition-colors"
           >
             <X className="h-4 w-4" strokeWidth={1.5} />
           </button>
@@ -91,7 +91,7 @@ export const CreateTaskModal: React.FC<CreateTaskModalProps> = ({
               value={title}
               onChange={(e) => setTitle(e.target.value)}
               placeholder="Ej: Implementar autenticación OAuth2 con PKCE"
-              className="w-full rounded-xl border border-white/[0.08] bg-slate-950/60 px-3.5 py-2.5 text-sm text-slate-100 placeholder:text-slate-500 focus:border-cyan-500 focus:outline-none focus:ring-1 focus:ring-cyan-500"
+              className="w-full rounded-xl border border-zinc-900/[0.13] dark:border-white/[0.08] bg-slate-950/60 px-3.5 py-2.5 text-sm text-slate-100 placeholder:text-slate-500 focus:border-cyan-500 focus:outline-none focus:ring-1 focus:ring-cyan-500"
             />
           </div>
 
@@ -104,7 +104,7 @@ export const CreateTaskModal: React.FC<CreateTaskModalProps> = ({
               value={description}
               onChange={(e) => setDescription(e.target.value)}
               placeholder="Detalles técnicos, endpoints a crear, criterios para darla por terminada..."
-              className="w-full rounded-xl border border-white/[0.08] bg-slate-950/60 px-3.5 py-2.5 text-sm text-slate-100 placeholder:text-slate-500 focus:border-cyan-500 focus:outline-none focus:ring-1 focus:ring-cyan-500 resize-none"
+              className="w-full rounded-xl border border-zinc-900/[0.13] dark:border-white/[0.08] bg-slate-950/60 px-3.5 py-2.5 text-sm text-slate-100 placeholder:text-slate-500 focus:border-cyan-500 focus:outline-none focus:ring-1 focus:ring-cyan-500 resize-none"
             />
           </div>
 
@@ -116,7 +116,7 @@ export const CreateTaskModal: React.FC<CreateTaskModalProps> = ({
               <select
                 value={priority}
                 onChange={(e) => setPriority(e.target.value as TaskPriority)}
-                className="w-full rounded-xl border border-white/[0.08] bg-slate-950/60 px-3.5 py-2 text-sm text-slate-200 focus:border-cyan-500 focus:outline-none"
+                className="w-full rounded-xl border border-zinc-900/[0.13] dark:border-white/[0.08] bg-slate-950/60 px-3.5 py-2 text-sm text-slate-200 focus:border-cyan-500 focus:outline-none"
               >
                 <option value="LOW">Baja (LOW)</option>
                 <option value="MEDIUM">Media (MEDIUM)</option>
@@ -137,7 +137,7 @@ export const CreateTaskModal: React.FC<CreateTaskModalProps> = ({
                   step="0.5"
                   value={estimateHours}
                   onChange={(e) => setEstimateHours(parseFloat(e.target.value) || 0)}
-                  className="w-full rounded-xl border border-white/[0.08] bg-slate-950/60 pl-10 pr-3.5 py-2 text-sm text-slate-200 focus:border-cyan-500 focus:outline-none"
+                  className="w-full rounded-xl border border-zinc-900/[0.13] dark:border-white/[0.08] bg-slate-950/60 pl-10 pr-3.5 py-2 text-sm text-slate-200 focus:border-cyan-500 focus:outline-none"
                 />
               </div>
             </div>
@@ -150,7 +150,7 @@ export const CreateTaskModal: React.FC<CreateTaskModalProps> = ({
             <select
               value={status}
               onChange={(e) => setStatus(e.target.value as TaskStatus)}
-              className="w-full rounded-xl border border-white/[0.08] bg-slate-950/60 px-3.5 py-2 text-sm text-slate-200 focus:border-cyan-500 focus:outline-none"
+              className="w-full rounded-xl border border-zinc-900/[0.13] dark:border-white/[0.08] bg-slate-950/60 px-3.5 py-2 text-sm text-slate-200 focus:border-cyan-500 focus:outline-none"
             >
               <option value="BACKLOG">Backlog</option>
               <option value="TODO">Por Hacer (TODO)</option>
@@ -160,11 +160,11 @@ export const CreateTaskModal: React.FC<CreateTaskModalProps> = ({
             </select>
           </div>
 
-          <div className="mt-6 flex items-center justify-end gap-3 pt-3 border-t border-white/[0.08]">
+          <div className="mt-6 flex items-center justify-end gap-3 pt-3 border-t border-zinc-900/[0.13] dark:border-white/[0.08]">
             <button
               type="button"
               onClick={onClose}
-              className="rounded-xl border border-white/[0.08] px-4 py-2 text-xs font-medium text-slate-300 hover:bg-white/[0.06] transition-colors"
+              className="rounded-xl border border-zinc-900/[0.13] dark:border-white/[0.08] px-4 py-2 text-xs font-medium text-slate-300 hover:bg-zinc-900/[0.06] dark:hover:bg-white/[0.06] transition-colors"
             >
               Cancelar
             </button>

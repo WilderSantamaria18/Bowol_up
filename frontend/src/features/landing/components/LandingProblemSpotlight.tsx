@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { BarChart3, FileX2, RefreshCwOff } from 'lucide-react';
+import { MessageSquare, Clock, FileX2 } from 'lucide-react';
 
 export const LandingProblemSpotlight: React.FC = () => {
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
@@ -14,22 +14,22 @@ export const LandingProblemSpotlight: React.FC = () => {
 
   const problems = [
     {
-      icon: BarChart3,
-      title: 'Datos Descontextualizados',
+      icon: MessageSquare,
+      title: 'Tareas Dispersas y Olvidos',
       description:
-        'Tendencias macro que no reflejan el sector, tamaño ni madurez tecnológica de tu empresa, generando análisis irrelevantes.',
+        'Mensajes en WhatsApp, audios y notas sueltas. Sin un lugar centralizado, el equipo no sabe con certeza qué tiene prioridad hoy ni quién es el responsable.',
+    },
+    {
+      icon: Clock,
+      title: 'Horas Perdidas Planificando a Mano',
+      description:
+        'Armar listas, calendarios y cronogramas manualmente consume horas que un emprendedor debería estar dedicando a vender, producir y atender clientes.',
     },
     {
       icon: FileX2,
-      title: 'FODA en Documentos Muertos',
+      title: 'Metas que Nunca se Ejecutan',
       description:
-        'Matrices estratégicas anuales en PDFs que nunca se traducen en priorización RICE, historias de usuario ni tareas asignadas.',
-    },
-    {
-      icon: RefreshCwOff,
-      title: 'Falta de Retroalimentación',
-      description:
-        'Los resultados del sprint no vuelven a calibrar la estrategia general, obligando a los directivos a tomar decisiones a ciegas.',
+        'Grandes objetivos de ventas, marketing u operaciones que se quedan en buenas intenciones porque no existe un sistema que los convierta en actividades prácticas diarias.',
     },
   ];
 
@@ -44,13 +44,13 @@ export const LandingProblemSpotlight: React.FC = () => {
           className="max-w-[760px]"
         >
           <p className="text-xs font-mono text-orange-500 uppercase tracking-wider mb-3 font-semibold">
-            Diagnóstico Industrial
+            El Reto de los Negocios Pequeños
           </p>
           <h2 className="text-3xl sm:text-5xl font-semibold text-zinc-950 dark:text-white tracking-tight leading-[1.12] font-display">
-            Las empresas no tienen un problema de información. Tienen una ruptura entre análisis y ejecución.
+            La mayoría de emprendimientos no fracasan por falta de ideas, sino por falta de un sistema para planificar su día a día.
           </h2>
           <p className="mt-6 text-zinc-600 dark:text-zinc-400 text-base sm:text-lg leading-relaxed">
-            Los equipos acumulan reportes aislados, consultorías estáticas y tableros inconexos. Las oportunidades se diluyen en reuniones sin aterrizar en código, diseño o entregables de sprint.
+            Sin un planificador automatizado, los equipos pequeños caen en el desorden operativo. Las prioridades se diluyen en mensajes urgentes y las metas del negocio quedan postergadas.
           </p>
         </motion.div>
 

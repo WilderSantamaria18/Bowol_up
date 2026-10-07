@@ -12,7 +12,9 @@ import java.util.UUID;
 @Repository
 public interface OrganizationMemberRepository extends JpaRepository<OrganizationMember, Long> {
 
-    List<OrganizationMember> findByUserId(UUID userId);
+    /** Incluye la organización (JOIN FETCH): los controladores la leen fuera de transacción (open-in-view=false). */
+    @Query("SELECT om FROM OrganizationMember om JOIN FETCH om.organization WHERE om.user.id = :userId")
+    List<OrganizationMember> findByUserId(@Param("userId") UUID userId);
 
     @Query("SELECT om FROM OrganizationMember om JOIN FETCH om.user WHERE om.organization.id = :organizationId")
     List<OrganizationMember> findByOrganizationIdWithUser(@Param("organizationId") UUID organizationId);

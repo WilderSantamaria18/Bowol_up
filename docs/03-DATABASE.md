@@ -207,7 +207,7 @@ erDiagram
 
 ---
 
-## 7. Migraciones Flyway Completas (`V1` a `V14`)
+## 7. Migraciones Flyway (`V1` a `V26`)
 
 Las migraciones se encuentran ubicadas en:  
 `backend/src/main/resources/db/migration/`
@@ -298,7 +298,7 @@ CREATE TABLE organization_members (
     joined_at       TIMESTAMPTZ NOT NULL DEFAULT NOW(),
     CONSTRAINT uq_organization_members UNIQUE (user_id, organization_id),
     CONSTRAINT chk_organization_members_role
-        CHECK (role IN ('OWNER','ADMIN','MANAGER','MEMBER')),
+        CHECK (role IN ('OWNER','ADMIN','MANAGER','MEMBER','STRATEGIST','EXECUTOR','VIEWER')),
     CONSTRAINT chk_organization_members_status
         CHECK (status IN ('ACTIVE','INVITED','SUSPENDED'))
 );
@@ -1029,6 +1029,22 @@ CREATE INDEX idx_users_name_trgm
 
 COMMENT ON INDEX idx_users_name_trgm IS 'Búsqueda fuzzy por nombre en users.';
 ```
+
+### Migraciones posteriores (`V15` a `V26`)
+
+| Versión | Cambio principal |
+|---|---|
+| V15 | Convierte `digital_maturity` y `ai_maturity` a enteros. |
+| V16 | Ajusta `audit_logs.ip_address` para PostgreSQL. |
+| V17 | Añade `calendar_events`. |
+| V18–V19 | Añaden perfiles de marca, publicaciones sociales y su soft delete. |
+| V20 | Añade planes, suscripciones, facturas y créditos de IA. |
+| V21 | Añade soft delete a eventos de calendario. |
+| V22 | Añade auditoría enterprise, API keys, webhooks y el estado `BLOCKED` para tareas. |
+| V23 | Añade configuración SSO por organización. |
+| V24 | Añade trazabilidad estratégica y campos RICE a oportunidades. |
+| V25 | Añade datos científicos a hipótesis y experimentos. |
+| V26 | Alinea el constraint de roles de membresía con el enum de la aplicación. |
 
 ---
 

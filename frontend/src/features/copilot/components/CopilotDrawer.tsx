@@ -159,16 +159,16 @@ export const CopilotDrawer: React.FC = () => {
 
   return (
     <div className="fixed inset-0 z-50 flex justify-end bg-black/60 backdrop-blur-sm animate-in fade-in duration-200">
-      <div className="relative w-full max-w-xl h-full bg-[#0D0E12] border-l border-white/[0.08] shadow-2xl flex flex-col overflow-hidden animate-in slide-in-from-right duration-300">
+      <div className="relative w-full max-w-xl h-full bg-white dark:bg-[#0D0E12] border-l border-zinc-900/[0.13] dark:border-white/[0.08] shadow-2xl flex flex-col overflow-hidden animate-in slide-in-from-right duration-300">
         {/* Header */}
-        <div className="p-4 border-b border-white/[0.08] bg-[#0A0A0C]/90 backdrop-blur-md flex items-center justify-between gap-3">
+        <div className="p-4 border-b border-zinc-900/[0.13] dark:border-white/[0.08] bg-[#0A0A0C]/90 backdrop-blur-md flex items-center justify-between gap-3">
           <div className="flex items-center gap-2.5 min-w-0">
             <div className="w-8 h-8 rounded-xl bg-orange-600/20 border border-orange-500/30 flex items-center justify-center text-orange-400 shrink-0">
               <Sparkles className="w-4 h-4" strokeWidth={1.5} />
             </div>
             <div className="min-w-0">
               <div className="flex items-center gap-2">
-                <h3 className="text-sm font-bold text-white tracking-tight truncate">
+                <h3 className="text-sm font-bold text-zinc-900 dark:text-white tracking-tight truncate">
                   {currentConv?.title || 'BOWOL Strategic Copilot'}
                 </h3>
                 {currentConv?.contextType && (
@@ -177,7 +177,7 @@ export const CopilotDrawer: React.FC = () => {
                   </Badge>
                 )}
               </div>
-              <p className="text-[11px] text-zinc-400 truncate">
+              <p className="text-[11px] text-zinc-600 dark:text-zinc-400 truncate">
                 Consultoría estratégica guiada por datos de mercado
               </p>
             </div>
@@ -188,7 +188,7 @@ export const CopilotDrawer: React.FC = () => {
               variant="ghost"
               size="sm"
               onClick={() => setShowHistory(!showHistory)}
-              className="text-xs text-zinc-300 hover:text-white"
+              className="text-xs text-zinc-700 dark:text-zinc-300 hover:text-zinc-900 dark:hover:text-white"
               title="Historial de conversaciones"
               leftIcon={MessageSquare}
             >
@@ -199,7 +199,7 @@ export const CopilotDrawer: React.FC = () => {
               variant="ghost"
               size="icon"
               onClick={handleStartNewConversation}
-              className="text-zinc-300 hover:text-orange-400"
+              className="text-zinc-700 dark:text-zinc-300 hover:text-orange-400"
               title="Nueva conversación"
               aria-label="Nueva conversación"
             >
@@ -210,7 +210,7 @@ export const CopilotDrawer: React.FC = () => {
               variant="ghost"
               size="icon"
               onClick={closeCopilot}
-              className="text-zinc-400 hover:text-white"
+              className="text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white"
               aria-label="Cerrar Copilot"
             >
               <X className="w-4 h-4" strokeWidth={1.5} />
@@ -220,8 +220,8 @@ export const CopilotDrawer: React.FC = () => {
 
         {/* Conversation Switcher Drawer (if history open) */}
         {showHistory && (
-          <div className="p-3 bg-zinc-950/95 border-b border-white/[0.08] max-h-56 overflow-y-auto space-y-1.5 animate-in slide-in-from-top-2">
-            <div className="flex items-center justify-between text-[11px] text-zinc-400 px-1 pb-1">
+          <div className="p-3 bg-zinc-100 dark:bg-zinc-950/95 border-b border-zinc-900/[0.13] dark:border-white/[0.08] max-h-56 overflow-y-auto space-y-1.5 animate-in slide-in-from-top-2">
+            <div className="flex items-center justify-between text-[11px] text-zinc-600 dark:text-zinc-400 px-1 pb-1">
               <span className="font-semibold uppercase tracking-wider">Conversaciones Guardadas</span>
               <span>{conversations.length} hilos</span>
             </div>
@@ -235,11 +235,11 @@ export const CopilotDrawer: React.FC = () => {
                 className={`p-2.5 rounded-xl cursor-pointer transition-all flex items-center justify-between text-xs ${
                   activeConversationId === c.id
                     ? 'bg-orange-500/10 border border-orange-500/30 text-orange-200'
-                    : 'bg-white/[0.02] border border-white/[0.04] text-zinc-400 hover:text-zinc-200 hover:bg-white/[0.05]'
+                    : 'bg-zinc-900/[0.02] dark:bg-white/[0.02] border border-zinc-900/[0.08] dark:border-white/[0.04] text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-200 hover:bg-zinc-900/[0.05] dark:hover:bg-white/[0.05]'
                 }`}
               >
                 <div className="truncate pr-2">
-                  <p className="font-medium text-zinc-200 truncate">{c.title}</p>
+                  <p className="font-medium text-zinc-900 dark:text-zinc-200 truncate">{c.title}</p>
                   <p className="text-[10px] text-zinc-500 font-mono mt-0.5">
                     {new Date(c.updatedAt).toLocaleDateString()}
                   </p>
@@ -272,10 +272,10 @@ export const CopilotDrawer: React.FC = () => {
               <div className="w-12 h-12 rounded-2xl bg-orange-500/10 border border-orange-500/20 flex items-center justify-center text-orange-400 mb-3 shadow-lg">
                 <Compass className="w-6 h-6" strokeWidth={1.5} />
               </div>
-              <h4 className="text-sm font-bold text-white mb-1">
+              <h4 className="text-sm font-bold text-zinc-900 dark:text-white mb-1">
                 ¿En qué reto estratégico trabajamos hoy?
               </h4>
-              <p className="text-xs text-zinc-400 max-w-sm mb-6 leading-relaxed">
+              <p className="text-xs text-zinc-600 dark:text-zinc-400 max-w-sm mb-6 leading-relaxed">
                 El Copilot de BOWOL analiza las señales tecnológicas y tu perfil empresarial para formular hipótesis y recomendaciones accionables.
               </p>
 
@@ -286,7 +286,7 @@ export const CopilotDrawer: React.FC = () => {
                     key={idx}
                     type="button"
                     onClick={() => handleSendMessage(prompt)}
-                    className="w-full text-xs p-3 rounded-xl bg-white/[0.02] hover:bg-white/[0.05] border border-white/[0.06] hover:border-orange-500/30 text-zinc-300 hover:text-white flex items-center justify-between transition-all group"
+                    className="w-full text-xs p-3 rounded-xl bg-zinc-900/[0.02] dark:bg-white/[0.02] hover:bg-zinc-900/[0.05] dark:hover:bg-white/[0.05] border border-zinc-900/[0.1] dark:border-white/[0.06] hover:border-orange-500/30 text-zinc-700 dark:text-zinc-300 hover:text-zinc-900 dark:hover:text-white flex items-center justify-between transition-all group"
                   >
                     <span>{prompt}</span>
                     <ArrowRight className="w-3.5 h-3.5 text-zinc-500 group-hover:text-orange-400 transition-colors" strokeWidth={1.5} />
@@ -305,7 +305,7 @@ export const CopilotDrawer: React.FC = () => {
           {/* Thinking indicator */}
           {sendMutation.isPending && (
             <div className="flex justify-start mb-4 animate-in fade-in">
-              <div className="p-3.5 rounded-2xl bg-orange-950/20 border border-orange-500/20 flex items-center gap-2.5 text-xs text-orange-300">
+              <div className="p-3.5 rounded-2xl bg-orange-950/20 border border-orange-500/20 flex items-center gap-2.5 text-xs text-orange-700 dark:text-orange-300">
                 <Sparkles className="w-4 h-4 animate-spin text-orange-400" strokeWidth={1.5} />
                 <span>Razonando con el perfil empresarial y señales de mercado...</span>
               </div>
@@ -316,15 +316,15 @@ export const CopilotDrawer: React.FC = () => {
         </div>
 
         {/* Footer Input */}
-        <div className="p-3.5 border-t border-white/[0.08] bg-[#0A0A0C]/90 backdrop-blur-md">
-          <div className="relative rounded-xl bg-white/[0.03] border border-white/[0.08] focus-within:border-orange-500/50 transition-colors">
+        <div className="p-3.5 border-t border-zinc-900/[0.13] dark:border-white/[0.08] bg-[#0A0A0C]/90 backdrop-blur-md">
+          <div className="relative rounded-xl bg-zinc-900/[0.03] dark:bg-white/[0.03] border border-zinc-900/[0.13] dark:border-white/[0.08] focus-within:border-orange-500/50 transition-colors">
             <textarea
               value={inputMessage}
               onChange={(e) => setInputMessage(e.target.value)}
               onKeyDown={handleKeyDown}
               placeholder="Haz una pregunta estratégica o profundiza en una hipótesis..."
               rows={2}
-              className="w-full resize-none bg-transparent p-3 text-xs text-zinc-100 placeholder-zinc-500 focus:outline-none"
+              className="w-full resize-none bg-transparent p-3 text-xs text-zinc-900 dark:text-zinc-100 placeholder-zinc-500 focus:outline-none"
             />
             <div className="flex items-center justify-between px-3 pb-2.5">
               <span className="text-[10px] text-zinc-500 font-mono">

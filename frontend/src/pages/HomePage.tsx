@@ -1,8 +1,11 @@
 import React from 'react';
+import { MotionConfig } from 'framer-motion';
+import '@/features/landing/landingMotion.css';
 import { useAuth } from '@/features/auth/context/AuthContext';
 import { ExecutiveCockpit } from '@/features/dashboard/components/ExecutiveCockpit';
 import { ScrollProgressIndicator } from '@/features/landing/components/ScrollProgressIndicator';
-import { AnimatedLogoCompanion } from '@/features/landing/components/AnimatedLogoCompanion';
+import { BowolLogoRail, BowolHeroLogoSlot } from '@/features/landing/logo-motion';
+import { LandingScrollChoreography } from '@/features/landing/scroll';
 import { LandingHeroWith3DTilt } from '@/features/landing/components/LandingHeroWith3DTilt';
 import { LandingVerifiedSourcesTicker } from '@/features/landing/components/LandingVerifiedSourcesTicker';
 import { LandingProblemSpotlight } from '@/features/landing/components/LandingProblemSpotlight';
@@ -23,20 +26,24 @@ export const HomePage: React.FC = () => {
 
   // Si es un visitante, mostramos la Landing Page interactiva estilo Apple / Samsung
   return (
-    <div className="relative w-full bg-slate-100/90 dark:bg-[#09090B] text-zinc-900 dark:text-zinc-100 antialiased selection:bg-orange-500/20 selection:text-orange-500 transition-colors duration-200">
+    <MotionConfig reducedMotion="user">
+    <div className="landing-page relative w-full bg-slate-100/90 dark:bg-[#09090B] text-zinc-900 dark:text-zinc-100 antialiased selection:bg-orange-500/20 selection:text-orange-500 transition-colors duration-200">
       {/* Subtle Analog Texture Film Grain */}
       <div className="film-grain" />
 
       {/* Neon Scroll Progress Line */}
       <ScrollProgressIndicator />
 
-      {/* Interactive GSAP Flying Rocket Companion with Authentic Vector Logo */}
-      <AnimatedLogoCompanion />
+      {/* Logo oficial animado en su carril superior izquierdo (Señal → Estrategia → Ejecución) */}
+      <BowolLogoRail triggerSelector="#hero-stage" />
 
-      {/* 0. Hero Stage: Donde el logotipo oficial de BOWOL comanda y despega */}
+      {/* Transiciones de scroll del index y riel de secciones */}
+      <LandingScrollChoreography />
+
+      {/* 0. Hero Stage: propuesta de valor y guion de scroll del logo */}
       <section
         id="hero-stage"
-        className="relative min-h-screen w-full overflow-hidden flex flex-col items-center justify-between select-none pt-24 pb-12 px-4"
+        className="relative min-h-screen w-full overflow-hidden flex flex-col items-center justify-center gap-6 sm:gap-8 select-none pt-24 pb-12 px-4"
       >
         {/* Dynamic Atmospheric Nebula & Stardust Grid */}
         <div className="absolute inset-0 pointer-events-none -z-10">
@@ -50,18 +57,18 @@ export const HomePage: React.FC = () => {
           <div className="absolute bottom-1/3 left-1/3 w-1 h-1 rounded-full bg-amber-400/50" />
         </div>
 
-        {/* Spacer for center vector logo rendered fixed by BowolLogoScroll */}
-        <div className="w-full h-44 sm:h-56 pointer-events-none" />
+        {/* Banner: el logo oficial nace aquí y vuela al carril superior izquierdo al hacer scroll */}
+        <BowolHeroLogoSlot />
 
         {/* Hero Bottom Zone: Clean Subtitle & Launch Cue */}
         <div className="w-full max-w-2xl mx-auto flex flex-col items-center gap-6 z-10">
           {/* Executive Subtitle */}
           <div className="hero-stage-item text-center px-4 space-y-1.5">
             <h2 className="text-xl sm:text-3xl font-bold tracking-tight text-zinc-950 dark:text-white font-display">
-              De la señal de mercado a la ejecución estratégica
+              El Planificador Inteligente de Actividades para tu Negocio
             </h2>
             <p className="text-xs sm:text-base text-zinc-600 dark:text-zinc-400 font-medium max-w-lg mx-auto leading-relaxed">
-              Inteligencia continua de mercado, matrices FODA cuantitativas y orquestación de sprints en un solo ciclo unificado.
+              Automatiza tus tareas básicas de planificación, organiza a tu equipo y lleva tu emprendimiento o pequeña empresa con un sistema ágil sin complicaciones.
             </p>
           </div>
 
@@ -70,13 +77,16 @@ export const HomePage: React.FC = () => {
             id="scroll-hint-btn"
             type="button"
             onClick={() => {
-              window.scrollTo({ top: window.innerHeight * 0.95, behavior: 'smooth' });
+              document.getElementById('landing-overview')?.scrollIntoView({
+                behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth',
+                block: 'start',
+              });
             }}
             className="hero-stage-item flex flex-col items-center gap-2 text-zinc-500 dark:text-white/40 hover:text-orange-500 dark:hover:text-orange-400 transition-all cursor-pointer group mt-2"
-            aria-label="Iniciar despegue de BOWOL"
+            aria-label="Explorar planificador BOWOL"
           >
             <span className="text-[10px] tracking-[0.25em] uppercase font-bold group-hover:text-orange-500 transition-colors">
-              Desplázate para iniciar trayectoria
+              Desplázate para descubrir tu nuevo sistema
             </span>
             <div className="w-[18px] h-[28px] rounded-full border border-zinc-400 dark:border-white/20 group-hover:border-orange-500 flex items-start justify-center p-1 transition-colors">
               <span className="w-[3px] h-[6px] rounded-full bg-orange-500 animate-bounce" />
@@ -114,5 +124,6 @@ export const HomePage: React.FC = () => {
         <LandingFooter />
       </div>
     </div>
+    </MotionConfig>
   );
 };

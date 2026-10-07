@@ -81,7 +81,7 @@ export const OpportunityCard: React.FC<OpportunityCardProps> = ({
     <div
       data-testid={`opportunity-card-${opportunity.id}`}
       onClick={() => onSelect?.(opportunity)}
-      className="group relative p-4 rounded-xl bg-white/[0.03] border border-white/[0.06] hover:border-white/[0.14] transition-all duration-200 shadow-md flex flex-col justify-between space-y-3 cursor-pointer"
+      className="group relative p-4 rounded-xl bg-zinc-900/[0.03] dark:bg-white/[0.03] border border-zinc-900/[0.1] dark:border-white/[0.06] hover:border-zinc-900/[0.16] dark:hover:border-white/[0.14] transition-all duration-200 shadow-md flex flex-col justify-between space-y-3 cursor-pointer"
     >
       <div className="space-y-2">
         {/* Header & Score Badge */}
@@ -101,7 +101,7 @@ export const OpportunityCard: React.FC<OpportunityCardProps> = ({
                 e.stopPropagation();
                 onSelect?.(opportunity);
               }}
-              className="p-1 rounded-md text-zinc-500 hover:text-orange-400 hover:bg-white/[0.05] transition-colors"
+              className="p-1 rounded-md text-zinc-500 hover:text-orange-400 hover:bg-zinc-900/[0.05] dark:hover:bg-white/[0.05] transition-colors"
               title="Abrir simulador RICE y detalles"
               aria-label="Simular RICE"
             >
@@ -111,7 +111,7 @@ export const OpportunityCard: React.FC<OpportunityCardProps> = ({
             <button
               type="button"
               onClick={handleDelete}
-              className="opacity-0 group-hover:opacity-100 transition-opacity p-1 rounded-md text-zinc-500 hover:text-rose-400 hover:bg-white/[0.05]"
+              className="opacity-0 group-hover:opacity-100 transition-opacity p-1 rounded-md text-zinc-500 hover:text-rose-400 hover:bg-zinc-900/[0.05] dark:hover:bg-white/[0.05]"
               title="Eliminar oportunidad"
               aria-label="Eliminar oportunidad"
             >
@@ -121,32 +121,32 @@ export const OpportunityCard: React.FC<OpportunityCardProps> = ({
         </div>
 
         {/* Title */}
-        <h4 className="text-sm font-semibold text-white tracking-tight leading-snug">
+        <h4 className="text-sm font-semibold text-zinc-900 dark:text-white tracking-tight leading-snug">
           {opportunity.title}
         </h4>
 
         {/* Description or Problem */}
         {opportunity.problem ? (
-          <p className="text-xs text-zinc-400 leading-relaxed line-clamp-2">
+          <p className="text-xs text-zinc-600 dark:text-zinc-400 leading-relaxed line-clamp-2">
             <span className="text-zinc-500 font-medium">Problema: </span>{opportunity.problem}
           </p>
         ) : opportunity.description ? (
-          <p className="text-xs text-zinc-400 leading-relaxed line-clamp-2">
+          <p className="text-xs text-zinc-600 dark:text-zinc-400 leading-relaxed line-clamp-2">
             {opportunity.description}
           </p>
         ) : null}
 
         {/* Metadata Tags: Target Segment & Owner */}
         {(opportunity.targetSegment || opportunity.ownerName) && (
-          <div className="flex items-center gap-2 pt-1 flex-wrap text-[10px] text-zinc-400">
+          <div className="flex items-center gap-2 pt-1 flex-wrap text-[10px] text-zinc-600 dark:text-zinc-400">
             {opportunity.targetSegment && (
-              <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded bg-white/[0.02] border border-white/[0.04]">
+              <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded bg-zinc-900/[0.02] dark:bg-white/[0.02] border border-zinc-900/[0.08] dark:border-white/[0.04]">
                 <Target className="w-2.5 h-2.5 text-sky-400" strokeWidth={1.5} />
                 <span className="truncate max-w-[120px]">{opportunity.targetSegment}</span>
               </span>
             )}
             {opportunity.ownerName && (
-              <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded bg-white/[0.02] border border-white/[0.04]">
+              <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded bg-zinc-900/[0.02] dark:bg-white/[0.02] border border-zinc-900/[0.08] dark:border-white/[0.04]">
                 <User className="w-2.5 h-2.5 text-orange-400" strokeWidth={1.5} />
                 <span className="truncate max-w-[100px]">{opportunity.ownerName}</span>
               </span>
@@ -155,22 +155,22 @@ export const OpportunityCard: React.FC<OpportunityCardProps> = ({
         )}
       </div>
 
-      <div className="space-y-2 pt-2 border-t border-white/[0.04]">
+      <div className="space-y-2 pt-2 border-t border-zinc-900/[0.08] dark:border-white/[0.04]">
         {/* RICE Factors Pills */}
         <div className="grid grid-cols-4 gap-1 text-center">
-          <div className="p-1 rounded bg-black/30 border border-white/[0.04]">
+          <div className="p-1 rounded bg-black/30 border border-zinc-900/[0.08] dark:border-white/[0.04]">
             <span className="text-[10px] text-zinc-500 block">Alcance</span>
-            <span className="text-[11px] font-semibold text-zinc-200">{opportunity.reachScore ?? '-'}</span>
+            <span className="text-[11px] font-semibold text-zinc-900 dark:text-zinc-200">{opportunity.reachScore ?? '-'}</span>
           </div>
-          <div className="p-1 rounded bg-black/30 border border-white/[0.04]">
+          <div className="p-1 rounded bg-black/30 border border-zinc-900/[0.08] dark:border-white/[0.04]">
             <span className="text-[10px] text-zinc-500 block">Impacto</span>
             <span className="text-[11px] font-semibold text-emerald-400">{opportunity.impactScore ?? '-'}</span>
           </div>
-          <div className="p-1 rounded bg-black/30 border border-white/[0.04]">
+          <div className="p-1 rounded bg-black/30 border border-zinc-900/[0.08] dark:border-white/[0.04]">
             <span className="text-[10px] text-zinc-500 block">Conf.</span>
             <span className="text-[11px] font-semibold text-sky-400">{opportunity.confidenceScore ?? '-'}</span>
           </div>
-          <div className="p-1 rounded bg-black/30 border border-white/[0.04]">
+          <div className="p-1 rounded bg-black/30 border border-zinc-900/[0.08] dark:border-white/[0.04]">
             <span className="text-[10px] text-zinc-500 block">Esfuerzo</span>
             <span className="text-[11px] font-semibold text-amber-400">{opportunity.effortScore ?? '-'}</span>
           </div>
@@ -205,7 +205,7 @@ export const OpportunityCard: React.FC<OpportunityCardProps> = ({
             type="button"
             onClick={handleMoveLeft}
             disabled={!canMoveLeft}
-            className="inline-flex items-center gap-1 text-[11px] text-zinc-400 hover:text-white disabled:opacity-20 disabled:hover:text-zinc-400 transition-colors p-1"
+            className="inline-flex items-center gap-1 text-[11px] text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white disabled:opacity-20 disabled:hover:text-zinc-400 transition-colors p-1"
             title="Mover al estado anterior"
             aria-label="Mover al estado anterior"
           >
@@ -217,7 +217,7 @@ export const OpportunityCard: React.FC<OpportunityCardProps> = ({
             type="button"
             onClick={handleMoveRight}
             disabled={!canMoveRight}
-            className="inline-flex items-center gap-1 text-[11px] text-zinc-400 hover:text-orange-400 disabled:opacity-20 disabled:hover:text-zinc-400 transition-colors p-1"
+            className="inline-flex items-center gap-1 text-[11px] text-zinc-600 dark:text-zinc-400 hover:text-orange-400 disabled:opacity-20 disabled:hover:text-zinc-400 transition-colors p-1"
             title="Avanzar al siguiente estado"
             aria-label="Avanzar al siguiente estado"
           >

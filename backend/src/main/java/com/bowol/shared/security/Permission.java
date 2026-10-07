@@ -23,6 +23,17 @@ public enum Permission {
     BUSINESS_PROFILE_READ("business_profile.read"),
     BUSINESS_PROFILE_UPDATE("business_profile.update"),
 
+    // Brand profile
+    BRAND_PROFILE_READ("brand_profile.read"),
+    BRAND_PROFILE_UPDATE("brand_profile.update"),
+
+    // Social content
+    SOCIAL_POST_READ("social_post.read"),
+    SOCIAL_POST_CREATE("social_post.create"),
+    SOCIAL_POST_UPDATE("social_post.update"),
+    SOCIAL_POST_DELETE("social_post.delete"),
+    SOCIAL_POST_PUBLISH("social_post.publish"),
+
     // Trends & Intelligence
     TREND_READ("trend.read"),
     TREND_SEARCH("trend.search"),

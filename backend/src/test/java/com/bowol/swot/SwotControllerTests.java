@@ -352,6 +352,11 @@ class SwotControllerTests {
                 .email("other-" + UUID.randomUUID() + "@beta.com")
                 .passwordHash("hashed")
                 .build());
+        memberRepository.save(OrganizationMember.builder()
+                .organization(orgB)
+                .user(userB)
+                .role(Role.OWNER)
+                .build());
 
         String jwtOrgB = jwtService.generateAccessToken(
                 userB,
@@ -393,5 +398,39 @@ class SwotControllerTests {
 
         SwotAnalysis updated = swotAnalysisRepository.findById(swot.getId()).orElseThrow();
         assertThat(updated.getStrengths().get(0).getStatus()).isEqualTo("CONVERTED");
+    }
+
+    @Test
+    @DisplayName("SWOT rechaza estados de ítem que no pertenecen al flujo")
+    void rejectsInvalidItemStatus() throws Exception {
+        SwotItem item = SwotItem.of("Fortaleza validada");
+        SwotAnalysis swot = swotAnalysisRepository.save(SwotAnalysis.builder()
+                .organizationId(testOrg.getId())
+                .strengths(new ArrayList<>(List.of(item)))
+                .build());
+
+        UpdateSwotItemStatusRequest request = UpdateSwotItemStatusRequest.builder()
+                .status("PUBLISHED")
+                .build();
+
+        mockMvc.perform(patch("/api/v1/swot/" + swot.getId() + "/items/" + item.getId() + "/status")
+                        .header("Authorization", "Bearer " + jwtToken)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(request)))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.code").value("SWOT_INVALID_STATUS"));
+    }
+
+    @Test
+    @DisplayName("SWOT informa cuando se solicita eliminar un ítem inexistente")
+    void removingMissingItemReturnsNotFound() throws Exception {
+        SwotAnalysis swot = swotAnalysisRepository.save(SwotAnalysis.builder()
+                .organizationId(testOrg.getId())
+                .build());
+
+        mockMvc.perform(delete("/api/v1/swot/" + swot.getId() + "/items/" + UUID.randomUUID())
+                        .header("Authorization", "Bearer " + jwtToken))
+                .andExpect(status().isNotFound())
+                .andExpect(jsonPath("$.code").value("ITEM_NO_ENCONTRADO"));
     }
 }

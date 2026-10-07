@@ -256,6 +256,11 @@ class ProjectControllerTests {
                 .email("dev-" + UUID.randomUUID() + "@bowol.com")
                 .passwordHash("hashed")
                 .build());
+        memberRepository.save(OrganizationMember.builder()
+                .organization(testOrg)
+                .user(memberUser)
+                .role(Role.MEMBER)
+                .build());
 
         AddProjectMemberRequest addReq = AddProjectMemberRequest.builder()
                 .userId(memberUser.getId())

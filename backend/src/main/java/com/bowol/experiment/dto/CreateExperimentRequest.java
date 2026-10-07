@@ -23,10 +23,13 @@ public class CreateExperimentRequest {
 
     private String description;
 
+    @NotBlank(message = "El método del experimento es obligatorio")
     private String method;
 
+    @NotNull(message = "La fecha de inicio es obligatoria")
     private LocalDate startDate;
 
+    @NotNull(message = "La fecha de fin es obligatoria")
     private LocalDate endDate;
 
     private ExperimentStatus status;
@@ -35,6 +38,7 @@ public class CreateExperimentRequest {
 
     private java.math.BigDecimal budget;
 
+    @NotBlank(message = "La métrica objetivo es obligatoria")
     private String targetMetric;
 
     private String resultMetric;

@@ -113,7 +113,7 @@ export const QuadrantCard: React.FC<QuadrantCardProps> = ({
         );
       case 'LOW':
         return (
-          <span className="text-[10px] font-semibold px-2 py-0.5 rounded-md bg-zinc-500/10 text-zinc-400 border border-zinc-500/20">
+          <span className="text-[10px] font-semibold px-2 py-0.5 rounded-md bg-zinc-500/10 text-zinc-600 dark:text-zinc-400 border border-zinc-500/20">
             Baja certeza
           </span>
         );
@@ -138,7 +138,7 @@ export const QuadrantCard: React.FC<QuadrantCardProps> = ({
         );
       case 'LOW':
         return (
-          <span className="text-[10px] font-semibold px-2 py-0.5 rounded-md bg-zinc-500/10 text-zinc-400 border border-zinc-500/20">
+          <span className="text-[10px] font-semibold px-2 py-0.5 rounded-md bg-zinc-500/10 text-zinc-600 dark:text-zinc-400 border border-zinc-500/20">
             Impacto moderado
           </span>
         );
@@ -151,7 +151,7 @@ export const QuadrantCard: React.FC<QuadrantCardProps> = ({
     if (!source) return null;
     if (source === 'INTERNAL_PROFILE') {
       return (
-        <span className="text-[10px] font-medium px-2 py-0.5 rounded-md bg-white/[0.05] text-zinc-300 border border-white/[0.08]">
+        <span className="text-[10px] font-medium px-2 py-0.5 rounded-md bg-zinc-900/[0.05] dark:bg-white/[0.05] text-zinc-700 dark:text-zinc-300 border border-zinc-900/[0.13] dark:border-white/[0.08]">
           Interno (Perfil)
         </span>
       );
@@ -165,7 +165,7 @@ export const QuadrantCard: React.FC<QuadrantCardProps> = ({
       );
     }
     return (
-      <span className="text-[10px] font-medium px-2 py-0.5 rounded-md bg-white/[0.04] text-zinc-400 border border-white/[0.06]">
+      <span className="text-[10px] font-medium px-2 py-0.5 rounded-md bg-zinc-900/[0.04] dark:bg-white/[0.04] text-zinc-600 dark:text-zinc-400 border border-zinc-900/[0.1] dark:border-white/[0.06]">
         {source}
       </span>
     );
@@ -185,12 +185,12 @@ export const QuadrantCard: React.FC<QuadrantCardProps> = ({
             </div>
             <div>
               <div className="flex items-center gap-2">
-                <h3 className="text-base font-semibold text-white tracking-tight">{title}</h3>
+                <h3 className="text-base font-semibold text-zinc-900 dark:text-white tracking-tight">{title}</h3>
                 <span className={`text-[11px] font-semibold px-2 py-0.5 rounded-full ${colorTheme.bgBadge} ${colorTheme.textBadge} border border-white/[0.08]`}>
                   {displayedItems.length}
                 </span>
               </div>
-              <p className="text-xs text-zinc-400 mt-0.5">{subtitle}</p>
+              <p className="text-xs text-zinc-600 dark:text-zinc-400 mt-0.5">{subtitle}</p>
             </div>
           </div>
         </div>
@@ -198,7 +198,7 @@ export const QuadrantCard: React.FC<QuadrantCardProps> = ({
         {/* Items List */}
         <div className="space-y-3 my-4 min-h-[140px]">
           {displayedItems.length === 0 ? (
-            <div className="flex flex-col items-center justify-center py-8 text-center border border-dashed border-white/[0.06] rounded-xl">
+            <div className="flex flex-col items-center justify-center py-8 text-center border border-dashed border-zinc-900/[0.1] dark:border-white/[0.06] rounded-xl">
               <p className="text-xs text-zinc-500">Sin elementos registrados en este cuadrante.</p>
             </div>
           ) : (
@@ -211,8 +211,8 @@ export const QuadrantCard: React.FC<QuadrantCardProps> = ({
                   key={item.id}
                   className={`group relative flex flex-col gap-2.5 p-3.5 rounded-xl border transition-colors ${
                     isDismissed
-                      ? 'bg-white/[0.01] border-white/[0.04] opacity-60'
-                      : 'bg-white/[0.03] border-white/[0.06] hover:border-white/[0.14]'
+                      ? 'bg-zinc-900/[0.01] dark:bg-white/[0.01] border-zinc-900/[0.08] dark:border-white/[0.04] opacity-60'
+                      : 'bg-zinc-900/[0.03] dark:bg-white/[0.03] border-zinc-900/[0.1] dark:border-white/[0.06] hover:border-zinc-900/[0.16] dark:hover:border-white/[0.14]'
                   }`}
                 >
                   <div className="flex items-start justify-between gap-3">
@@ -239,7 +239,7 @@ export const QuadrantCard: React.FC<QuadrantCardProps> = ({
                             window.location.href = `/opportunities?create=true&title=${titleParam}&description=${descParam}&swotItemId=${item.id}`;
                           }
                         }}
-                        className="p-1 rounded-md text-zinc-400 hover:text-amber-400 hover:bg-white/[0.06] transition-colors"
+                        className="p-1 rounded-md text-zinc-600 dark:text-zinc-400 hover:text-amber-400 hover:bg-zinc-900/[0.06] dark:hover:bg-white/[0.06] transition-colors"
                         aria-label="Convertir en Oportunidad RICE"
                         title="Convertir en Oportunidad RICE"
                       >
@@ -257,7 +257,7 @@ export const QuadrantCard: React.FC<QuadrantCardProps> = ({
                             window.location.href = `/hypotheses?create=true&statement=${stmtParam}&source=SWOT&swotItemId=${item.id}`;
                           }
                         }}
-                        className="p-1 rounded-md text-zinc-400 hover:text-emerald-400 hover:bg-white/[0.06] transition-colors"
+                        className="p-1 rounded-md text-zinc-600 dark:text-zinc-400 hover:text-emerald-400 hover:bg-zinc-900/[0.06] dark:hover:bg-white/[0.06] transition-colors"
                         aria-label="Crear hipótesis de validación"
                         title="Crear hipótesis de validación"
                       >
@@ -270,7 +270,7 @@ export const QuadrantCard: React.FC<QuadrantCardProps> = ({
                           type="button"
                           onClick={() => handleToggleStatus(item)}
                           disabled={updatingStatusId === item.id}
-                          className="p-1 rounded-md text-zinc-400 hover:text-zinc-200 hover:bg-white/[0.06] transition-colors"
+                          className="p-1 rounded-md text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-200 hover:bg-zinc-900/[0.06] dark:hover:bg-white/[0.06] transition-colors"
                           aria-label={isDismissed ? 'Reactivar elemento' : 'Descartar elemento'}
                           title={isDismissed ? 'Reactivar elemento' : 'Descartar elemento'}
                         >
@@ -289,7 +289,7 @@ export const QuadrantCard: React.FC<QuadrantCardProps> = ({
                         type="button"
                         onClick={() => handleDelete(item.id)}
                         disabled={deletingId === item.id}
-                        className="p-1 rounded-md text-zinc-500 hover:text-rose-400 hover:bg-white/[0.06] transition-colors"
+                        className="p-1 rounded-md text-zinc-500 hover:text-rose-400 hover:bg-zinc-900/[0.06] dark:hover:bg-white/[0.06] transition-colors"
                         aria-label="Eliminar elemento"
                         title="Eliminar elemento"
                       >
@@ -303,13 +303,13 @@ export const QuadrantCard: React.FC<QuadrantCardProps> = ({
                   </div>
 
                   {/* Metadata Chips: Source, Confidence, Impact, Evidence */}
-                  <div className="flex flex-wrap items-center gap-1.5 pt-1 border-t border-white/[0.03]">
+                  <div className="flex flex-wrap items-center gap-1.5 pt-1 border-t border-zinc-900/[0.08] dark:border-white/[0.03]">
                     {getSourceBadge(item.source)}
                     {getConfidenceBadge(item.confidence)}
                     {getImpactBadge(item.impact)}
 
                     {isDismissed && (
-                      <span className="text-[10px] font-semibold px-2 py-0.5 rounded-md bg-zinc-700/30 text-zinc-400 border border-zinc-700/50">
+                      <span className="text-[10px] font-semibold px-2 py-0.5 rounded-md bg-zinc-700/30 text-zinc-600 dark:text-zinc-400 border border-zinc-700/50">
                         Descartado
                       </span>
                     )}
@@ -335,7 +335,7 @@ export const QuadrantCard: React.FC<QuadrantCardProps> = ({
       </div>
 
       {/* Add Item Section */}
-      <div className="pt-3 border-t border-white/[0.05]">
+      <div className="pt-3 border-t border-zinc-900/[0.08] dark:border-white/[0.05]">
         {isAdding ? (
           <form onSubmit={handleSubmit} className="space-y-2">
             <textarea
@@ -344,7 +344,7 @@ export const QuadrantCard: React.FC<QuadrantCardProps> = ({
               placeholder={`Añadir nuevo punto a ${title.toLowerCase()}...`}
               rows={2}
               autoFocus
-              className="w-full text-xs bg-black/40 border border-white/[0.12] rounded-xl px-3 py-2 text-zinc-200 placeholder-zinc-500 focus:outline-none focus:border-white/30 resize-none"
+              className="w-full text-xs bg-black/40 border border-zinc-900/[0.16] dark:border-white/[0.12] rounded-xl px-3 py-2 text-zinc-900 dark:text-zinc-200 placeholder-zinc-500 focus:outline-none focus:border-zinc-900/[0.16] dark:focus:border-white/30 resize-none"
             />
             <div className="flex items-center justify-end gap-2">
               <Button
@@ -378,7 +378,7 @@ export const QuadrantCard: React.FC<QuadrantCardProps> = ({
             variant="ghost"
             size="sm"
             onClick={() => setIsAdding(true)}
-            className="w-full justify-center text-xs text-zinc-400 hover:text-white border border-dashed border-white/[0.08] hover:border-white/20 rounded-xl py-2"
+            className="w-full justify-center text-xs text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white border border-dashed border-zinc-900/[0.13] dark:border-white/[0.08] hover:border-zinc-900/[0.16] dark:hover:border-white/20 rounded-xl py-2"
           >
             <Plus className="w-3.5 h-3.5 mr-1.5" strokeWidth={1.5} />
             Añadir elemento

@@ -7,6 +7,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -17,6 +18,7 @@ public class BrandProfileController {
     private final BrandProfileService brandProfileService;
 
     @GetMapping
+    @PreAuthorize("hasAuthority('brand_profile.read')")
     public ResponseEntity<BrandProfileResponse> getBrandProfile(
             @AuthenticationPrincipal UserPrincipal principal) {
         BrandProfileResponse profile = brandProfileService.getOrCreateBrandProfile(principal.getOrganizationId());
@@ -24,6 +26,7 @@ public class BrandProfileController {
     }
 
     @PutMapping
+    @PreAuthorize("hasAuthority('brand_profile.update')")
     public ResponseEntity<BrandProfileResponse> saveBrandProfile(
             @Valid @RequestBody SaveBrandProfileRequest request,
             @AuthenticationPrincipal UserPrincipal principal) {

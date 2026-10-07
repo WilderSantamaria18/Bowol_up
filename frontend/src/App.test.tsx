@@ -10,7 +10,7 @@ describe('BOWOL App Integration', () => {
     expect(screen.getAllByText(/BOWOL/i)[0]).toBeInTheDocument();
     
     // Verificar titular ejecutivo y lanzador de trayectoria
-    expect(screen.getByText(/De la señal de mercado a la ejecución estratégica/i)).toBeInTheDocument();
-    expect(screen.getByText(/Desplázate para iniciar trayectoria/i)).toBeInTheDocument();
+    expect(screen.getByText(/El Planificador Inteligente de Actividades para tu Negocio/i)).toBeInTheDocument();
+    expect(screen.getByText(/Desplázate para descubrir tu nuevo sistema/i)).toBeInTheDocument();
   });
 });

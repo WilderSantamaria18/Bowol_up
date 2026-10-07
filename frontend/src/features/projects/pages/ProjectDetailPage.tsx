@@ -36,7 +36,7 @@ export const ProjectDetailPage: React.FC = () => {
   const [isAIDecomposeOpen, setIsAIDecomposeOpen] = useState(false);
   const [isCreateSprintOpen, setIsCreateSprintOpen] = useState(false);
   const [newMemberEmail, setNewMemberEmail] = useState('');
-  const [newMemberRole, setNewMemberRole] = useState<ProjectMemberRole>('CONTRIBUTOR');
+  const [newMemberRole, setNewMemberRole] = useState<ProjectMemberRole>('MEMBER');
 
   // Query Project details
   const { 
@@ -161,7 +161,7 @@ export const ProjectDetailPage: React.FC = () => {
           <span>Volver a Iniciativas & Proyectos</span>
         </button>
 
-        <span className="text-xs font-mono text-zinc-400">
+        <span className="text-xs font-mono text-zinc-600 dark:text-zinc-400">
           ID: {project.id.slice(0, 8)}...
         </span>
       </div>
@@ -360,7 +360,7 @@ export const ProjectDetailPage: React.FC = () => {
               </Button>
             </div>
             {sprints.length === 0 ? (
-              <p className="text-xs text-zinc-400 py-4 text-center">
+              <p className="text-xs text-zinc-600 dark:text-zinc-400 py-4 text-center">
                 Aún no hay sprints configurados para esta iniciativa.
               </p>
             ) : (
@@ -369,7 +369,7 @@ export const ProjectDetailPage: React.FC = () => {
                   <div key={s.id} className="p-2.5 rounded-xl bg-zinc-50 dark:bg-white/[0.03] border border-zinc-200/60 dark:border-white/5 flex items-center justify-between text-xs">
                     <div>
                       <p className="font-medium text-zinc-900 dark:text-zinc-100">{s.name}</p>
-                      <p className="text-[10px] text-zinc-400 font-mono">{s.startDate} &rarr; {s.endDate}</p>
+                      <p className="text-[10px] text-zinc-600 dark:text-zinc-400 font-mono">{s.startDate} &rarr; {s.endDate}</p>
                     </div>
                     <span className="px-2 py-0.5 rounded-full text-[10px] font-mono font-semibold bg-orange-500/10 text-orange-600 dark:text-orange-400">
                       {s.status}
@@ -402,7 +402,7 @@ export const ProjectDetailPage: React.FC = () => {
                 )}
               </div>
             ) : (
-              <p className="text-xs text-zinc-400 py-4 text-center">
+              <p className="text-xs text-zinc-600 dark:text-zinc-400 py-4 text-center">
                 Iniciativa creada directamente sin enlace a oportunidad previa.
               </p>
             )}
@@ -431,7 +431,7 @@ export const ProjectDetailPage: React.FC = () => {
 
           {sprints.length === 0 ? (
             <div className="py-16 text-center rounded-2xl bg-white/40 dark:bg-zinc-900/30 border border-dashed border-zinc-300 dark:border-white/10">
-              <Repeat className="w-8 h-8 text-zinc-400 mx-auto mb-2" strokeWidth={1.5} />
+              <Repeat className="w-8 h-8 text-zinc-600 dark:text-zinc-400 mx-auto mb-2" strokeWidth={1.5} />
               <p className="text-xs text-zinc-500">No hay sprints registrados para este proyecto.</p>
               <Button
                 variant="outline"
@@ -499,7 +499,7 @@ export const ProjectDetailPage: React.FC = () => {
 
           {tasks.length === 0 ? (
             <div className="py-16 text-center rounded-2xl bg-white/40 dark:bg-zinc-900/30 border border-dashed border-zinc-300 dark:border-white/10 space-y-3">
-              <CheckSquare className="w-8 h-8 text-zinc-400 mx-auto" strokeWidth={1.5} />
+              <CheckSquare className="w-8 h-8 text-zinc-600 dark:text-zinc-400 mx-auto" strokeWidth={1.5} />
               <p className="text-xs text-zinc-500">Aún no se han generado tareas para este proyecto.</p>
               <Button
                 variant="primary"
@@ -529,7 +529,7 @@ export const ProjectDetailPage: React.FC = () => {
                       {task.status}
                     </span>
                     {task.estimateHours && (
-                      <span className="font-mono text-zinc-400 text-[11px]">
+                      <span className="font-mono text-zinc-600 dark:text-zinc-400 text-[11px]">
                         {task.estimateHours}h
                       </span>
                     )}
@@ -562,8 +562,9 @@ export const ProjectDetailPage: React.FC = () => {
                 onChange={(e) => setNewMemberRole(e.target.value as ProjectMemberRole)}
                 className="px-3.5 py-2 rounded-xl bg-zinc-50 dark:bg-white/[0.04] border border-zinc-200 dark:border-white/10 text-xs text-zinc-900 dark:text-zinc-100 focus:outline-none focus:ring-2 focus:ring-orange-500/40"
               >
-                <option value="LEAD">Líder (LEAD)</option>
-                <option value="CONTRIBUTOR">Colaborador (CONTRIBUTOR)</option>
+                <option value="OWNER">Responsable (OWNER)</option>
+                <option value="MANAGER">Gestor (MANAGER)</option>
+                <option value="MEMBER">Colaborador (MEMBER)</option>
                 <option value="VIEWER">Visualizador (VIEWER)</option>
               </select>
               <Button
@@ -587,7 +588,7 @@ export const ProjectDetailPage: React.FC = () => {
               Miembros Asignados ({members.length})
             </h4>
             {members.length === 0 ? (
-              <p className="text-xs text-zinc-400 py-4 text-center">
+              <p className="text-xs text-zinc-600 dark:text-zinc-400 py-4 text-center">
                 Aún no hay miembros asignados específicamente a este proyecto.
               </p>
             ) : (
@@ -603,13 +604,13 @@ export const ProjectDetailPage: React.FC = () => {
                       </div>
                       <div>
                         <p className="font-medium text-zinc-900 dark:text-zinc-100">{member.userId}</p>
-                        <span className="text-[10px] font-mono text-zinc-400">Rol: {member.role}</span>
+                        <span className="text-[10px] font-mono text-zinc-600 dark:text-zinc-400">Rol: {member.role}</span>
                       </div>
                     </div>
                     <button
                       type="button"
                       onClick={() => removeMemberMutation.mutate(member.userId)}
-                      className="p-1 rounded text-zinc-400 hover:text-red-500 transition-colors"
+                      className="p-1 rounded text-zinc-600 dark:text-zinc-400 hover:text-red-500 transition-colors"
                       title="Remover del proyecto"
                     >
                       <Trash2 className="w-4 h-4" strokeWidth={1.5} />

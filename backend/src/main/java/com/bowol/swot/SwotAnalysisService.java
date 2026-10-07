@@ -11,6 +11,7 @@ import com.bowol.ai.validation.AIResponseValidator;
 import com.bowol.businessprofile.BusinessProfile;
 import com.bowol.businessprofile.BusinessProfileRepository;
 import com.bowol.shared.dto.PageResponse;
+import com.bowol.shared.exception.BadRequestException;
 import com.bowol.shared.exception.NotFoundException;
 import com.bowol.shared.security.UserPrincipal;
 import com.bowol.swot.dto.*;
@@ -219,7 +220,7 @@ public class SwotAnalysisService {
         SwotAnalysis swot = swotAnalysisRepository.findByIdAndOrganizationId(id, principal.getOrganizationId())
                 .orElseThrow(() -> new NotFoundException("SWOT_NO_ENCONTRADO", "No se encontró el análisis FODA con id: " + id));
 
-        String quadrant = request.getQuadrant().trim().toLowerCase();
+        String quadrant = request.getQuadrant().trim().toLowerCase(Locale.ROOT);
         String defaultType = switch (quadrant) {
             case "strengths", "fortalezas" -> "STRENGTHS";
             case "weaknesses", "debilidades" -> "WEAKNESSES";
@@ -236,10 +237,10 @@ public class SwotAnalysisService {
                 .text(request.getText().trim())
                 .type(defaultType)
                 .evidenceIds(request.getEvidenceIds() != null ? request.getEvidenceIds() : new ArrayList<>())
-                .confidence(request.getConfidence() != null && !request.getConfidence().isBlank() ? request.getConfidence().toUpperCase() : "HIGH")
-                .impact(request.getImpact() != null && !request.getImpact().isBlank() ? request.getImpact().toUpperCase() : "HIGH")
+                .confidence(normalizeLevel(request.getConfidence(), "SWOT_INVALID_CONFIDENCE"))
+                .impact(normalizeLevel(request.getImpact(), "SWOT_INVALID_IMPACT"))
                 .source(request.getSource() != null && !request.getSource().isBlank() ? request.getSource() : defaultSource)
-                .status(request.getStatus() != null && !request.getStatus().isBlank() ? request.getStatus().toUpperCase() : "ACTIVE")
+                .status(normalizeStatus(request.getStatus()))
                 .createdAt(Instant.now())
                 .build();
 
@@ -264,7 +265,7 @@ public class SwotAnalysisService {
         for (List<SwotItem> list : allLists) {
             for (SwotItem item : list) {
                 if (Objects.equals(item.getId(), itemId)) {
-                    item.setStatus(newStatus.toUpperCase());
+                    item.setStatus(normalizeStatus(newStatus));
                     found = true;
                     break;
                 }
@@ -285,10 +286,13 @@ public class SwotAnalysisService {
         SwotAnalysis swot = swotAnalysisRepository.findByIdAndOrganizationId(id, principal.getOrganizationId())
                 .orElseThrow(() -> new NotFoundException("SWOT_NO_ENCONTRADO", "No se encontró el análisis FODA con id: " + id));
 
-        swot.getStrengths().removeIf(item -> Objects.equals(item.getId(), itemId));
-        swot.getWeaknesses().removeIf(item -> Objects.equals(item.getId(), itemId));
-        swot.getOpportunities().removeIf(item -> Objects.equals(item.getId(), itemId));
-        swot.getThreats().removeIf(item -> Objects.equals(item.getId(), itemId));
+        boolean removed = swot.getStrengths().removeIf(item -> Objects.equals(item.getId(), itemId));
+        removed |= swot.getWeaknesses().removeIf(item -> Objects.equals(item.getId(), itemId));
+        removed |= swot.getOpportunities().removeIf(item -> Objects.equals(item.getId(), itemId));
+        removed |= swot.getThreats().removeIf(item -> Objects.equals(item.getId(), itemId));
+        if (!removed) {
+            throw new NotFoundException("ITEM_NO_ENCONTRADO", "No se encontro el item solicitado");
+        }
 
         SwotAnalysis saved = swotAnalysisRepository.save(swot);
         return SwotAnalysisResponse.from(saved);
@@ -313,5 +317,27 @@ public class SwotAnalysisService {
         evidenceRefRepository.deleteByOrganizationIdAndEntityTypeAndEntityId(principal.getOrganizationId(), "SWOT", id);
         swotAnalysisRepository.delete(swot);
         log.info("Análisis FODA eliminado: id={}, org={}", id, principal.getOrganizationId());
+    }
+
+    private String normalizeLevel(String value, String errorCode) {
+        if (value == null || value.isBlank()) {
+            return "HIGH";
+        }
+        String normalized = value.trim().toUpperCase(Locale.ROOT);
+        if (!Set.of("HIGH", "MEDIUM", "LOW").contains(normalized)) {
+            throw new BadRequestException(errorCode, "Nivel no permitido: " + value);
+        }
+        return normalized;
+    }
+
+    private String normalizeStatus(String value) {
+        if (value == null || value.isBlank()) {
+            return "ACTIVE";
+        }
+        String normalized = value.trim().toUpperCase(Locale.ROOT);
+        if (!Set.of("ACTIVE", "CONVERTED", "DISMISSED").contains(normalized)) {
+            throw new BadRequestException("SWOT_INVALID_STATUS", "Estado no permitido: " + value);
+        }
+        return normalized;
     }
 }

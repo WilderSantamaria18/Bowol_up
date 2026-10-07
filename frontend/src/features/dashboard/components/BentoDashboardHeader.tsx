@@ -115,7 +115,7 @@ export const BentoDashboardHeader: React.FC<BentoDashboardHeaderProps> = ({
             </>
           ) : (
             <>
-              <Download className="w-4 h-4 text-zinc-400 group-hover:text-zinc-200 transition-colors" />
+              <Download className="w-4 h-4 text-zinc-600 dark:text-zinc-400 group-hover:text-zinc-900 dark:group-hover:text-zinc-200 transition-colors" />
               <span>Exportar informe</span>
             </>
           )}

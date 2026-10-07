@@ -20,9 +20,9 @@
 | # | Documento | Dominio | Descripción |
 | :-: | :--- | :--- | :--- |
 | **00** | [00-README.md](00-README.md) | **Índice Maestro** | Mapa de navegación, orden de lectura y convenciones globales. |
-| **01** | [01-PRODUCT-VISION.md](01-PRODUCT-VISION.md) | **Producto & Visión** | Propuesta de valor, segmentos de usuario, ciclo *Trend $\rightarrow$ Strategy $\rightarrow$ Execution*, North Star y no-objetivos. |
+| **01** | [01-PRODUCT-VISION.md](01-PRODUCT-VISION.md) | **Producto & Visión** | Propuesta de valor para PYMES y emprendimientos, casos de uso de planificación de actividades, ciclo automatizado y North Star. |
 | **02** | [02-ARCHITECTURE.md](02-ARCHITECTURE.md) | **Arquitectura Técnica** | Monolito Modular en Spring Boot 3.x, bounded contexts, límites de módulos y stack tecnológico. |
-| **03** | [03-DATABASE.md](03-DATABASE.md) | **Persistencia & RLS** | Modelo relacional PostgreSQL 16 (23 tablas + auditoría), RLS nativo en 3 capas y 14 migraciones Flyway completas. |
+| **03** | [03-DATABASE.md](03-DATABASE.md) | **Persistencia & RLS** | Modelo relacional PostgreSQL 16, RLS nativo en 3 capas y 26 migraciones Flyway. |
 | **04** | [04-API-CONTRACT.md](04-API-CONTRACT.md) | **Contrato de API** | Estándar RESTful `/api/v1`, OpenAPI 3.0, RFC 7807 (ProblemDetail), DTOs y respuestas sin wrappers innecesarios. |
 | **05** | [05-AI-STRATEGY.md](05-AI-STRATEGY.md) | **Estrategia de IA** | Abstracción `AIProvider` (OpenAI / Anthropic), templates Mustache, grounding estructurado y 4 capas (Dato/Análisis/Hipótesis/Recomendación). |
 | **06** | [06-SECURITY.md](06-SECURITY.md) | **Seguridad & RBAC** | JWT asimétrico RS256, rotación de refresh tokens en cookies httpOnly, RBAC de 60 permisos, STRIDE y cumplimiento GDPR. |
@@ -30,6 +30,7 @@
 | **08** | [08-DEVOPS.md](08-DEVOPS.md) | **DevOps & Infra** | Dockerfiles multi-stage, docker-compose, CI/CD en GitHub Actions, hosting (Fly.io, Vercel, Neon), backups y monitoreo. |
 | **09** | [09-ROADMAP.md](09-ROADMAP.md) | **Hoja de Ruta** | Fases 0 a 13 con hitos de progreso detallados y checklist de seguimiento de entregables. |
 | **10** | [10-GLOSSARY.md](10-GLOSSARY.md) | **Glosario** | Definición canónica de términos de negocio, arquitectura, seguridad y frontend de BOWOL. |
+| **EXTRA** | [BOWOL_PROMPTS_PLANIFICACION_POR_FASES.md](BOWOL_PROMPTS_PLANIFICACION_POR_FASES.md) | **Prompts & IA** | Guía maestra de contexto y prompts para ChatGPT/LLMs de planificación por fases para PyMEs y emprendedores. |
 
 ---
 

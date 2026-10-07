@@ -26,6 +26,7 @@ public class SocialPostResponse {
     private String title;
     private String content;
     private SocialPostStatus status;
+    private String publicationMode;
     private Instant scheduledAt;
     private Instant publishedAt;
     private PredictedImpact predictedImpact;
@@ -46,6 +47,7 @@ public class SocialPostResponse {
                 .title(entity.getTitle())
                 .content(entity.getContent())
                 .status(entity.getStatus())
+                .publicationMode(entity.getStatus() == SocialPostStatus.PUBLISHED ? "SIMULATED" : "NOT_PUBLISHED")
                 .scheduledAt(entity.getScheduledAt())
                 .publishedAt(entity.getPublishedAt())
                 .predictedImpact(entity.getPredictedImpact())

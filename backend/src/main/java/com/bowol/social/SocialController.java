@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -20,6 +21,7 @@ public class SocialController {
     private final SocialPostService socialPostService;
 
     @GetMapping("/posts")
+    @PreAuthorize("hasAuthority('social_post.read')")
     public ResponseEntity<List<SocialPostResponse>> listPosts(
             @RequestParam(required = false) SocialChannel channel,
             @RequestParam(required = false) SocialPostStatus status,
@@ -29,6 +31,7 @@ public class SocialController {
     }
 
     @GetMapping("/posts/{id}")
+    @PreAuthorize("hasAuthority('social_post.read')")
     public ResponseEntity<SocialPostResponse> getPostById(
             @PathVariable UUID id,
             @AuthenticationPrincipal UserPrincipal principal) {
@@ -37,6 +40,7 @@ public class SocialController {
     }
 
     @PostMapping("/posts")
+    @PreAuthorize("hasAuthority('social_post.create')")
     public ResponseEntity<SocialPostResponse> createPost(
             @Valid @RequestBody CreateSocialPostRequest request,
             @AuthenticationPrincipal UserPrincipal principal) {
@@ -45,6 +49,7 @@ public class SocialController {
     }
 
     @PutMapping("/posts/{id}")
+    @PreAuthorize("hasAuthority('social_post.update')")
     public ResponseEntity<SocialPostResponse> updatePost(
             @PathVariable UUID id,
             @Valid @RequestBody UpdateSocialPostRequest request,
@@ -54,6 +59,7 @@ public class SocialController {
     }
 
     @PostMapping("/posts/{id}/publish")
+    @PreAuthorize("hasAuthority('social_post.publish')")
     public ResponseEntity<SocialPostResponse> publishPost(
             @PathVariable UUID id,
             @AuthenticationPrincipal UserPrincipal principal) {
@@ -62,6 +68,7 @@ public class SocialController {
     }
 
     @DeleteMapping("/posts/{id}")
+    @PreAuthorize("hasAuthority('social_post.delete')")
     public ResponseEntity<Void> deletePost(
             @PathVariable UUID id,
             @AuthenticationPrincipal UserPrincipal principal) {
@@ -70,6 +77,7 @@ public class SocialController {
     }
 
     @PostMapping("/generate")
+    @PreAuthorize("hasAuthority('ai.use')")
     public ResponseEntity<GeneratedSocialContentResponse> generateSocialContent(
             @Valid @RequestBody GenerateSocialContentRequest request,
             @AuthenticationPrincipal UserPrincipal principal) {

@@ -193,4 +193,33 @@ class BrandProfileControllerTests {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.brandName").value("Acme Corp A"));
     }
+
+    @Test
+    @DisplayName("Un miembro puede consultar, pero no modificar, el perfil de marca")
+    void memberCannotModifyBrandProfile() throws Exception {
+        User member = userRepository.save(User.builder()
+                .email("member-" + UUID.randomUUID() + "@acme.com")
+                .passwordHash("hashed")
+                .name("Member")
+                .build());
+        organizationMemberRepository.save(OrganizationMember.builder()
+                .organization(orgA)
+                .user(member)
+                .role(Role.MEMBER)
+                .build());
+        String memberToken = jwtService.generateAccessToken(member, orgA.getId(), Role.MEMBER, Set.of("brand_profile.update"));
+
+        mockMvc.perform(get("/api/v1/brand-profile")
+                        .header("Authorization", "Bearer " + memberToken))
+                .andExpect(status().isOk());
+
+        SaveBrandProfileRequest request = SaveBrandProfileRequest.builder()
+                .brandName("Cambio no autorizado")
+                .build();
+        mockMvc.perform(put("/api/v1/brand-profile")
+                        .header("Authorization", "Bearer " + memberToken)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(request)))
+                .andExpect(status().isForbidden());
+    }
 }

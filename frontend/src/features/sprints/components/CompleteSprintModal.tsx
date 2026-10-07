@@ -39,20 +39,20 @@ export const CompleteSprintModal: React.FC<CompleteSprintModalProps> = ({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm animate-fade-in">
-      <div className="relative w-full max-w-lg rounded-2xl bg-[#0F0F12] border border-white/[0.1] p-6 shadow-2xl">
-        <div className="flex items-center justify-between pb-4 border-b border-white/[0.08]">
+      <div className="relative w-full max-w-lg rounded-2xl bg-white dark:bg-[#0F0F12] border border-zinc-900/[0.16] dark:border-white/[0.1] p-6 shadow-2xl">
+        <div className="flex items-center justify-between pb-4 border-b border-zinc-900/[0.13] dark:border-white/[0.08]">
           <div className="flex items-center gap-2.5">
             <div className="w-8 h-8 rounded-lg bg-cyan-600/20 border border-cyan-500/40 flex items-center justify-center text-cyan-400">
               <CheckCircle2 className="w-4 h-4" strokeWidth={1.5} />
             </div>
             <div>
-              <h2 className="text-base font-semibold text-white">Completar {sprint.name}</h2>
-              <p className="text-xs text-zinc-400">Cierre de ciclo y rollover de tareas pendientes</p>
+              <h2 className="text-base font-semibold text-zinc-900 dark:text-white">Completar {sprint.name}</h2>
+              <p className="text-xs text-zinc-600 dark:text-zinc-400">Cierre de ciclo y rollover de tareas pendientes</p>
             </div>
           </div>
           <button
             onClick={onClose}
-            className="text-zinc-400 hover:text-white transition-colors p-1"
+            className="text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white transition-colors p-1"
             aria-label="Cerrar modal"
           >
             <X className="w-5 h-5" strokeWidth={1.5} />
@@ -61,15 +61,15 @@ export const CompleteSprintModal: React.FC<CompleteSprintModalProps> = ({
 
         <form onSubmit={handleSubmit} className="mt-5 space-y-4">
           {/* Summary Box */}
-          <div className="grid grid-cols-2 gap-3 p-3.5 rounded-xl bg-white/[0.02] border border-white/[0.06]">
+          <div className="grid grid-cols-2 gap-3 p-3.5 rounded-xl bg-zinc-900/[0.02] dark:bg-white/[0.02] border border-zinc-900/[0.1] dark:border-white/[0.06]">
             <div>
-              <span className="text-[11px] text-zinc-400 block mb-0.5">Tareas Completadas</span>
+              <span className="text-[11px] text-zinc-600 dark:text-zinc-400 block mb-0.5">Tareas Completadas</span>
               <span className="text-lg font-bold text-emerald-400 font-mono">
                 {completedTasks} / {totalTasks}
               </span>
             </div>
             <div>
-              <span className="text-[11px] text-zinc-400 block mb-0.5">Tareas Incompletas</span>
+              <span className="text-[11px] text-zinc-600 dark:text-zinc-400 block mb-0.5">Tareas Incompletas</span>
               <span className="text-lg font-bold text-amber-400 font-mono">
                 {pendingTasks}
               </span>
@@ -78,13 +78,13 @@ export const CompleteSprintModal: React.FC<CompleteSprintModalProps> = ({
 
           {pendingTasks > 0 ? (
             <div>
-              <label className="block text-xs font-medium text-zinc-300 mb-1.5">
+              <label className="block text-xs font-medium text-zinc-700 dark:text-zinc-300 mb-1.5">
                 Destino para las {pendingTasks} tareas pendientes:
               </label>
               <select
                 value={destination}
                 onChange={(e) => setDestination(e.target.value)}
-                className="w-full bg-surface-subtle border border-white/[0.1] rounded-lg px-3 py-2 text-xs text-zinc-200 focus:outline-none focus:border-cyan-500"
+                className="w-full bg-surface-subtle border border-zinc-900/[0.16] dark:border-white/[0.1] rounded-lg px-3 py-2 text-xs text-zinc-900 dark:text-zinc-200 focus:outline-none focus:border-cyan-500"
               >
                 <option value="BACKLOG">Mover al Backlog del Proyecto</option>
                 {plannedSprints
@@ -106,7 +106,7 @@ export const CompleteSprintModal: React.FC<CompleteSprintModalProps> = ({
             </div>
           )}
 
-          <div className="pt-4 border-t border-white/[0.08] flex items-center justify-end gap-3">
+          <div className="pt-4 border-t border-zinc-900/[0.13] dark:border-white/[0.08] flex items-center justify-end gap-3">
             <Button variant="ghost" type="button" onClick={onClose} disabled={isLoading}>
               Cancelar
             </Button>

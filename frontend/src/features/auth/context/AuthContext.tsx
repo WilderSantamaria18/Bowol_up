@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
 import { authService } from '../services/authService';
+import { SESSION_EXPIRED_EVENT } from '@/services/http';
 import { UserSummary, OrganizationSummary, LoginPayload, RegisterPayload, AuthResponse } from '../types';
 
 interface AuthContextType {
@@ -75,6 +76,16 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   useEffect(() => {
     loadUser();
   }, [loadUser]);
+
+  // La sesión no se pudo renovar (token inválido tras reinicio del backend, refresh caducado...): volver al login.
+  useEffect(() => {
+    const onExpired = () => {
+      setUser(null);
+      setOrganization(null);
+    };
+    window.addEventListener(SESSION_EXPIRED_EVENT, onExpired);
+    return () => window.removeEventListener(SESSION_EXPIRED_EVENT, onExpired);
+  }, []);
 
   const login = async (payload: LoginPayload) => {
     const data = await authService.login(payload);

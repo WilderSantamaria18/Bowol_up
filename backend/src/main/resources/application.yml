@@ -36,7 +36,7 @@ spring:
     validate-on-migrate: true
 
 server:
-  port: ${PORT:8096}
+  port: ${PORT:8080}
   servlet:
     context-path: /
   error:
@@ -61,8 +61,8 @@ bowol:
     jwt:
       public-key-path: ${JWT_PUBLIC_KEY_PATH:classpath:keys/public.pem}
       private-key-path: ${JWT_PRIVATE_KEY_PATH:classpath:keys/private.pem}
-      access-token-expiration-ms: 900000 # 15 minutes
-      refresh-token-expiration-ms: 604800000 # 7 days
+      access-token-expiration-ms: ${JWT_ACCESS_TOKEN_EXPIRATION_MS:900000} # 15 minutes
+      refresh-token-expiration-ms: ${JWT_REFRESH_TOKEN_EXPIRATION_MS:604800000} # 7 days
   cors:
     allowed-origins: ${CORS_ALLOWED_ORIGINS:http://localhost:5173,http://localhost:3000}
     allowed-methods: GET,POST,PUT,PATCH,DELETE,OPTIONS

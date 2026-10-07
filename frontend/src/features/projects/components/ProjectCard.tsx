@@ -93,7 +93,7 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
             <button
               type="button"
               onClick={() => setMenuOpen(!menuOpen)}
-              className="p-1.5 rounded-lg text-zinc-400 hover:text-zinc-700 dark:hover:text-zinc-200 hover:bg-zinc-100 dark:hover:bg-white/5 transition-colors"
+              className="p-1.5 rounded-lg text-zinc-600 dark:text-zinc-400 hover:text-zinc-700 dark:hover:text-zinc-200 hover:bg-zinc-100 dark:hover:bg-white/5 transition-colors"
               aria-label="Opciones del proyecto"
             >
               <MoreHorizontal className="w-4 h-4" strokeWidth={1.5} />
@@ -161,7 +161,7 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
         {/* Dates & Timeline */}
         {(project.startDate || project.endDate) && (
           <div className="flex items-center gap-2 text-[11px] font-mono text-zinc-500 dark:text-zinc-400 mb-4 pt-3 border-t border-zinc-100 dark:border-white/5">
-            <Calendar className="w-3.5 h-3.5 text-zinc-400" strokeWidth={1.5} />
+            <Calendar className="w-3.5 h-3.5 text-zinc-600 dark:text-zinc-400" strokeWidth={1.5} />
             <span>
               {project.startDate || 'Sin inicio'} &rarr; {project.endDate || 'Abierto'}
             </span>

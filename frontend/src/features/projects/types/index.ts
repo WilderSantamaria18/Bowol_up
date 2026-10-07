@@ -62,7 +62,7 @@ export interface UpdateSprintPayload {
   status?: SprintStatus;
 }
 
-export type ProjectMemberRole = 'LEAD' | 'CONTRIBUTOR' | 'VIEWER';
+export type ProjectMemberRole = 'OWNER' | 'MANAGER' | 'MEMBER' | 'VIEWER';
 
 export interface ProjectMember {
   id: number;

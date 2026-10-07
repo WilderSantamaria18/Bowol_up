@@ -113,13 +113,13 @@ export const CalendarPage: React.FC = () => {
               <span className="text-xs font-semibold text-orange-400 px-2 py-0.5 rounded-full bg-orange-500/10 border border-orange-500/20">
                 {selectedItem.eventType}
               </span>
-              <h3 className="text-sm font-bold text-white">{selectedItem.title}</h3>
+              <h3 className="text-sm font-bold text-zinc-900 dark:text-white">{selectedItem.title}</h3>
               {selectedItem.projectName && (
-                <span className="text-xs text-zinc-400">({selectedItem.projectName})</span>
+                <span className="text-xs text-zinc-600 dark:text-zinc-400">({selectedItem.projectName})</span>
               )}
             </div>
             {selectedItem.description && (
-              <p className="text-xs text-zinc-300">{selectedItem.description}</p>
+              <p className="text-xs text-zinc-700 dark:text-zinc-300">{selectedItem.description}</p>
             )}
             <p className="text-[11px] text-zinc-500">
               {selectedItem.startDate} {selectedItem.endDate ? `→ ${selectedItem.endDate}` : ''} | Estado: {selectedItem.status}
@@ -127,7 +127,7 @@ export const CalendarPage: React.FC = () => {
           </div>
           <button
             onClick={() => setSelectedItem(null)}
-            className="text-zinc-400 hover:text-white p-1 text-base leading-none"
+            className="text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white p-1 text-base leading-none"
             aria-label="Cerrar detalle"
           >
             &times;
@@ -139,7 +139,7 @@ export const CalendarPage: React.FC = () => {
       {isLoading ? (
         <div className="py-24 flex flex-col items-center justify-center space-y-3">
           <Loader2 className="w-8 h-8 text-orange-500 animate-spin" strokeWidth={1.5} />
-          <span className="text-xs text-zinc-400">Cargando roadmap integral...</span>
+          <span className="text-xs text-zinc-600 dark:text-zinc-400">Cargando roadmap integral...</span>
         </div>
       ) : error ? (
         <div className="p-4 rounded-xl bg-rose-500/10 border border-rose-500/20 text-xs text-rose-300">

@@ -103,7 +103,7 @@ describe('ProjectDetailPage Component (Fase 7 - Trazabilidad y Detalle)', () => 
         id: 1,
         projectId: 'proj-123',
         userId: 'admin@bowol.ai',
-        role: 'LEAD',
+        role: 'MANAGER',
         addedAt: '2026-09-01T00:00:00Z',
       },
     ]);

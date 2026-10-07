@@ -51,28 +51,28 @@ export const InviteMemberModal: React.FC<InviteMemberModalProps> = ({
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm animate-fade-in">
       <div 
-        className="w-full max-w-md rounded-2xl bg-zinc-950 border border-white/[0.08] shadow-2xl p-6 relative overflow-hidden"
+        className="w-full max-w-md rounded-2xl bg-white dark:bg-zinc-950 border border-zinc-900/[0.13] dark:border-white/[0.08] shadow-2xl p-6 relative overflow-hidden"
         role="dialog"
         aria-modal="true"
         aria-labelledby="modal-headline"
       >
-        <div className="flex items-center justify-between pb-4 border-b border-white/[0.06]">
+        <div className="flex items-center justify-between pb-4 border-b border-zinc-900/[0.1] dark:border-white/[0.06]">
           <div className="flex items-center gap-2.5">
             <div className="w-8 h-8 rounded-lg bg-orange-500/10 border border-orange-500/20 flex items-center justify-center text-orange-400">
               <UserPlus className="w-4 h-4" strokeWidth={1.5} />
             </div>
             <div>
-              <h3 id="modal-headline" className="text-sm font-semibold text-zinc-100">
+              <h3 id="modal-headline" className="text-sm font-semibold text-zinc-900 dark:text-zinc-100">
                 Invitar nuevo colaborador
               </h3>
-              <p className="text-xs text-zinc-400">
+              <p className="text-xs text-zinc-600 dark:text-zinc-400">
                 Asigna un rol y envía acceso a tu organización
               </p>
             </div>
           </div>
           <button
             onClick={onClose}
-            className="text-zinc-500 hover:text-zinc-300 transition-colors p-1 rounded-md"
+            className="text-zinc-500 hover:text-zinc-700 dark:hover:text-zinc-300 transition-colors p-1 rounded-md"
             aria-label="Cerrar modal"
           >
             <X className="w-4 h-4" strokeWidth={1.5} />
@@ -109,7 +109,7 @@ export const InviteMemberModal: React.FC<InviteMemberModalProps> = ({
             helperText="Podrás cambiar o revocar el rol en cualquier momento desde los ajustes."
           />
 
-          <div className="flex items-center justify-end gap-2.5 pt-3 border-t border-white/[0.06]">
+          <div className="flex items-center justify-end gap-2.5 pt-3 border-t border-zinc-900/[0.1] dark:border-white/[0.06]">
             <Button type="button" variant="ghost" size="sm" onClick={onClose} disabled={isLoading}>
               Cancelar
             </Button>

@@ -33,7 +33,7 @@ export const BrandPage: React.FC = () => {
     return (
       <div className="py-24 flex flex-col items-center justify-center space-y-4 text-center">
         <div className="w-10 h-10 border-2 border-orange-500 border-t-transparent rounded-full animate-spin" />
-        <p className="text-zinc-400 text-sm animate-pulse">Cargando Manual de Identidad...</p>
+        <p className="text-zinc-600 dark:text-zinc-400 text-sm animate-pulse">Cargando Manual de Identidad...</p>
       </div>
     );
   }
@@ -51,7 +51,7 @@ export const BrandPage: React.FC = () => {
   return (
     <div className="space-y-8 pb-16 animate-fadeIn">
       {/* Header Liquid Glass */}
-      <div className="relative overflow-hidden rounded-3xl bg-gradient-to-r from-zinc-900/90 via-zinc-900/80 to-zinc-950 p-6 sm:p-8 border border-zinc-200/90 dark:border-white/[0.08] shadow-lg dark:shadow-[0_12px_40px_-8px_rgba(0,0,0,0.6)] backdrop-blur-xl">
+      <div className="relative overflow-hidden rounded-3xl bg-gradient-to-r from-white via-zinc-50 to-zinc-100 dark:from-zinc-900/90 dark:via-zinc-900/80 dark:to-zinc-950 p-6 sm:p-8 border border-zinc-200/90 dark:border-white/[0.08] shadow-lg dark:shadow-[0_12px_40px_-8px_rgba(0,0,0,0.6)] backdrop-blur-xl">
         <div className="absolute right-0 top-0 w-80 h-80 bg-orange-500/10 rounded-full blur-3xl pointer-events-none -z-0" />
 
         <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
@@ -65,10 +65,10 @@ export const BrandPage: React.FC = () => {
               </span>
             </div>
             <div>
-              <h1 className="text-2xl sm:text-3xl font-black text-zinc-100 tracking-tight font-display">
+              <h1 className="text-2xl sm:text-3xl font-black text-zinc-900 dark:text-zinc-100 tracking-tight font-display">
                 Manual de Marca & Voz (Brand Kit)
               </h1>
-              <p className="text-xs sm:text-sm text-zinc-400 mt-1 max-w-2xl">
+              <p className="text-xs sm:text-sm text-zinc-600 dark:text-zinc-400 mt-1 max-w-2xl">
                 Configura la identidad, directrices de tono y valores clave que el motor de IA de BOWOL usará para generar propuestas de contenido y amplificar el ciclo de innovación.
               </p>
             </div>
@@ -77,7 +77,7 @@ export const BrandPage: React.FC = () => {
           <div className="flex items-center gap-3">
             <Link
               to="/social"
-              className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-white/[0.06] hover:bg-white/[0.12] border border-white/10 text-xs font-semibold text-zinc-200 hover:text-white transition-all shadow-sm"
+              className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-zinc-900/[0.06] dark:bg-white/[0.06] hover:bg-zinc-900/[0.12] dark:hover:bg-white/[0.12] border border-zinc-900/[0.16] dark:border-white/10 text-xs font-semibold text-zinc-900 dark:text-zinc-200 hover:text-zinc-900 dark:hover:text-white transition-all shadow-sm"
             >
               <Share2 className="w-4 h-4 text-orange-400" strokeWidth={1.5} />
               <span>Ver Feed Social</span>
@@ -87,7 +87,7 @@ export const BrandPage: React.FC = () => {
         </div>
 
         {/* Explainability banner */}
-        <div className="mt-6 pt-6 border-t border-white/[0.06] grid grid-cols-1 sm:grid-cols-3 gap-4 text-xs text-zinc-400">
+        <div className="mt-6 pt-6 border-t border-zinc-900/[0.1] dark:border-white/[0.06] grid grid-cols-1 sm:grid-cols-3 gap-4 text-xs text-zinc-600 dark:text-zinc-400">
           <div className="flex items-center gap-2.5">
             <Sparkles className="w-4 h-4 text-orange-400 shrink-0" strokeWidth={1.5} />
             <span>Integrado en generación de contenido IA</span>

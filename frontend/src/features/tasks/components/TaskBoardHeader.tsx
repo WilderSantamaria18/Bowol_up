@@ -1,4 +1,5 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Sparkles, Plus, Layers, Clock, CheckCircle2, Filter } from 'lucide-react';
 import { Project, Sprint } from '@/features/projects/types';
 import { TaskBoardData } from '../types';
@@ -26,6 +27,7 @@ export const TaskBoardHeader: React.FC<TaskBoardHeaderProps> = ({
   onOpenCreateTask,
   onOpenAIDecomposer,
 }) => {
+  const navigate = useNavigate();
   const totalTasks = Object.values(boardData).reduce((sum, list) => sum + list.length, 0);
   const doneTasks = boardData.DONE?.length || 0;
   const inProgressTasks = boardData.IN_PROGRESS?.length || 0;
@@ -36,7 +38,7 @@ export const TaskBoardHeader: React.FC<TaskBoardHeaderProps> = ({
   const progressPct = totalTasks > 0 ? Math.round((doneTasks / totalTasks) * 100) : 0;
 
   return (
-    <div className="flex flex-col gap-5 border-b border-white/[0.08] pb-6">
+    <div className="flex flex-col gap-5 border-b border-zinc-900/[0.13] dark:border-white/[0.08] pb-6">
       {/* Top Bar: Title, Project Selector & Main Actions */}
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
@@ -51,7 +53,7 @@ export const TaskBoardHeader: React.FC<TaskBoardHeaderProps> = ({
             )}
           </div>
           <p className="mt-1 text-xs text-slate-400">
-            Ciclo de ejecución de ingeniería: Planificación, Sprints y Tareas Kanban
+            Ciclo de ejecución ágil: Planificación por Fases, Sprints y Tareas Kanban
           </p>
         </div>
 
@@ -60,7 +62,7 @@ export const TaskBoardHeader: React.FC<TaskBoardHeaderProps> = ({
             <select
               value={project?.id || ''}
               onChange={(e) => onSelectProject(e.target.value)}
-              className="rounded-xl border border-white/[0.08] bg-slate-900/60 px-3 py-2 text-xs text-slate-200 focus:border-cyan-500 focus:outline-none"
+              className="rounded-xl border border-zinc-900/[0.13] dark:border-white/[0.08] bg-slate-900/60 px-3 py-2 text-xs text-slate-200 focus:border-cyan-500 focus:outline-none"
             >
               {projects.map((p) => (
                 <option key={p.id} value={p.id}>
@@ -69,6 +71,15 @@ export const TaskBoardHeader: React.FC<TaskBoardHeaderProps> = ({
               ))}
             </select>
           )}
+
+          <button
+            onClick={() => navigate('/planning')}
+            className="flex items-center gap-2 rounded-xl bg-gradient-to-r from-orange-500/10 to-amber-500/10 border border-orange-500/30 px-3.5 py-2 text-xs font-medium text-orange-400 hover:bg-orange-500/20 transition-all shadow-lg shadow-orange-500/5"
+            title="Abrir Planificador BOWOL Plans 2.0"
+          >
+            <Sparkles className="h-4 w-4 text-orange-400" strokeWidth={1.5} />
+            <span>BOWOL Plans</span>
+          </button>
 
           <button
             onClick={onOpenAIDecomposer}
@@ -89,7 +100,7 @@ export const TaskBoardHeader: React.FC<TaskBoardHeaderProps> = ({
       </div>
 
       {/* KPI Bar & Sprint Filter */}
-      <div className="flex flex-wrap items-center justify-between gap-4 rounded-xl border border-white/[0.06] bg-slate-950/40 p-3 backdrop-blur-md">
+      <div className="flex flex-wrap items-center justify-between gap-4 rounded-xl border border-zinc-900/[0.1] dark:border-white/[0.06] bg-slate-950/40 p-3 backdrop-blur-md">
         <div className="flex flex-wrap items-center gap-5 text-xs">
           <div className="flex items-center gap-2">
             <Layers className="h-4 w-4 text-slate-400" strokeWidth={1.5} />
@@ -100,7 +111,7 @@ export const TaskBoardHeader: React.FC<TaskBoardHeaderProps> = ({
           <div className="flex items-center gap-2">
             <span className="h-2 w-2 rounded-full bg-amber-400" />
             <span className="text-slate-400">En progreso:</span>
-            <span className="font-semibold text-amber-300">{inProgressTasks}</span>
+            <span className="font-semibold text-amber-700 dark:text-amber-300">{inProgressTasks}</span>
           </div>
 
           <div className="flex items-center gap-2">
@@ -123,7 +134,7 @@ export const TaskBoardHeader: React.FC<TaskBoardHeaderProps> = ({
             <select
               value={selectedSprintId || ''}
               onChange={(e) => onSelectSprint(e.target.value ? e.target.value : null)}
-              className="rounded-lg border border-white/[0.08] bg-slate-900/80 px-2.5 py-1 text-xs text-slate-300 focus:border-cyan-500 focus:outline-none"
+              className="rounded-lg border border-zinc-900/[0.13] dark:border-white/[0.08] bg-slate-900/80 px-2.5 py-1 text-xs text-slate-300 focus:border-cyan-500 focus:outline-none"
             >
               <option value="">Todos los sprints</option>
               {sprints.map((s) => (

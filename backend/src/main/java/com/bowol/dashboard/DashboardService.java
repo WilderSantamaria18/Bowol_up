@@ -168,24 +168,24 @@ public class DashboardService {
         } else if (activeSprintInfo != null) {
             executionScore = activeSprintInfo.getProgressPercent();
         } else {
-            executionScore = 70;
+            executionScore = 0;
         }
 
         int strategyScore;
         if (oppCount > 0) {
             strategyScore = Math.min(100, (int) ((approvedCount * 100) / oppCount) + (swotCount > 0 ? 15 : 0));
         } else {
-            strategyScore = 65;
+            strategyScore = 0;
         }
 
         int marketScore;
         if (totalTrends > 0) {
             marketScore = Math.min(100, Math.max(50, (int) ((evaluatedCount * 100) / Math.max(1, totalTrends)) + 40));
         } else {
-            marketScore = 75;
+            marketScore = 0;
         }
 
-        int maturityScore = avgMaturity > 0 ? avgMaturity : 50;
+        int maturityScore = avgMaturity;
 
         int overallScore = (int) Math.round(executionScore * 0.30 + strategyScore * 0.25 + marketScore * 0.20 + maturityScore * 0.25);
         String healthStatusLabel;
@@ -232,13 +232,21 @@ public class DashboardService {
                 .build();
 
         // 6. Briefing Ejecutivo Diario
-        String industryName = profileOpt.map(BusinessProfile::getIndustry).filter(s -> !s.isBlank()).orElse("Tecnología");
-        long relevantSignalsCount = evaluatedCount > 0 ? evaluatedCount : Math.min(totalTrends, 7L);
-        long prioritizedOppsCount = approvedCount > 0 ? approvedCount : Math.min(oppCount, 2L);
+        String industryName = profileOpt.map(BusinessProfile::getIndustry).filter(s -> !s.isBlank()).orElse("no especificado");
+        long relevantSignalsCount = evaluatedCount;
+        long prioritizedOppsCount = approvedCount;
 
         List<String> briefingHighlights = new ArrayList<>();
-        briefingHighlights.add(String.format("Se detectaron %d señales relevantes para el sector %s.", relevantSignalsCount, industryName));
-        briefingHighlights.add(String.format("%d oportunidades superaron el umbral de prioridad RICE para validación.", prioritizedOppsCount));
+        if (relevantSignalsCount > 0) {
+            briefingHighlights.add(String.format("%d señales fueron evaluadas para el sector %s.", relevantSignalsCount, industryName));
+        } else {
+            briefingHighlights.add("Aún no hay señales evaluadas para esta organización.");
+        }
+        if (prioritizedOppsCount > 0) {
+            briefingHighlights.add(String.format("%d oportunidades están aprobadas o convertidas para validación.", prioritizedOppsCount));
+        } else {
+            briefingHighlights.add("Aún no hay oportunidades aprobadas o convertidas.");
+        }
         if (activeSprintInfo != null) {
             String riskText = activeSprintInfo.getProgressPercent() < 40 ? " (requiere atención por riesgo de retraso)" : " (ritmo saludable)";
             briefingHighlights.add(String.format("Sprint activo '%s' al %d%% de avance%s.", activeSprintInfo.getName(), activeSprintInfo.getProgressPercent(), riskText));
@@ -276,7 +284,7 @@ public class DashboardService {
                         .id(org.getId())
                         .name(org.getName())
                         .slug(org.getSlug())
-                        .plan("PRO")
+                        .plan(null)
                         .memberCount(org.getMemberCount())
                         .build())
                 .maturity(DashboardSummaryResponse.MaturityInfo.builder()

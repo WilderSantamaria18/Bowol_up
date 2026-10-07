@@ -15,13 +15,14 @@ import { CreateOpportunityModal } from '../components/CreateOpportunityModal';
 import { RiceSimulatorModal } from '../components/RiceSimulatorModal';
 import { opportunityService } from '../services/opportunityService';
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import { Search, Zap, CheckCircle2, Clock, Flame, FolderGit2 } from 'lucide-react';
+import { Zap, CheckCircle2, Clock, Flame, FolderGit2 } from 'lucide-react';
+import { Alert, ListToolbar, SearchField, Skeleton, StatCard, StatGrid } from '@/components/ui';
 
 const COLUMNS: { status: OpportunityStatus; title: string; dotColor: string; badgeColor: string }[] = [
   { status: 'IDENTIFIED', title: 'Identificadas', dotColor: 'bg-sky-400', badgeColor: 'bg-sky-500/10 text-sky-400' },
   { status: 'EVALUATING', title: 'En Evaluación', dotColor: 'bg-amber-400', badgeColor: 'bg-amber-500/10 text-amber-400' },
   { status: 'APPROVED', title: 'Aprobadas', dotColor: 'bg-emerald-400', badgeColor: 'bg-emerald-500/10 text-emerald-400' },
-  { status: 'REJECTED', title: 'Descartadas', dotColor: 'bg-zinc-500', badgeColor: 'bg-zinc-500/10 text-zinc-400' },
+  { status: 'REJECTED', title: 'Descartadas', dotColor: 'bg-zinc-500', badgeColor: 'bg-zinc-500/10 text-zinc-600 dark:text-zinc-400' },
   { status: 'CONVERTED', title: 'Convertidas', dotColor: 'bg-purple-400', badgeColor: 'bg-purple-500/10 text-purple-400' },
 ];
 
@@ -158,14 +159,12 @@ export const OpportunitiesPage: React.FC = () => {
 
   if (isLoading) {
     return (
-      <div className="space-y-8 animate-pulse">
-        <div className="h-16 bg-white/[0.04] rounded-2xl w-full" />
-        <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-4">
-          <div className="h-96 bg-white/[0.04] rounded-2xl" />
-          <div className="h-96 bg-white/[0.04] rounded-2xl" />
-          <div className="h-96 bg-white/[0.04] rounded-2xl" />
-          <div className="h-96 bg-white/[0.04] rounded-2xl" />
-          <div className="h-96 bg-white/[0.04] rounded-2xl" />
+      <div className="space-y-8" role="status" aria-label="Cargando oportunidades">
+        <Skeleton className="h-16 w-full rounded-2xl" />
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-3 lg:grid-cols-5">
+          {Array.from({ length: 5 }, (_, i) => (
+            <Skeleton key={i} className="h-96 rounded-2xl" />
+          ))}
         </div>
       </div>
     );
@@ -180,83 +179,47 @@ export const OpportunitiesPage: React.FC = () => {
         isGenerating={generateFromSwot.isPending}
       />
 
-      {/* SWOT Alert if missing */}
       {swotAlert && (
-        <div className="p-4 rounded-xl bg-amber-500/10 border border-amber-500/30 flex items-center justify-between text-xs text-amber-200">
-          <span>{swotAlert}</span>
-          <button
-            onClick={() => navigate('/swot')}
-            className="font-semibold underline ml-2 hover:text-white"
-          >
-            Ir a FODA &rarr;
-          </button>
-        </div>
+        <Alert variant="warning">
+          <div className="flex w-full items-center justify-between gap-3 text-xs">
+            <span>{swotAlert}</span>
+            <button onClick={() => navigate('/swot')} className="font-semibold underline">
+              Ir a FODA &rarr;
+            </button>
+          </div>
+        </Alert>
       )}
 
-      {/* KPI Cards & Search Bar */}
-      <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-5 gap-3">
-        <div className="glass-panel p-3.5 rounded-xl border border-white/[0.06] bg-white/[0.015]">
-          <div className="flex items-center justify-between text-zinc-400 text-xs">
-            <span>Total Oportunidades</span>
-            <Flame className="w-3.5 h-3.5 text-orange-400" strokeWidth={1.5} />
-          </div>
-          <p className="text-xl font-bold text-white mt-1">{allOpportunities.length}</p>
-        </div>
+      <StatGrid columns={5} className="lg:grid-cols-5">
+        <StatCard label="Total Oportunidades" value={allOpportunities.length} icon={Flame} tone="orange" />
+        <StatCard label="Máximo RICE" value={topRiceScore} icon={Zap} tone="amber" />
+        <StatCard label="En Evaluación" value={board?.EVALUATING?.length || 0} icon={Clock} tone="blue" />
+        <StatCard label="Aprobadas" value={board?.APPROVED?.length || 0} icon={CheckCircle2} tone="emerald" />
+        <StatCard
+          label="Convertidas a Proyecto"
+          value={board?.CONVERTED?.length || 0}
+          icon={FolderGit2}
+          tone="violet"
+          className="col-span-2 sm:col-span-5 lg:col-span-1"
+        />
+      </StatGrid>
 
-        <div className="glass-panel p-3.5 rounded-xl border border-white/[0.06] bg-white/[0.015]">
-          <div className="flex items-center justify-between text-zinc-400 text-xs">
-            <span>Máximo RICE</span>
-            <Zap className="w-3.5 h-3.5 text-amber-400" strokeWidth={1.5} />
-          </div>
-          <p className="text-xl font-bold text-amber-300 mt-1">{topRiceScore}</p>
-        </div>
-
-        <div className="glass-panel p-3.5 rounded-xl border border-white/[0.06] bg-white/[0.015]">
-          <div className="flex items-center justify-between text-zinc-400 text-xs">
-            <span>En Evaluación</span>
-            <Clock className="w-3.5 h-3.5 text-sky-400" strokeWidth={1.5} />
-          </div>
-          <p className="text-xl font-bold text-sky-300 mt-1">{board?.EVALUATING?.length || 0}</p>
-        </div>
-
-        <div className="glass-panel p-3.5 rounded-xl border border-white/[0.06] bg-white/[0.015]">
-          <div className="flex items-center justify-between text-zinc-400 text-xs">
-            <span>Aprobadas</span>
-            <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" strokeWidth={1.5} />
-          </div>
-          <p className="text-xl font-bold text-emerald-300 mt-1">{board?.APPROVED?.length || 0}</p>
-        </div>
-
-        <div className="glass-panel p-3.5 rounded-xl border border-white/[0.06] bg-white/[0.015] col-span-2 sm:col-span-4 lg:col-span-1">
-          <div className="flex items-center justify-between text-zinc-400 text-xs">
-            <span>Convertidas a Proyecto</span>
-            <FolderGit2 className="w-3.5 h-3.5 text-purple-400" strokeWidth={1.5} />
-          </div>
-          <p className="text-xl font-bold text-purple-300 mt-1">{board?.CONVERTED?.length || 0}</p>
-        </div>
-      </div>
-
-      {/* Filter / Search Bar */}
-      <div className="flex items-center justify-between gap-4">
-        <div className="relative w-full max-w-sm">
-          <Search className="w-3.5 h-3.5 text-zinc-500 absolute left-3 top-1/2 -translate-y-1/2" strokeWidth={1.5} />
-          <input
-            type="text"
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            placeholder="Filtrar por título, problema, segmento o líder..."
-            className="w-full text-xs bg-black/40 border border-white/[0.08] rounded-xl pl-9 pr-3 py-2 text-zinc-200 placeholder-zinc-500 focus:outline-none focus:border-white/20"
-          />
-        </div>
+      <ListToolbar>
+        <SearchField
+          value={searchQuery}
+          onValueChange={setSearchQuery}
+          placeholder="Filtrar por título, problema, segmento o líder..."
+          className="max-w-sm"
+        />
         {searchQuery && (
           <button
             onClick={() => setSearchQuery('')}
-            className="text-xs text-zinc-400 hover:text-white"
+            className="text-xs text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white"
           >
             Limpiar filtro
           </button>
         )}
-      </div>
+      </ListToolbar>
 
       {/* Kanban Board Columns */}
       <div className="flex gap-5 overflow-x-auto pb-6 items-start">

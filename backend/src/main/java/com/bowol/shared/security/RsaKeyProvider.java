@@ -46,10 +46,30 @@ public class RsaKeyProvider {
             this.publicKey = loadPublicKey(publicKeyPath);
             log.info("Claves RSA cargadas exitosamente desde recursos configurados.");
         } catch (Exception e) {
-            log.warn("No se pudieron cargar las claves PEM desde '{}' y '{}'. Generando par de claves RSA 2048 en memoria para entorno de desarrollo/test: {}",
-                    privateKeyPath, publicKeyPath, e.getMessage());
-            generateEphemeralKeyPair();
+            log.warn("No se pudieron cargar las claves PEM desde '{}' y '{}': {}", privateKeyPath, publicKeyPath, e.getMessage());
+            if (!loadDevSecrets()) {
+                log.warn("Generando par de claves RSA 2048 EN MEMORIA: los tokens emitidos dejarán de ser válidos al reiniciar el backend.");
+                generateEphemeralKeyPair();
+            }
         }
+    }
+
+    /**
+     * Desarrollo local: usa el par persistente de infra/secrets (relativo al directorio de trabajo del IDE o de Maven)
+     * para que reiniciar el backend no invalide las sesiones abiertas en el navegador.
+     */
+    private boolean loadDevSecrets() {
+        for (String base : new String[]{"file:infra/secrets/", "file:../infra/secrets/", "file:../../infra/secrets/"}) {
+            try {
+                this.privateKey = loadPrivateKey(base + "jwt_private_key.pem");
+                this.publicKey = loadPublicKey(base + "jwt_public_key.pem");
+                log.info("Claves RSA persistentes de desarrollo cargadas desde '{}'.", base);
+                return true;
+            } catch (Exception ignored) {
+                // probar el siguiente directorio candidato
+            }
+        }
+        return false;
     }
 
     private void generateEphemeralKeyPair() {

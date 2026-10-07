@@ -75,7 +75,7 @@ export const AIDecomposeProjectModal: React.FC<AIDecomposeProjectModalProps> = (
           <button
             type="button"
             onClick={onClose}
-            className="p-1.5 rounded-lg text-zinc-400 hover:text-zinc-700 dark:hover:text-zinc-200 hover:bg-zinc-100 dark:hover:bg-white/5 transition-colors"
+            className="p-1.5 rounded-lg text-zinc-600 dark:text-zinc-400 hover:text-zinc-700 dark:hover:text-zinc-200 hover:bg-zinc-100 dark:hover:bg-white/5 transition-colors"
             aria-label="Cerrar modal"
           >
             <X className="w-5 h-5" strokeWidth={1.5} />
@@ -135,7 +135,7 @@ export const AIDecomposeProjectModal: React.FC<AIDecomposeProjectModalProps> = (
                 <div className="p-3.5 rounded-xl bg-emerald-500/5 border border-emerald-500/15 flex items-center gap-3">
                   <CheckCircle2 className="w-5 h-5 text-emerald-500 shrink-0" strokeWidth={1.5} />
                   <div>
-                    <span className="text-[10px] text-zinc-400 uppercase tracking-wider block">Tareas Creadas</span>
+                    <span className="text-[10px] text-zinc-600 dark:text-zinc-400 uppercase tracking-wider block">Tareas Creadas</span>
                     <span className="text-base font-bold text-emerald-600 dark:text-emerald-400">{result.generatedTasksCount}</span>
                   </div>
                 </div>
@@ -143,7 +143,7 @@ export const AIDecomposeProjectModal: React.FC<AIDecomposeProjectModalProps> = (
                 <div className="p-3.5 rounded-xl bg-blue-500/5 border border-blue-500/15 flex items-center gap-3">
                   <Clock className="w-5 h-5 text-blue-500 shrink-0" strokeWidth={1.5} />
                   <div>
-                    <span className="text-[10px] text-zinc-400 uppercase tracking-wider block">Horas Estimadas</span>
+                    <span className="text-[10px] text-zinc-600 dark:text-zinc-400 uppercase tracking-wider block">Horas Estimadas</span>
                     <span className="text-base font-bold text-blue-600 dark:text-blue-400">{result.totalEstimatedHours || 0} hrs</span>
                   </div>
                 </div>
@@ -151,7 +151,7 @@ export const AIDecomposeProjectModal: React.FC<AIDecomposeProjectModalProps> = (
                 <div className="p-3.5 rounded-xl bg-orange-500/5 border border-orange-500/15 flex items-center gap-3">
                   <ListTodo className="w-5 h-5 text-orange-500 shrink-0" strokeWidth={1.5} />
                   <div>
-                    <span className="text-[10px] text-zinc-400 uppercase tracking-wider block">Estado Inicial</span>
+                    <span className="text-[10px] text-zinc-600 dark:text-zinc-400 uppercase tracking-wider block">Estado Inicial</span>
                     <span className="text-base font-bold text-orange-600 dark:text-orange-400">Backlog Listo</span>
                   </div>
                 </div>

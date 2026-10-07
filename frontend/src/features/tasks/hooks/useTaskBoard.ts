@@ -57,15 +57,15 @@ export function useTaskBoard(projectId?: string, sprintId?: string) {
 
       // Find and remove task
       (Object.keys(next) as TaskStatus[]).forEach((statusKey) => {
-        const found = next[statusKey].find((t) => t.id === taskId);
+        const found = (next[statusKey] ?? []).find((t) => t.id === taskId);
         if (found) {
           movedTask = { ...found, status: targetStatus };
-          next[statusKey] = next[statusKey].filter((t) => t.id !== taskId);
+          next[statusKey] = (next[statusKey] ?? []).filter((t) => t.id !== taskId);
         }
       });
 
       if (movedTask) {
-        next[targetStatus] = [...next[targetStatus], movedTask];
+        next[targetStatus] = [...(next[targetStatus] ?? []), movedTask];
       }
 
       return next;

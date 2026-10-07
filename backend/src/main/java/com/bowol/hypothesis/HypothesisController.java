@@ -22,6 +22,7 @@ public class HypothesisController {
     private final HypothesisService hypothesisService;
 
     @GetMapping
+    @PreAuthorize("hasAuthority('hypothesis.read')")
     public ResponseEntity<List<HypothesisResponse>> getHypotheses(
             @RequestParam(required = false) UUID opportunityId,
             @RequestParam(required = false) HypothesisStatus status,
@@ -31,6 +32,7 @@ public class HypothesisController {
     }
 
     @GetMapping("/{id}")
+    @PreAuthorize("hasAuthority('hypothesis.read')")
     public ResponseEntity<HypothesisResponse> getHypothesisById(
             @PathVariable UUID id,
             @AuthenticationPrincipal UserPrincipal principal) {
@@ -39,6 +41,7 @@ public class HypothesisController {
     }
 
     @PostMapping
+    @PreAuthorize("hasAuthority('hypothesis.create')")
     public ResponseEntity<HypothesisResponse> createHypothesis(
             @Valid @RequestBody CreateHypothesisRequest request,
             @AuthenticationPrincipal UserPrincipal principal) {
@@ -47,6 +50,7 @@ public class HypothesisController {
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasAuthority('hypothesis.update')")
     public ResponseEntity<HypothesisResponse> updateHypothesis(
             @PathVariable UUID id,
             @Valid @RequestBody UpdateHypothesisRequest request,
@@ -56,6 +60,7 @@ public class HypothesisController {
     }
 
     @PostMapping("/{id}/record-result")
+    @PreAuthorize("hasAuthority('hypothesis.validate')")
     public ResponseEntity<HypothesisResponse> recordResult(
             @PathVariable UUID id,
             @Valid @RequestBody RecordHypothesisResultRequest request,
@@ -65,6 +70,7 @@ public class HypothesisController {
     }
 
     @PostMapping("/formulate")
+    @PreAuthorize("hasAuthority('hypothesis.create') and hasAuthority('ai.use')")
     public ResponseEntity<HypothesisResponse> formulateFromOpportunity(
             @RequestParam UUID opportunityId,
             @AuthenticationPrincipal UserPrincipal principal) {
@@ -73,6 +79,7 @@ public class HypothesisController {
     }
 
     @PostMapping("/{id}/convert-to-project")
+    @PreAuthorize("hasAuthority('hypothesis.validate')")
     public ResponseEntity<com.bowol.project.dto.ProjectResponse> convertToProject(
             @PathVariable UUID id,
             @AuthenticationPrincipal UserPrincipal principal) {
@@ -81,6 +88,7 @@ public class HypothesisController {
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasAuthority('hypothesis.delete')")
     public ResponseEntity<Void> deleteHypothesis(
             @PathVariable UUID id,
             @AuthenticationPrincipal UserPrincipal principal) {

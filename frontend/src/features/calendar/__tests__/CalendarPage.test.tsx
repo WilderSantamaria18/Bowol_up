@@ -22,6 +22,9 @@ vi.mock('@/features/projects/services/projectService', () => ({
   },
 }));
 
+const now = new Date();
+const currentMonthPrefix = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}`;
+
 const mockItems: UnifiedCalendarItem[] = [
   {
     id: 'item-sprint-1',
@@ -29,8 +32,8 @@ const mockItems: UnifiedCalendarItem[] = [
     eventType: 'SPRINT',
     title: 'Sprint 1: Core Engine',
     description: 'Sprint planning and core execution',
-    startDate: '2026-09-01',
-    endDate: '2026-09-14',
+    startDate: `${currentMonthPrefix}-01`,
+    endDate: `${currentMonthPrefix}-14`,
     status: 'ACTIVE',
     color: 'emerald',
     projectId: 'proj-1',
@@ -42,8 +45,8 @@ const mockItems: UnifiedCalendarItem[] = [
     eventType: 'MILESTONE',
     title: 'Lanzamiento Beta Cerrada',
     description: 'Hito clave para 50 usuarios iniciales',
-    startDate: '2026-09-20',
-    endDate: '2026-09-20',
+    startDate: `${currentMonthPrefix}-20`,
+    endDate: `${currentMonthPrefix}-20`,
     status: 'SCHEDULED',
     color: 'purple',
     projectId: 'proj-1',
@@ -55,8 +58,8 @@ const mockItems: UnifiedCalendarItem[] = [
     eventType: 'EXPERIMENT',
     title: 'Validación Canales B2B',
     description: 'Test de adquisición outbound',
-    startDate: '2026-09-22',
-    endDate: '2026-09-28',
+    startDate: `${currentMonthPrefix}-22`,
+    endDate: `${currentMonthPrefix}-28`,
     status: 'RUNNING',
     color: 'sky',
     projectId: 'proj-2',
