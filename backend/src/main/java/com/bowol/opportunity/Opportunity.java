@@ -77,6 +77,13 @@ public class Opportunity {
     @Column(name = "priority_score", precision = 8, scale = 2)
     private BigDecimal priorityScore;
 
+    @Column(name = "is_mandatory_enabler")
+    @Builder.Default
+    private Boolean isMandatoryEnabler = false;
+
+    @Column(name = "evidence_notes", columnDefinition = "text")
+    private String evidenceNotes;
+
     @Enumerated(EnumType.STRING)
     @Column(name = "status", nullable = false, length = 20)
     @Builder.Default

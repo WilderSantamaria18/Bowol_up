@@ -75,3 +75,93 @@ export interface ContextSheetData {
   restricciones: string;
   decisionesDuenio: string;
 }
+
+// Persistencia colaborativa BOWOL Plans 2.0 (Fases 1, 2, 5, 6)
+
+export interface ProjectCharterData {
+  id?: string;
+  projectId: string;
+  problemAddressed: string;
+  smartObjective: string;
+  measurableKpi: string;
+  baselineValue: string;
+  baselineUnit: string;
+  baselineDate?: string | null;
+  baselineIsProvisional: boolean;
+  targetValue: string;
+  targetUnit: string;
+  targetDeadline?: string | null;
+  measurementSource: string;
+  ownerDecisionRequired: boolean;
+  ownerDecisionDetails?: string;
+  technicalDeliverables: string[];
+  expectedCommercialResult: string;
+  inScope: string[];
+  outOfScope: string[];
+  restrictions: string[];
+  updatedAt?: string;
+}
+
+export interface MemberAllocationData {
+  id?: string;
+  userId?: string | null;
+  name: string;
+  role: string;
+  availableHours: number;
+  assignedHours: number;
+}
+
+export interface CapacityPlanData {
+  id?: string;
+  periodLabel: string;
+  bufferPercentage: number;
+  members: MemberAllocationData[];
+}
+
+export interface RetrospectiveImprovement {
+  action: string;
+  owner: string;
+  dueDate: string;
+}
+
+export interface WeeklyRetrospectiveData {
+  id?: string;
+  projectId?: string;
+  sprintId?: string;
+  weekLabel: string;
+  committedTasks: number;
+  acceptedTasks: number;
+  blockedTasks: number;
+  reviewPendingTasks: number;
+  estimatedHours: number;
+  actualHours: number;
+  businessMetricResult?: string;
+  businessMetricDate?: string;
+  whatWorked?: string;
+  delayCauses?: string;
+  improvements: RetrospectiveImprovement[];
+  updatedAt?: string;
+}
+
+export interface WeeklyFocusBannerData {
+  id?: string;
+  projectId: string;
+  weeklyDeliverable: string;
+  identifiedRisk: string;
+  mitigationPlan: string;
+  updatedAt?: string;
+}
+
+export interface DailyCheckinData {
+  id?: string;
+  projectId: string;
+  userId?: string;
+  userName: string;
+  date: string;
+  yesterdayDeliverable: string;
+  todayCommitment: string;
+  blockers?: string | null;
+  hasBlocker?: boolean;
+  taskId?: string | null;
+  createdAt?: string;
+}

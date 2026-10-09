@@ -31,6 +31,8 @@ public class OpportunityResponse {
     private Integer confidenceScore;
     private Integer effortScore;
     private BigDecimal priorityScore;
+    private Boolean isMandatoryEnabler;
+    private String evidenceNotes;
     private OpportunityStatus status;
     private List<String> evidence;
     private Instant createdAt;
@@ -55,6 +57,8 @@ public class OpportunityResponse {
                 .confidenceScore(opp.getConfidenceScore())
                 .effortScore(opp.getEffortScore())
                 .priorityScore(opp.getPriorityScore())
+                .isMandatoryEnabler(opp.getIsMandatoryEnabler())
+                .evidenceNotes(opp.getEvidenceNotes())
                 .status(opp.getStatus())
                 .evidence(opp.getEvidence())
                 .createdAt(opp.getCreatedAt())

@@ -95,14 +95,14 @@ export const CreateProjectModal: React.FC<CreateProjectModalProps> = ({
         {/* Header */}
         <div className="flex items-center justify-between px-6 py-5 border-b border-zinc-200 dark:border-white/10 bg-zinc-50/50 dark:bg-white/[0.02]">
           <div className="flex items-center gap-3">
-            <div className="p-2.5 rounded-xl bg-orange-500/10 border border-orange-500/20 text-orange-600 dark:text-orange-400">
+            <div className="p-2.5 rounded-xl bg-orange-50 dark:bg-orange-500/10 border border-orange-200 dark:border-orange-500/20 text-orange-600 dark:text-orange-400">
               <FolderKanban className="w-5 h-5" strokeWidth={1.5} />
             </div>
             <div>
-              <h2 className="text-lg font-semibold text-zinc-900 dark:text-zinc-100">
+              <h2 className="text-lg font-semibold text-zinc-900 dark:text-white">
                 {projectToEdit ? 'Editar Iniciativa / Proyecto' : 'Nueva Iniciativa de Innovación'}
               </h2>
-              <p className="text-xs text-zinc-500 dark:text-zinc-400">
+              <p className="text-xs text-zinc-600 dark:text-zinc-400">
                 Ejecuta oportunidades validadas con trazabilidad estratégica completa
               </p>
             </div>
@@ -110,7 +110,7 @@ export const CreateProjectModal: React.FC<CreateProjectModalProps> = ({
           <button
             type="button"
             onClick={onClose}
-            className="p-1.5 rounded-lg text-zinc-600 dark:text-zinc-400 hover:text-zinc-700 dark:hover:text-zinc-200 hover:bg-zinc-100 dark:hover:bg-white/5 transition-colors"
+            className="p-1.5 rounded-lg text-zinc-400 hover:text-zinc-700 dark:text-zinc-400 dark:hover:text-zinc-200 hover:bg-zinc-100 dark:hover:bg-white/5 transition-colors"
             aria-label="Cerrar modal"
           >
             <X className="w-5 h-5" strokeWidth={1.5} />
@@ -120,7 +120,7 @@ export const CreateProjectModal: React.FC<CreateProjectModalProps> = ({
         {/* Form Body */}
         <form onSubmit={handleSubmit} className="p-6 overflow-y-auto space-y-5 flex-1">
           {validationError && (
-            <div className="p-3.5 rounded-xl bg-red-500/10 border border-red-500/20 flex items-center gap-3 text-sm text-red-600 dark:text-red-400">
+            <div className="p-3.5 rounded-xl bg-red-50 dark:bg-red-500/10 border border-red-200 dark:border-red-500/20 flex items-center gap-3 text-sm text-red-600 dark:text-red-400">
               <AlertCircle className="w-4 h-4 shrink-0" strokeWidth={1.5} />
               <span>{validationError}</span>
             </div>
@@ -136,7 +136,7 @@ export const CreateProjectModal: React.FC<CreateProjectModalProps> = ({
               value={name}
               onChange={(e) => setName(e.target.value)}
               placeholder="Ej. Agente Autónomo de Análisis FODA en Tiempo Real"
-              className="w-full px-3.5 py-2.5 rounded-xl bg-zinc-50 dark:bg-white/[0.04] border border-zinc-200 dark:border-white/10 text-zinc-900 dark:text-zinc-100 text-sm focus:outline-none focus:ring-2 focus:ring-orange-500/40 focus:border-orange-500 transition-all"
+              className="w-full px-3.5 py-2.5 rounded-xl bg-white dark:bg-black/40 border border-zinc-300 dark:border-white/10 text-zinc-900 dark:text-zinc-100 placeholder:text-zinc-400 dark:placeholder:text-zinc-500 text-sm focus:outline-none focus:ring-2 focus:ring-orange-500/40 focus:border-orange-500 transition-all"
               required
             />
           </div>
@@ -151,7 +151,7 @@ export const CreateProjectModal: React.FC<CreateProjectModalProps> = ({
               onChange={(e) => setDescription(e.target.value)}
               rows={3}
               placeholder="Describe el resultado esperado, hipótesis a consolidar o métricas clave de éxito..."
-              className="w-full px-3.5 py-2.5 rounded-xl bg-zinc-50 dark:bg-white/[0.04] border border-zinc-200 dark:border-white/10 text-zinc-900 dark:text-zinc-100 text-sm focus:outline-none focus:ring-2 focus:ring-orange-500/40 focus:border-orange-500 transition-all resize-none"
+              className="w-full px-3.5 py-2.5 rounded-xl bg-white dark:bg-black/40 border border-zinc-300 dark:border-white/10 text-zinc-900 dark:text-zinc-100 placeholder:text-zinc-400 dark:placeholder:text-zinc-500 text-sm focus:outline-none focus:ring-2 focus:ring-orange-500/40 focus:border-orange-500 transition-all resize-none"
             />
           </div>
 
@@ -164,13 +164,13 @@ export const CreateProjectModal: React.FC<CreateProjectModalProps> = ({
               <select
                 value={status}
                 onChange={(e) => setStatus(e.target.value as ProjectStatus)}
-                className="w-full px-3.5 py-2.5 rounded-xl bg-zinc-50 dark:bg-white/[0.04] border border-zinc-200 dark:border-white/10 text-zinc-900 dark:text-zinc-100 text-sm focus:outline-none focus:ring-2 focus:ring-orange-500/40 focus:border-orange-500 transition-all"
+                className="w-full px-3.5 py-2.5 rounded-xl bg-white dark:bg-black/40 border border-zinc-300 dark:border-white/10 text-zinc-900 dark:text-zinc-100 text-sm focus:outline-none focus:ring-2 focus:ring-orange-500/40 focus:border-orange-500 transition-all"
               >
-                <option value="PLANNING">Planificación (PLANNING)</option>
-                <option value="ACTIVE">Activo / En Curso (ACTIVE)</option>
-                <option value="PAUSED">Pausado (PAUSED)</option>
-                <option value="COMPLETED">Completado (COMPLETED)</option>
-                <option value="ARCHIVED">Archivado (ARCHIVED)</option>
+                <option value="PLANNING" className="bg-white dark:bg-zinc-900 text-zinc-900 dark:text-zinc-100">Planificación (PLANNING)</option>
+                <option value="ACTIVE" className="bg-white dark:bg-zinc-900 text-zinc-900 dark:text-zinc-100">Activo / En Curso (ACTIVE)</option>
+                <option value="PAUSED" className="bg-white dark:bg-zinc-900 text-zinc-900 dark:text-zinc-100">Pausado (PAUSED)</option>
+                <option value="COMPLETED" className="bg-white dark:bg-zinc-900 text-zinc-900 dark:text-zinc-100">Completado (COMPLETED)</option>
+                <option value="ARCHIVED" className="bg-white dark:bg-zinc-900 text-zinc-900 dark:text-zinc-100">Archivado (ARCHIVED)</option>
               </select>
             </div>
 
@@ -181,11 +181,11 @@ export const CreateProjectModal: React.FC<CreateProjectModalProps> = ({
               <select
                 value={opportunityId}
                 onChange={(e) => setOpportunityId(e.target.value)}
-                className="w-full px-3.5 py-2.5 rounded-xl bg-zinc-50 dark:bg-white/[0.04] border border-zinc-200 dark:border-white/10 text-zinc-900 dark:text-zinc-100 text-sm focus:outline-none focus:ring-2 focus:ring-orange-500/40 focus:border-orange-500 transition-all"
+                className="w-full px-3.5 py-2.5 rounded-xl bg-white dark:bg-black/40 border border-zinc-300 dark:border-white/10 text-zinc-900 dark:text-zinc-100 text-sm focus:outline-none focus:ring-2 focus:ring-orange-500/40 focus:border-orange-500 transition-all"
               >
-                <option value="">Sin vincular a oportunidad</option>
+                <option value="" className="bg-white dark:bg-zinc-900 text-zinc-900 dark:text-zinc-100">Sin vincular a oportunidad</option>
                 {opportunities.map((opp) => (
-                  <option key={opp.id} value={opp.id}>
+                  <option key={opp.id} value={opp.id} className="bg-white dark:bg-zinc-900 text-zinc-900 dark:text-zinc-100">
                     {opp.title} ({opp.status})
                   </option>
                 ))}
@@ -197,35 +197,35 @@ export const CreateProjectModal: React.FC<CreateProjectModalProps> = ({
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
               <label className="block text-xs font-medium text-zinc-700 dark:text-zinc-300 mb-1.5 flex items-center gap-1.5">
-                <Calendar className="w-3.5 h-3.5 text-zinc-600 dark:text-zinc-400" />
+                <Calendar className="w-3.5 h-3.5 text-zinc-500 dark:text-zinc-400" />
                 Fecha de Inicio
               </label>
               <input
                 type="date"
                 value={startDate}
                 onChange={(e) => setStartDate(e.target.value)}
-                className="w-full px-3.5 py-2 rounded-xl bg-zinc-50 dark:bg-white/[0.04] border border-zinc-200 dark:border-white/10 text-zinc-900 dark:text-zinc-100 text-sm focus:outline-none focus:ring-2 focus:ring-orange-500/40 focus:border-orange-500 transition-all"
+                className="w-full px-3.5 py-2 rounded-xl bg-white dark:bg-black/40 border border-zinc-300 dark:border-white/10 text-zinc-900 dark:text-zinc-100 text-sm focus:outline-none focus:ring-2 focus:ring-orange-500/40 focus:border-orange-500 transition-all"
               />
             </div>
 
             <div>
               <label className="block text-xs font-medium text-zinc-700 dark:text-zinc-300 mb-1.5 flex items-center gap-1.5">
-                <Calendar className="w-3.5 h-3.5 text-zinc-600 dark:text-zinc-400" />
+                <Calendar className="w-3.5 h-3.5 text-zinc-500 dark:text-zinc-400" />
                 Fecha Estimada de Fin
               </label>
               <input
                 type="date"
                 value={endDate}
                 onChange={(e) => setEndDate(e.target.value)}
-                className="w-full px-3.5 py-2 rounded-xl bg-zinc-50 dark:bg-white/[0.04] border border-zinc-200 dark:border-white/10 text-zinc-900 dark:text-zinc-100 text-sm focus:outline-none focus:ring-2 focus:ring-orange-500/40 focus:border-orange-500 transition-all"
+                className="w-full px-3.5 py-2 rounded-xl bg-white dark:bg-black/40 border border-zinc-300 dark:border-white/10 text-zinc-900 dark:text-zinc-100 text-sm focus:outline-none focus:ring-2 focus:ring-orange-500/40 focus:border-orange-500 transition-all"
               />
             </div>
           </div>
 
           {/* Traceability Note */}
-          <div className="p-3.5 rounded-xl bg-orange-500/5 dark:bg-orange-500/[0.03] border border-orange-500/15 flex items-start gap-2.5">
+          <div className="p-3.5 rounded-xl bg-orange-50 dark:bg-orange-500/[0.05] border border-orange-200 dark:border-orange-500/15 flex items-start gap-2.5">
             <Sparkles className="w-4 h-4 text-orange-500 shrink-0 mt-0.5" strokeWidth={1.5} />
-            <p className="text-xs text-zinc-600 dark:text-zinc-300 leading-relaxed">
+            <p className="text-xs text-zinc-700 dark:text-zinc-300 leading-relaxed">
               Al guardar, podrás descomponer automáticamente la iniciativa en historias de usuario y tareas de sprint con el <strong>AI Strategic Planner</strong> de BOWOL.
             </p>
           </div>

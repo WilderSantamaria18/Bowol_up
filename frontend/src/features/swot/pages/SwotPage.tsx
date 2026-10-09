@@ -14,11 +14,13 @@ import {
   useRemoveSwotItem,
   useUpdateSwotItemStatus
 } from '../hooks/useSwot';
-import { QuadrantType, SwotItem } from '../types';
+import { QuadrantType, SwotItem, ValidationStatus } from '../types';
 import { SwotHeader } from '../components/SwotHeader';
 import { QuadrantCard } from '../components/QuadrantCard';
 import { SwotSummaryCard } from '../components/SwotSummaryCard';
 import { EvidenceDetailModal } from '../components/EvidenceDetailModal';
+import { BottleneckCard } from '../components/BottleneckCard';
+import { RoutineAuditSection } from '../components/RoutineAuditSection';
 import { Button } from '@/components/ui/Button';
 
 export const SwotPage: React.FC = () => {
@@ -32,6 +34,34 @@ export const SwotPage: React.FC = () => {
   const [isEvidenceModalOpen, setIsEvidenceModalOpen] = useState(false);
   const [selectedEvidenceId, setSelectedEvidenceId] = useState<string | undefined>();
   const [showDismissed, setShowDismissed] = useState(true);
+  const [activeTab, setActiveTab] = useState<'SWOT_MATRIX' | 'ROUTINE_AUDIT'>('SWOT_MATRIX');
+  const [validationOverrides, setValidationOverrides] = useState<Record<string, ValidationStatus>>(() => {
+    try {
+      const saved = localStorage.getItem(`bowol_swot_validations_${swot?.id || 'default'}`);
+      return saved ? JSON.parse(saved) : {};
+    } catch {
+      return {};
+    }
+  });
+
+  const handleToggleValidation = (itemId: string, currentStatus?: ValidationStatus) => {
+    const nextStatus: ValidationStatus = (currentStatus === 'EVIDENCE_BACKED') ? 'HYPOTHESIS_PENDING' : 'EVIDENCE_BACKED';
+    const updated: Record<string, ValidationStatus> = { ...validationOverrides, [itemId]: nextStatus };
+    setValidationOverrides(updated);
+    try {
+      localStorage.setItem(`bowol_swot_validations_${swot?.id || 'default'}`, JSON.stringify(updated));
+    } catch {
+      // ignore
+    }
+  };
+
+  const applyValidationStatus = (items: SwotItem[]): SwotItem[] => {
+    return items.map((it) => {
+      const override = validationOverrides[it.id];
+      const status: ValidationStatus = override ?? ((it.evidenceIds && it.evidenceIds.length > 0) ? 'EVIDENCE_BACKED' : 'HYPOTHESIS_PENDING');
+      return { ...it, validationStatus: status };
+    });
+  };
 
   const handleGenerate = async () => {
     try {
@@ -91,7 +121,7 @@ export const SwotPage: React.FC = () => {
   }
 
   return (
-    <div className="space-y-8 pb-12">
+    <div className="space-y-6 pb-12">
       {/* Header */}
       <SwotHeader
         onGenerate={handleGenerate}
@@ -102,8 +132,35 @@ export const SwotPage: React.FC = () => {
         onToggleShowDismissed={() => setShowDismissed(!showDismissed)}
       />
 
-      {/* Empty State */}
-      {!swot ? (
+      {/* Phase 1 Sub-Navigation Tabs: 1.1 FODA & Cuello de Botella vs 1.2 Auditoría de Rutina */}
+      <div className="flex items-center gap-2 border-b border-zinc-200 dark:border-white/10 pb-2">
+        <button
+          type="button"
+          onClick={() => setActiveTab('SWOT_MATRIX')}
+          className={`px-4 py-2 rounded-xl text-xs font-medium transition-all flex items-center gap-2 ${
+            activeTab === 'SWOT_MATRIX'
+              ? 'bg-zinc-900 text-white dark:bg-white dark:text-zinc-950 shadow-sm'
+              : 'text-zinc-500 dark:text-zinc-400 hover:text-zinc-950 dark:hover:text-white hover:bg-zinc-100 dark:hover:bg-white/5'
+          }`}
+        >
+          <span>Fase 1.1 · Matriz FODA & Cuello de Botella</span>
+        </button>
+        <button
+          type="button"
+          onClick={() => setActiveTab('ROUTINE_AUDIT')}
+          className={`px-4 py-2 rounded-xl text-xs font-medium transition-all flex items-center gap-2 ${
+            activeTab === 'ROUTINE_AUDIT'
+              ? 'bg-zinc-900 text-white dark:bg-white dark:text-zinc-950 shadow-sm'
+              : 'text-zinc-500 dark:text-zinc-400 hover:text-zinc-950 dark:hover:text-white hover:bg-zinc-100 dark:hover:bg-white/5'
+          }`}
+        >
+          <span>Fase 1.2 · Auditoría de Rutina Operativa</span>
+        </button>
+      </div>
+
+      {activeTab === 'ROUTINE_AUDIT' ? (
+        <RoutineAuditSection swotId={swot?.id} />
+      ) : !swot ? (
         <div className="glass-panel p-10 sm:p-14 rounded-3xl border border-zinc-900/[0.13] dark:border-white/[0.08] text-center max-w-3xl mx-auto space-y-6 bg-gradient-to-b from-white/[0.03] to-transparent shadow-2xl">
           <div className="w-16 h-16 rounded-2xl bg-orange-500/10 border border-orange-500/30 flex items-center justify-center text-orange-400 mx-auto shadow-inner">
             <Sparkles className="w-8 h-8 animate-pulse" strokeWidth={1.5} />
@@ -135,7 +192,18 @@ export const SwotPage: React.FC = () => {
           {/* Executive Summary Card */}
           <SwotSummaryCard swot={swot} />
 
-          {/* 2x2 Interactive Matrix */}
+          {/* Cuello de Botella Principal (Fase 1.1 BOWOL Plans) */}
+          <BottleneckCard
+            swotId={swot.id}
+            onConvertToOpportunity={(title, desc) => {
+              navigate(`/opportunities?create=true&title=${encodeURIComponent(title)}&description=${encodeURIComponent(desc)}&source=BOTTLENECK`);
+            }}
+            onConvertToHypothesis={(statement) => {
+              navigate(`/hypotheses?create=true&statement=${encodeURIComponent(statement)}&source=BOTTLENECK`);
+            }}
+          />
+
+          {/* 2x2 Interactive Matrix with validation status and factor labels */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             {/* Strengths */}
             <QuadrantCard
@@ -143,7 +211,7 @@ export const SwotPage: React.FC = () => {
               title="Fortalezas"
               subtitle="Capacidades internas y factores de diferenciación"
               icon={ShieldCheck}
-              items={swot.strengths || []}
+              items={applyValidationStatus(swot.strengths || [])}
               colorTheme={{
                 accent: 'emerald',
                 border: 'border-emerald-500/20 hover:border-emerald-500/35',
@@ -154,6 +222,7 @@ export const SwotPage: React.FC = () => {
               onAddItem={(text) => handleAddItem('strengths', text)}
               onRemoveItem={handleRemoveItem}
               onUpdateItemStatus={handleUpdateItemStatus}
+              onToggleValidationStatus={handleToggleValidation}
               onOpenEvidence={handleOpenEvidence}
               onConvertToOpportunity={handleConvertToOpportunity}
               onConvertToHypothesis={handleConvertToHypothesis}
@@ -166,7 +235,7 @@ export const SwotPage: React.FC = () => {
               title="Debilidades"
               subtitle="Brechas operativas, técnicas o de recursos"
               icon={AlertTriangle}
-              items={swot.weaknesses || []}
+              items={applyValidationStatus(swot.weaknesses || [])}
               colorTheme={{
                 accent: 'amber',
                 border: 'border-amber-500/20 hover:border-amber-500/35',
@@ -177,6 +246,7 @@ export const SwotPage: React.FC = () => {
               onAddItem={(text) => handleAddItem('weaknesses', text)}
               onRemoveItem={handleRemoveItem}
               onUpdateItemStatus={handleUpdateItemStatus}
+              onToggleValidationStatus={handleToggleValidation}
               onOpenEvidence={handleOpenEvidence}
               onConvertToOpportunity={handleConvertToOpportunity}
               onConvertToHypothesis={handleConvertToHypothesis}
@@ -189,7 +259,7 @@ export const SwotPage: React.FC = () => {
               title="Oportunidades"
               subtitle="Tendencias del mercado y vectores de expansión"
               icon={TrendingUp}
-              items={swot.opportunities || []}
+              items={applyValidationStatus(swot.opportunities || [])}
               colorTheme={{
                 accent: 'sky',
                 border: 'border-sky-500/20 hover:border-sky-500/35',
@@ -200,6 +270,7 @@ export const SwotPage: React.FC = () => {
               onAddItem={(text) => handleAddItem('opportunities', text)}
               onRemoveItem={handleRemoveItem}
               onUpdateItemStatus={handleUpdateItemStatus}
+              onToggleValidationStatus={handleToggleValidation}
               onOpenEvidence={handleOpenEvidence}
               onConvertToOpportunity={handleConvertToOpportunity}
               onConvertToHypothesis={handleConvertToHypothesis}
@@ -212,7 +283,7 @@ export const SwotPage: React.FC = () => {
               title="Amenazas"
               subtitle="Fuerzas externas, competidores y cambios regulatorios"
               icon={ShieldAlert}
-              items={swot.threats || []}
+              items={applyValidationStatus(swot.threats || [])}
               colorTheme={{
                 accent: 'rose',
                 border: 'border-rose-500/20 hover:border-rose-500/35',
@@ -223,6 +294,7 @@ export const SwotPage: React.FC = () => {
               onAddItem={(text) => handleAddItem('threats', text)}
               onRemoveItem={handleRemoveItem}
               onUpdateItemStatus={handleUpdateItemStatus}
+              onToggleValidationStatus={handleToggleValidation}
               onOpenEvidence={handleOpenEvidence}
               onConvertToOpportunity={handleConvertToOpportunity}
               onConvertToHypothesis={handleConvertToHypothesis}

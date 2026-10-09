@@ -7,8 +7,12 @@ import { TaskBoardHeader } from '../components/TaskBoardHeader';
 import { TaskColumn } from '../components/TaskColumn';
 import { CreateTaskModal } from '../components/CreateTaskModal';
 import { AIBacklogGeneratorModal } from '../components/AIBacklogGeneratorModal';
-import { TaskStatus } from '../types';
-import { Sparkles, Plus, AlertCircle, Loader2 } from 'lucide-react';
+import { BlockTaskModal } from '../components/BlockTaskModal';
+import { CompleteTaskGatekeeperModal } from '../components/CompleteTaskGatekeeperModal';
+import { DailyCheckinModal } from '../components/DailyCheckinModal';
+import { WeeklyPriorityFocusBanner } from '../components/WeeklyPriorityFocusBanner';
+import { Task, TaskStatus, UpdateTaskStatusPayload } from '../types';
+import { Sparkles, Plus, AlertCircle, Loader2, AlertTriangle } from 'lucide-react';
 
 export const TaskBoardPage: React.FC = () => {
   const [searchParams] = useSearchParams();
@@ -27,6 +31,15 @@ export const TaskBoardPage: React.FC = () => {
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
   const [createDefaultStatus, setCreateDefaultStatus] = useState<TaskStatus>('BACKLOG');
   const [isAIDecomposerOpen, setIsAIDecomposerOpen] = useState(false);
+
+  // BOWOL Plans 2.0 Operational Modals (Fases 5.3, 6.1, 6.2)
+  const [taskToBlock, setTaskToBlock] = useState<Task | null>(null);
+  const [isBlockModalOpen, setIsBlockModalOpen] = useState(false);
+
+  const [taskToComplete, setTaskToComplete] = useState<Task | null>(null);
+  const [isGatekeeperModalOpen, setIsGatekeeperModalOpen] = useState(false);
+
+  const [isDailyCheckinOpen, setIsDailyCheckinOpen] = useState(false);
 
   // Hook for board
   const {
@@ -106,6 +119,67 @@ export const TaskBoardPage: React.FC = () => {
     setIsCreateModalOpen(true);
   };
 
+  // Flatten tasks to look up task entities when moving
+  const allTasks: Task[] = Object.values(board).flatMap((list) => list || []);
+
+  // Intercept moves to BLOCKED or DONE according to BOWOL Plans methodology
+  const handleInterceptedMove = (taskId: string, targetStatus: TaskStatus) => {
+    const foundTask = allTasks.find((t) => t.id === taskId);
+    if (!foundTask) return;
+
+    if (targetStatus === 'BLOCKED') {
+      setTaskToBlock(foundTask);
+      setIsBlockModalOpen(true);
+      return;
+    }
+
+    if (targetStatus === 'DONE') {
+      setTaskToComplete(foundTask);
+      setIsGatekeeperModalOpen(true);
+      return;
+    }
+
+    moveTask(taskId, targetStatus);
+  };
+
+  const handleConfirmBlock = async (taskId: string, payload: UpdateTaskStatusPayload) => {
+    await moveTask(taskId, 'BLOCKED', payload);
+  };
+
+  const handleConfirmDone = async (taskId: string, payload: UpdateTaskStatusPayload) => {
+    await moveTask(taskId, 'DONE', payload);
+  };
+
+  const handleMoveToReviewFromGatekeeper = async (taskId: string) => {
+    await moveTask(taskId, 'REVIEW');
+  };
+
+  // WIP Limit calculation (Fase 5.3: Máximo 1 tarea activa por persona a la vez; excepción hasta 2 si una está en espera externa)
+  const inProgressList = board.IN_PROGRESS || [];
+  const assigneeTasks: Record<string, Task[]> = {};
+  inProgressList.forEach((t) => {
+    const key = t.assigneeId || 'unassigned';
+    if (!assigneeTasks[key]) assigneeTasks[key] = [];
+    assigneeTasks[key].push(t);
+  });
+
+  const wipOverloadedAssigneeIds = new Set<string>();
+  Object.entries(assigneeTasks).forEach(([assignee, tasks]) => {
+    if (tasks.length > 2) {
+      // Definitivamente sobrecargado (más de 2 tareas en paralelo)
+      wipOverloadedAssigneeIds.add(assignee);
+    } else if (tasks.length === 2) {
+      // Excepción metodológica: se permite 2 tareas únicamente si al menos una está en espera externa
+      const hasExternalWait = tasks.some((t) => (t.externalWaitHours && t.externalWaitHours > 0) || t.blockedReason);
+      if (!hasExternalWait) {
+        // Ambas son activas sin espera: sobrecarga WIP
+        wipOverloadedAssigneeIds.add(assignee);
+      }
+    }
+  });
+
+  const hasWipViolation = wipOverloadedAssigneeIds.size > 0;
+
   if (loadingProjects) {
     return (
       <div className="flex h-96 items-center justify-center">
@@ -120,13 +194,13 @@ export const TaskBoardPage: React.FC = () => {
   if (projects.length === 0) {
     return (
       <div className="mx-auto max-w-4xl py-12 px-4 text-center">
-        <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl border border-zinc-900/[0.13] dark:border-white/[0.08] bg-slate-900/60 backdrop-blur-xl shadow-xl">
-          <Sparkles className="h-8 w-8 text-cyan-400" strokeWidth={1.5} />
+        <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl border border-zinc-200 dark:border-white/[0.08] bg-white dark:bg-slate-900/60 backdrop-blur-xl shadow-md">
+          <Sparkles className="h-8 w-8 text-cyan-500 dark:text-cyan-400" strokeWidth={1.5} />
         </div>
-        <h2 className="mt-6 text-xl font-bold text-slate-100 sm:text-2xl">
+        <h2 className="mt-6 text-xl font-bold text-slate-900 dark:text-slate-100 sm:text-2xl">
           Comienza tu Ciclo de Ejecución
         </h2>
-        <p className="mt-2 text-sm text-slate-400 max-w-md mx-auto">
+        <p className="mt-2 text-sm text-slate-600 dark:text-slate-400 max-w-md mx-auto">
           Crea tu primer proyecto para descomponer ideas estratégicas en un backlog interactivo de ingeniería con IA.
         </p>
 
@@ -169,7 +243,33 @@ export const TaskBoardPage: React.FC = () => {
           setIsCreateModalOpen(true);
         }}
         onOpenAIDecomposer={() => setIsAIDecomposerOpen(true)}
+        onOpenDailyCheckin={() => setIsDailyCheckinOpen(true)}
       />
+
+      {/* Foco Semanal & Riesgo Crítico (Fase 5.1 BOWOL Plans) */}
+      <WeeklyPriorityFocusBanner
+        projectId={currentProject?.id}
+        projectName={currentProject?.name}
+        sprintName={sprints.find((s) => s.id === selectedSprintId)?.name}
+        totalTasks={allTasks.length}
+        totalHours={allTasks.reduce((sum, t) => sum + (t.estimateHours || 0), 0)}
+      />
+
+      {/* WIP Limit Alert Banner (Fase 5.3) */}
+      {hasWipViolation && (
+        <div className="flex items-start gap-3 rounded-2xl border border-amber-300 dark:border-amber-500/30 bg-amber-50 dark:bg-amber-950/20 p-4 text-xs text-amber-900 dark:text-amber-200 backdrop-blur-md animate-in fade-in duration-300">
+          <AlertTriangle className="h-5 w-5 text-amber-600 dark:text-amber-400 shrink-0 mt-0.5" />
+          <div className="flex-1">
+            <h4 className="font-semibold text-amber-900 dark:text-amber-100">
+              Alerta de Sobrecarga WIP (Fase 5.3 — Límite de 1 tarea activa por persona)
+            </h4>
+            <p className="mt-1 text-amber-800 dark:text-amber-200/90 leading-relaxed">
+              Hay colaboradores con 2 o más tareas simultáneas en la columna <strong>«En Progreso»</strong>. 
+              La metodología operativa de BOWOL Plans recomienda enfocar el esfuerzo en una sola tarea a la vez para cerrar ciclos rápidamente y no diluir la capacidad disponible.
+            </p>
+          </div>
+        </div>
+      )}
 
       {boardError && (
         <div className="flex items-center gap-2 rounded-xl border border-rose-500/20 bg-rose-500/10 p-3 text-xs text-rose-300">
@@ -192,7 +292,7 @@ export const TaskBoardPage: React.FC = () => {
             status="BACKLOG"
             title="Backlog"
             tasks={board.BACKLOG || []}
-            onMove={moveTask}
+            onMove={handleInterceptedMove}
             onDelete={deleteTask}
             onQuickAdd={handleQuickAdd}
           />
@@ -201,16 +301,35 @@ export const TaskBoardPage: React.FC = () => {
             status="TODO"
             title="Por Hacer"
             tasks={board.TODO || []}
-            onMove={moveTask}
+            onMove={handleInterceptedMove}
             onDelete={deleteTask}
             onQuickAdd={handleQuickAdd}
+            onRequestBlock={(task) => {
+              setTaskToBlock(task);
+              setIsBlockModalOpen(true);
+            }}
           />
 
           <TaskColumn
             status="IN_PROGRESS"
             title="En Progreso"
             tasks={board.IN_PROGRESS || []}
-            onMove={moveTask}
+            wipOverloadedAssigneeIds={wipOverloadedAssigneeIds}
+            onMove={handleInterceptedMove}
+            onDelete={deleteTask}
+            onQuickAdd={handleQuickAdd}
+            onRequestBlock={(task) => {
+              setTaskToBlock(task);
+              setIsBlockModalOpen(true);
+            }}
+          />
+
+          {/* Bloqueadas Column: Siempre visible para gestión proactiva de cuellos de botella (Fases 5.3 & 6.1) */}
+          <TaskColumn
+            status="BLOCKED"
+            title="Bloqueadas"
+            tasks={board.BLOCKED || []}
+            onMove={handleInterceptedMove}
             onDelete={deleteTask}
             onQuickAdd={handleQuickAdd}
           />
@@ -219,30 +338,27 @@ export const TaskBoardPage: React.FC = () => {
             status="REVIEW"
             title="En Revisión"
             tasks={board.REVIEW || []}
-            onMove={moveTask}
+            onMove={handleInterceptedMove}
             onDelete={deleteTask}
             onQuickAdd={handleQuickAdd}
+            onRequestBlock={(task) => {
+              setTaskToBlock(task);
+              setIsBlockModalOpen(true);
+            }}
+            onRequestDone={(task) => {
+              setTaskToComplete(task);
+              setIsGatekeeperModalOpen(true);
+            }}
           />
 
           <TaskColumn
             status="DONE"
             title="Completadas"
             tasks={board.DONE || []}
-            onMove={moveTask}
+            onMove={handleInterceptedMove}
             onDelete={deleteTask}
             onQuickAdd={handleQuickAdd}
           />
-
-          {(board.BLOCKED?.length ?? 0) > 0 && (
-            <TaskColumn
-              status="BLOCKED"
-              title="Bloqueadas"
-              tasks={board.BLOCKED || []}
-              onMove={moveTask}
-              onDelete={deleteTask}
-              onQuickAdd={handleQuickAdd}
-            />
-          )}
         </div>
       </div>
 
@@ -267,6 +383,42 @@ export const TaskBoardPage: React.FC = () => {
           onGenerate={runAIDecomposer}
         />
       )}
+
+      {/* Protocolo de Bloqueo Operativo Modal (Fases 5.3 & 6.1) */}
+      <BlockTaskModal
+        isOpen={isBlockModalOpen}
+        task={taskToBlock}
+        onClose={() => {
+          setIsBlockModalOpen(false);
+          setTaskToBlock(null);
+        }}
+        onConfirm={handleConfirmBlock}
+      />
+
+      {/* Puerta de Cierre con Criterios de Aceptación Modal (Fase 6.2) */}
+      <CompleteTaskGatekeeperModal
+        isOpen={isGatekeeperModalOpen}
+        task={taskToComplete}
+        onClose={() => {
+          setIsGatekeeperModalOpen(false);
+          setTaskToComplete(null);
+        }}
+        onConfirm={handleConfirmDone}
+        onMoveToReview={handleMoveToReviewFromGatekeeper}
+      />
+
+      {/* Check-in Diario Express Modal (Fase 6.1) */}
+      <DailyCheckinModal
+        isOpen={isDailyCheckinOpen}
+        projectId={currentProject?.id}
+        projectName={currentProject?.name}
+        tasks={allTasks}
+        onClose={() => setIsDailyCheckinOpen(false)}
+        onOpenBlockModal={(task) => {
+          setTaskToBlock(task);
+          setIsBlockModalOpen(true);
+        }}
+      />
     </div>
   );
 };

@@ -43,7 +43,7 @@ export const SocialHeader: React.FC<SocialHeaderProps> = ({
             size="sm"
             variant="outline"
             onClick={onOpenCreateModal}
-            className="text-xs h-8 px-3 gap-1.5 border-zinc-900/[0.13] dark:border-white/[0.08] hover:border-zinc-900/[0.16] dark:hover:border-white/[0.15]"
+            className="text-xs h-8 px-3 gap-1.5 border-zinc-200 dark:border-white/[0.08] hover:border-zinc-300 dark:hover:border-white/[0.15]"
           >
             <Plus className="w-4 h-4 text-current" strokeWidth={1.5} />
             Nueva Publicación
@@ -62,19 +62,19 @@ export const SocialHeader: React.FC<SocialHeaderProps> = ({
       </div>
 
       {/* Tabs navigation */}
-      <div className="flex items-center gap-2 border-b border-zinc-900/[0.1] dark:border-white/[0.06] pb-1">
+      <div className="flex items-center gap-2 border-b border-zinc-200 dark:border-white/[0.06] pb-1">
         <button
           onClick={() => onTabChange('feed')}
           className={`flex items-center gap-2 px-3.5 py-2 rounded-lg text-xs font-semibold transition-all ${
             activeTab === 'feed'
-              ? 'bg-orange-600/15 text-orange-400 border border-orange-500/30 shadow-sm'
-              : 'text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-200 hover:bg-zinc-900/[0.04] dark:hover:bg-white/[0.04]'
+              ? 'bg-orange-500/10 text-orange-600 dark:text-orange-400 border border-orange-500/30 shadow-sm'
+              : 'text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-200 hover:bg-zinc-100 dark:hover:bg-white/[0.04]'
           }`}
         >
           <Newspaper className="w-4 h-4" strokeWidth={1.5} />
           <span>Feed de Publicaciones</span>
           {postCount > 0 && (
-            <span className="ml-1 text-[10px] px-1.5 py-0.2 rounded-full bg-zinc-900/[0.08] dark:bg-white/[0.08] text-zinc-700 dark:text-zinc-300">
+            <span className="ml-1 text-[10px] px-1.5 py-0.2 rounded-full bg-zinc-100 dark:bg-white/[0.08] text-zinc-700 dark:text-zinc-300">
               {postCount}
             </span>
           )}
@@ -84,8 +84,8 @@ export const SocialHeader: React.FC<SocialHeaderProps> = ({
           onClick={() => onTabChange('brand')}
           className={`flex items-center gap-2 px-3.5 py-2 rounded-lg text-xs font-semibold transition-all ${
             activeTab === 'brand'
-              ? 'bg-orange-600/15 text-orange-400 border border-orange-500/30 shadow-sm'
-              : 'text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-200 hover:bg-zinc-900/[0.04] dark:hover:bg-white/[0.04]'
+              ? 'bg-orange-500/10 text-orange-600 dark:text-orange-400 border border-orange-500/30 shadow-sm'
+              : 'text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-200 hover:bg-zinc-100 dark:hover:bg-white/[0.04]'
           }`}
         >
           <Palette className="w-4 h-4" strokeWidth={1.5} />

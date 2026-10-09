@@ -253,11 +253,36 @@ class TaskControllerTests {
     }
 
     @Test
-    @DisplayName("PATCH /api/v1/tasks/{id}/status - Cambiar status y registrar completedAt al marcar DONE")
+    @DisplayName("PATCH /api/v1/tasks/{id}/status - Cambiar status y registrar completedAt al marcar DONE con evidencia válida")
     void updateTaskStatus_success() throws Exception {
         Task task = taskRepository.save(Task.builder()
                 .projectId(testProject.getId())
                 .title("Tarea a completar")
+                .status(TaskStatus.TODO)
+                .build());
+
+        UpdateTaskStatusRequest req = UpdateTaskStatusRequest.builder()
+                .status(TaskStatus.DONE)
+                .acceptanceEvidence("https://github.com/bowol/pull/42 - Pruebas aprobadas")
+                .build();
+
+        mockMvc.perform(patch("/api/v1/tasks/" + task.getId() + "/status")
+                        .header("Authorization", "Bearer " + jwtToken)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(req)))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.status").value("DONE"))
+                .andExpect(jsonPath("$.completedAt").isNotEmpty())
+                .andExpect(jsonPath("$.acceptanceEvidence").value("https://github.com/bowol/pull/42 - Pruebas aprobadas"))
+                .andExpect(jsonPath("$.acceptanceReviewedBy").isNotEmpty());
+    }
+
+    @Test
+    @DisplayName("PATCH /api/v1/tasks/{id}/status - Rechaza transición a DONE si falta evidencia de aceptación")
+    void updateTaskStatus_rejectsDoneWithoutEvidence() throws Exception {
+        Task task = taskRepository.save(Task.builder()
+                .projectId(testProject.getId())
+                .title("Tarea sin evidencia")
                 .status(TaskStatus.TODO)
                 .build());
 
@@ -269,9 +294,8 @@ class TaskControllerTests {
                         .header("Authorization", "Bearer " + jwtToken)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(req)))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.status").value("DONE"))
-                .andExpect(jsonPath("$.completedAt").isNotEmpty());
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.code").value("DONE_EVIDENCE_REQUIRED"));
     }
 
     @Test

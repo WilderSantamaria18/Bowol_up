@@ -191,6 +191,19 @@ class StrategicPlannerIntegrationTests {
         String oppIdStr = objectMapper.readTree(oppsJson).get("opportunities").get(0).get("id").asText();
         UUID opportunityId = UUID.fromString(oppIdStr);
 
+        // 2.1 Mover a EVALUATING y luego a APPROVED (máquina de estados de oportunidades)
+        mockMvc.perform(patch("/api/v1/opportunities/" + opportunityId + "/status")
+                        .header("Authorization", "Bearer " + primaryJwtToken)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"status\":\"EVALUATING\"}"))
+                .andExpect(status().isOk());
+
+        mockMvc.perform(patch("/api/v1/opportunities/" + opportunityId + "/status")
+                        .header("Authorization", "Bearer " + primaryJwtToken)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"status\":\"APPROVED\"}"))
+                .andExpect(status().isOk());
+
         // 3. Convertir Oportunidad a Proyecto
         String projectJson = mockMvc.perform(post("/api/v1/opportunities/" + opportunityId + "/convert-to-project")
                         .header("Authorization", "Bearer " + primaryJwtToken))
@@ -267,11 +280,16 @@ class StrategicPlannerIntegrationTests {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.status").value("IN_PROGRESS"));
 
-        // Mover tarea a DONE y verificar completedAt
+        // Mover tarea a DONE con evidencia válida de aceptación
+        UpdateTaskStatusRequest doneReq = UpdateTaskStatusRequest.builder()
+                .status(TaskStatus.DONE)
+                .acceptanceEvidence("Entregable verificado en staging: pull request #10 mergeado con tests")
+                .build();
+
         mockMvc.perform(patch("/api/v1/tasks/" + firstTask.getId() + "/status")
                         .header("Authorization", "Bearer " + primaryJwtToken)
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(new UpdateTaskStatusRequest(TaskStatus.DONE))))
+                        .content(objectMapper.writeValueAsString(doneReq)))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.status").value("DONE"))
                 .andExpect(jsonPath("$.completedAt").isNotEmpty());

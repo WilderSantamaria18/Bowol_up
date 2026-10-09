@@ -45,9 +45,9 @@ export const CreateSocialPostModal: React.FC<CreateSocialPostModalProps> = ({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/75 backdrop-blur-md animate-fade-in">
-      <div className="relative w-full max-w-lg rounded-2xl bg-white dark:bg-[#0F0F12] border border-zinc-900/[0.16] dark:border-white/[0.1] p-6 shadow-2xl">
+      <div className="relative w-full max-w-lg rounded-2xl bg-white dark:bg-[#0F0F12] border border-zinc-200 dark:border-white/[0.1] p-6 shadow-2xl">
         {/* Header */}
-        <div className="flex items-center justify-between pb-4 border-b border-zinc-900/[0.13] dark:border-white/[0.08]">
+        <div className="flex items-center justify-between pb-4 border-b border-zinc-200 dark:border-white/[0.08]">
           <div className="flex items-center gap-2.5">
             <div className="w-8 h-8 rounded-lg bg-orange-600/20 border border-orange-500/40 flex items-center justify-center text-orange-400">
               <Send className="w-4 h-4" strokeWidth={1.5} />
@@ -76,13 +76,13 @@ export const CreateSocialPostModal: React.FC<CreateSocialPostModalProps> = ({
               <select
                 value={channel}
                 onChange={(e) => setChannel(e.target.value as SocialChannel)}
-                className="w-full bg-surface-subtle border border-zinc-900/[0.16] dark:border-white/[0.1] rounded-lg px-3 py-2 text-xs text-zinc-900 dark:text-zinc-200 focus:outline-none focus:border-orange-500"
+                className="w-full bg-white dark:bg-black/40 border border-zinc-300 dark:border-white/[0.1] rounded-lg px-3 py-2 text-xs text-zinc-900 dark:text-zinc-200 focus:outline-none focus:border-orange-500"
               >
-                <option value="LINKEDIN">LinkedIn</option>
-                <option value="TWITTER_X">Twitter / X</option>
-                <option value="INSTAGRAM">Instagram</option>
-                <option value="BLOG">Blog Corporativo</option>
-                <option value="NEWSLETTER">Newsletter</option>
+                <option value="LINKEDIN" className="bg-white dark:bg-zinc-900 text-zinc-900 dark:text-zinc-100">LinkedIn</option>
+                <option value="TWITTER_X" className="bg-white dark:bg-zinc-900 text-zinc-900 dark:text-zinc-100">Twitter / X</option>
+                <option value="INSTAGRAM" className="bg-white dark:bg-zinc-900 text-zinc-900 dark:text-zinc-100">Instagram</option>
+                <option value="BLOG" className="bg-white dark:bg-zinc-900 text-zinc-900 dark:text-zinc-100">Blog Corporativo</option>
+                <option value="NEWSLETTER" className="bg-white dark:bg-zinc-900 text-zinc-900 dark:text-zinc-100">Newsletter</option>
               </select>
             </div>
 
@@ -93,10 +93,10 @@ export const CreateSocialPostModal: React.FC<CreateSocialPostModalProps> = ({
               <select
                 value={status}
                 onChange={(e) => setStatus(e.target.value as SocialPostStatus)}
-                className="w-full bg-surface-subtle border border-zinc-900/[0.16] dark:border-white/[0.1] rounded-lg px-3 py-2 text-xs text-zinc-900 dark:text-zinc-200 focus:outline-none focus:border-orange-500"
+                className="w-full bg-white dark:bg-black/40 border border-zinc-300 dark:border-white/[0.1] rounded-lg px-3 py-2 text-xs text-zinc-900 dark:text-zinc-200 focus:outline-none focus:border-orange-500"
               >
-                <option value="DRAFT">Borrador</option>
-                <option value="PUBLISHED">Publicado</option>
+                <option value="DRAFT" className="bg-white dark:bg-zinc-900 text-zinc-900 dark:text-zinc-100">Borrador</option>
+                <option value="PUBLISHED" className="bg-white dark:bg-zinc-900 text-zinc-900 dark:text-zinc-100">Publicado</option>
               </select>
             </div>
           </div>
@@ -111,7 +111,7 @@ export const CreateSocialPostModal: React.FC<CreateSocialPostModalProps> = ({
               value={title}
               onChange={(e) => setTitle(e.target.value)}
               placeholder="p. ej. Reflexiones sobre la escalabilidad con IA"
-              className="w-full bg-surface-subtle border border-zinc-900/[0.16] dark:border-white/[0.1] rounded-lg px-3 py-2 text-xs text-zinc-900 dark:text-zinc-200 placeholder:text-zinc-600 focus:outline-none focus:border-orange-500"
+              className="w-full bg-white dark:bg-black/40 border border-zinc-300 dark:border-white/[0.1] rounded-lg px-3 py-2 text-xs text-zinc-900 dark:text-zinc-200 placeholder:text-zinc-400 dark:placeholder:text-zinc-500 focus:outline-none focus:border-orange-500"
             />
           </div>
 
@@ -125,7 +125,7 @@ export const CreateSocialPostModal: React.FC<CreateSocialPostModalProps> = ({
               value={content}
               onChange={(e) => setContent(e.target.value)}
               placeholder="Escribe el texto de tu publicación aquí..."
-              className="w-full bg-surface-subtle border border-zinc-900/[0.16] dark:border-white/[0.1] rounded-lg p-3 text-xs text-zinc-900 dark:text-zinc-200 placeholder:text-zinc-600 focus:outline-none focus:border-orange-500 resize-none leading-relaxed"
+              className="w-full bg-white dark:bg-black/40 border border-zinc-300 dark:border-white/[0.1] rounded-lg p-3 text-xs text-zinc-900 dark:text-zinc-200 placeholder:text-zinc-400 dark:placeholder:text-zinc-500 focus:outline-none focus:border-orange-500 resize-none leading-relaxed"
             />
           </div>
 
@@ -138,11 +138,11 @@ export const CreateSocialPostModal: React.FC<CreateSocialPostModalProps> = ({
               value={tagsInput}
               onChange={(e) => setTagsInput(e.target.value)}
               placeholder="Innovacion, AI, TechLead, Growth"
-              className="w-full bg-surface-subtle border border-zinc-900/[0.16] dark:border-white/[0.1] rounded-lg px-3 py-2 text-xs text-zinc-900 dark:text-zinc-200 placeholder:text-zinc-600 focus:outline-none focus:border-orange-500"
+              className="w-full bg-white dark:bg-black/40 border border-zinc-300 dark:border-white/[0.1] rounded-lg px-3 py-2 text-xs text-zinc-900 dark:text-zinc-200 placeholder:text-zinc-400 dark:placeholder:text-zinc-500 focus:outline-none focus:border-orange-500"
             />
           </div>
 
-          <div className="flex justify-end gap-2.5 pt-3 border-t border-zinc-900/[0.13] dark:border-white/[0.08]">
+          <div className="flex justify-end gap-2.5 pt-3 border-t border-zinc-200 dark:border-white/[0.08]">
             <Button
               type="button"
               variant="outline"

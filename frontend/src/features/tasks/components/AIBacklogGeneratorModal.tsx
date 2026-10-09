@@ -42,25 +42,25 @@ export const AIBacklogGeneratorModal: React.FC<AIBacklogGeneratorModalProps> = (
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-fade-in">
-      <div className="relative w-full max-w-2xl rounded-2xl border border-zinc-900/[0.16] dark:border-white/[0.1] bg-slate-900/95 p-6 shadow-2xl backdrop-blur-2xl">
+      <div className="relative w-full max-w-2xl rounded-2xl border border-zinc-200 dark:border-white/[0.1] bg-white dark:bg-slate-900/95 p-6 shadow-2xl backdrop-blur-2xl">
         {/* Header */}
-        <div className="flex items-center justify-between border-b border-zinc-900/[0.13] dark:border-white/[0.08] pb-4">
+        <div className="flex items-center justify-between border-b border-zinc-200 dark:border-white/[0.08] pb-4">
           <div className="flex items-center gap-2.5">
-            <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-cyan-500/20 to-blue-500/20 border border-cyan-500/30 text-cyan-400">
+            <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-cyan-500/20 to-blue-500/20 border border-cyan-500/30 text-cyan-600 dark:text-cyan-400">
               <Sparkles className="h-5 w-5" strokeWidth={1.5} />
             </div>
             <div>
-              <h2 className="text-base font-semibold text-slate-100">
+              <h2 className="text-base font-semibold text-slate-900 dark:text-slate-100">
                 AI Backlog Decomposer
               </h2>
-              <p className="text-xs text-slate-400">
+              <p className="text-xs text-slate-500 dark:text-slate-400">
                 Transforma el alcance de {projectName} en un plan técnico ejecutable
               </p>
             </div>
           </div>
           <button
             onClick={handleClose}
-            className="rounded-lg p-1.5 text-slate-400 hover:bg-zinc-900/[0.08] dark:hover:bg-white/[0.08] hover:text-slate-100 transition-colors"
+            className="rounded-lg p-1.5 text-slate-400 hover:bg-zinc-100 dark:hover:bg-white/[0.08] hover:text-slate-900 dark:hover:text-slate-100 transition-colors"
           >
             <X className="h-4 w-4" strokeWidth={1.5} />
           </button>
@@ -76,31 +76,31 @@ export const AIBacklogGeneratorModal: React.FC<AIBacklogGeneratorModalProps> = (
         {/* Content State 1: Ready to generate */}
         {!result && !loading && (
           <div className="mt-6 space-y-4">
-            <div className="rounded-xl border border-cyan-500/15 bg-cyan-950/20 p-4">
-              <h4 className="text-xs font-semibold text-cyan-300 uppercase tracking-wider mb-2">
+            <div className="rounded-xl border border-cyan-200 dark:border-cyan-500/15 bg-cyan-50/60 dark:bg-cyan-950/20 p-4">
+              <h4 className="text-xs font-semibold text-cyan-800 dark:text-cyan-300 uppercase tracking-wider mb-2">
                 ¿Qué generará el motor de inferencia?
               </h4>
-              <ul className="space-y-2 text-xs text-slate-300">
+              <ul className="space-y-2 text-xs text-slate-700 dark:text-slate-300">
                 <li className="flex items-start gap-2">
-                  <span className="h-1.5 w-1.5 rounded-full bg-cyan-400 mt-1.5 shrink-0" />
+                  <span className="h-1.5 w-1.5 rounded-full bg-cyan-500 mt-1.5 shrink-0" />
                   <span>Descomposición estructurada en tareas de Backend, Frontend, Arquitectura y Calidad.</span>
                 </li>
                 <li className="flex items-start gap-2">
-                  <span className="h-1.5 w-1.5 rounded-full bg-cyan-400 mt-1.5 shrink-0" />
+                  <span className="h-1.5 w-1.5 rounded-full bg-cyan-500 mt-1.5 shrink-0" />
                   <span>Estimación de horas de ingeniería por tarea con priorización objetiva.</span>
                 </li>
                 <li className="flex items-start gap-2">
-                  <span className="h-1.5 w-1.5 rounded-full bg-cyan-400 mt-1.5 shrink-0" />
+                  <span className="h-1.5 w-1.5 rounded-full bg-cyan-500 mt-1.5 shrink-0" />
                   <span>Criterios de aceptación detallados y títulos en infinitivo para inserción directa en el backlog.</span>
                 </li>
               </ul>
             </div>
 
-            <div className="mt-6 flex items-center justify-end gap-3 pt-3 border-t border-zinc-900/[0.13] dark:border-white/[0.08]">
+            <div className="mt-6 flex items-center justify-end gap-3 pt-3 border-t border-zinc-200 dark:border-white/[0.08]">
               <button
                 type="button"
                 onClick={handleClose}
-                className="rounded-xl border border-zinc-900/[0.13] dark:border-white/[0.08] px-4 py-2 text-xs font-medium text-slate-300 hover:bg-zinc-900/[0.06] dark:hover:bg-white/[0.06] transition-colors"
+                className="rounded-xl border border-zinc-300 dark:border-white/[0.08] px-4 py-2 text-xs font-medium text-slate-700 dark:text-slate-300 hover:bg-zinc-100 dark:hover:bg-white/[0.06] transition-colors"
               >
                 Cancelar
               </button>
@@ -124,10 +124,10 @@ export const AIBacklogGeneratorModal: React.FC<AIBacklogGeneratorModalProps> = (
               <div className="h-12 w-12 rounded-full border-2 border-cyan-500 border-t-transparent animate-spin" />
               <Sparkles className="absolute h-5 w-5 text-cyan-400" strokeWidth={1.5} />
             </div>
-            <h3 className="text-sm font-semibold text-slate-200">
+            <h3 className="text-sm font-semibold text-slate-900 dark:text-slate-200">
               Analizando iniciativa y generando tareas técnicas...
             </h3>
-            <p className="mt-1 text-xs text-slate-400 max-w-sm">
+            <p className="mt-1 text-xs text-slate-600 dark:text-slate-400 max-w-sm">
               Estructurando modelo de datos, endpoints REST, componentes React y estimaciones de esfuerzo.
             </p>
           </div>
@@ -136,29 +136,29 @@ export const AIBacklogGeneratorModal: React.FC<AIBacklogGeneratorModalProps> = (
         {/* Content State 3: Result Preview */}
         {result && (
           <div className="mt-6 space-y-4">
-            <div className="rounded-xl border border-emerald-500/20 bg-emerald-950/20 p-4">
-              <div className="flex items-center gap-2 text-emerald-400 mb-1">
+            <div className="rounded-xl border border-emerald-300 dark:border-emerald-500/20 bg-emerald-50/70 dark:bg-emerald-950/20 p-4">
+              <div className="flex items-center gap-2 text-emerald-700 dark:text-emerald-400 mb-1">
                 <CheckCircle2 className="h-4 w-4" strokeWidth={1.5} />
                 <span className="text-xs font-semibold uppercase tracking-wider">
                   Backlog Generado Exitosamente
                 </span>
               </div>
-              <h3 className="text-sm font-medium text-slate-100 mt-1">
+              <h3 className="text-sm font-medium text-slate-900 dark:text-slate-100 mt-1">
                 {result.epicTitle}
               </h3>
               {result.epicObjective && (
-                <p className="text-xs text-slate-400 mt-0.5">
+                <p className="text-xs text-slate-600 dark:text-slate-400 mt-0.5">
                   {result.epicObjective}
                 </p>
               )}
 
-              <div className="mt-3 flex items-center gap-4 text-xs text-slate-300">
+              <div className="mt-3 flex items-center gap-4 text-xs text-slate-700 dark:text-slate-300">
                 <div className="flex items-center gap-1.5">
-                  <Layers className="h-3.5 w-3.5 text-cyan-400" strokeWidth={1.5} />
+                  <Layers className="h-3.5 w-3.5 text-cyan-600 dark:text-cyan-400" strokeWidth={1.5} />
                   <span>{result.generatedTasksCount} tareas creadas</span>
                 </div>
                 <div className="flex items-center gap-1.5">
-                  <Clock className="h-3.5 w-3.5 text-amber-400" strokeWidth={1.5} />
+                  <Clock className="h-3.5 w-3.5 text-amber-600 dark:text-amber-400" strokeWidth={1.5} />
                   <span>{result.totalEstimatedHours}h estimadas en total</span>
                 </div>
               </div>
@@ -168,19 +168,19 @@ export const AIBacklogGeneratorModal: React.FC<AIBacklogGeneratorModalProps> = (
               {result.tasks.map((task, idx) => (
                 <div
                   key={task.id || idx}
-                  className="rounded-lg border border-zinc-900/[0.1] dark:border-white/[0.06] bg-slate-950/40 p-3 flex items-start justify-between gap-3 text-xs"
+                  className="rounded-lg border border-zinc-200 dark:border-white/[0.06] bg-zinc-50 dark:bg-slate-950/40 p-3 flex items-start justify-between gap-3 text-xs"
                 >
                   <div>
-                    <h5 className="font-medium text-slate-200">{task.title}</h5>
+                    <h5 className="font-medium text-slate-900 dark:text-slate-200">{task.title}</h5>
                     {task.description && (
-                      <p className="text-slate-400 mt-0.5 line-clamp-1">{task.description}</p>
+                      <p className="text-slate-500 dark:text-slate-400 mt-0.5 line-clamp-1">{task.description}</p>
                     )}
                   </div>
                   <div className="flex items-center gap-2 shrink-0">
-                    <span className="text-[10px] rounded px-1.5 py-0.5 border border-zinc-900/[0.13] dark:border-white/[0.08] text-slate-400">
+                    <span className="text-[10px] rounded px-1.5 py-0.5 border border-zinc-200 dark:border-white/[0.08] text-slate-600 dark:text-slate-400">
                       {task.priority}
                     </span>
-                    <span className="text-[10px] text-cyan-400 font-medium">
+                    <span className="text-[10px] text-cyan-600 dark:text-cyan-400 font-medium">
                       {task.estimateHours}h
                     </span>
                   </div>
@@ -188,7 +188,7 @@ export const AIBacklogGeneratorModal: React.FC<AIBacklogGeneratorModalProps> = (
               ))}
             </div>
 
-            <div className="mt-6 flex items-center justify-end gap-3 pt-3 border-t border-zinc-900/[0.13] dark:border-white/[0.08]">
+            <div className="mt-6 flex items-center justify-end gap-3 pt-3 border-t border-zinc-200 dark:border-white/[0.08]">
               <button
                 type="button"
                 onClick={handleClose}

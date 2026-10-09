@@ -49,7 +49,11 @@ export function useTaskBoard(projectId?: string, sprintId?: string) {
     return created;
   };
 
-  const moveTask = async (taskId: string, targetStatus: TaskStatus): Promise<void> => {
+  const moveTask = async (
+    taskId: string,
+    targetStatus: TaskStatus,
+    extra?: Partial<import('../types').UpdateTaskStatusPayload>
+  ): Promise<void> => {
     // Optimistic UI update
     setBoard((prev) => {
       let movedTask: Task | null = null;
@@ -59,7 +63,26 @@ export function useTaskBoard(projectId?: string, sprintId?: string) {
       (Object.keys(next) as TaskStatus[]).forEach((statusKey) => {
         const found = (next[statusKey] ?? []).find((t) => t.id === taskId);
         if (found) {
-          movedTask = { ...found, status: targetStatus };
+          movedTask = {
+            ...found,
+            status: targetStatus,
+            ...(targetStatus === 'BLOCKED'
+              ? {
+                  blockedReason: extra?.blockedReason || found.blockedReason,
+                  blockedResolver: extra?.blockedResolver || found.blockedResolver,
+                  blockedReviewDate: extra?.blockedReviewDate || found.blockedReviewDate,
+                }
+              : targetStatus === 'DONE'
+              ? {
+                  acceptanceEvidence: extra?.acceptanceEvidence || found.acceptanceEvidence,
+                  acceptanceReviewedBy: extra?.acceptanceReviewedBy || found.acceptanceReviewedBy,
+                }
+              : {
+                  blockedReason: null,
+                  blockedResolver: null,
+                  blockedReviewDate: null,
+                }),
+          };
           next[statusKey] = (next[statusKey] ?? []).filter((t) => t.id !== taskId);
         }
       });
@@ -72,7 +95,11 @@ export function useTaskBoard(projectId?: string, sprintId?: string) {
     });
 
     try {
-      await taskService.updateTaskStatus(taskId, targetStatus);
+      if (extra !== undefined) {
+        await taskService.updateTaskStatus(taskId, targetStatus, extra);
+      } else {
+        await taskService.updateTaskStatus(taskId, targetStatus);
+      }
     } catch (err) {
       // Revert on failure
       fetchBoard();

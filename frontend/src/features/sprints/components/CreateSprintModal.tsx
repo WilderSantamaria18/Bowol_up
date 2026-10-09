@@ -74,8 +74,8 @@ export const CreateSprintModal: React.FC<CreateSprintModalProps> = ({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm animate-fade-in">
-      <div className="relative w-full max-w-lg rounded-2xl bg-white dark:bg-[#0F0F12] border border-zinc-900/[0.16] dark:border-white/[0.1] p-6 shadow-2xl">
-        <div className="flex items-center justify-between pb-4 border-b border-zinc-900/[0.13] dark:border-white/[0.08]">
+      <div className="relative w-full max-w-lg rounded-2xl bg-white dark:bg-[#0F0F12] border border-zinc-200 dark:border-white/[0.1] p-6 shadow-2xl">
+        <div className="flex items-center justify-between pb-4 border-b border-zinc-200 dark:border-white/[0.08]">
           <div className="flex items-center gap-2.5">
             <div className="w-8 h-8 rounded-lg bg-orange-600/20 border border-orange-500/40 flex items-center justify-center text-orange-400">
               <Flag className="w-4 h-4" strokeWidth={1.5} />
@@ -108,16 +108,16 @@ export const CreateSprintModal: React.FC<CreateSprintModalProps> = ({
               type="button"
               onClick={handleAiPlan}
               disabled={isPlanningAi}
-              className="px-3 py-1.5 rounded-lg text-xs font-semibold bg-orange-500/20 hover:bg-orange-500/30 text-orange-200 border border-orange-500/30 transition-all flex items-center gap-1.5 shrink-0"
+              className="px-3 py-1.5 rounded-lg text-xs font-semibold bg-orange-500/10 dark:bg-orange-500/20 hover:bg-orange-500/20 dark:hover:bg-orange-500/30 text-orange-800 dark:text-orange-200 border border-orange-500/30 transition-all flex items-center gap-1.5 shrink-0"
             >
               {isPlanningAi ? (
                 <>
-                  <span className="w-3 h-3 border-2 border-orange-300 border-t-transparent rounded-full animate-spin" />
+                  <span className="w-3 h-3 border-2 border-orange-400 border-t-transparent rounded-full animate-spin" />
                   <span>Analizando...</span>
                 </>
               ) : (
                 <>
-                  <Sparkles className="w-3 h-3 text-orange-400" strokeWidth={1.5} />
+                  <Sparkles className="w-3 h-3 text-orange-500 dark:text-orange-400" strokeWidth={1.5} />
                   <span>Sugerir Plan IA</span>
                 </>
               )}
@@ -126,17 +126,17 @@ export const CreateSprintModal: React.FC<CreateSprintModalProps> = ({
         )}
 
         {aiError && (
-          <div className="mt-3 flex items-center gap-2 p-2.5 rounded-lg bg-rose-500/10 border border-rose-500/20 text-xs text-rose-300">
+          <div className="mt-3 flex items-center gap-2 p-2.5 rounded-lg bg-rose-500/10 border border-rose-500/20 text-xs text-rose-700 dark:text-rose-300">
             <AlertCircle className="w-4 h-4 shrink-0" strokeWidth={1.5} />
             <span>{aiError}</span>
           </div>
         )}
 
         {aiPlan && (
-          <div className="mt-3 p-3 rounded-xl bg-orange-950/20 border border-orange-500/20 text-xs text-zinc-700 dark:text-zinc-300 space-y-2">
-            <div className="flex items-center justify-between text-[11px] text-orange-700 dark:text-orange-300 font-medium">
+          <div className="mt-3 p-3 rounded-xl bg-orange-500/5 dark:bg-orange-950/20 border border-orange-500/20 text-xs text-zinc-700 dark:text-zinc-300 space-y-2">
+            <div className="flex items-center justify-between text-[11px] text-orange-800 dark:text-orange-300 font-medium">
               <span className="flex items-center gap-1">
-                <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" strokeWidth={1.5} />
+                <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" strokeWidth={1.5} />
                 Plan sugerido por Agile Coach IA
               </span>
               <span>{aiPlan.suggestedDurationDays} días (~{aiPlan.totalEstimatedHours || 0} hrs)</span>
@@ -156,7 +156,7 @@ export const CreateSprintModal: React.FC<CreateSprintModalProps> = ({
               value={name}
               onChange={(e) => setName(e.target.value)}
               placeholder="p. ej. Sprint 1: Autenticación y Módulo Core"
-              className="w-full bg-surface-subtle border border-zinc-900/[0.16] dark:border-white/[0.1] rounded-lg px-3 py-2 text-xs text-zinc-900 dark:text-zinc-200 placeholder:text-zinc-600 focus:outline-none focus:border-orange-500"
+              className="w-full bg-white dark:bg-slate-950 border border-zinc-300 dark:border-white/[0.1] rounded-lg px-3 py-2 text-xs text-zinc-900 dark:text-zinc-200 placeholder:text-zinc-400 dark:placeholder:text-zinc-500 focus:outline-none focus:border-orange-500"
             />
           </div>
 
@@ -169,7 +169,7 @@ export const CreateSprintModal: React.FC<CreateSprintModalProps> = ({
               value={goal}
               onChange={(e) => setGoal(e.target.value)}
               placeholder="¿Qué valor entregará este sprint al cliente o usuario final?"
-              className="w-full bg-surface-subtle border border-zinc-900/[0.16] dark:border-white/[0.1] rounded-lg px-3 py-2 text-xs text-zinc-900 dark:text-zinc-200 placeholder:text-zinc-600 focus:outline-none focus:border-orange-500 resize-none"
+              className="w-full bg-white dark:bg-slate-950 border border-zinc-300 dark:border-white/[0.1] rounded-lg px-3 py-2 text-xs text-zinc-900 dark:text-zinc-200 placeholder:text-zinc-400 dark:placeholder:text-zinc-500 focus:outline-none focus:border-orange-500 resize-none"
             />
           </div>
 
@@ -186,7 +186,7 @@ export const CreateSprintModal: React.FC<CreateSprintModalProps> = ({
                   setStartDate(e.target.value);
                   setDateError('');
                 }}
-                className="w-full bg-surface-subtle border border-zinc-900/[0.16] dark:border-white/[0.1] rounded-lg px-3 py-2 text-xs text-zinc-900 dark:text-zinc-200 focus:outline-none focus:border-orange-500"
+                className="w-full bg-white dark:bg-slate-950 border border-zinc-300 dark:border-white/[0.1] rounded-lg px-3 py-2 text-xs text-zinc-900 dark:text-zinc-200 focus:outline-none focus:border-orange-500"
               />
             </div>
 
@@ -202,7 +202,7 @@ export const CreateSprintModal: React.FC<CreateSprintModalProps> = ({
                   setEndDate(e.target.value);
                   setDateError('');
                 }}
-                className="w-full bg-surface-subtle border border-zinc-900/[0.16] dark:border-white/[0.1] rounded-lg px-3 py-2 text-xs text-zinc-900 dark:text-zinc-200 focus:outline-none focus:border-orange-500"
+                className="w-full bg-white dark:bg-slate-950 border border-zinc-300 dark:border-white/[0.1] rounded-lg px-3 py-2 text-xs text-zinc-900 dark:text-zinc-200 focus:outline-none focus:border-orange-500"
               />
             </div>
           </div>
@@ -213,7 +213,7 @@ export const CreateSprintModal: React.FC<CreateSprintModalProps> = ({
             </p>
           )}
 
-          <div className="pt-4 border-t border-zinc-900/[0.13] dark:border-white/[0.08] flex items-center justify-end gap-3">
+          <div className="pt-4 border-t border-zinc-200 dark:border-white/[0.08] flex items-center justify-end gap-3">
             <Button variant="ghost" type="button" onClick={onClose} disabled={isLoading}>
               Cancelar
             </Button>

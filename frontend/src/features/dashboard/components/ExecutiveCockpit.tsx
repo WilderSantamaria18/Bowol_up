@@ -6,6 +6,7 @@ import { trendService } from '@/features/trends/services/trendService';
 import { BentoDashboardHeader } from './BentoDashboardHeader';
 import { ExecutiveDailyBriefing } from './ExecutiveDailyBriefing';
 import { StrategicTraceabilityFlow } from './StrategicTraceabilityFlow';
+import { BowolOperationalHealthCard } from './BowolOperationalHealthCard';
 import { BentoMetricsRow } from './BentoMetricsRow';
 import { BentoRadarTable } from './BentoRadarTable';
 import { BentoSwotSynthesis } from './BentoSwotSynthesis';
@@ -77,8 +78,11 @@ export const ExecutiveCockpit: React.FC = () => {
         organizationName={summary.organization.name}
       />
 
-      {/* 2. Ciclo de Trazabilidad Estratégica (Señal -> Tendencia -> Evidencia -> Oportunidad -> Hipótesis -> Experimento -> Tarea) */}
+      {/* 2. Ciclo de Trazabilidad Estratégica (6 Fases BOWOL Plans) */}
       <StrategicTraceabilityFlow />
+
+      {/* 2.1 Salud Operativa BOWOL Plans (WIP, Colchón 20%, Bloqueos, Puerta DONE) */}
+      <BowolOperationalHealthCard />
 
       {/* 3. Métricas Bento Superiores (Grid 12 col) */}
       <BentoMetricsRow summary={summary} />

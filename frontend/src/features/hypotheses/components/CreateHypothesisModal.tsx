@@ -96,11 +96,11 @@ export const CreateHypothesisModal: React.FC<CreateHypothesisModalProps> = ({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/75 backdrop-blur-sm animate-fade-in">
-      <div className="relative w-full max-w-2xl rounded-2xl bg-white dark:bg-[#0F0F12] border border-zinc-900/[0.16] dark:border-white/[0.1] p-6 shadow-2xl max-h-[90vh] flex flex-col">
+      <div className="relative w-full max-w-2xl rounded-2xl bg-white dark:bg-[#0F0F12] border border-zinc-200 dark:border-white/[0.1] p-6 shadow-2xl max-h-[90vh] flex flex-col">
         {/* Header */}
-        <div className="flex items-center justify-between pb-4 border-b border-zinc-900/[0.13] dark:border-white/[0.08]">
+        <div className="flex items-center justify-between pb-4 border-b border-zinc-200 dark:border-white/[0.08]">
           <div className="flex items-center gap-2.5">
-            <div className="w-8 h-8 rounded-lg bg-cyan-500/10 border border-cyan-500/30 flex items-center justify-center text-cyan-400">
+            <div className="w-8 h-8 rounded-lg bg-cyan-50 dark:bg-cyan-500/10 border border-cyan-200 dark:border-cyan-500/30 flex items-center justify-center text-cyan-600 dark:text-cyan-400">
               <FlaskConical className="w-4 h-4" strokeWidth={1.5} />
             </div>
             <div>
@@ -110,7 +110,7 @@ export const CreateHypothesisModal: React.FC<CreateHypothesisModalProps> = ({
           </div>
           <button
             onClick={onClose}
-            className="text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white transition-colors p-1"
+            className="text-zinc-400 hover:text-zinc-700 dark:text-zinc-400 dark:hover:text-white transition-colors p-1"
             aria-label="Cerrar modal"
           >
             <X className="w-5 h-5" strokeWidth={1.5} />
@@ -126,12 +126,12 @@ export const CreateHypothesisModal: React.FC<CreateHypothesisModalProps> = ({
             <select
               value={opportunityId}
               onChange={(e) => setOpportunityId(e.target.value)}
-              className="w-full bg-surface-subtle border border-zinc-900/[0.16] dark:border-white/[0.1] rounded-lg px-3 py-2 text-xs text-zinc-900 dark:text-zinc-200 focus:outline-none focus:border-cyan-500"
+              className="w-full bg-white dark:bg-black/40 border border-zinc-300 dark:border-white/[0.1] rounded-lg px-3 py-2 text-xs text-zinc-900 dark:text-zinc-200 focus:outline-none focus:border-cyan-500"
               required
             >
-              <option value="" disabled>Selecciona una oportunidad</option>
+              <option value="" disabled className="bg-white dark:bg-zinc-900 text-zinc-900 dark:text-zinc-200">Selecciona una oportunidad</option>
               {opportunities.map((opp) => (
-                <option key={opp.id} value={opp.id}>
+                <option key={opp.id} value={opp.id} className="bg-white dark:bg-zinc-900 text-zinc-900 dark:text-zinc-200">
                   {opp.title} ({opp.status})
                 </option>
               ))}
@@ -139,13 +139,13 @@ export const CreateHypothesisModal: React.FC<CreateHypothesisModalProps> = ({
           </div>
 
           {/* Mode Selector Tabs */}
-          <div className="flex items-center gap-2 border-b border-zinc-900/[0.1] dark:border-white/[0.06] pb-2">
+          <div className="flex items-center gap-2 border-b border-zinc-200 dark:border-white/[0.06] pb-2">
             <button
               type="button"
               onClick={() => setMode('structured')}
               className={`text-xs px-3 py-1.5 rounded-lg font-medium transition-colors flex items-center gap-1.5 ${
                 mode === 'structured'
-                  ? 'bg-cyan-500/20 text-cyan-300 border border-cyan-500/30'
+                  ? 'bg-cyan-50 dark:bg-cyan-500/20 text-cyan-700 dark:text-cyan-300 border border-cyan-200 dark:border-cyan-500/30'
                   : 'text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-200'
               }`}
             >
@@ -157,7 +157,7 @@ export const CreateHypothesisModal: React.FC<CreateHypothesisModalProps> = ({
               onClick={() => setMode('free')}
               className={`text-xs px-3 py-1.5 rounded-lg font-medium transition-colors ${
                 mode === 'free'
-                  ? 'bg-zinc-900/[0.08] dark:bg-white/[0.08] text-zinc-900 dark:text-white border border-zinc-900/[0.16] dark:border-white/[0.14]'
+                  ? 'bg-zinc-100 dark:bg-white/[0.08] text-zinc-900 dark:text-white border border-zinc-300 dark:border-white/[0.14]'
                   : 'text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-200'
               }`}
             >
@@ -167,7 +167,7 @@ export const CreateHypothesisModal: React.FC<CreateHypothesisModalProps> = ({
 
           {/* Structured Builder */}
           {mode === 'structured' && (
-            <div className="space-y-3 p-3.5 rounded-xl bg-zinc-900/[0.02] dark:bg-white/[0.02] border border-zinc-900/[0.1] dark:border-white/[0.06]">
+            <div className="space-y-3 p-3.5 rounded-xl bg-zinc-50 dark:bg-white/[0.02] border border-zinc-200 dark:border-white/[0.06]">
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
                 <div>
                   <label className="text-zinc-700 dark:text-zinc-300 font-medium block mb-1">1. Segmento de Clientes</label>
@@ -176,7 +176,7 @@ export const CreateHypothesisModal: React.FC<CreateHypothesisModalProps> = ({
                     value={targetSegment}
                     onChange={(e) => setTargetSegment(e.target.value)}
                     placeholder="Ej. Clínicas dentales medianas..."
-                    className="w-full bg-black/40 border border-zinc-900/[0.13] dark:border-white/[0.08] rounded-lg px-2.5 py-1.5 text-xs text-zinc-900 dark:text-zinc-200 focus:outline-none focus:border-cyan-500"
+                    className="w-full bg-white dark:bg-black/40 border border-zinc-300 dark:border-white/[0.08] rounded-lg px-2.5 py-1.5 text-xs text-zinc-900 dark:text-zinc-200 placeholder:text-zinc-400 dark:placeholder:text-zinc-500 focus:outline-none focus:border-cyan-500"
                   />
                 </div>
                 <div>
@@ -186,7 +186,7 @@ export const CreateHypothesisModal: React.FC<CreateHypothesisModalProps> = ({
                     value={problemStatement}
                     onChange={(e) => setProblemStatement(e.target.value)}
                     placeholder="Ej. 40% de tiempo en agendamiento manual..."
-                    className="w-full bg-black/40 border border-zinc-900/[0.13] dark:border-white/[0.08] rounded-lg px-2.5 py-1.5 text-xs text-zinc-900 dark:text-zinc-200 focus:outline-none focus:border-cyan-500"
+                    className="w-full bg-white dark:bg-black/40 border border-zinc-300 dark:border-white/[0.08] rounded-lg px-2.5 py-1.5 text-xs text-zinc-900 dark:text-zinc-200 placeholder:text-zinc-400 dark:placeholder:text-zinc-500 focus:outline-none focus:border-cyan-500"
                   />
                 </div>
               </div>
@@ -199,7 +199,7 @@ export const CreateHypothesisModal: React.FC<CreateHypothesisModalProps> = ({
                     value={solutionProposal}
                     onChange={(e) => setSolutionProposal(e.target.value)}
                     placeholder="Ej. Asistente IA de WhatsApp integrado..."
-                    className="w-full bg-black/40 border border-zinc-900/[0.13] dark:border-white/[0.08] rounded-lg px-2.5 py-1.5 text-xs text-zinc-900 dark:text-zinc-200 focus:outline-none focus:border-cyan-500"
+                    className="w-full bg-white dark:bg-black/40 border border-zinc-300 dark:border-white/[0.08] rounded-lg px-2.5 py-1.5 text-xs text-zinc-900 dark:text-zinc-200 placeholder:text-zinc-400 dark:placeholder:text-zinc-500 focus:outline-none focus:border-cyan-500"
                   />
                 </div>
                 <div>
@@ -209,7 +209,7 @@ export const CreateHypothesisModal: React.FC<CreateHypothesisModalProps> = ({
                     value={expectedOutcome}
                     onChange={(e) => setExpectedOutcome(e.target.value)}
                     placeholder="Ej. Aumento de 30% en citas confirmadas..."
-                    className="w-full bg-black/40 border border-zinc-900/[0.13] dark:border-white/[0.08] rounded-lg px-2.5 py-1.5 text-xs text-zinc-900 dark:text-zinc-200 focus:outline-none focus:border-cyan-500"
+                    className="w-full bg-white dark:bg-black/40 border border-zinc-300 dark:border-white/[0.08] rounded-lg px-2.5 py-1.5 text-xs text-zinc-900 dark:text-zinc-200 placeholder:text-zinc-400 dark:placeholder:text-zinc-500 focus:outline-none focus:border-cyan-500"
                   />
                 </div>
               </div>
@@ -221,7 +221,7 @@ export const CreateHypothesisModal: React.FC<CreateHypothesisModalProps> = ({
             <label className="block text-xs font-medium text-zinc-700 dark:text-zinc-300 mb-1.5 flex items-center justify-between">
               <span>Formulación de la Hipótesis *</span>
               {mode === 'structured' && (
-                <span className="text-[10px] text-cyan-400">Generado automáticamente</span>
+                <span className="text-[10px] font-semibold text-cyan-600 dark:text-cyan-400">Generado automáticamente</span>
               )}
             </label>
             <textarea
@@ -229,7 +229,7 @@ export const CreateHypothesisModal: React.FC<CreateHypothesisModalProps> = ({
               onChange={(e) => setStatement(e.target.value)}
               placeholder='Ej: "Creemos que ofreciendo un piloto asistido por IA lograremos un 25% de conversión a pago. Sabremos que es cierto cuando 10 clientes completen la prueba."'
               rows={3}
-              className="w-full bg-surface-subtle border border-zinc-900/[0.16] dark:border-white/[0.1] rounded-lg p-3 text-xs text-zinc-900 dark:text-zinc-200 placeholder:text-zinc-600 focus:outline-none focus:border-cyan-500 resize-none"
+              className="w-full bg-white dark:bg-black/40 border border-zinc-300 dark:border-white/[0.1] rounded-lg p-3 text-xs text-zinc-900 dark:text-zinc-200 placeholder:text-zinc-400 dark:placeholder:text-zinc-500 focus:outline-none focus:border-cyan-500 resize-none"
               required
             />
           </div>
@@ -238,7 +238,7 @@ export const CreateHypothesisModal: React.FC<CreateHypothesisModalProps> = ({
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <div>
               <label className="block text-xs font-medium text-zinc-700 dark:text-zinc-300 mb-1.5 flex items-center gap-1">
-                <FlaskConical className="w-3 h-3 text-cyan-400" strokeWidth={1.5} />
+                <FlaskConical className="w-3 h-3 text-cyan-600 dark:text-cyan-400" strokeWidth={1.5} />
                 Método de Validación
               </label>
               <input
@@ -246,13 +246,13 @@ export const CreateHypothesisModal: React.FC<CreateHypothesisModalProps> = ({
                 value={validationMethod}
                 onChange={(e) => setValidationMethod(e.target.value)}
                 placeholder="Ej: Entrevistas con clientes, Test A/B, Smoke test"
-                className="w-full bg-surface-subtle border border-zinc-900/[0.16] dark:border-white/[0.1] rounded-lg px-3 py-2 text-xs text-zinc-900 dark:text-zinc-200 placeholder:text-zinc-600 focus:outline-none focus:border-cyan-500"
+                className="w-full bg-white dark:bg-black/40 border border-zinc-300 dark:border-white/[0.1] rounded-lg px-3 py-2 text-xs text-zinc-900 dark:text-zinc-200 placeholder:text-zinc-400 dark:placeholder:text-zinc-500 focus:outline-none focus:border-cyan-500"
               />
             </div>
 
             <div>
               <label className="block text-xs font-medium text-zinc-700 dark:text-zinc-300 mb-1.5 flex items-center gap-1">
-                <Gauge className="w-3 h-3 text-amber-400" strokeWidth={1.5} />
+                <Gauge className="w-3 h-3 text-amber-600 dark:text-amber-400" strokeWidth={1.5} />
                 Métrica de Éxito
               </label>
               <input
@@ -260,7 +260,7 @@ export const CreateHypothesisModal: React.FC<CreateHypothesisModalProps> = ({
                 value={successMetric}
                 onChange={(e) => setSuccessMetric(e.target.value)}
                 placeholder="Ej: Tasa de conversión a suscripción"
-                className="w-full bg-surface-subtle border border-zinc-900/[0.16] dark:border-white/[0.1] rounded-lg px-3 py-2 text-xs text-zinc-900 dark:text-zinc-200 placeholder:text-zinc-600 focus:outline-none focus:border-cyan-500"
+                className="w-full bg-white dark:bg-black/40 border border-zinc-300 dark:border-white/[0.1] rounded-lg px-3 py-2 text-xs text-zinc-900 dark:text-zinc-200 placeholder:text-zinc-400 dark:placeholder:text-zinc-500 focus:outline-none focus:border-cyan-500"
               />
             </div>
           </div>
@@ -268,7 +268,7 @@ export const CreateHypothesisModal: React.FC<CreateHypothesisModalProps> = ({
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <div>
               <label className="block text-xs font-medium text-zinc-700 dark:text-zinc-300 mb-1.5 flex items-center gap-1">
-                <Target className="w-3 h-3 text-emerald-400" strokeWidth={1.5} />
+                <Target className="w-3 h-3 text-emerald-600 dark:text-emerald-400" strokeWidth={1.5} />
                 Valor Meta / Criterio
               </label>
               <input
@@ -276,7 +276,7 @@ export const CreateHypothesisModal: React.FC<CreateHypothesisModalProps> = ({
                 value={targetValue}
                 onChange={(e) => setTargetValue(e.target.value)}
                 placeholder="Ej: >= 25% o 8 de cada 10"
-                className="w-full bg-surface-subtle border border-zinc-900/[0.16] dark:border-white/[0.1] rounded-lg px-3 py-2 text-xs text-zinc-900 dark:text-zinc-200 placeholder:text-zinc-600 focus:outline-none focus:border-cyan-500"
+                className="w-full bg-white dark:bg-black/40 border border-zinc-300 dark:border-white/[0.1] rounded-lg px-3 py-2 text-xs text-zinc-900 dark:text-zinc-200 placeholder:text-zinc-400 dark:placeholder:text-zinc-500 focus:outline-none focus:border-cyan-500"
               />
             </div>
 
@@ -287,16 +287,16 @@ export const CreateHypothesisModal: React.FC<CreateHypothesisModalProps> = ({
               <select
                 value={status}
                 onChange={(e) => setStatus(e.target.value as HypothesisStatus)}
-                className="w-full bg-surface-subtle border border-zinc-900/[0.16] dark:border-white/[0.1] rounded-lg px-3 py-2 text-xs text-zinc-900 dark:text-zinc-200 focus:outline-none focus:border-cyan-500"
+                className="w-full bg-white dark:bg-black/40 border border-zinc-300 dark:border-white/[0.1] rounded-lg px-3 py-2 text-xs text-zinc-900 dark:text-zinc-200 focus:outline-none focus:border-cyan-500"
               >
-                <option value="DRAFT">Borrador (DRAFT)</option>
-                <option value="READY">Lista para prueba (READY)</option>
+                <option value="DRAFT" className="bg-white dark:bg-zinc-900 text-zinc-900 dark:text-zinc-200">Borrador (DRAFT)</option>
+                <option value="READY" className="bg-white dark:bg-zinc-900 text-zinc-900 dark:text-zinc-200">Lista para prueba (READY)</option>
               </select>
             </div>
           </div>
 
           {/* Footer Actions */}
-          <div className="pt-4 border-t border-zinc-900/[0.13] dark:border-white/[0.08] flex items-center justify-end gap-3">
+          <div className="pt-4 border-t border-zinc-200 dark:border-white/[0.08] flex items-center justify-end gap-3">
             <Button variant="ghost" type="button" onClick={onClose} disabled={isLoading}>
               Cancelar
             </Button>
@@ -304,7 +304,7 @@ export const CreateHypothesisModal: React.FC<CreateHypothesisModalProps> = ({
               variant="primary"
               type="submit"
               disabled={isLoading || !statement.trim() || !opportunityId}
-              className="bg-cyan-600 hover:bg-cyan-500 text-white"
+              className="bg-cyan-600 hover:bg-cyan-500 text-white font-medium"
             >
               {isLoading ? 'Creando...' : 'Crear Hipótesis'}
             </Button>

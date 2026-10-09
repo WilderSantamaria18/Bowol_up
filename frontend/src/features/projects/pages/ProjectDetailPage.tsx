@@ -22,7 +22,10 @@ import { opportunityService } from '@/features/opportunities/services/opportunit
 import { ProjectMemberRole } from '../types';
 import { CreateProjectModal } from '../components/CreateProjectModal';
 import { AIDecomposeProjectModal } from '../components/AIDecomposeProjectModal';
+import { SmartProjectCharter } from '../components/SmartProjectCharter';
+import { VerifiableTaskBreakdownSection } from '../components/VerifiableTaskBreakdownSection';
 import { CreateSprintModal } from '@/features/sprints/components/CreateSprintModal';
+import { CreateTaskModal } from '@/features/tasks/components/CreateTaskModal';
 
 type DetailTab = 'OVERVIEW' | 'SPRINTS' | 'TASKS' | 'MEMBERS';
 
@@ -35,6 +38,7 @@ export const ProjectDetailPage: React.FC = () => {
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isAIDecomposeOpen, setIsAIDecomposeOpen] = useState(false);
   const [isCreateSprintOpen, setIsCreateSprintOpen] = useState(false);
+  const [isCreateTaskOpen, setIsCreateTaskOpen] = useState(false);
   const [newMemberEmail, setNewMemberEmail] = useState('');
   const [newMemberRole, setNewMemberRole] = useState<ProjectMemberRole>('MEMBER');
 
@@ -107,6 +111,14 @@ export const ProjectDetailPage: React.FC = () => {
     mutationFn: (userId: string) => projectService.removeProjectMember(projectId!, userId),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['project-members', projectId] });
+    },
+  });
+
+  const createTaskMutation = useMutation({
+    mutationFn: (payload: any) => taskService.createTask(payload),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['project-tasks', projectId] });
+      setIsCreateTaskOpen(false);
     },
   });
 
@@ -318,94 +330,100 @@ export const ProjectDetailPage: React.FC = () => {
 
       {/* Tab Panels */}
       {activeTab === 'OVERVIEW' && (
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 animate-in fade-in duration-200">
-          {/* Quick stats */}
-          <div className="p-6 rounded-2xl bg-white/70 dark:bg-zinc-900/60 border border-zinc-200/80 dark:border-white/[0.08] backdrop-blur-xl space-y-4">
-            <h3 className="text-xs font-semibold text-zinc-500 uppercase tracking-wider">
-              Estado de Tareas
-            </h3>
-            <div className="space-y-3">
-              <div className="flex items-center justify-between text-xs">
-                <span className="text-zinc-500">Backlog / Pendientes</span>
-                <span className="font-mono font-bold text-zinc-900 dark:text-zinc-100">{backlogTasks}</span>
-              </div>
-              <div className="flex items-center justify-between text-xs">
-                <span className="text-blue-500">En Curso (In Progress)</span>
-                <span className="font-mono font-bold text-blue-600 dark:text-blue-400">{inProgressTasks}</span>
-              </div>
-              <div className="flex items-center justify-between text-xs">
-                <span className="text-emerald-500">Finalizadas (Done)</span>
-                <span className="font-mono font-bold text-emerald-600 dark:text-emerald-400">{doneTasks}</span>
-              </div>
-              <div className="flex items-center justify-between text-xs pt-3 border-t border-zinc-100 dark:border-white/5 font-semibold">
-                <span>Total Tareas</span>
-                <span className="font-mono text-zinc-900 dark:text-zinc-100">{totalTasks}</span>
-              </div>
-            </div>
-          </div>
+        <div className="space-y-6 animate-in fade-in duration-200">
+          {/* Ficha SMART de Proyecto (Fase 2.1 BOWOL Plans) */}
+          <SmartProjectCharter project={project} />
 
-          {/* Sprints status */}
-          <div className="p-6 rounded-2xl bg-white/70 dark:bg-zinc-900/60 border border-zinc-200/80 dark:border-white/[0.08] backdrop-blur-xl space-y-4">
-            <div className="flex items-center justify-between">
+          {/* Quick stats and context */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {/* Quick stats */}
+            <div className="p-6 rounded-2xl bg-white/70 dark:bg-zinc-900/60 border border-zinc-200/80 dark:border-white/[0.08] backdrop-blur-xl space-y-4">
               <h3 className="text-xs font-semibold text-zinc-500 uppercase tracking-wider">
-                Ciclos de Sprint
+                Estado de Tareas
               </h3>
-              <Button 
-                variant="outline" 
-                size="sm" 
-                onClick={() => setIsCreateSprintOpen(true)}
-                className="text-[11px] py-1 px-2"
-              >
-                + Sprint
-              </Button>
-            </div>
-            {sprints.length === 0 ? (
-              <p className="text-xs text-zinc-600 dark:text-zinc-400 py-4 text-center">
-                Aún no hay sprints configurados para esta iniciativa.
-              </p>
-            ) : (
-              <div className="space-y-2.5 max-h-48 overflow-y-auto">
-                {sprints.map((s) => (
-                  <div key={s.id} className="p-2.5 rounded-xl bg-zinc-50 dark:bg-white/[0.03] border border-zinc-200/60 dark:border-white/5 flex items-center justify-between text-xs">
-                    <div>
-                      <p className="font-medium text-zinc-900 dark:text-zinc-100">{s.name}</p>
-                      <p className="text-[10px] text-zinc-600 dark:text-zinc-400 font-mono">{s.startDate} &rarr; {s.endDate}</p>
-                    </div>
-                    <span className="px-2 py-0.5 rounded-full text-[10px] font-mono font-semibold bg-orange-500/10 text-orange-600 dark:text-orange-400">
-                      {s.status}
-                    </span>
-                  </div>
-                ))}
-              </div>
-            )}
-          </div>
-
-          {/* Traceability origin detail */}
-          <div className="p-6 rounded-2xl bg-white/70 dark:bg-zinc-900/60 border border-zinc-200/80 dark:border-white/[0.08] backdrop-blur-xl space-y-4">
-            <h3 className="text-xs font-semibold text-zinc-500 uppercase tracking-wider">
-              Fundamento Estratégico
-            </h3>
-            {originOpportunity ? (
-              <div className="space-y-2 text-xs">
-                <div className="p-3 rounded-xl bg-amber-500/5 border border-amber-500/15 space-y-1">
-                  <span className="text-[10px] font-mono text-amber-500 font-bold uppercase">
-                    Oportunidad Validada
-                  </span>
-                  <p className="font-medium text-zinc-900 dark:text-zinc-100">{originOpportunity.title}</p>
-                  <p className="text-zinc-500 text-[11px] line-clamp-2">{originOpportunity.description}</p>
+              <div className="space-y-3">
+                <div className="flex items-center justify-between text-xs">
+                  <span className="text-zinc-500">Backlog / Pendientes</span>
+                  <span className="font-mono font-bold text-zinc-900 dark:text-zinc-100">{backlogTasks}</span>
                 </div>
-                {originOpportunity.priorityScore && (
-                  <div className="flex items-center justify-between text-xs p-2 rounded-lg bg-zinc-50 dark:bg-white/[0.02]">
-                    <span className="text-zinc-500">Puntaje RICE:</span>
-                    <span className="font-mono font-bold text-amber-500">{originOpportunity.priorityScore} pts</span>
-                  </div>
-                )}
+                <div className="flex items-center justify-between text-xs">
+                  <span className="text-blue-500">En Curso (In Progress)</span>
+                  <span className="font-mono font-bold text-blue-600 dark:text-blue-400">{inProgressTasks}</span>
+                </div>
+                <div className="flex items-center justify-between text-xs">
+                  <span className="text-emerald-500">Finalizadas (Done)</span>
+                  <span className="font-mono font-bold text-emerald-600 dark:text-emerald-400">{doneTasks}</span>
+                </div>
+                <div className="flex items-center justify-between text-xs pt-3 border-t border-zinc-100 dark:border-white/5 font-semibold">
+                  <span>Total Tareas</span>
+                  <span className="font-mono text-zinc-900 dark:text-zinc-100">{totalTasks}</span>
+                </div>
               </div>
-            ) : (
-              <p className="text-xs text-zinc-600 dark:text-zinc-400 py-4 text-center">
-                Iniciativa creada directamente sin enlace a oportunidad previa.
-              </p>
-            )}
+            </div>
+
+            {/* Sprints status */}
+            <div className="p-6 rounded-2xl bg-white/70 dark:bg-zinc-900/60 border border-zinc-200/80 dark:border-white/[0.08] backdrop-blur-xl space-y-4">
+              <div className="flex items-center justify-between">
+                <h3 className="text-xs font-semibold text-zinc-500 uppercase tracking-wider">
+                  Ciclos de Sprint
+                </h3>
+                <Button 
+                  variant="outline" 
+                  size="sm" 
+                  onClick={() => setIsCreateSprintOpen(true)}
+                  className="text-[11px] py-1 px-2"
+                >
+                  + Sprint
+                </Button>
+              </div>
+              {sprints.length === 0 ? (
+                <p className="text-xs text-zinc-600 dark:text-zinc-400 py-4 text-center">
+                  Aún no hay sprints configurados para esta iniciativa.
+                </p>
+              ) : (
+                <div className="space-y-2.5 max-h-48 overflow-y-auto">
+                  {sprints.map((s) => (
+                    <div key={s.id} className="p-2.5 rounded-xl bg-zinc-50 dark:bg-white/[0.03] border border-zinc-200/60 dark:border-white/5 flex items-center justify-between text-xs">
+                      <div>
+                        <p className="font-medium text-zinc-900 dark:text-zinc-100">{s.name}</p>
+                        <p className="text-[10px] text-zinc-600 dark:text-zinc-400 font-mono">{s.startDate} &rarr; {s.endDate}</p>
+                      </div>
+                      <span className="px-2 py-0.5 rounded-full text-[10px] font-mono font-semibold bg-orange-500/10 text-orange-600 dark:text-orange-400">
+                        {s.status}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+
+            {/* Traceability origin detail */}
+            <div className="p-6 rounded-2xl bg-white/70 dark:bg-zinc-900/60 border border-zinc-200/80 dark:border-white/[0.08] backdrop-blur-xl space-y-4">
+              <h3 className="text-xs font-semibold text-zinc-500 uppercase tracking-wider">
+                Fundamento Estratégico
+              </h3>
+              {originOpportunity ? (
+                <div className="space-y-2 text-xs">
+                  <div className="p-3 rounded-xl bg-amber-500/5 border border-amber-500/15 space-y-1">
+                    <span className="text-[10px] font-mono text-amber-500 font-bold uppercase">
+                      Oportunidad Validada
+                    </span>
+                    <p className="font-medium text-zinc-900 dark:text-zinc-100">{originOpportunity.title}</p>
+                    <p className="text-zinc-500 text-[11px] line-clamp-2">{originOpportunity.description}</p>
+                  </div>
+                  {originOpportunity.priorityScore && (
+                    <div className="flex items-center justify-between text-xs p-2 rounded-lg bg-zinc-50 dark:bg-white/[0.02]">
+                      <span className="text-zinc-500">Puntaje RICE:</span>
+                      <span className="font-mono font-bold text-amber-500">{originOpportunity.priorityScore} pts</span>
+                    </div>
+                  )}
+                </div>
+              ) : (
+                <p className="text-xs text-zinc-600 dark:text-zinc-400 py-4 text-center">
+                  Iniciativa creada directamente sin enlace a oportunidad previa.
+                </p>
+              )}
+            </div>
           </div>
         </div>
       )}
@@ -478,66 +496,16 @@ export const ProjectDetailPage: React.FC = () => {
         </div>
       )}
 
-      {/* Tasks Tab */}
+      {/* Tasks Tab (Fase 3 BOWOL Plans: Desglose de Actividades Verificables) */}
       {activeTab === 'TASKS' && (
-        <div className="space-y-4 animate-in fade-in duration-200">
-          <div className="flex items-center justify-between">
-            <h3 className="text-sm font-semibold text-zinc-900 dark:text-zinc-100">
-              Tareas de la Iniciativa ({tasks.length})
-            </h3>
-            <Button
-              type="button"
-              variant="primary"
-              size="sm"
-              onClick={() => navigate(`/tasks?projectId=${project.id}`)}
-              className="gap-2"
-            >
-              <CheckSquare className="w-4 h-4" strokeWidth={1.5} />
-              <span>Abrir Tablero Kanban Completo</span>
-            </Button>
-          </div>
-
-          {tasks.length === 0 ? (
-            <div className="py-16 text-center rounded-2xl bg-white/40 dark:bg-zinc-900/30 border border-dashed border-zinc-300 dark:border-white/10 space-y-3">
-              <CheckSquare className="w-8 h-8 text-zinc-600 dark:text-zinc-400 mx-auto" strokeWidth={1.5} />
-              <p className="text-xs text-zinc-500">Aún no se han generado tareas para este proyecto.</p>
-              <Button
-                variant="primary"
-                size="sm"
-                onClick={() => setIsAIDecomposeOpen(true)}
-                className="gap-2"
-              >
-                <Sparkles className="w-4 h-4" />
-                <span>Descomponer con IA</span>
-              </Button>
-            </div>
-          ) : (
-            <div className="space-y-2 max-h-96 overflow-y-auto pr-1">
-              {tasks.map((task) => (
-                <div
-                  key={task.id}
-                  className="p-3.5 rounded-xl bg-white/80 dark:bg-zinc-900/70 border border-zinc-200/70 dark:border-white/5 flex items-center justify-between gap-4 text-xs"
-                >
-                  <div className="flex-1 min-w-0">
-                    <p className="font-medium text-zinc-900 dark:text-zinc-100 truncate">{task.title}</p>
-                    {task.description && (
-                      <p className="text-[11px] text-zinc-500 truncate mt-0.5">{task.description}</p>
-                    )}
-                  </div>
-                  <div className="flex items-center gap-3 shrink-0">
-                    <span className="px-2 py-0.5 rounded-md font-mono text-[10px] bg-zinc-100 dark:bg-white/5 text-zinc-600 dark:text-zinc-400">
-                      {task.status}
-                    </span>
-                    {task.estimateHours && (
-                      <span className="font-mono text-zinc-600 dark:text-zinc-400 text-[11px]">
-                        {task.estimateHours}h
-                      </span>
-                    )}
-                  </div>
-                </div>
-              ))}
-            </div>
-          )}
+        <div className="animate-in fade-in duration-200">
+          <VerifiableTaskBreakdownSection
+            project={project}
+            tasks={tasks}
+            onOpenCreateTask={() => setIsCreateTaskOpen(true)}
+            onOpenAIDecompose={() => setIsAIDecomposeOpen(true)}
+            onNavigateToKanban={() => navigate(`/tasks?projectId=${project.id}`)}
+          />
         </div>
       )}
 
@@ -649,6 +617,15 @@ export const ProjectDetailPage: React.FC = () => {
         projectId={projectId!}
         onSubmit={(payload) => createSprintMutation.mutate(payload)}
         isLoading={createSprintMutation.isPending}
+      />
+
+      <CreateTaskModal
+        isOpen={isCreateTaskOpen}
+        onClose={() => setIsCreateTaskOpen(false)}
+        projectId={projectId!}
+        onSubmit={async (payload) => {
+          await createTaskMutation.mutateAsync(payload);
+        }}
       />
     </div>
   );

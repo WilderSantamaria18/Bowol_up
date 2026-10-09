@@ -73,10 +73,10 @@ export const CreateExperimentModal: React.FC<CreateExperimentModalProps> = ({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/75 backdrop-blur-sm animate-fade-in">
-      <div className="relative w-full max-w-xl rounded-2xl bg-white dark:bg-[#0F0F12] border border-zinc-900/[0.16] dark:border-white/[0.1] p-6 shadow-2xl max-h-[90vh] flex flex-col">
-        <div className="flex items-center justify-between pb-4 border-b border-zinc-900/[0.13] dark:border-white/[0.08]">
+      <div className="relative w-full max-w-xl rounded-2xl bg-white dark:bg-[#0F0F12] border border-zinc-200 dark:border-white/[0.1] p-6 shadow-2xl max-h-[90vh] flex flex-col">
+        <div className="flex items-center justify-between pb-4 border-b border-zinc-200 dark:border-white/[0.08]">
           <div className="flex items-center gap-2.5">
-            <div className="w-8 h-8 rounded-lg bg-cyan-500/10 border border-cyan-500/30 flex items-center justify-center text-cyan-400">
+            <div className="w-8 h-8 rounded-lg bg-cyan-50 dark:bg-cyan-500/10 border border-cyan-200 dark:border-cyan-500/30 flex items-center justify-center text-cyan-600 dark:text-cyan-400">
               <Beaker className="w-4 h-4" strokeWidth={1.5} />
             </div>
             <div>
@@ -86,7 +86,7 @@ export const CreateExperimentModal: React.FC<CreateExperimentModalProps> = ({
           </div>
           <button
             onClick={onClose}
-            className="text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white transition-colors p-1"
+            className="text-zinc-400 hover:text-zinc-700 dark:text-zinc-400 dark:hover:text-white transition-colors p-1"
             aria-label="Cerrar modal"
           >
             <X className="w-5 h-5" strokeWidth={1.5} />
@@ -101,12 +101,12 @@ export const CreateExperimentModal: React.FC<CreateExperimentModalProps> = ({
             <select
               value={hypothesisId}
               onChange={(e) => setHypothesisId(e.target.value)}
-              className="w-full bg-surface-subtle border border-zinc-900/[0.16] dark:border-white/[0.1] rounded-lg px-3 py-2 text-xs text-zinc-900 dark:text-zinc-200 focus:outline-none focus:border-cyan-500"
+              className="w-full bg-white dark:bg-black/40 border border-zinc-300 dark:border-white/[0.1] rounded-lg px-3 py-2 text-xs text-zinc-900 dark:text-zinc-200 focus:outline-none focus:border-cyan-500"
               required
             >
-              <option value="" disabled>Selecciona una hipótesis</option>
+              <option value="" disabled className="bg-white dark:bg-zinc-900 text-zinc-900 dark:text-zinc-200">Selecciona una hipótesis</option>
               {hypotheses.map((h) => (
-                <option key={h.id} value={h.id}>
+                <option key={h.id} value={h.id} className="bg-white dark:bg-zinc-900 text-zinc-900 dark:text-zinc-200">
                   {h.statement.substring(0, 80)}... ({h.status})
                 </option>
               ))}
@@ -122,7 +122,7 @@ export const CreateExperimentModal: React.FC<CreateExperimentModalProps> = ({
               value={name}
               onChange={(e) => setName(e.target.value)}
               placeholder="Ej: Prueba A/B Landing Page vs Wizard interactivo"
-              className="w-full bg-surface-subtle border border-zinc-900/[0.16] dark:border-white/[0.1] rounded-lg px-3 py-2 text-xs text-zinc-900 dark:text-zinc-200 placeholder:text-zinc-600 focus:outline-none focus:border-cyan-500"
+              className="w-full bg-white dark:bg-black/40 border border-zinc-300 dark:border-white/[0.1] rounded-lg px-3 py-2 text-xs text-zinc-900 dark:text-zinc-200 placeholder:text-zinc-400 dark:placeholder:text-zinc-500 focus:outline-none focus:border-cyan-500"
               required
             />
           </div>
@@ -136,7 +136,7 @@ export const CreateExperimentModal: React.FC<CreateExperimentModalProps> = ({
               onChange={(e) => setDescription(e.target.value)}
               placeholder="Explica qué se medirá, la audiencia seleccionada y los pasos a ejecutar..."
               rows={2}
-              className="w-full bg-surface-subtle border border-zinc-900/[0.16] dark:border-white/[0.1] rounded-lg p-3 text-xs text-zinc-900 dark:text-zinc-200 placeholder:text-zinc-600 focus:outline-none focus:border-cyan-500 resize-none"
+              className="w-full bg-white dark:bg-black/40 border border-zinc-300 dark:border-white/[0.1] rounded-lg p-3 text-xs text-zinc-900 dark:text-zinc-200 placeholder:text-zinc-400 dark:placeholder:text-zinc-500 focus:outline-none focus:border-cyan-500 resize-none"
             />
           </div>
 
@@ -153,8 +153,8 @@ export const CreateExperimentModal: React.FC<CreateExperimentModalProps> = ({
                   onClick={() => setMethod(m)}
                   className={`text-[11px] px-2 py-1 rounded-md transition-colors border ${
                     method === m
-                      ? 'bg-cyan-500/20 text-cyan-300 border-cyan-500/30 font-medium'
-                      : 'bg-zinc-900/[0.02] dark:bg-white/[0.02] text-zinc-600 dark:text-zinc-400 border-zinc-900/[0.1] dark:border-white/[0.06] hover:text-zinc-900 dark:hover:text-white'
+                      ? 'bg-cyan-50 dark:bg-cyan-500/20 text-cyan-700 dark:text-cyan-300 border-cyan-200 dark:border-cyan-500/30 font-medium'
+                      : 'bg-zinc-100 dark:bg-white/[0.02] text-zinc-700 dark:text-zinc-400 border-zinc-200 dark:border-white/[0.06] hover:text-zinc-900 dark:hover:text-white'
                   }`}
                 >
                   {m}
@@ -166,7 +166,7 @@ export const CreateExperimentModal: React.FC<CreateExperimentModalProps> = ({
               value={method}
               onChange={(e) => setMethod(e.target.value)}
               placeholder="O escribe un método personalizado..."
-              className="w-full bg-surface-subtle border border-zinc-900/[0.16] dark:border-white/[0.1] rounded-lg px-3 py-2 text-xs text-zinc-900 dark:text-zinc-200 placeholder:text-zinc-600 focus:outline-none focus:border-cyan-500"
+              className="w-full bg-white dark:bg-black/40 border border-zinc-300 dark:border-white/[0.1] rounded-lg px-3 py-2 text-xs text-zinc-900 dark:text-zinc-200 placeholder:text-zinc-400 dark:placeholder:text-zinc-500 focus:outline-none focus:border-cyan-500"
             />
           </div>
 
@@ -174,7 +174,7 @@ export const CreateExperimentModal: React.FC<CreateExperimentModalProps> = ({
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <div>
               <label className="block text-xs font-medium text-zinc-700 dark:text-zinc-300 mb-1.5 flex items-center gap-1">
-                <User className="w-3 h-3 text-orange-400" strokeWidth={1.5} />
+                <User className="w-3 h-3 text-orange-600 dark:text-orange-400" strokeWidth={1.5} />
                 Responsable (Owner)
               </label>
               <input
@@ -182,13 +182,13 @@ export const CreateExperimentModal: React.FC<CreateExperimentModalProps> = ({
                 value={ownerName}
                 onChange={(e) => setOwnerName(e.target.value)}
                 placeholder="Ej: Growth Lead"
-                className="w-full bg-surface-subtle border border-zinc-900/[0.16] dark:border-white/[0.1] rounded-lg px-3 py-2 text-xs text-zinc-900 dark:text-zinc-200 placeholder:text-zinc-600 focus:outline-none focus:border-cyan-500"
+                className="w-full bg-white dark:bg-black/40 border border-zinc-300 dark:border-white/[0.1] rounded-lg px-3 py-2 text-xs text-zinc-900 dark:text-zinc-200 placeholder:text-zinc-400 dark:placeholder:text-zinc-500 focus:outline-none focus:border-cyan-500"
               />
             </div>
 
             <div>
               <label className="block text-xs font-medium text-zinc-700 dark:text-zinc-300 mb-1.5 flex items-center gap-1">
-                <DollarSign className="w-3 h-3 text-emerald-400" strokeWidth={1.5} />
+                <DollarSign className="w-3 h-3 text-emerald-600 dark:text-emerald-400" strokeWidth={1.5} />
                 Presupuesto Asignado (USD)
               </label>
               <input
@@ -198,7 +198,7 @@ export const CreateExperimentModal: React.FC<CreateExperimentModalProps> = ({
                 value={budget}
                 onChange={(e) => setBudget(e.target.value)}
                 placeholder="Ej: 500"
-                className="w-full bg-surface-subtle border border-zinc-900/[0.16] dark:border-white/[0.1] rounded-lg px-3 py-2 text-xs text-zinc-900 dark:text-zinc-200 placeholder:text-zinc-600 focus:outline-none focus:border-cyan-500"
+                className="w-full bg-white dark:bg-black/40 border border-zinc-300 dark:border-white/[0.1] rounded-lg px-3 py-2 text-xs text-zinc-900 dark:text-zinc-200 placeholder:text-zinc-400 dark:placeholder:text-zinc-500 focus:outline-none focus:border-cyan-500"
               />
             </div>
           </div>
@@ -214,13 +214,13 @@ export const CreateExperimentModal: React.FC<CreateExperimentModalProps> = ({
                 value={resultMetric}
                 onChange={(e) => setResultMetric(e.target.value)}
                 placeholder="Ej: Tasa de reserva, NPS, Retención D7"
-                className="w-full bg-surface-subtle border border-zinc-900/[0.16] dark:border-white/[0.1] rounded-lg px-3 py-2 text-xs text-zinc-900 dark:text-zinc-200 placeholder:text-zinc-600 focus:outline-none focus:border-cyan-500"
+                className="w-full bg-white dark:bg-black/40 border border-zinc-300 dark:border-white/[0.1] rounded-lg px-3 py-2 text-xs text-zinc-900 dark:text-zinc-200 placeholder:text-zinc-400 dark:placeholder:text-zinc-500 focus:outline-none focus:border-cyan-500"
               />
             </div>
 
             <div>
               <label className="block text-xs font-medium text-zinc-700 dark:text-zinc-300 mb-1.5 flex items-center gap-1">
-                <Target className="w-3 h-3 text-sky-400" strokeWidth={1.5} />
+                <Target className="w-3 h-3 text-sky-600 dark:text-sky-400" strokeWidth={1.5} />
                 Meta Cuantitativa
               </label>
               <input
@@ -228,7 +228,7 @@ export const CreateExperimentModal: React.FC<CreateExperimentModalProps> = ({
                 value={targetMetric}
                 onChange={(e) => setTargetMetric(e.target.value)}
                 placeholder="Ej: >= 20% o 50 pre-registros"
-                className="w-full bg-surface-subtle border border-zinc-900/[0.16] dark:border-white/[0.1] rounded-lg px-3 py-2 text-xs text-zinc-900 dark:text-zinc-200 placeholder:text-zinc-600 focus:outline-none focus:border-cyan-500"
+                className="w-full bg-white dark:bg-black/40 border border-zinc-300 dark:border-white/[0.1] rounded-lg px-3 py-2 text-xs text-zinc-900 dark:text-zinc-200 placeholder:text-zinc-400 dark:placeholder:text-zinc-500 focus:outline-none focus:border-cyan-500"
               />
             </div>
           </div>
@@ -243,7 +243,7 @@ export const CreateExperimentModal: React.FC<CreateExperimentModalProps> = ({
                 type="date"
                 value={startDate}
                 onChange={(e) => setStartDate(e.target.value)}
-                className="w-full bg-surface-subtle border border-zinc-900/[0.16] dark:border-white/[0.1] rounded-lg px-3 py-2 text-xs text-zinc-900 dark:text-zinc-200 focus:outline-none focus:border-cyan-500"
+                className="w-full bg-white dark:bg-black/40 border border-zinc-300 dark:border-white/[0.1] rounded-lg px-3 py-2 text-xs text-zinc-900 dark:text-zinc-200 focus:outline-none focus:border-cyan-500"
               />
             </div>
 
@@ -255,14 +255,14 @@ export const CreateExperimentModal: React.FC<CreateExperimentModalProps> = ({
                 type="date"
                 value={endDate}
                 onChange={(e) => setEndDate(e.target.value)}
-                className="w-full bg-surface-subtle border border-zinc-900/[0.16] dark:border-white/[0.1] rounded-lg px-3 py-2 text-xs text-zinc-900 dark:text-zinc-200 focus:outline-none focus:border-cyan-500"
+                className="w-full bg-white dark:bg-black/40 border border-zinc-300 dark:border-white/[0.1] rounded-lg px-3 py-2 text-xs text-zinc-900 dark:text-zinc-200 focus:outline-none focus:border-cyan-500"
               />
             </div>
           </div>
 
           <div>
             <label className="block text-xs font-medium text-zinc-700 dark:text-zinc-300 mb-1.5 flex items-center gap-1">
-              <FileText className="w-3 h-3 text-zinc-600 dark:text-zinc-400" strokeWidth={1.5} />
+              <FileText className="w-3 h-3 text-zinc-500 dark:text-zinc-400" strokeWidth={1.5} />
               Notas de Evidencia
             </label>
             <textarea
@@ -270,11 +270,11 @@ export const CreateExperimentModal: React.FC<CreateExperimentModalProps> = ({
               value={evidenceNotes}
               onChange={(e) => setEvidenceNotes(e.target.value)}
               placeholder="Enlaces a analytics, grabaciones de usuario o reportes..."
-              className="w-full bg-surface-subtle border border-zinc-900/[0.16] dark:border-white/[0.1] rounded-lg p-2.5 text-xs text-zinc-900 dark:text-zinc-200 placeholder:text-zinc-600 focus:outline-none focus:border-cyan-500 resize-none"
+              className="w-full bg-white dark:bg-black/40 border border-zinc-300 dark:border-white/[0.1] rounded-lg p-2.5 text-xs text-zinc-900 dark:text-zinc-200 placeholder:text-zinc-400 dark:placeholder:text-zinc-500 focus:outline-none focus:border-cyan-500 resize-none"
             />
           </div>
 
-          <div className="pt-4 border-t border-zinc-900/[0.13] dark:border-white/[0.08] flex items-center justify-end gap-3">
+          <div className="pt-4 border-t border-zinc-200 dark:border-white/[0.08] flex items-center justify-end gap-3">
             <Button variant="ghost" type="button" onClick={onClose} disabled={isLoading}>
               Cancelar
             </Button>
@@ -282,7 +282,7 @@ export const CreateExperimentModal: React.FC<CreateExperimentModalProps> = ({
               variant="primary"
               type="submit"
               disabled={isLoading || !name.trim() || !hypothesisId}
-              className="bg-cyan-600 hover:bg-cyan-500 text-white"
+              className="bg-cyan-600 hover:bg-cyan-500 text-white font-medium"
             >
               {isLoading ? 'Creando...' : 'Crear Experimento'}
             </Button>

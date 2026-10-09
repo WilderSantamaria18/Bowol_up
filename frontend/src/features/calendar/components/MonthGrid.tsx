@@ -92,13 +92,13 @@ export const MonthGrid: React.FC<MonthGridProps> = ({
   const getColorClasses = (color: string) => {
     switch (color) {
       case 'emerald':
-        return 'bg-emerald-500/10 text-emerald-300 border-emerald-500/20 hover:border-emerald-500/40';
+        return 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-300 border-emerald-500/20 hover:border-emerald-500/40';
       case 'purple':
-        return 'bg-purple-500/10 text-purple-300 border-purple-500/20 hover:border-purple-500/40';
+        return 'bg-purple-500/10 text-purple-600 dark:text-purple-300 border-purple-500/20 hover:border-purple-500/40';
       case 'sky':
-        return 'bg-sky-500/10 text-sky-300 border-sky-500/20 hover:border-sky-500/40';
+        return 'bg-sky-500/10 text-sky-600 dark:text-sky-300 border-sky-500/20 hover:border-sky-500/40';
       case 'rose':
-        return 'bg-rose-500/10 text-rose-300 border-rose-500/20 hover:border-rose-500/40';
+        return 'bg-rose-500/10 text-rose-600 dark:text-rose-300 border-rose-500/20 hover:border-rose-500/40';
       case 'amber':
         return 'bg-amber-500/10 text-amber-700 dark:text-amber-300 border-amber-500/20 hover:border-amber-500/40';
       case 'orange':
@@ -108,9 +108,9 @@ export const MonthGrid: React.FC<MonthGridProps> = ({
   };
 
   return (
-    <div className="rounded-2xl border border-zinc-900/[0.13] dark:border-white/[0.08] bg-surface-subtle overflow-hidden shadow-2xl backdrop-blur-md">
+    <div className="rounded-2xl border border-zinc-200 dark:border-white/[0.08] bg-white dark:bg-[#0F0F12] overflow-hidden shadow-sm dark:shadow-2xl backdrop-blur-md">
       {/* Weekday Headers */}
-      <div className="grid grid-cols-7 border-b border-zinc-900/[0.13] dark:border-white/[0.08] bg-black/40 text-center py-2.5">
+      <div className="grid grid-cols-7 border-b border-zinc-200 dark:border-white/[0.08] bg-zinc-50 dark:bg-black/40 text-center py-2.5">
         {WEEKDAYS.map((w) => (
           <div key={w} className="text-xs font-semibold text-zinc-600 dark:text-zinc-400 uppercase tracking-wider">
             {w}
@@ -119,7 +119,7 @@ export const MonthGrid: React.FC<MonthGridProps> = ({
       </div>
 
       {/* Days Grid */}
-      <div className="grid grid-cols-7 auto-rows-fr divide-x divide-y divide-zinc-900/10 dark:divide-white/[0.04]">
+      <div className="grid grid-cols-7 auto-rows-fr divide-x divide-y divide-zinc-200/80 dark:divide-white/[0.04]">
         {days.map((day, idx) => {
           const dayItems = getItemsForDate(day.dateStr);
 
@@ -128,10 +128,10 @@ export const MonthGrid: React.FC<MonthGridProps> = ({
               key={`${day.dateStr}-${idx}`}
               className={`min-h-[110px] p-2 flex flex-col justify-between transition-colors ${
                 !day.isCurrentMonth
-                  ? 'bg-black/20 text-zinc-600'
+                  ? 'bg-zinc-100/50 dark:bg-black/20 text-zinc-400 dark:text-zinc-600'
                   : day.isToday
                   ? 'bg-orange-500/[0.04] text-zinc-900 dark:text-zinc-200'
-                  : 'text-zinc-700 dark:text-zinc-300 hover:bg-zinc-900/[0.015] dark:hover:bg-white/[0.015]'
+                  : 'text-zinc-700 dark:text-zinc-300 hover:bg-zinc-50 dark:hover:bg-white/[0.015]'
               }`}
             >
               {/* Day Header */}
@@ -141,8 +141,8 @@ export const MonthGrid: React.FC<MonthGridProps> = ({
                     day.isToday
                       ? 'bg-orange-600 text-white font-bold shadow-md shadow-orange-600/30'
                       : day.isCurrentMonth
-                      ? 'text-zinc-300'
-                      : 'text-zinc-600'
+                      ? 'text-zinc-800 dark:text-zinc-300'
+                      : 'text-zinc-400 dark:text-zinc-600'
                   }`}
                 >
                   {day.dayNum}

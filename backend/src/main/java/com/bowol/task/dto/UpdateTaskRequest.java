@@ -29,4 +29,22 @@ public class UpdateTaskRequest {
     private BigDecimal estimateHours;
 
     private Integer position;
+
+    private String blockedReason;
+
+    private String blockedResolver;
+
+    private java.time.LocalDate blockedReviewDate;
+
+    private String acceptanceEvidence;
+
+    private String acceptanceReviewedBy;
+
+    private BigDecimal externalWaitHours;
+
+    private String area;
+
+    private String deliverable;
+
+    private java.util.List<String> dependsOn;
 }

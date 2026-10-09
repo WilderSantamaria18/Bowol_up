@@ -6,6 +6,7 @@ import org.hibernate.annotations.UuidGenerator;
 
 import java.math.BigDecimal;
 import java.time.Instant;
+import java.time.LocalDate;
 import java.util.UUID;
 
 @Entity
@@ -63,6 +64,36 @@ public class Task {
 
     @Column(name = "updated_at")
     private Instant updatedAt;
+
+    @Column(name = "blocked_reason", columnDefinition = "text")
+    private String blockedReason;
+
+    @Column(name = "blocked_resolver", length = 150)
+    private String blockedResolver;
+
+    @Column(name = "blocked_review_date")
+    private LocalDate blockedReviewDate;
+
+    @Column(name = "acceptance_evidence", columnDefinition = "text")
+    private String acceptanceEvidence;
+
+    @Column(name = "acceptance_reviewed_by", length = 150)
+    private String acceptanceReviewedBy;
+
+    @Column(name = "external_wait_hours", precision = 5, scale = 2)
+    @Builder.Default
+    private BigDecimal externalWaitHours = BigDecimal.ZERO;
+
+    @Column(name = "area", length = 100)
+    private String area;
+
+    @Column(name = "deliverable", columnDefinition = "text")
+    private String deliverable;
+
+    @org.hibernate.annotations.JdbcTypeCode(org.hibernate.type.SqlTypes.JSON)
+    @Column(name = "depends_on", nullable = false)
+    @Builder.Default
+    private java.util.List<String> dependsOn = new java.util.ArrayList<>();
 
     public void setStatus(TaskStatus status) {
         this.status = status;

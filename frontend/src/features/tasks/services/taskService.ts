@@ -4,6 +4,7 @@ import {
   TaskBoardData,
   CreateTaskPayload,
   UpdateTaskPayload,
+  UpdateTaskStatusPayload,
   TaskStatus,
   TaskMoveItem,
   DecomposeProjectResponse,
@@ -35,8 +36,12 @@ export const taskService = {
     return httpClient.patch(`/tasks/${id}`, payload);
   },
 
-  async updateTaskStatus(id: string, status: TaskStatus): Promise<Task> {
-    return httpClient.patch(`/tasks/${id}/status`, { status });
+  async updateTaskStatus(
+    id: string,
+    status: TaskStatus,
+    extra?: Omit<UpdateTaskStatusPayload, 'status'>
+  ): Promise<Task> {
+    return httpClient.patch(`/tasks/${id}/status`, { status, ...extra });
   },
 
   async assignTask(id: string, assigneeId: string | null): Promise<Task> {

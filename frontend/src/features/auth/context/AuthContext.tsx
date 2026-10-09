@@ -34,6 +34,28 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     localStorage.removeItem('bowol_access_token');
     localStorage.removeItem('bowol_refresh_token');
     localStorage.removeItem('bowol_organization_id');
+    // Limpieza selectiva de datos operativos vinculados a la sesión cerrada
+    try {
+      const keysToRemove: string[] = [];
+      for (let i = 0; i < localStorage.length; i++) {
+        const key = localStorage.key(i);
+        if (key && (
+          key.startsWith('bowol_smart_charter_') ||
+          key.startsWith('bowol_capacity_') ||
+          key.startsWith('bowol_routine_audit_') ||
+          key.startsWith('bowol_bottleneck_') ||
+          key.startsWith('bowol_weekly_focus_') ||
+          key.startsWith('bowol_checkins_') ||
+          key.startsWith('bowol_opp_meta_') ||
+          key.startsWith('bowol_swot_validations_')
+        )) {
+          keysToRemove.push(key);
+        }
+      }
+      keysToRemove.forEach((k) => localStorage.removeItem(k));
+    } catch {
+      // Ignorar fallo de acceso a localStorage
+    }
     setUser(null);
     setOrganization(null);
   };

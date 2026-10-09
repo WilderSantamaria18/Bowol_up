@@ -2,6 +2,8 @@ export type ItemConfidence = 'HIGH' | 'MEDIUM' | 'LOW';
 export type ItemImpact = 'HIGH' | 'MEDIUM' | 'LOW';
 export type ItemStatus = 'ACTIVE' | 'CONVERTED' | 'DISMISSED';
 
+export type ValidationStatus = 'EVIDENCE_BACKED' | 'HYPOTHESIS_PENDING';
+
 export interface SwotItem {
   id: string;
   type?: string;
@@ -12,6 +14,7 @@ export interface SwotItem {
   impact?: ItemImpact;
   source?: string;
   status?: ItemStatus;
+  validationStatus?: ValidationStatus;
   createdAt?: string;
 }
 
@@ -65,4 +68,56 @@ export interface EvidenceRef {
   note?: string;
   weight?: number;
   createdAt: string;
+}
+
+export interface BottleneckDiagnostic {
+  id: string;
+  title: string;
+  symptom: string;
+  rootCause: string;
+  isEvidenceBacked: boolean;
+  evidenceNotes: string;
+  validationPlan: string;
+  priorityActions: Array<{
+    id: string;
+    action: string;
+    deliverable: string;
+    estimatedHours: number;
+  }>;
+  updatedAt: string;
+}
+
+export type RoutineImprovement = 'ELIMINAR' | 'SIMPLIFICAR' | 'ESTANDARIZAR' | 'AUTOMATIZAR';
+
+export interface RoutineStep {
+  id: string;
+  name: string;
+  minutes: number;
+  improvement: RoutineImprovement;
+  justification: string;
+  savedMinutesWeekly: number;
+  measuredSavings?: number; // minutos medidos reales
+  checklist?: {
+    responsible: string;
+    input: string;
+    output: string;
+    reviewPoint: string;
+    exceptionRule: string;
+  };
+  automationDetails?: {
+    setupCost: string;
+    maintenance: string;
+    verificationMethod: string;
+  };
+}
+
+export interface RoutineAudit {
+  id: string;
+  name: string;
+  weeklyFrequency: number;
+  currentMinutesPerRun: number;
+  observedErrorsOrDelays: string;
+  toolsAndBudget: string;
+  steps: RoutineStep[];
+  updatedAt: string;
 }

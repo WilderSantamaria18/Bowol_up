@@ -33,4 +33,12 @@ public class CreateTaskRequest {
     private BigDecimal estimateHours;
 
     private Integer position;
+
+    private BigDecimal externalWaitHours;
+
+    private String area;
+
+    private String deliverable;
+
+    private java.util.List<String> dependsOn;
 }

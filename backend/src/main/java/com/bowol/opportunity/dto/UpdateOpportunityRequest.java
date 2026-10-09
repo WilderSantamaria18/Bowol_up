@@ -36,4 +36,6 @@ public class UpdateOpportunityRequest {
 
     private OpportunityStatus status;
     private List<String> evidence;
+    private Boolean isMandatoryEnabler;
+    private String evidenceNotes;
 }

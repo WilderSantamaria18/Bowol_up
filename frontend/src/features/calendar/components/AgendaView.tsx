@@ -15,8 +15,8 @@ export const AgendaView: React.FC<AgendaViewProps> = ({
 }) => {
   if (items.length === 0) {
     return (
-      <div className="py-16 text-center rounded-2xl border border-dashed border-zinc-900/[0.13] dark:border-white/[0.08] bg-surface-subtle">
-        <CalendarIcon className="w-10 h-10 mx-auto text-zinc-600 mb-3" strokeWidth={1.5} />
+      <div className="py-16 text-center rounded-2xl border border-dashed border-zinc-300 dark:border-white/[0.08] bg-zinc-50 dark:bg-white/[0.02]">
+        <CalendarIcon className="w-10 h-10 mx-auto text-zinc-400 dark:text-zinc-600 mb-3" strokeWidth={1.5} />
         <h3 className="text-sm font-semibold text-zinc-700 dark:text-zinc-300">No hay eventos en este periodo</h3>
         <p className="text-xs text-zinc-500 mt-1 max-w-sm mx-auto">
           Crea un nuevo hito o planifica un Sprint en el módulo de ejecución para verlo en este calendario.
@@ -45,13 +45,13 @@ export const AgendaView: React.FC<AgendaViewProps> = ({
   const getBadgeClasses = (color: string) => {
     switch (color) {
       case 'emerald':
-        return 'bg-emerald-500/10 text-emerald-300 border-emerald-500/30';
+        return 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-300 border-emerald-500/30';
       case 'purple':
-        return 'bg-purple-500/10 text-purple-300 border-purple-500/30';
+        return 'bg-purple-500/10 text-purple-600 dark:text-purple-300 border-purple-500/30';
       case 'sky':
-        return 'bg-sky-500/10 text-sky-300 border-sky-500/30';
+        return 'bg-sky-500/10 text-sky-600 dark:text-sky-300 border-sky-500/30';
       case 'rose':
-        return 'bg-rose-500/10 text-rose-300 border-rose-500/30';
+        return 'bg-rose-500/10 text-rose-600 dark:text-rose-300 border-rose-500/30';
       case 'amber':
         return 'bg-amber-500/10 text-amber-700 dark:text-amber-300 border-amber-500/30';
       case 'orange':
@@ -86,10 +86,10 @@ export const AgendaView: React.FC<AgendaViewProps> = ({
                 <div
                   key={item.id}
                   onClick={() => onSelectItem?.(item)}
-                  className="group relative p-4 rounded-xl border border-zinc-900/[0.13] dark:border-white/[0.08] bg-surface-subtle hover:border-zinc-900/[0.16] dark:hover:border-white/[0.15] transition-all flex flex-col sm:flex-row sm:items-center justify-between gap-3 shadow-md cursor-pointer"
+                  className="group relative p-4 rounded-xl border border-zinc-200 dark:border-white/[0.08] bg-white dark:bg-[#0F0F12] hover:border-zinc-300 dark:hover:border-white/[0.15] transition-all flex flex-col sm:flex-row sm:items-center justify-between gap-3 shadow-sm dark:shadow-md cursor-pointer"
                 >
                   <div className="flex items-start gap-3">
-                    <div className="p-2 rounded-lg bg-black/40 border border-zinc-900/[0.1] dark:border-white/[0.06] mt-0.5">
+                    <div className="p-2 rounded-lg bg-zinc-100 dark:bg-black/40 border border-zinc-200 dark:border-white/[0.06] mt-0.5">
                       {getSourceIcon(item.source, item.eventType)}
                     </div>
 
@@ -108,7 +108,7 @@ export const AgendaView: React.FC<AgendaViewProps> = ({
                         </span>
 
                         {item.projectName && (
-                          <span className="text-[10px] text-zinc-600 dark:text-zinc-400 flex items-center gap-1 bg-zinc-900/[0.04] dark:bg-white/[0.04] px-2 py-0.5 rounded-md border border-zinc-900/[0.08] dark:border-white/[0.04]">
+                          <span className="text-[10px] text-zinc-600 dark:text-zinc-400 flex items-center gap-1 bg-zinc-100 dark:bg-white/[0.04] px-2 py-0.5 rounded-md border border-zinc-200 dark:border-white/[0.04]">
                             <FolderKanban className="w-3 h-3 text-zinc-500" strokeWidth={1.5} />
                             {item.projectName}
                           </span>

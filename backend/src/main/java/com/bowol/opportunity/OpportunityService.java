@@ -372,6 +372,12 @@ public class OpportunityService {
         if (request.getEvidence() != null) {
             opp.setEvidence(request.getEvidence());
         }
+        if (request.getIsMandatoryEnabler() != null) {
+            opp.setIsMandatoryEnabler(request.getIsMandatoryEnabler());
+        }
+        if (request.getEvidenceNotes() != null) {
+            opp.setEvidenceNotes(request.getEvidenceNotes());
+        }
 
         opp.calculateAndSetPriorityScore();
         Opportunity saved = opportunityRepository.save(opp);

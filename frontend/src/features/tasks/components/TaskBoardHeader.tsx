@@ -14,6 +14,7 @@ interface TaskBoardHeaderProps {
   boardData: TaskBoardData;
   onOpenCreateTask: () => void;
   onOpenAIDecomposer: () => void;
+  onOpenDailyCheckin?: () => void;
 }
 
 export const TaskBoardHeader: React.FC<TaskBoardHeaderProps> = ({
@@ -26,6 +27,7 @@ export const TaskBoardHeader: React.FC<TaskBoardHeaderProps> = ({
   boardData,
   onOpenCreateTask,
   onOpenAIDecomposer,
+  onOpenDailyCheckin,
 }) => {
   const navigate = useNavigate();
   const totalTasks = Object.values(boardData).reduce((sum, list) => sum + list.length, 0);
@@ -43,7 +45,7 @@ export const TaskBoardHeader: React.FC<TaskBoardHeaderProps> = ({
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
           <div className="flex items-center gap-3">
-            <h1 className="text-xl font-bold tracking-tight text-slate-100 sm:text-2xl">
+            <h1 className="text-xl font-bold tracking-tight text-slate-900 dark:text-slate-100 sm:text-2xl">
               Backlog & Ejecución
             </h1>
             {project && (
@@ -52,17 +54,17 @@ export const TaskBoardHeader: React.FC<TaskBoardHeaderProps> = ({
               </span>
             )}
           </div>
-          <p className="mt-1 text-xs text-slate-400">
+          <p className="mt-1 text-xs text-slate-600 dark:text-slate-400">
             Ciclo de ejecución ágil: Planificación por Fases, Sprints y Tareas Kanban
           </p>
         </div>
 
-        <div className="flex items-center gap-3">
+        <div className="flex flex-wrap items-center gap-2.5">
           {projects.length > 1 && onSelectProject && (
             <select
               value={project?.id || ''}
               onChange={(e) => onSelectProject(e.target.value)}
-              className="rounded-xl border border-zinc-900/[0.13] dark:border-white/[0.08] bg-slate-900/60 px-3 py-2 text-xs text-slate-200 focus:border-cyan-500 focus:outline-none"
+              className="rounded-xl border border-zinc-200 dark:border-white/[0.08] bg-white dark:bg-slate-900/60 px-3 py-2 text-xs text-slate-800 dark:text-slate-200 focus:border-cyan-500 focus:outline-none"
             >
               {projects.map((p) => (
                 <option key={p.id} value={p.id}>
@@ -72,20 +74,31 @@ export const TaskBoardHeader: React.FC<TaskBoardHeaderProps> = ({
             </select>
           )}
 
+          {onOpenDailyCheckin && (
+            <button
+              onClick={onOpenDailyCheckin}
+              className="flex items-center gap-2 rounded-xl bg-gradient-to-r from-emerald-500/10 to-teal-500/10 border border-emerald-500/30 px-3.5 py-2 text-xs font-medium text-emerald-700 dark:text-emerald-300 hover:bg-emerald-500/20 transition-all shadow-lg shadow-emerald-500/5"
+              title="Check-in Diario Express (3 min - Fase 6.1)"
+            >
+              <CheckCircle2 className="h-4 w-4 text-emerald-500 dark:text-emerald-400" strokeWidth={1.5} />
+              <span>Check-in Diario</span>
+            </button>
+          )}
+
           <button
             onClick={() => navigate('/planning')}
-            className="flex items-center gap-2 rounded-xl bg-gradient-to-r from-orange-500/10 to-amber-500/10 border border-orange-500/30 px-3.5 py-2 text-xs font-medium text-orange-400 hover:bg-orange-500/20 transition-all shadow-lg shadow-orange-500/5"
+            className="flex items-center gap-2 rounded-xl bg-gradient-to-r from-orange-500/10 to-amber-500/10 border border-orange-500/30 px-3.5 py-2 text-xs font-medium text-orange-700 dark:text-orange-400 hover:bg-orange-500/20 transition-all shadow-lg shadow-orange-500/5"
             title="Abrir Planificador BOWOL Plans 2.0"
           >
-            <Sparkles className="h-4 w-4 text-orange-400" strokeWidth={1.5} />
+            <Sparkles className="h-4 w-4 text-orange-500 dark:text-orange-400" strokeWidth={1.5} />
             <span>BOWOL Plans</span>
           </button>
 
           <button
             onClick={onOpenAIDecomposer}
-            className="flex items-center gap-2 rounded-xl bg-gradient-to-r from-cyan-500/10 to-blue-500/10 border border-cyan-500/30 px-3.5 py-2 text-xs font-medium text-cyan-300 hover:bg-cyan-500/20 transition-all shadow-lg shadow-cyan-500/5"
+            className="flex items-center gap-2 rounded-xl bg-gradient-to-r from-cyan-500/10 to-blue-500/10 border border-cyan-500/30 px-3.5 py-2 text-xs font-medium text-cyan-700 dark:text-cyan-300 hover:bg-cyan-500/20 transition-all shadow-lg shadow-cyan-500/5"
           >
-            <Sparkles className="h-4 w-4 text-cyan-400" strokeWidth={1.5} />
+            <Sparkles className="h-4 w-4 text-cyan-500 dark:text-cyan-400" strokeWidth={1.5} />
             <span>Descomponer con IA</span>
           </button>
 
@@ -100,41 +113,41 @@ export const TaskBoardHeader: React.FC<TaskBoardHeaderProps> = ({
       </div>
 
       {/* KPI Bar & Sprint Filter */}
-      <div className="flex flex-wrap items-center justify-between gap-4 rounded-xl border border-zinc-900/[0.1] dark:border-white/[0.06] bg-slate-950/40 p-3 backdrop-blur-md">
+      <div className="flex flex-wrap items-center justify-between gap-4 rounded-xl border border-zinc-200/80 dark:border-white/[0.06] bg-white/70 dark:bg-slate-950/40 p-3 backdrop-blur-md shadow-sm dark:shadow-none">
         <div className="flex flex-wrap items-center gap-5 text-xs">
           <div className="flex items-center gap-2">
-            <Layers className="h-4 w-4 text-slate-400" strokeWidth={1.5} />
-            <span className="text-slate-400">Total:</span>
-            <span className="font-semibold text-slate-200">{totalTasks} tareas</span>
+            <Layers className="h-4 w-4 text-slate-500 dark:text-slate-400" strokeWidth={1.5} />
+            <span className="text-slate-600 dark:text-slate-400">Total:</span>
+            <span className="font-semibold text-slate-900 dark:text-slate-200">{totalTasks} tareas</span>
           </div>
 
           <div className="flex items-center gap-2">
             <span className="h-2 w-2 rounded-full bg-amber-400" />
-            <span className="text-slate-400">En progreso:</span>
+            <span className="text-slate-600 dark:text-slate-400">En progreso:</span>
             <span className="font-semibold text-amber-700 dark:text-amber-300">{inProgressTasks}</span>
           </div>
 
           <div className="flex items-center gap-2">
-            <CheckCircle2 className="h-4 w-4 text-emerald-400" strokeWidth={1.5} />
-            <span className="text-slate-400">Completadas:</span>
-            <span className="font-semibold text-emerald-300">{doneTasks} ({progressPct}%)</span>
+            <CheckCircle2 className="h-4 w-4 text-emerald-500 dark:text-emerald-400" strokeWidth={1.5} />
+            <span className="text-slate-600 dark:text-slate-400">Completadas:</span>
+            <span className="font-semibold text-emerald-700 dark:text-emerald-300">{doneTasks} ({progressPct}%)</span>
           </div>
 
           <div className="flex items-center gap-2">
-            <Clock className="h-4 w-4 text-cyan-400" strokeWidth={1.5} />
-            <span className="text-slate-400">Esfuerzo:</span>
-            <span className="font-semibold text-cyan-300">{totalHours}h estimadas</span>
+            <Clock className="h-4 w-4 text-cyan-500 dark:text-cyan-400" strokeWidth={1.5} />
+            <span className="text-slate-600 dark:text-slate-400">Esfuerzo:</span>
+            <span className="font-semibold text-cyan-700 dark:text-cyan-300">{totalHours}h estimadas</span>
           </div>
         </div>
 
         {sprints.length > 0 && onSelectSprint && (
           <div className="flex items-center gap-2 text-xs">
-            <Filter className="h-3.5 w-3.5 text-slate-500" strokeWidth={1.5} />
-            <span className="text-slate-400">Sprint:</span>
+            <Filter className="h-3.5 w-3.5 text-slate-400 dark:text-slate-500" strokeWidth={1.5} />
+            <span className="text-slate-600 dark:text-slate-400">Sprint:</span>
             <select
               value={selectedSprintId || ''}
               onChange={(e) => onSelectSprint(e.target.value ? e.target.value : null)}
-              className="rounded-lg border border-zinc-900/[0.13] dark:border-white/[0.08] bg-slate-900/80 px-2.5 py-1 text-xs text-slate-300 focus:border-cyan-500 focus:outline-none"
+              className="rounded-lg border border-zinc-200 dark:border-white/[0.08] bg-white dark:bg-slate-900/80 px-2.5 py-1 text-xs text-slate-800 dark:text-slate-300 focus:border-cyan-500 focus:outline-none"
             >
               <option value="">Todos los sprints</option>
               {sprints.map((s) => (

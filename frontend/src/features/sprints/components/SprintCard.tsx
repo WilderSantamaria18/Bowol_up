@@ -22,10 +22,10 @@ interface SprintCardProps {
 }
 
 const statusBadgeStyles: Record<SprintStatus, string> = {
-  PLANNED: 'bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 border-zinc-300 dark:border-zinc-700',
-  ACTIVE: 'bg-emerald-500/10 text-emerald-400 border-emerald-500/30',
-  COMPLETED: 'bg-cyan-500/10 text-cyan-400 border-cyan-500/30',
-  CANCELED: 'bg-rose-500/10 text-rose-400 border-rose-500/30',
+  PLANNED: 'bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 border-zinc-200 dark:border-zinc-700',
+  ACTIVE: 'bg-emerald-50 dark:bg-emerald-500/10 text-emerald-700 dark:text-emerald-400 border-emerald-200 dark:border-emerald-500/30',
+  COMPLETED: 'bg-cyan-50 dark:bg-cyan-500/10 text-cyan-700 dark:text-cyan-400 border-cyan-200 dark:border-cyan-500/30',
+  CANCELED: 'bg-rose-50 dark:bg-rose-500/10 text-rose-700 dark:text-rose-400 border-rose-200 dark:border-rose-500/30',
 };
 
 const statusLabels: Record<SprintStatus, string> = {
@@ -49,7 +49,7 @@ export const SprintCard: React.FC<SprintCardProps> = ({
   const progressPercent = totalTasks > 0 ? Math.round((completedTasks / totalTasks) * 100) : 0;
 
   return (
-    <div className="group relative rounded-xl bg-white dark:bg-[#0F0F12] border border-zinc-900/[0.13] dark:border-white/[0.08] hover:border-zinc-900/[0.16] dark:hover:border-white/[0.15] p-5 transition-all duration-200 shadow-lg flex flex-col justify-between">
+    <div className="group relative rounded-xl bg-white/80 dark:bg-[#0F0F12] border border-zinc-200/80 dark:border-white/[0.08] hover:border-zinc-300 dark:hover:border-white/[0.15] p-5 transition-all duration-200 shadow-sm dark:shadow-none flex flex-col justify-between">
       <div>
         <div className="flex items-start justify-between gap-3 mb-3">
           <div className="flex-1 min-w-0">
@@ -61,14 +61,14 @@ export const SprintCard: React.FC<SprintCardProps> = ({
               >
                 {statusLabels[sprint.status]}
               </span>
-              <div className="flex items-center gap-1 text-[11px] text-zinc-500">
-                <Calendar className="w-3 h-3" strokeWidth={1.5} />
+              <div className="flex items-center gap-1 text-[11px] text-zinc-500 dark:text-zinc-400">
+                <Calendar className="w-3 h-3 text-zinc-400 dark:text-zinc-500" strokeWidth={1.5} />
                 <span>
                   {sprint.startDate} - {sprint.endDate}
                 </span>
               </div>
             </div>
-            <h3 className="text-sm font-semibold text-zinc-900 dark:text-white group-hover:text-orange-400 transition-colors line-clamp-1">
+            <h3 className="text-sm font-semibold text-zinc-900 dark:text-white group-hover:text-orange-600 dark:group-hover:text-orange-400 transition-colors line-clamp-1">
               {sprint.name}
             </h3>
           </div>
@@ -79,7 +79,7 @@ export const SprintCard: React.FC<SprintCardProps> = ({
                 variant="ghost"
                 size="icon"
                 onClick={() => onDelete(sprint.id)}
-                className="w-7 h-7 text-zinc-500 hover:text-rose-400"
+                className="w-7 h-7 text-zinc-400 hover:text-rose-600 dark:text-zinc-500 dark:hover:text-rose-400"
                 title="Eliminar sprint"
               >
                 <Trash2 className="w-3.5 h-3.5" strokeWidth={1.5} />
@@ -89,8 +89,8 @@ export const SprintCard: React.FC<SprintCardProps> = ({
         </div>
 
         {sprint.goal && (
-          <div className="flex items-start gap-1.5 text-xs text-zinc-600 dark:text-zinc-400 bg-zinc-900/[0.02] dark:bg-white/[0.02] border border-zinc-900/[0.08] dark:border-white/[0.04] rounded-lg p-2.5 mb-4">
-            <Target className="w-3.5 h-3.5 text-orange-400 shrink-0 mt-0.5" strokeWidth={1.5} />
+          <div className="flex items-start gap-1.5 text-xs text-zinc-700 dark:text-zinc-300 bg-zinc-50 dark:bg-white/[0.02] border border-zinc-200 dark:border-white/[0.04] rounded-lg p-2.5 mb-4">
+            <Target className="w-3.5 h-3.5 text-orange-600 dark:text-orange-400 shrink-0 mt-0.5" strokeWidth={1.5} />
             <p className="line-clamp-2">{sprint.goal}</p>
           </div>
         )}
@@ -99,25 +99,25 @@ export const SprintCard: React.FC<SprintCardProps> = ({
         <div className="space-y-2 mb-4">
           <div className="flex items-center justify-between text-xs">
             <span className="text-zinc-600 dark:text-zinc-400">Progreso de Tareas</span>
-            <span className="font-mono text-zinc-900 dark:text-zinc-200">
+            <span className="font-mono font-medium text-zinc-900 dark:text-zinc-200">
               {completedTasks}/{totalTasks} ({progressPercent}%)
             </span>
           </div>
-          <div className="w-full h-1.5 rounded-full bg-zinc-900/[0.06] dark:bg-white/[0.06] overflow-hidden">
+          <div className="w-full h-1.5 rounded-full bg-zinc-100 dark:bg-white/[0.06] overflow-hidden">
             <div
               className={`h-full transition-all duration-500 rounded-full ${
                 sprint.status === 'COMPLETED'
                   ? 'bg-cyan-500'
                   : sprint.status === 'ACTIVE'
                   ? 'bg-emerald-500'
-                  : 'bg-zinc-600'
+                  : 'bg-zinc-400 dark:bg-zinc-600'
               }`}
               style={{ width: `${progressPercent}%` }}
             />
           </div>
 
           {sprint.totalEstimateHours !== undefined && sprint.totalEstimateHours > 0 && (
-            <div className="flex items-center justify-between text-[11px] text-zinc-500 font-mono pt-1">
+            <div className="flex items-center justify-between text-[11px] text-zinc-500 dark:text-zinc-400 font-mono pt-1">
               <span>Horas Estimadas:</span>
               <span>
                 {sprint.completedEstimateHours ?? 0}h / {sprint.totalEstimateHours}h
@@ -128,14 +128,14 @@ export const SprintCard: React.FC<SprintCardProps> = ({
       </div>
 
       {/* Actions */}
-      <div className="pt-3 border-t border-zinc-900/[0.1] dark:border-white/[0.06] flex items-center justify-between gap-2">
+      <div className="pt-3 border-t border-zinc-200 dark:border-white/[0.06] flex items-center justify-between gap-2">
         <div>
           {onViewBurndown && (
             <Button
               variant="ghost"
               size="sm"
               onClick={() => onViewBurndown(sprint)}
-              className="text-xs gap-1.5 text-zinc-600 dark:text-zinc-400 hover:text-cyan-400 px-2 h-7"
+              className="text-xs gap-1.5 text-zinc-700 dark:text-zinc-400 hover:text-cyan-600 dark:hover:text-cyan-400 px-2 h-7"
             >
               <BarChart2 className="w-3.5 h-3.5" strokeWidth={1.5} />
               Burndown
@@ -150,7 +150,7 @@ export const SprintCard: React.FC<SprintCardProps> = ({
               size="sm"
               onClick={() => onStart(sprint.id)}
               disabled={isStarting}
-              className="bg-emerald-600 hover:bg-emerald-500 text-white gap-1.5 text-xs h-7 px-2.5"
+              className="bg-emerald-600 hover:bg-emerald-500 text-white gap-1.5 text-xs h-7 px-2.5 font-medium"
             >
               <Play className="w-3 h-3" strokeWidth={1.5} />
               Iniciar Sprint
@@ -162,7 +162,7 @@ export const SprintCard: React.FC<SprintCardProps> = ({
               variant="primary"
               size="sm"
               onClick={() => onComplete(sprint)}
-              className="bg-cyan-600 hover:bg-cyan-500 text-white gap-1.5 text-xs h-7 px-2.5"
+              className="bg-cyan-600 hover:bg-cyan-500 text-white gap-1.5 text-xs h-7 px-2.5 font-medium"
             >
               <CheckCircle2 className="w-3 h-3" strokeWidth={1.5} />
               Completar Sprint
@@ -174,7 +174,7 @@ export const SprintCard: React.FC<SprintCardProps> = ({
               variant="ghost"
               size="sm"
               onClick={() => onCancel(sprint.id)}
-              className="text-zinc-500 hover:text-rose-400 text-xs h-7 px-2"
+              className="text-zinc-400 hover:text-rose-600 dark:text-zinc-500 dark:hover:text-rose-400 text-xs h-7 px-2"
               title="Cancelar sprint y devolver tareas al backlog"
             >
               <XCircle className="w-3.5 h-3.5" strokeWidth={1.5} />

@@ -37,23 +37,23 @@ export const RecordConclusionModal: React.FC<RecordConclusionModalProps> = ({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm animate-fade-in">
-      <div className="relative w-full max-w-lg rounded-2xl bg-white dark:bg-[#0F0F12] border border-zinc-900/[0.16] dark:border-white/[0.1] p-6 shadow-2xl">
-        <div className="flex items-center justify-between pb-4 border-b border-zinc-900/[0.13] dark:border-white/[0.08]">
+      <div className="relative w-full max-w-lg rounded-2xl bg-white dark:bg-[#0F0F12] border border-zinc-200 dark:border-white/[0.1] p-6 shadow-2xl">
+        <div className="flex items-center justify-between pb-4 border-b border-zinc-200 dark:border-white/[0.08]">
           <div>
             <h2 className="text-base font-semibold text-zinc-900 dark:text-white">Concluir Experimento</h2>
             <p className="text-xs text-zinc-600 dark:text-zinc-400">Registra los resultados finales y conclusiones del test</p>
           </div>
           <button
             onClick={onClose}
-            className="text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white transition-colors p-1"
+            className="text-zinc-400 hover:text-zinc-700 dark:text-zinc-400 dark:hover:text-white transition-colors p-1"
             aria-label="Cerrar modal"
           >
             <X className="w-5 h-5" strokeWidth={1.5} />
           </button>
         </div>
 
-        <div className="mt-4 p-3 rounded-lg bg-zinc-900/[0.02] dark:bg-white/[0.02] border border-zinc-900/[0.1] dark:border-white/[0.06] text-xs text-zinc-700 dark:text-zinc-300">
-          <span className="text-zinc-500 block mb-0.5 font-mono uppercase text-[10px]">Experimento:</span>
+        <div className="mt-4 p-3 rounded-lg bg-zinc-50 dark:bg-white/[0.02] border border-zinc-200 dark:border-white/[0.06] text-xs text-zinc-700 dark:text-zinc-300">
+          <span className="text-zinc-500 dark:text-zinc-400 block mb-0.5 font-mono uppercase text-[10px]">Experimento:</span>
           <span className="font-semibold text-zinc-900 dark:text-zinc-200">{experiment.name}</span>
         </div>
 
@@ -68,7 +68,7 @@ export const RecordConclusionModal: React.FC<RecordConclusionModalProps> = ({
                 value={resultMetric}
                 onChange={(e) => setResultMetric(e.target.value)}
                 placeholder="Ej: Conversión D7"
-                className="w-full bg-surface-subtle border border-zinc-900/[0.16] dark:border-white/[0.1] rounded-lg px-3 py-2 text-xs text-zinc-900 dark:text-zinc-200 placeholder:text-zinc-600 focus:outline-none focus:border-cyan-500"
+                className="w-full bg-white dark:bg-black/40 border border-zinc-300 dark:border-white/[0.1] rounded-lg px-3 py-2 text-xs text-zinc-900 dark:text-zinc-200 placeholder:text-zinc-400 dark:placeholder:text-zinc-500 focus:outline-none focus:border-cyan-500"
               />
             </div>
 
@@ -81,7 +81,7 @@ export const RecordConclusionModal: React.FC<RecordConclusionModalProps> = ({
                 value={resultValue}
                 onChange={(e) => setResultValue(e.target.value)}
                 placeholder="Ej: 34.2%"
-                className="w-full bg-surface-subtle border border-zinc-900/[0.16] dark:border-white/[0.1] rounded-lg px-3 py-2 text-xs text-zinc-900 dark:text-zinc-200 placeholder:text-zinc-600 focus:outline-none focus:border-cyan-500"
+                className="w-full bg-white dark:bg-black/40 border border-zinc-300 dark:border-white/[0.1] rounded-lg px-3 py-2 text-xs text-zinc-900 dark:text-zinc-200 placeholder:text-zinc-400 dark:placeholder:text-zinc-500 focus:outline-none focus:border-cyan-500"
               />
             </div>
           </div>
@@ -95,12 +95,12 @@ export const RecordConclusionModal: React.FC<RecordConclusionModalProps> = ({
               onChange={(e) => setConclusion(e.target.value)}
               placeholder="Resume los datos empíricos obtenidos, si la hipótesis se confirma y las implicaciones para el producto..."
               rows={4}
-              className="w-full bg-surface-subtle border border-zinc-900/[0.16] dark:border-white/[0.1] rounded-lg p-3 text-xs text-zinc-900 dark:text-zinc-200 placeholder:text-zinc-600 focus:outline-none focus:border-cyan-500"
+              className="w-full bg-white dark:bg-black/40 border border-zinc-300 dark:border-white/[0.1] rounded-lg p-3 text-xs text-zinc-900 dark:text-zinc-200 placeholder:text-zinc-400 dark:placeholder:text-zinc-500 focus:outline-none focus:border-cyan-500 resize-none"
               required
             />
           </div>
 
-          <div className="pt-4 border-t border-zinc-900/[0.13] dark:border-white/[0.08] flex items-center justify-end gap-3">
+          <div className="pt-4 border-t border-zinc-200 dark:border-white/[0.08] flex items-center justify-end gap-3">
             <Button variant="ghost" type="button" onClick={onClose} disabled={isLoading}>
               Cancelar
             </Button>
@@ -108,7 +108,7 @@ export const RecordConclusionModal: React.FC<RecordConclusionModalProps> = ({
               variant="primary"
               type="submit"
               disabled={isLoading || !conclusion.trim()}
-              className="bg-emerald-600 hover:bg-emerald-500 text-white gap-1.5"
+              className="bg-emerald-600 hover:bg-emerald-500 text-white gap-1.5 font-medium"
             >
               <CheckCircle2 className="w-3.5 h-3.5" strokeWidth={1.5} />
               {isLoading ? 'Concluyendo...' : 'Finalizar y Guardar'}

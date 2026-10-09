@@ -4,18 +4,22 @@ import { ContextProfileSheet } from '../components/ContextProfileSheet';
 import { PhasePromptGenerator } from '../components/PhasePromptGenerator';
 import { JsonPlanImporterExporter } from '../components/JsonPlanImporterExporter';
 import { PlanAuditorChecklist } from '../components/PlanAuditorChecklist';
-import { Building2, Sparkles, FileJson, ShieldCheck } from 'lucide-react';
+import { CapacityBufferCalculator } from '../components/CapacityBufferCalculator';
+import { WeeklyRetrospectiveView } from '../components/WeeklyRetrospectiveView';
+import { Building2, Sparkles, FileJson, ShieldCheck, Scale, History } from 'lucide-react';
 
-type PlanningTab = 'ficha' | 'prompts' | 'json' | 'auditor';
+type PlanningTab = 'ficha' | 'prompts' | 'json' | 'auditor' | 'capacidad' | 'retrospectiva';
 
 export const PlanningPage: React.FC = () => {
   const [activeTab, setActiveTab] = useState<PlanningTab>('ficha');
 
   const tabs = [
-    { id: 'ficha' as const, label: '1. Ficha del Negocio', icon: Building2 },
-    { id: 'prompts' as const, label: '2. Prompts por Fases', icon: Sparkles },
-    { id: 'json' as const, label: '3. Importar / Exportar JSON', icon: FileJson },
-    { id: 'auditor' as const, label: '4. Auditor de Calidad', icon: ShieldCheck },
+    { id: 'capacidad' as const, label: '1. Diagnóstico & Capacidad', icon: Scale },
+    { id: 'ficha' as const, label: '2. Objetivos & Ficha de Contexto', icon: Building2 },
+    { id: 'prompts' as const, label: '3. Desglose & Prompts por Fase', icon: Sparkles },
+    { id: 'auditor' as const, label: '4. Priorización & Auditoría', icon: ShieldCheck },
+    { id: 'json' as const, label: '5. Plan Semanal & JSON', icon: FileJson },
+    { id: 'retrospectiva' as const, label: '6. Seguimiento & Retrospectiva', icon: History },
   ];
 
   return (
@@ -55,6 +59,8 @@ export const PlanningPage: React.FC = () => {
         {activeTab === 'prompts' && <PhasePromptGenerator />}
         {activeTab === 'json' && <JsonPlanImporterExporter />}
         {activeTab === 'auditor' && <PlanAuditorChecklist />}
+        {activeTab === 'capacidad' && <CapacityBufferCalculator />}
+        {activeTab === 'retrospectiva' && <WeeklyRetrospectiveView />}
       </div>
     </div>
   );

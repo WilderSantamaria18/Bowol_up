@@ -85,9 +85,9 @@ export const AIGenerateSocialModal: React.FC<AIGenerateSocialModalProps> = ({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/75 backdrop-blur-md animate-fade-in overflow-y-auto">
-      <div className="relative w-full max-w-3xl my-8 rounded-2xl bg-white dark:bg-[#0F0F12] border border-zinc-900/[0.16] dark:border-white/[0.1] p-6 shadow-2xl space-y-6">
+      <div className="relative w-full max-w-3xl my-8 rounded-2xl bg-white dark:bg-[#0F0F12] border border-zinc-200 dark:border-white/[0.1] p-6 shadow-2xl space-y-6">
         {/* Header */}
-        <div className="flex items-center justify-between pb-4 border-b border-zinc-900/[0.13] dark:border-white/[0.08]">
+        <div className="flex items-center justify-between pb-4 border-b border-zinc-200 dark:border-white/[0.08]">
           <div className="flex items-center gap-3">
             <div className="w-9 h-9 rounded-xl bg-orange-600/20 border border-orange-500/40 flex items-center justify-center text-orange-400">
               <Sparkles className="w-5 h-5" strokeWidth={1.5} />
@@ -121,7 +121,7 @@ export const AIGenerateSocialModal: React.FC<AIGenerateSocialModalProps> = ({
               value={topic}
               onChange={(e) => setTopic(e.target.value)}
               placeholder="p. ej. Lanzamiento de nueva función de IA para optimizar inventarios B2B"
-              className="w-full bg-surface-subtle border border-zinc-900/[0.16] dark:border-white/[0.1] rounded-lg px-3.5 py-2.5 text-xs text-zinc-900 dark:text-zinc-200 placeholder:text-zinc-600 focus:outline-none focus:border-orange-500"
+              className="w-full bg-white dark:bg-black/40 border border-zinc-300 dark:border-white/[0.1] rounded-lg px-3.5 py-2.5 text-xs text-zinc-900 dark:text-zinc-200 placeholder:text-zinc-400 dark:placeholder:text-zinc-500 focus:outline-none focus:border-orange-500"
             />
           </div>
 
@@ -141,7 +141,7 @@ export const AIGenerateSocialModal: React.FC<AIGenerateSocialModalProps> = ({
                     className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium border transition-all ${
                       isSelected
                         ? 'bg-orange-600/20 border-orange-500/50 text-orange-700 dark:text-orange-300'
-                        : 'bg-black/40 border-zinc-900/[0.13] dark:border-white/[0.08] text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-200'
+                        : 'bg-zinc-100 dark:bg-black/40 border-zinc-300 dark:border-white/[0.08] text-zinc-700 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-200'
                     }`}
                   >
                     <Icon className="w-3.5 h-3.5" strokeWidth={1.5} />
@@ -161,7 +161,7 @@ export const AIGenerateSocialModal: React.FC<AIGenerateSocialModalProps> = ({
               value={customInstructions}
               onChange={(e) => setCustomInstructions(e.target.value)}
               placeholder="p. ej. Enfocar en fundadores de startups, invitar a prueba gratuita, tono enérgico..."
-              className="w-full bg-surface-subtle border border-zinc-900/[0.16] dark:border-white/[0.1] rounded-lg px-3.5 py-2 text-xs text-zinc-900 dark:text-zinc-200 placeholder:text-zinc-600 focus:outline-none focus:border-orange-500"
+              className="w-full bg-white dark:bg-black/40 border border-zinc-300 dark:border-white/[0.1] rounded-lg px-3.5 py-2 text-xs text-zinc-900 dark:text-zinc-200 placeholder:text-zinc-400 dark:placeholder:text-zinc-500 focus:outline-none focus:border-orange-500"
             />
           </div>
 
@@ -190,7 +190,7 @@ export const AIGenerateSocialModal: React.FC<AIGenerateSocialModalProps> = ({
 
         {/* Proposals List */}
         {proposals.length > 0 && (
-          <div className="space-y-4 pt-4 border-t border-zinc-900/[0.13] dark:border-white/[0.08]">
+          <div className="space-y-4 pt-4 border-t border-zinc-200 dark:border-white/[0.08]">
             <h3 className="text-xs font-bold uppercase tracking-wider text-zinc-600 dark:text-zinc-400 flex items-center justify-between">
               <span>Propuestas Generadas ({proposals.length})</span>
               <span className="text-[11px] font-normal text-zinc-500">
@@ -206,11 +206,11 @@ export const AIGenerateSocialModal: React.FC<AIGenerateSocialModalProps> = ({
                 return (
                   <div
                     key={idx}
-                    className="p-4 rounded-xl bg-surface-subtle border border-zinc-900/[0.13] dark:border-white/[0.08] space-y-3"
+                    className="p-4 rounded-xl bg-zinc-50 dark:bg-white/[0.02] border border-zinc-200 dark:border-white/[0.08] space-y-3"
                   >
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-2">
-                        <span className="text-xs font-bold text-orange-400 bg-orange-500/10 px-2 py-0.5 rounded border border-orange-500/20">
+                        <span className="text-xs font-bold text-orange-600 dark:text-orange-400 bg-orange-500/10 px-2 py-0.5 rounded border border-orange-500/20">
                           {prop.channel}
                         </span>
                         <h4 className="text-xs font-semibold text-zinc-900 dark:text-white">{prop.title}</h4>
@@ -225,7 +225,7 @@ export const AIGenerateSocialModal: React.FC<AIGenerateSocialModalProps> = ({
                       >
                         {isAdopted ? (
                           <>
-                            <Check className="w-3.5 h-3.5 text-emerald-400" />
+                            <Check className="w-3.5 h-3.5 text-emerald-500 dark:text-emerald-400" />
                             Añadido al Feed
                           </>
                         ) : (
@@ -237,20 +237,20 @@ export const AIGenerateSocialModal: React.FC<AIGenerateSocialModalProps> = ({
                       </Button>
                     </div>
 
-                    <p className="text-xs text-zinc-700 dark:text-zinc-300 bg-black/40 p-3 rounded-lg border border-zinc-900/[0.08] dark:border-white/[0.04] whitespace-pre-wrap leading-relaxed">
+                    <p className="text-xs text-zinc-800 dark:text-zinc-300 bg-white dark:bg-black/40 p-3 rounded-lg border border-zinc-200 dark:border-white/[0.04] whitespace-pre-wrap leading-relaxed">
                       {prop.content}
                     </p>
 
                     {impact && (
-                      <div className="flex flex-wrap items-center gap-4 text-[11px] text-zinc-600 dark:text-zinc-400 bg-zinc-900/[0.02] dark:bg-white/[0.02] p-2 rounded-lg border border-zinc-900/[0.08] dark:border-white/[0.04]">
+                      <div className="flex flex-wrap items-center gap-4 text-[11px] text-zinc-600 dark:text-zinc-400 bg-zinc-100/70 dark:bg-white/[0.02] p-2 rounded-lg border border-zinc-200 dark:border-white/[0.04]">
                         <span className="flex items-center gap-1 text-zinc-700 dark:text-zinc-300">
-                          <TrendingUp className="w-3 h-3 text-orange-400" />
+                          <TrendingUp className="w-3 h-3 text-orange-500 dark:text-orange-400" />
                           Alcance: {(impact.reachEstimateMin / 1000).toFixed(1)}k - {(impact.reachEstimateMax / 1000).toFixed(1)}k
                         </span>
-                        <span className="text-emerald-400 font-medium">
+                        <span className="text-emerald-600 dark:text-emerald-400 font-medium">
                           Engagement: {impact.engagementRate}%
                         </span>
-                        <span className="text-amber-400 font-medium">
+                        <span className="text-amber-600 dark:text-amber-400 font-medium">
                           Viralidad: {impact.viralityScore}/100
                         </span>
                         {impact.bestTimeToPost && (

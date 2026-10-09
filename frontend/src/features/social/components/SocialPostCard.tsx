@@ -63,7 +63,7 @@ export const SocialPostCard: React.FC<SocialPostCardProps> = ({
         return {
           label: 'LinkedIn',
           icon: Linkedin,
-          badgeColor: 'bg-[#0A66C2]/15 text-[#3b82f6] border-[#0A66C2]/30',
+          badgeColor: 'bg-[#0A66C2]/10 dark:bg-[#0A66C2]/15 text-[#0A66C2] dark:text-[#3b82f6] border-[#0A66C2]/30',
         };
       case 'TWITTER_X':
         return {
@@ -75,25 +75,25 @@ export const SocialPostCard: React.FC<SocialPostCardProps> = ({
         return {
           label: 'Instagram',
           icon: Instagram,
-          badgeColor: 'bg-pink-600/15 text-pink-400 border-pink-500/30',
+          badgeColor: 'bg-pink-500/10 dark:bg-pink-600/15 text-pink-600 dark:text-pink-400 border-pink-500/30',
         };
       case 'BLOG':
         return {
           label: 'Blog / Web',
           icon: FileText,
-          badgeColor: 'bg-emerald-600/15 text-emerald-400 border-emerald-500/30',
+          badgeColor: 'bg-emerald-500/10 dark:bg-emerald-600/15 text-emerald-600 dark:text-emerald-400 border-emerald-500/30',
         };
       case 'NEWSLETTER':
         return {
           label: 'Newsletter',
           icon: Mail,
-          badgeColor: 'bg-purple-600/15 text-purple-400 border-purple-500/30',
+          badgeColor: 'bg-purple-500/10 dark:bg-purple-600/15 text-purple-600 dark:text-purple-400 border-purple-500/30',
         };
       default:
         return {
           label: 'Social',
           icon: Share2,
-          badgeColor: 'bg-orange-600/15 text-orange-400 border-orange-500/30',
+          badgeColor: 'bg-orange-500/10 dark:bg-orange-600/15 text-orange-600 dark:text-orange-400 border-orange-500/30',
         };
     }
   };
@@ -103,7 +103,7 @@ export const SocialPostCard: React.FC<SocialPostCardProps> = ({
   const impact = post.predictedImpact;
 
   return (
-    <div className="rounded-2xl bg-surface-subtle border border-zinc-900/[0.13] dark:border-white/[0.08] hover:border-zinc-900/[0.16] dark:hover:border-white/[0.14] transition-all p-5 space-y-4 shadow-xl backdrop-blur-md flex flex-col justify-between">
+    <div className="rounded-2xl bg-white dark:bg-[#0F0F12] border border-zinc-200 dark:border-white/[0.08] hover:border-zinc-300 dark:hover:border-white/[0.14] transition-all p-5 space-y-4 shadow-sm dark:shadow-xl backdrop-blur-md flex flex-col justify-between">
       {/* Top Meta Bar */}
       <div className="space-y-3">
         <div className="flex items-center justify-between gap-2">
@@ -116,13 +116,13 @@ export const SocialPostCard: React.FC<SocialPostCardProps> = ({
             </span>
 
             {post.status === 'PUBLISHED' && (
-              <span className="inline-flex items-center gap-1 text-[11px] font-medium text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded-full border border-emerald-500/20">
+              <span className="inline-flex items-center gap-1 text-[11px] font-medium text-emerald-600 dark:text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded-full border border-emerald-500/20">
                 <CheckCircle2 className="w-3 h-3" />
                 Publicado
               </span>
             )}
             {post.status === 'SCHEDULED' && (
-              <span className="inline-flex items-center gap-1 text-[11px] font-medium text-amber-400 bg-amber-500/10 px-2 py-0.5 rounded-full border border-amber-500/20">
+              <span className="inline-flex items-center gap-1 text-[11px] font-medium text-amber-600 dark:text-amber-400 bg-amber-500/10 px-2 py-0.5 rounded-full border border-amber-500/20">
                 <Clock className="w-3 h-3" />
                 Programado
               </span>
@@ -141,12 +141,12 @@ export const SocialPostCard: React.FC<SocialPostCardProps> = ({
               title="Copiar texto"
               aria-label="Copiar texto"
             >
-              {copied ? <Check className="w-4 h-4 text-emerald-400" /> : <Copy className="w-4 h-4" strokeWidth={1.5} />}
+              {copied ? <Check className="w-4 h-4 text-emerald-500 dark:text-emerald-400" /> : <Copy className="w-4 h-4" strokeWidth={1.5} />}
             </button>
             <button
               onClick={handleDelete}
               disabled={isDeleting}
-              className="p-1.5 rounded-lg text-zinc-500 hover:text-rose-400 hover:bg-rose-500/10 transition-colors"
+              className="p-1.5 rounded-lg text-zinc-500 hover:text-rose-500 dark:hover:text-rose-400 hover:bg-rose-500/10 transition-colors"
               title="Eliminar publicación"
               aria-label="Eliminar publicación"
             >
@@ -160,7 +160,7 @@ export const SocialPostCard: React.FC<SocialPostCardProps> = ({
           <h3 className="text-sm font-semibold text-zinc-900 dark:text-white tracking-tight line-clamp-1">
             {post.title}
           </h3>
-          <p className="text-xs text-zinc-700 dark:text-zinc-300 mt-2 whitespace-pre-wrap line-clamp-4 leading-relaxed bg-black/30 p-3 rounded-xl border border-zinc-900/[0.08] dark:border-white/[0.04]">
+          <p className="text-xs text-zinc-700 dark:text-zinc-300 mt-2 whitespace-pre-wrap line-clamp-4 leading-relaxed bg-zinc-50 dark:bg-black/30 p-3 rounded-xl border border-zinc-200/80 dark:border-white/[0.04]">
             {post.content}
           </p>
         </div>
@@ -171,7 +171,7 @@ export const SocialPostCard: React.FC<SocialPostCardProps> = ({
             {post.tags.map((tag) => (
               <span
                 key={tag}
-                className="text-[10px] text-zinc-600 dark:text-zinc-400 bg-zinc-900/[0.04] dark:bg-white/[0.04] px-2 py-0.5 rounded-md border border-zinc-900/[0.08] dark:border-white/[0.04]"
+                className="text-[10px] text-zinc-600 dark:text-zinc-400 bg-zinc-100 dark:bg-white/[0.04] px-2 py-0.5 rounded-md border border-zinc-200 dark:border-white/[0.04]"
               >
                 #{tag}
               </span>
@@ -182,9 +182,9 @@ export const SocialPostCard: React.FC<SocialPostCardProps> = ({
 
       {/* Predicted Impact Section */}
       {impact && (
-        <div className="pt-3 border-t border-zinc-900/[0.1] dark:border-white/[0.06] space-y-2">
+        <div className="pt-3 border-t border-zinc-200 dark:border-white/[0.06] space-y-2">
           <div className="flex items-center justify-between text-[11px] font-semibold text-zinc-600 dark:text-zinc-400">
-            <span className="flex items-center gap-1.5 text-orange-400">
+            <span className="flex items-center gap-1.5 text-orange-600 dark:text-orange-400">
               <TrendingUp className="w-3.5 h-3.5" strokeWidth={1.5} />
               Impacto Predictivo
             </span>
@@ -197,24 +197,24 @@ export const SocialPostCard: React.FC<SocialPostCardProps> = ({
           </div>
 
           <div className="grid grid-cols-3 gap-2 text-center">
-            <div className="p-2 rounded-lg bg-black/25 border border-zinc-900/[0.08] dark:border-white/[0.04]">
+            <div className="p-2 rounded-lg bg-zinc-50 dark:bg-black/25 border border-zinc-200/80 dark:border-white/[0.04]">
               <span className="block text-[10px] text-zinc-500">Alcance Est.</span>
               <span className="text-xs font-bold text-zinc-900 dark:text-zinc-200">
                 {(impact.reachEstimateMin / 1000).toFixed(1)}k - {(impact.reachEstimateMax / 1000).toFixed(1)}k
               </span>
             </div>
 
-            <div className="p-2 rounded-lg bg-black/25 border border-zinc-900/[0.08] dark:border-white/[0.04]">
+            <div className="p-2 rounded-lg bg-zinc-50 dark:bg-black/25 border border-zinc-200/80 dark:border-white/[0.04]">
               <span className="block text-[10px] text-zinc-500">Engagement</span>
-              <span className="text-xs font-bold text-emerald-400 flex items-center justify-center gap-0.5">
+              <span className="text-xs font-bold text-emerald-600 dark:text-emerald-400 flex items-center justify-center gap-0.5">
                 <BarChart2 className="w-3 h-3" />
                 {impact.engagementRate}%
               </span>
             </div>
 
-            <div className="p-2 rounded-lg bg-black/25 border border-zinc-900/[0.08] dark:border-white/[0.04]">
+            <div className="p-2 rounded-lg bg-zinc-50 dark:bg-black/25 border border-zinc-200/80 dark:border-white/[0.04]">
               <span className="block text-[10px] text-zinc-500">Viralidad</span>
-              <span className="text-xs font-bold text-amber-400 flex items-center justify-center gap-0.5">
+              <span className="text-xs font-bold text-amber-600 dark:text-amber-400 flex items-center justify-center gap-0.5">
                 <Flame className="w-3 h-3" />
                 {impact.viralityScore}/100
               </span>
@@ -222,7 +222,7 @@ export const SocialPostCard: React.FC<SocialPostCardProps> = ({
           </div>
 
           {impact.strategicReasoning && (
-            <p className="text-[11px] text-zinc-600 dark:text-zinc-400 italic bg-zinc-900/[0.02] dark:bg-white/[0.02] p-2 rounded-lg border border-zinc-900/[0.08] dark:border-white/[0.04] line-clamp-2">
+            <p className="text-[11px] text-zinc-600 dark:text-zinc-400 italic bg-zinc-50 dark:bg-white/[0.02] p-2 rounded-lg border border-zinc-200 dark:border-white/[0.04] line-clamp-2">
               &quot;{impact.strategicReasoning}&quot;
             </p>
           )}

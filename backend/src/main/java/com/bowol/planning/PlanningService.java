@@ -1,5 +1,7 @@
 package com.bowol.planning;
 
+import com.bowol.organization.OrganizationMember;
+import com.bowol.organization.OrganizationMemberRepository;
 import com.bowol.planning.dto.*;
 import com.bowol.project.Project;
 import com.bowol.project.ProjectRepository;
@@ -29,6 +31,12 @@ public class PlanningService {
 
     private final ProjectRepository projectRepository;
     private final TaskRepository taskRepository;
+    private final ProjectCharterRepository projectCharterRepository;
+    private final CapacityPlanRepository capacityPlanRepository;
+    private final WeeklyRetrospectiveRepository weeklyRetrospectiveRepository;
+    private final WeeklyFocusBannerRepository weeklyFocusBannerRepository;
+    private final DailyCheckinRepository dailyCheckinRepository;
+    private final OrganizationMemberRepository organizationMemberRepository;
 
     public PlanningValidationResult validatePlan(PlanningImportRequest request) {
         List<String> blockingIssues = new ArrayList<>();
@@ -267,6 +275,266 @@ public class PlanningService {
                 .tasks(taskDtos)
                 .build();
     }
+
+    // =========================================================================
+    // 1. PROJECT CHARTER (FICHA SMART)
+    // =========================================================================
+
+    @Transactional(readOnly = true)
+    public ProjectCharterDto getProjectCharter(UUID projectId, UserPrincipal principal) {
+        projectRepository.findByIdAndOrganizationIdAndDeletedAtIsNull(projectId, principal.getOrganizationId())
+                .orElseThrow(() -> new NotFoundException("PROYECTO_NO_ENCONTRADO", "No se encontró el proyecto con id: " + projectId));
+
+        return projectCharterRepository.findByProjectIdAndOrganizationId(projectId, principal.getOrganizationId())
+                .map(ProjectCharterDto::from)
+                .orElse(null);
+    }
+
+    @Transactional
+    public ProjectCharterDto saveProjectCharter(UUID projectId, ProjectCharterDto dto, UserPrincipal principal) {
+        Project project = projectRepository.findByIdAndOrganizationIdAndDeletedAtIsNull(projectId, principal.getOrganizationId())
+                .orElseThrow(() -> new NotFoundException("PROYECTO_NO_ENCONTRADO", "No se encontró el proyecto con id: " + projectId));
+
+        ProjectCharter charter = projectCharterRepository.findByProjectIdAndOrganizationId(projectId, principal.getOrganizationId())
+                .orElseGet(() -> ProjectCharter.builder()
+                        .projectId(projectId)
+                        .organizationId(principal.getOrganizationId())
+                        .build());
+
+        charter.setProblemAddressed(dto.getProblemAddressed());
+        charter.setSmartObjective(dto.getSmartObjective());
+        charter.setMeasurableKpi(dto.getMeasurableKpi());
+        charter.setBaselineValue(dto.getBaselineValue());
+        charter.setBaselineUnit(dto.getBaselineUnit());
+        charter.setBaselineDate(dto.getBaselineDate());
+        charter.setBaselineIsProvisional(dto.getBaselineIsProvisional() != null ? dto.getBaselineIsProvisional() : false);
+        charter.setTargetValue(dto.getTargetValue());
+        charter.setTargetUnit(dto.getTargetUnit());
+        charter.setTargetDeadline(dto.getTargetDeadline());
+        charter.setMeasurementSource(dto.getMeasurementSource());
+        charter.setOwnerDecisionRequired(dto.getOwnerDecisionRequired() != null ? dto.getOwnerDecisionRequired() : false);
+        charter.setOwnerDecisionDetails(dto.getOwnerDecisionDetails());
+        charter.setTechnicalDeliverables(dto.getTechnicalDeliverables() != null ? dto.getTechnicalDeliverables() : new ArrayList<>());
+        charter.setExpectedCommercialResult(dto.getExpectedCommercialResult());
+        charter.setInScope(dto.getInScope() != null ? dto.getInScope() : new ArrayList<>());
+        charter.setOutOfScope(dto.getOutOfScope() != null ? dto.getOutOfScope() : new ArrayList<>());
+        charter.setRestrictions(dto.getRestrictions() != null ? dto.getRestrictions() : new ArrayList<>());
+
+        ProjectCharter saved = projectCharterRepository.save(charter);
+        return ProjectCharterDto.from(saved);
+    }
+
+    // =========================================================================
+    // 2. CAPACITY PLAN (CAPACIDAD Y BUFFER 20%)
+    // =========================================================================
+
+    @Transactional
+    public CapacityPlanDto getCapacityPlan(UserPrincipal principal) {
+        UUID orgId = principal.getOrganizationId();
+        Optional<CapacityPlan> existing = capacityPlanRepository.findFirstByOrganizationIdOrderByCreatedAtDesc(orgId);
+        if (existing.isPresent()) {
+            return CapacityPlanDto.from(existing.get());
+        }
+
+        // Si no existe, cargar miembros reales de la organización para no usar datos ficticios
+        List<OrganizationMember> members = organizationMemberRepository.findByOrganizationIdWithUser(orgId);
+        List<CapacityPlanDto.MemberAllocationDto> memberDtos = members.stream().map(m -> CapacityPlanDto.MemberAllocationDto.builder()
+                .userId(m.getUser().getId())
+                .name(m.getUser().getName() != null && !m.getUser().getName().isBlank() ? m.getUser().getName() : m.getUser().getEmail())
+                .role(m.getRole() != null ? m.getRole().name() : "Miembro")
+                .availableHours(BigDecimal.valueOf(20))
+                .assignedHours(BigDecimal.ZERO)
+                .build()
+        ).collect(Collectors.toList());
+
+        return CapacityPlanDto.builder()
+                .periodLabel("Semana Actual")
+                .bufferPercentage(BigDecimal.valueOf(20.0))
+                .members(memberDtos)
+                .build();
+    }
+
+    @Transactional
+    public CapacityPlanDto saveCapacityPlan(CapacityPlanDto dto, UserPrincipal principal) {
+        UUID orgId = principal.getOrganizationId();
+        CapacityPlan plan = capacityPlanRepository.findFirstByOrganizationIdOrderByCreatedAtDesc(orgId)
+                .orElseGet(() -> CapacityPlan.builder()
+                        .organizationId(orgId)
+                        .periodLabel(dto.getPeriodLabel() != null ? dto.getPeriodLabel() : "Semana Actual")
+                        .bufferPercentage(dto.getBufferPercentage() != null ? dto.getBufferPercentage() : BigDecimal.valueOf(20.0))
+                        .build());
+
+        if (dto.getPeriodLabel() != null) plan.setPeriodLabel(dto.getPeriodLabel());
+        if (dto.getBufferPercentage() != null) plan.setBufferPercentage(dto.getBufferPercentage());
+
+        plan.getMemberAllocations().clear();
+        if (dto.getMembers() != null) {
+            for (CapacityPlanDto.MemberAllocationDto mDto : dto.getMembers()) {
+                CapacityMemberAllocation alloc = CapacityMemberAllocation.builder()
+                        .capacityPlan(plan)
+                        .userId(mDto.getUserId())
+                        .memberName(mDto.getName())
+                        .memberRole(mDto.getRole())
+                        .availableHours(mDto.getAvailableHours() != null ? mDto.getAvailableHours() : BigDecimal.ZERO)
+                        .assignedHours(mDto.getAssignedHours() != null ? mDto.getAssignedHours() : BigDecimal.ZERO)
+                        .build();
+                plan.getMemberAllocations().add(alloc);
+            }
+        }
+
+        CapacityPlan saved = capacityPlanRepository.save(plan);
+        return CapacityPlanDto.from(saved);
+    }
+
+    // =========================================================================
+    // 3. WEEKLY RETROSPECTIVE & REAL METRICS
+    // =========================================================================
+
+    @Transactional(readOnly = true)
+    public List<WeeklyRetrospectiveDto> getWeeklyRetrospectives(UUID projectId, UserPrincipal principal) {
+        List<WeeklyRetrospective> retros;
+        if (projectId != null) {
+            retros = weeklyRetrospectiveRepository.findAllByProjectIdAndOrganizationIdOrderByCreatedAtDesc(projectId, principal.getOrganizationId());
+        } else {
+            retros = weeklyRetrospectiveRepository.findAllByOrganizationIdOrderByCreatedAtDesc(principal.getOrganizationId());
+        }
+        return retros.stream().map(WeeklyRetrospectiveDto::from).collect(Collectors.toList());
+    }
+
+    @Transactional(readOnly = true)
+    public WeeklyRetrospectiveDto getRetrospectiveMetrics(UUID projectId, UserPrincipal principal) {
+        projectRepository.findByIdAndOrganizationIdAndDeletedAtIsNull(projectId, principal.getOrganizationId())
+                .orElseThrow(() -> new NotFoundException("PROYECTO_NO_ENCONTRADO", "No se encontró el proyecto con id: " + projectId));
+
+        List<Task> tasks = taskRepository.findAllByProjectIdOrderByPositionAsc(projectId);
+
+        int committed = tasks.size();
+        int accepted = (int) tasks.stream().filter(t -> t.getStatus() == TaskStatus.DONE).count();
+        int blocked = (int) tasks.stream().filter(t -> t.getStatus() == TaskStatus.BLOCKED).count();
+        int reviewPending = (int) tasks.stream().filter(t -> t.getStatus() == TaskStatus.IN_PROGRESS).count();
+
+        BigDecimal estHours = tasks.stream()
+                .map(t -> t.getEstimateHours() != null ? t.getEstimateHours() : BigDecimal.ZERO)
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+
+        // Horas reales acumuladas de tareas terminadas o estimadas
+        BigDecimal actualHours = tasks.stream()
+                .filter(t -> t.getStatus() == TaskStatus.DONE)
+                .map(t -> t.getEstimateHours() != null ? t.getEstimateHours() : BigDecimal.ZERO)
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+
+        return WeeklyRetrospectiveDto.builder()
+                .projectId(projectId)
+                .weekLabel("Semana Actual — Sprint Operativo")
+                .committedTasks(committed)
+                .acceptedTasks(accepted)
+                .blockedTasks(blocked)
+                .reviewPendingTasks(reviewPending)
+                .estimatedHours(estHours)
+                .actualHours(actualHours)
+                .improvements(new ArrayList<>())
+                .build();
+    }
+
+    @Transactional
+    public WeeklyRetrospectiveDto saveWeeklyRetrospective(WeeklyRetrospectiveDto dto, UserPrincipal principal) {
+        if (dto.getImprovements() != null && dto.getImprovements().size() > 3) {
+            throw new BadRequestException("MAX_3_MEJORAS", "La retrospectiva admite un máximo de 3 mejoras concretas según BOWOL Plans 2.0 (Fase 6.2)");
+        }
+
+        WeeklyRetrospective retro = WeeklyRetrospective.builder()
+                .organizationId(principal.getOrganizationId())
+                .projectId(dto.getProjectId())
+                .sprintId(dto.getSprintId())
+                .weekLabel(dto.getWeekLabel() != null ? dto.getWeekLabel() : "Semana Actual")
+                .committedTasks(dto.getCommittedTasks() != null ? dto.getCommittedTasks() : 0)
+                .acceptedTasks(dto.getAcceptedTasks() != null ? dto.getAcceptedTasks() : 0)
+                .blockedTasks(dto.getBlockedTasks() != null ? dto.getBlockedTasks() : 0)
+                .reviewPendingTasks(dto.getReviewPendingTasks() != null ? dto.getReviewPendingTasks() : 0)
+                .estimatedHours(dto.getEstimatedHours() != null ? dto.getEstimatedHours() : BigDecimal.ZERO)
+                .actualHours(dto.getActualHours() != null ? dto.getActualHours() : BigDecimal.ZERO)
+                .businessMetricResult(dto.getBusinessMetricResult())
+                .businessMetricDate(dto.getBusinessMetricDate())
+                .whatWorked(dto.getWhatWorked())
+                .delayCauses(dto.getDelayCauses())
+                .improvements(dto.getImprovements() != null ? dto.getImprovements() : new ArrayList<>())
+                .build();
+
+        WeeklyRetrospective saved = weeklyRetrospectiveRepository.save(retro);
+        return WeeklyRetrospectiveDto.from(saved);
+    }
+
+    // =========================================================================
+    // 4. WEEKLY FOCUS BANNER
+    // =========================================================================
+
+    @Transactional(readOnly = true)
+    public WeeklyFocusBannerDto getWeeklyFocusBanner(UUID projectId, UserPrincipal principal) {
+        projectRepository.findByIdAndOrganizationIdAndDeletedAtIsNull(projectId, principal.getOrganizationId())
+                .orElseThrow(() -> new NotFoundException("PROYECTO_NO_ENCONTRADO", "No se encontró el proyecto con id: " + projectId));
+
+        return weeklyFocusBannerRepository.findByProjectIdAndOrganizationId(projectId, principal.getOrganizationId())
+                .map(WeeklyFocusBannerDto::from)
+                .orElse(null);
+    }
+
+    @Transactional
+    public WeeklyFocusBannerDto saveWeeklyFocusBanner(UUID projectId, WeeklyFocusBannerDto dto, UserPrincipal principal) {
+        projectRepository.findByIdAndOrganizationIdAndDeletedAtIsNull(projectId, principal.getOrganizationId())
+                .orElseThrow(() -> new NotFoundException("PROYECTO_NO_ENCONTRADO", "No se encontró el proyecto con id: " + projectId));
+
+        WeeklyFocusBanner banner = weeklyFocusBannerRepository.findByProjectIdAndOrganizationId(projectId, principal.getOrganizationId())
+                .orElseGet(() -> WeeklyFocusBanner.builder()
+                        .projectId(projectId)
+                        .organizationId(principal.getOrganizationId())
+                        .build());
+
+        banner.setWeeklyDeliverable(dto.getWeeklyDeliverable() != null ? dto.getWeeklyDeliverable().trim() : "");
+        banner.setIdentifiedRisk(dto.getIdentifiedRisk() != null ? dto.getIdentifiedRisk().trim() : "");
+        banner.setMitigationPlan(dto.getMitigationPlan() != null ? dto.getMitigationPlan().trim() : "");
+
+        WeeklyFocusBanner saved = weeklyFocusBannerRepository.save(banner);
+        return WeeklyFocusBannerDto.from(saved);
+    }
+
+    // =========================================================================
+    // 5. DAILY CHECK-INS
+    // =========================================================================
+
+    @Transactional(readOnly = true)
+    public List<DailyCheckinDto> getDailyCheckins(UUID projectId, UserPrincipal principal) {
+        projectRepository.findByIdAndOrganizationIdAndDeletedAtIsNull(projectId, principal.getOrganizationId())
+                .orElseThrow(() -> new NotFoundException("PROYECTO_NO_ENCONTRADO", "No se encontró el proyecto con id: " + projectId));
+
+        return dailyCheckinRepository.findByProjectIdAndOrganizationIdOrderByDateDescCreatedAtDesc(projectId, principal.getOrganizationId())
+                .stream().map(DailyCheckinDto::from).collect(Collectors.toList());
+    }
+
+    @Transactional
+    public DailyCheckinDto createDailyCheckin(UUID projectId, DailyCheckinDto dto, UserPrincipal principal) {
+        projectRepository.findByIdAndOrganizationIdAndDeletedAtIsNull(projectId, principal.getOrganizationId())
+                .orElseThrow(() -> new NotFoundException("PROYECTO_NO_ENCONTRADO", "No se encontró el proyecto con id: " + projectId));
+
+        DailyCheckin checkin = DailyCheckin.builder()
+                .organizationId(principal.getOrganizationId())
+                .projectId(projectId)
+                .userId(principal.getId())
+                .userName(dto.getUserName() != null && !dto.getUserName().isBlank() ? dto.getUserName().trim() : (principal.getName() != null ? principal.getName() : principal.getUsername()))
+                .date(dto.getDate() != null ? dto.getDate() : LocalDate.now())
+                .yesterdayDeliverable(dto.getYesterdayDeliverable() != null ? dto.getYesterdayDeliverable().trim() : "")
+                .todayCommitment(dto.getTodayCommitment() != null ? dto.getTodayCommitment().trim() : "")
+                .blockers(dto.getBlockers() != null ? dto.getBlockers().trim() : null)
+                .hasBlocker(dto.getHasBlocker() != null ? dto.getHasBlocker() : false)
+                .taskId(dto.getTaskId())
+                .build();
+
+        DailyCheckin saved = dailyCheckinRepository.save(checkin);
+        return DailyCheckinDto.from(saved);
+    }
+
+    // =========================================================================
+    // UTILS
+    // =========================================================================
 
     private boolean hasCycle(Map<String, List<String>> adjList) {
         Set<String> visited = new HashSet<>();

@@ -4,7 +4,6 @@ import { BrowserRouter } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { PlanningPage } from '../pages/PlanningPage';
 import { planningService } from '../services/planningService';
-import { projectService } from '@/features/projects/services/projectService';
 
 vi.mock('../services/planningService', () => ({
   planningService: {
@@ -44,16 +43,18 @@ describe('PlanningPage Component', () => {
     localStorage.clear();
   });
 
-  it('renderiza la cabecera del planificador y sus cuatro pestañas metodológicas', () => {
+  it('renderiza la cabecera del planificador y sus seis pestañas metodológicas', () => {
     renderComponent();
 
     expect(screen.getByText(/Planificador Operativo BOWOL Plans 2.0/i)).toBeInTheDocument();
     expect(screen.getByText(/para equipos de 1 a 15 personas/i)).toBeInTheDocument();
 
-    expect(screen.getByRole('button', { name: /1\. Ficha del Negocio/i })).toBeInTheDocument();
-    expect(screen.getByRole('button', { name: /2\. Prompts por Fases/i })).toBeInTheDocument();
-    expect(screen.getByRole('button', { name: /3\. Importar \/ Exportar JSON/i })).toBeInTheDocument();
-    expect(screen.getByRole('button', { name: /4\. Auditor de Calidad/i })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /1\. Diagnóstico & Capacidad/i })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /2\. Objetivos & Ficha de Contexto/i })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /3\. Desglose & Prompts por Fase/i })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /4\. Priorización & Auditoría/i })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /5\. Plan Semanal & JSON/i })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /6\. Seguimiento & Retrospectiva/i })).toBeInTheDocument();
   });
 
   it('permite alternar entre pestañas e interactuar con la Ficha de Contexto', () => {
@@ -74,7 +75,7 @@ describe('PlanningPage Component', () => {
     renderComponent();
 
     // Cambiar a la pestaña de prompts
-    const promptsTab = screen.getByRole('button', { name: /2\. Prompts por Fases/i });
+    const promptsTab = screen.getByRole('button', { name: /3\. Desglose & Prompts por Fase/i });
     fireEvent.click(promptsTab);
 
     expect(screen.getByText(/Fase 1: Diagnóstico & Capacidad/i)).toBeInTheDocument();
@@ -88,7 +89,7 @@ describe('PlanningPage Component', () => {
   it('permite auditar el plan con el Checklist de 8 puntos', () => {
     renderComponent();
 
-    const auditTab = screen.getByRole('button', { name: /4\. Auditor de Calidad/i });
+    const auditTab = screen.getByRole('button', { name: /4\. Priorización & Auditoría/i });
     fireEvent.click(auditTab);
 
     expect(screen.getByText(/Comprobación Rápida de 8 Puntos/i)).toBeInTheDocument();
@@ -122,7 +123,7 @@ describe('PlanningPage Component', () => {
 
     renderComponent();
 
-    const jsonTab = screen.getByRole('button', { name: /3\. Importar \/ Exportar JSON/i });
+    const jsonTab = screen.getByRole('button', { name: /5\. Plan Semanal & JSON/i });
     fireEvent.click(jsonTab);
 
     expect(screen.getByText(/Importador & Exportador JSON/i)).toBeInTheDocument();

@@ -117,7 +117,18 @@ public class TaskService {
                 .assigneeId(request.getAssigneeId())
                 .estimateHours(request.getEstimateHours())
                 .position(position)
+                .externalWaitHours(request.getExternalWaitHours() != null ? request.getExternalWaitHours() : BigDecimal.ZERO)
+                .area(request.getArea())
+                .deliverable(request.getDeliverable())
+                .dependsOn(request.getDependsOn() != null ? request.getDependsOn() : new ArrayList<>())
                 .build();
+
+        if (task.getStatus() == TaskStatus.DONE) {
+            validateDoneRequirements(task.getAcceptanceEvidence(), principal);
+            task.setAcceptanceReviewedBy(resolveReviewerName(principal));
+        }
+
+        validateTaskDependencies(task.getId(), task.getProjectId(), task.getDependsOn());
 
         Task saved = taskRepository.save(task);
         checkAndDispatchBlockedTask(principal.getOrganizationId(), saved);
@@ -140,6 +151,15 @@ public class TaskService {
             task.setSprintId(request.getSprintId());
         }
         if (request.getStatus() != null) {
+            if (request.getStatus() == TaskStatus.DONE) {
+                String evidence = request.getAcceptanceEvidence() != null ? request.getAcceptanceEvidence() : task.getAcceptanceEvidence();
+                validateDoneRequirements(evidence, principal);
+                task.setAcceptanceEvidence(evidence.trim());
+                task.setAcceptanceReviewedBy(resolveReviewerName(principal));
+            } else if (task.getStatus() == TaskStatus.DONE && request.getStatus() != TaskStatus.DONE) {
+                // Reapertura: preservar trazabilidad o limpiar completedAt
+                task.setCompletedAt(null);
+            }
             task.setStatus(request.getStatus());
         }
         if (request.getPriority() != null) {
@@ -155,6 +175,31 @@ public class TaskService {
         if (request.getPosition() != null) {
             task.setPosition(request.getPosition());
         }
+        if (request.getBlockedReason() != null) {
+            task.setBlockedReason(request.getBlockedReason());
+        }
+        if (request.getBlockedResolver() != null) {
+            task.setBlockedResolver(request.getBlockedResolver());
+        }
+        if (request.getBlockedReviewDate() != null) {
+            task.setBlockedReviewDate(request.getBlockedReviewDate());
+        }
+        if (request.getAcceptanceEvidence() != null) {
+            task.setAcceptanceEvidence(request.getAcceptanceEvidence());
+        }
+        if (request.getExternalWaitHours() != null) {
+            task.setExternalWaitHours(request.getExternalWaitHours());
+        }
+        if (request.getArea() != null) {
+            task.setArea(request.getArea());
+        }
+        if (request.getDeliverable() != null) {
+            task.setDeliverable(request.getDeliverable());
+        }
+        if (request.getDependsOn() != null) {
+            validateTaskDependencies(task.getId(), task.getProjectId(), request.getDependsOn());
+            task.setDependsOn(request.getDependsOn());
+        }
 
         Task saved = taskRepository.save(task);
         checkAndDispatchBlockedTask(principal.getOrganizationId(), saved);
@@ -164,10 +209,41 @@ public class TaskService {
     @Transactional
     public TaskResponse updateTaskStatus(UUID id, UpdateTaskStatusRequest request, UserPrincipal principal) {
         Task task = getTaskEntity(id, principal.getOrganizationId());
+        
+        if (request.getStatus() == TaskStatus.DONE) {
+            String evidence = request.getAcceptanceEvidence() != null ? request.getAcceptanceEvidence() : task.getAcceptanceEvidence();
+            validateDoneRequirements(evidence, principal);
+            task.setAcceptanceEvidence(evidence.trim());
+            task.setAcceptanceReviewedBy(resolveReviewerName(principal));
+        } else if (task.getStatus() == TaskStatus.DONE && request.getStatus() != TaskStatus.DONE) {
+            // Reapertura: desmarcar completedAt
+            task.setCompletedAt(null);
+        }
+
         task.setStatus(request.getStatus());
+
+        if (request.getStatus() == TaskStatus.BLOCKED) {
+            if (request.getBlockedReason() != null) {
+                task.setBlockedReason(request.getBlockedReason().trim());
+            }
+            if (request.getBlockedResolver() != null) {
+                task.setBlockedResolver(request.getBlockedResolver().trim());
+            }
+            if (request.getBlockedReviewDate() != null) {
+                task.setBlockedReviewDate(request.getBlockedReviewDate());
+            }
+        } else if (task.getBlockedReason() != null && request.getStatus() != TaskStatus.BLOCKED) {
+            // When unblocked, clear blocker reason if not provided
+            if (request.getBlockedReason() == null) {
+                task.setBlockedReason(null);
+                task.setBlockedResolver(null);
+                task.setBlockedReviewDate(null);
+            }
+        }
+
         Task saved = taskRepository.save(task);
         checkAndDispatchBlockedTask(principal.getOrganizationId(), saved);
-        log.info("Status de tarea {} actualizado a {}", id, request.getStatus());
+        log.info("Status de tarea {} actualizado a {} por {}", id, request.getStatus(), principal.getUsername());
         return TaskResponse.from(saved);
     }
 
@@ -378,5 +454,111 @@ public class TaskService {
         if (!isActiveMember) {
             throw new BadRequestException("TASK_ASSIGNEE_NOT_MEMBER", "La persona asignada no es miembro activo de la organización");
         }
+    }
+
+    private void validateDoneRequirements(String evidence, UserPrincipal principal) {
+        if (evidence == null || evidence.trim().isBlank()) {
+            throw new BadRequestException("DONE_EVIDENCE_REQUIRED", "El cierre a DONE exige evidencia tangible del entregable (Fase 6.2)");
+        }
+        if (principal == null) {
+            throw new BadRequestException("REVIEWER_REQUIRED", "Se requiere usuario autenticado para revisar y certificar el cierre");
+        }
+    }
+
+    private String resolveReviewerName(UserPrincipal principal) {
+        if (principal == null) return "Sistema";
+        if (principal.getUsername() != null && !principal.getUsername().isBlank()) {
+            return principal.getUsername();
+        }
+        return principal.getId() != null ? principal.getId().toString() : "Revisor Autorizado";
+    }
+
+    private void validateTaskDependencies(UUID taskId, UUID projectId, List<String> dependsOn) {
+        if (dependsOn == null || dependsOn.isEmpty()) {
+            return;
+        }
+
+        List<Task> existingTasks = taskRepository.findAllByProjectIdOrderByPositionAsc(projectId);
+        Map<String, UUID> idMap = new HashMap<>();
+        Map<UUID, List<UUID>> adjList = new HashMap<>();
+
+        for (int i = 0; i < existingTasks.size(); i++) {
+            Task t = existingTasks.get(i);
+            String label = String.format("T-%03d", i + 1);
+            idMap.put(label, t.getId());
+            idMap.put(t.getId().toString(), t.getId());
+            if (t.getDependsOn() != null) {
+                List<UUID> resolvedDeps = new ArrayList<>();
+                for (String dep : t.getDependsOn()) {
+                    if (idMap.containsKey(dep.trim())) {
+                        resolvedDeps.add(idMap.get(dep.trim()));
+                    }
+                }
+                adjList.put(t.getId(), resolvedDeps);
+            }
+        }
+
+        // Validar que las dependencias de la tarea actual existan y no apunten a sí misma
+        List<UUID> currentDeps = new ArrayList<>();
+        for (String dep : dependsOn) {
+            String trimmed = dep.trim();
+            UUID targetId = idMap.get(trimmed);
+            if (targetId == null) {
+                // Verificar si es un UUID válido de la lista
+                for (Task et : existingTasks) {
+                    if (et.getId().toString().equalsIgnoreCase(trimmed)) {
+                        targetId = et.getId();
+                        break;
+                    }
+                }
+            }
+            if (targetId == null) {
+                throw new BadRequestException("DEPENDENCY_NOT_FOUND", "La dependencia " + trimmed + " no existe en el proyecto");
+            }
+            if (taskId != null && targetId.equals(taskId)) {
+                throw new BadRequestException("CYCLIC_DEPENDENCY", "Una tarea no puede depender de sí misma");
+            }
+            currentDeps.add(targetId);
+        }
+
+        if (taskId != null) {
+            adjList.put(taskId, currentDeps);
+            if (detectCycle(adjList)) {
+                throw new BadRequestException("CYCLIC_DEPENDENCY", "Se detectó un ciclo en las dependencias de las tareas");
+            }
+        }
+    }
+
+    private boolean detectCycle(Map<UUID, List<UUID>> graph) {
+        Set<UUID> visited = new HashSet<>();
+        Set<UUID> inStack = new HashSet<>();
+
+        for (UUID node : graph.keySet()) {
+            if (!visited.contains(node)) {
+                if (dfs(node, graph, visited, inStack)) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    private boolean dfs(UUID curr, Map<UUID, List<UUID>> graph, Set<UUID> visited, Set<UUID> inStack) {
+        visited.add(curr);
+        inStack.add(curr);
+
+        List<UUID> neighbors = graph.getOrDefault(curr, Collections.emptyList());
+        for (UUID next : neighbors) {
+            if (!visited.contains(next)) {
+                if (dfs(next, graph, visited, inStack)) {
+                    return true;
+                }
+            } else if (inStack.contains(next)) {
+                return true;
+            }
+        }
+
+        inStack.remove(curr);
+        return false;
     }
 }

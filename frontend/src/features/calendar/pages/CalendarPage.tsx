@@ -107,10 +107,10 @@ export const CalendarPage: React.FC = () => {
 
       {/* Selected Item Detail Banner */}
       {selectedItem && (
-        <div className="p-4 rounded-xl bg-surface-subtle border border-orange-500/30 flex items-start justify-between gap-4 animate-fade-in shadow-lg">
+        <div className="p-4 rounded-xl bg-orange-500/5 dark:bg-[#0F0F12] border border-orange-500/30 flex items-start justify-between gap-4 animate-fade-in shadow-sm dark:shadow-lg">
           <div className="space-y-1">
             <div className="flex items-center gap-2 flex-wrap">
-              <span className="text-xs font-semibold text-orange-400 px-2 py-0.5 rounded-full bg-orange-500/10 border border-orange-500/20">
+              <span className="text-xs font-semibold text-orange-600 dark:text-orange-400 px-2 py-0.5 rounded-full bg-orange-500/10 border border-orange-500/20">
                 {selectedItem.eventType}
               </span>
               <h3 className="text-sm font-bold text-zinc-900 dark:text-white">{selectedItem.title}</h3>
@@ -142,7 +142,7 @@ export const CalendarPage: React.FC = () => {
           <span className="text-xs text-zinc-600 dark:text-zinc-400">Cargando roadmap integral...</span>
         </div>
       ) : error ? (
-        <div className="p-4 rounded-xl bg-rose-500/10 border border-rose-500/20 text-xs text-rose-300">
+        <div className="p-4 rounded-xl bg-rose-500/10 border border-rose-500/20 text-xs text-rose-700 dark:text-rose-300">
           Error al cargar los eventos del calendario.
         </div>
       ) : (

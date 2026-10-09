@@ -19,6 +19,8 @@ export interface Opportunity {
   confidenceScore?: number;
   effortScore?: number;
   priorityScore?: number;
+  isMandatoryEnabler?: boolean;
+  evidenceNotes?: string;
   status: OpportunityStatus;
   evidence: string[];
   createdAt: string;
@@ -41,6 +43,8 @@ export interface CreateOpportunityPayload {
   impactScore?: number;
   confidenceScore?: number;
   effortScore?: number;
+  isMandatoryEnabler?: boolean;
+  evidenceNotes?: string;
   evidence?: string[];
 }
 
@@ -56,6 +60,8 @@ export interface UpdateOpportunityPayload {
   impactScore?: number;
   confidenceScore?: number;
   effortScore?: number;
+  isMandatoryEnabler?: boolean;
+  evidenceNotes?: string;
   status?: OpportunityStatus;
   evidence?: string[];
 }

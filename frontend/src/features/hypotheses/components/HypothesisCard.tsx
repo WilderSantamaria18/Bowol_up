@@ -24,17 +24,17 @@ interface HypothesisCardProps {
 
 const statusBadgeStyles: Record<HypothesisStatus, string> = {
   DRAFT: 'bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 border-zinc-300 dark:border-zinc-700',
-  READY: 'bg-cyan-500/10 text-cyan-400 border-cyan-500/30',
-  RUNNING: 'bg-blue-500/10 text-blue-400 border-blue-500/30',
-  VALIDATED: 'bg-emerald-500/10 text-emerald-400 border-emerald-500/30',
-  INVALIDATED: 'bg-rose-500/10 text-rose-400 border-rose-500/30',
-  CANCELED: 'bg-zinc-100 dark:bg-zinc-900 text-zinc-500 border-zinc-200 dark:border-zinc-800',
+  READY: 'bg-cyan-50 dark:bg-cyan-500/10 text-cyan-700 dark:text-cyan-400 border-cyan-200 dark:border-cyan-500/30',
+  RUNNING: 'bg-blue-50 dark:bg-blue-500/10 text-blue-700 dark:text-blue-400 border-blue-200 dark:border-blue-500/30',
+  VALIDATED: 'bg-emerald-50 dark:bg-emerald-500/10 text-emerald-700 dark:text-emerald-400 border-emerald-200 dark:border-emerald-500/30',
+  INVALIDATED: 'bg-rose-50 dark:bg-rose-500/10 text-rose-700 dark:text-rose-400 border-rose-200 dark:border-rose-500/30',
+  CANCELED: 'bg-zinc-100 dark:bg-zinc-900 text-zinc-600 dark:text-zinc-500 border-zinc-200 dark:border-zinc-800',
 };
 
 const resultBadgeStyles: Record<HypothesisResult, { label: string; icon: React.ElementType; style: string }> = {
-  SUPPORTED: { label: 'Validada (Supported)', icon: CheckCircle2, style: 'text-emerald-400 bg-emerald-500/10 border-emerald-500/30' },
-  REFUTED: { label: 'Refutada (Refuted)', icon: XCircle, style: 'text-rose-400 bg-rose-500/10 border-rose-500/30' },
-  INCONCLUSIVE: { label: 'Inconclusa', icon: HelpCircle, style: 'text-amber-400 bg-amber-500/10 border-amber-500/30' },
+  SUPPORTED: { label: 'Validada (Supported)', icon: CheckCircle2, style: 'text-emerald-700 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-500/10 border-emerald-200 dark:border-emerald-500/30' },
+  REFUTED: { label: 'Refutada (Refuted)', icon: XCircle, style: 'text-rose-700 dark:text-rose-400 bg-rose-50 dark:bg-rose-500/10 border-rose-200 dark:border-rose-500/30' },
+  INCONCLUSIVE: { label: 'Inconclusa', icon: HelpCircle, style: 'text-amber-700 dark:text-amber-400 bg-amber-50 dark:bg-amber-500/10 border-amber-200 dark:border-amber-500/30' },
 };
 
 export const HypothesisCard: React.FC<HypothesisCardProps> = ({
@@ -48,7 +48,7 @@ export const HypothesisCard: React.FC<HypothesisCardProps> = ({
   const resultInfo = hypothesis.result ? resultBadgeStyles[hypothesis.result] : null;
 
   return (
-    <div className="group relative rounded-xl bg-surface-subtle/80 backdrop-blur-md border border-zinc-900/[0.13] dark:border-white/[0.08] p-5 hover:border-zinc-900/[0.16] dark:hover:border-white/[0.16] transition-all flex flex-col justify-between gap-4">
+    <div className="group relative rounded-xl bg-white/80 dark:bg-zinc-900/60 backdrop-blur-md border border-zinc-200/80 dark:border-white/[0.08] p-5 hover:border-zinc-300 dark:hover:border-white/[0.16] transition-all flex flex-col justify-between gap-4 shadow-sm dark:shadow-none">
       {/* Top Header */}
       <div>
         <div className="flex items-center justify-between gap-2 mb-3">
@@ -75,7 +75,7 @@ export const HypothesisCard: React.FC<HypothesisCardProps> = ({
 
           <button
             onClick={() => onDelete(hypothesis.id)}
-            className="text-zinc-500 hover:text-rose-400 opacity-0 group-hover:opacity-100 transition-opacity p-1"
+            className="text-zinc-400 hover:text-rose-600 dark:text-zinc-500 dark:hover:text-rose-400 opacity-0 group-hover:opacity-100 transition-opacity p-1"
             title="Eliminar hipótesis"
             aria-label="Eliminar hipótesis"
           >
@@ -92,17 +92,17 @@ export const HypothesisCard: React.FC<HypothesisCardProps> = ({
         {(hypothesis.targetSegment || hypothesis.problemStatement || hypothesis.solutionProposal) && (
           <div className="flex flex-wrap items-center gap-2 mb-3 text-[11px]">
             {hypothesis.targetSegment && (
-              <span className="px-2 py-0.5 rounded-md bg-sky-500/10 text-sky-400 border border-sky-500/20 font-medium">
+              <span className="px-2 py-0.5 rounded-md bg-sky-50 dark:bg-sky-500/10 text-sky-700 dark:text-sky-400 border border-sky-200 dark:border-sky-500/20 font-medium">
                 Segmento: {hypothesis.targetSegment}
               </span>
             )}
             {hypothesis.problemStatement && (
-              <span className="px-2 py-0.5 rounded-md bg-amber-500/10 text-amber-400 border border-amber-500/20 font-medium truncate max-w-xs">
+              <span className="px-2 py-0.5 rounded-md bg-amber-50 dark:bg-amber-500/10 text-amber-700 dark:text-amber-400 border border-amber-200 dark:border-amber-500/20 font-medium truncate max-w-xs">
                 Problema: {hypothesis.problemStatement}
               </span>
             )}
             {hypothesis.solutionProposal && (
-              <span className="px-2 py-0.5 rounded-md bg-purple-500/10 text-purple-400 border border-purple-500/20 font-medium truncate max-w-xs">
+              <span className="px-2 py-0.5 rounded-md bg-purple-50 dark:bg-purple-500/10 text-purple-700 dark:text-purple-400 border border-purple-200 dark:border-purple-500/20 font-medium truncate max-w-xs">
                 Solución: {hypothesis.solutionProposal}
               </span>
             )}
@@ -110,33 +110,33 @@ export const HypothesisCard: React.FC<HypothesisCardProps> = ({
         )}
 
         {/* Details Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5 text-xs bg-zinc-900/[0.02] dark:bg-white/[0.02] border border-zinc-900/[0.08] dark:border-white/[0.04] p-3 rounded-lg">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5 text-xs bg-zinc-50 dark:bg-white/[0.02] border border-zinc-200/80 dark:border-white/[0.04] p-3 rounded-lg">
           <div>
-            <span className="text-zinc-500 block mb-0.5 flex items-center gap-1 font-mono uppercase tracking-wider text-[10px]">
-              <FlaskConical className="w-3 h-3 text-cyan-400" strokeWidth={1.5} />
+            <span className="text-zinc-500 dark:text-zinc-400 block mb-0.5 flex items-center gap-1 font-mono uppercase tracking-wider text-[10px]">
+              <FlaskConical className="w-3 h-3 text-cyan-600 dark:text-cyan-400" strokeWidth={1.5} />
               Método
             </span>
-            <span className="text-zinc-700 dark:text-zinc-300 font-medium line-clamp-2">
+            <span className="text-zinc-800 dark:text-zinc-300 font-medium line-clamp-2">
               {hypothesis.validationMethod || 'No especificado'}
             </span>
           </div>
 
           <div>
-            <span className="text-zinc-500 block mb-0.5 flex items-center gap-1 font-mono uppercase tracking-wider text-[10px]">
-              <Gauge className="w-3 h-3 text-amber-400" strokeWidth={1.5} />
+            <span className="text-zinc-500 dark:text-zinc-400 block mb-0.5 flex items-center gap-1 font-mono uppercase tracking-wider text-[10px]">
+              <Gauge className="w-3 h-3 text-amber-600 dark:text-amber-400" strokeWidth={1.5} />
               Métrica
             </span>
-            <span className="text-zinc-700 dark:text-zinc-300 font-medium line-clamp-2">
+            <span className="text-zinc-800 dark:text-zinc-300 font-medium line-clamp-2">
               {hypothesis.successMetric || 'No especificada'}
             </span>
           </div>
 
           <div>
-            <span className="text-zinc-500 block mb-0.5 flex items-center gap-1 font-mono uppercase tracking-wider text-[10px]">
-              <Target className="w-3 h-3 text-emerald-400" strokeWidth={1.5} />
+            <span className="text-zinc-500 dark:text-zinc-400 block mb-0.5 flex items-center gap-1 font-mono uppercase tracking-wider text-[10px]">
+              <Target className="w-3 h-3 text-emerald-600 dark:text-emerald-400" strokeWidth={1.5} />
               Meta
             </span>
-            <span className="text-emerald-400 font-semibold line-clamp-2">
+            <span className="text-emerald-700 dark:text-emerald-400 font-semibold line-clamp-2">
               {hypothesis.targetValue || 'Pendiente'}
             </span>
           </div>
@@ -168,7 +168,7 @@ export const HypothesisCard: React.FC<HypothesisCardProps> = ({
             variant="ghost"
             size="sm"
             onClick={() => onCreateExperiment(hypothesis)}
-            className="text-xs h-7 text-cyan-400 hover:text-cyan-300 hover:bg-cyan-500/10 gap-1.5"
+            className="text-xs h-7 text-cyan-700 dark:text-cyan-400 hover:text-cyan-800 dark:hover:text-cyan-300 hover:bg-cyan-50 dark:hover:bg-cyan-500/10 gap-1.5"
           >
             <Plus className="w-3.5 h-3.5" strokeWidth={1.5} />
             Nuevo Experimento

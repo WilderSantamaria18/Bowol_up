@@ -33,13 +33,13 @@ export const EvidenceDetailModal: React.FC<EvidenceDetailModalProps> = ({
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm animate-fade-in">
       <div 
-        className="w-full max-w-2xl bg-white dark:bg-[#0F0F12] border border-zinc-900/[0.13] dark:border-white/[0.08] rounded-2xl shadow-2xl overflow-hidden flex flex-col max-h-[85vh]"
+        className="w-full max-w-2xl bg-white dark:bg-[#0F0F12] border border-zinc-200 dark:border-white/[0.08] rounded-2xl shadow-2xl overflow-hidden flex flex-col max-h-[85vh]"
         role="dialog"
         aria-modal="true"
         aria-labelledby="evidence-modal-title"
       >
         {/* Header */}
-        <div className="flex items-center justify-between p-5 border-b border-zinc-900/[0.1] dark:border-white/[0.06] bg-zinc-900/[0.02] dark:bg-white/[0.02]">
+        <div className="flex items-center justify-between p-5 border-b border-zinc-200 dark:border-white/[0.06] bg-zinc-50 dark:bg-white/[0.02]">
           <div className="flex items-center gap-3">
             <div className="w-9 h-9 rounded-xl bg-sky-500/10 border border-sky-500/30 flex items-center justify-center text-sky-400">
               <Layers className="w-5 h-5" strokeWidth={1.5} />
@@ -66,7 +66,7 @@ export const EvidenceDetailModal: React.FC<EvidenceDetailModalProps> = ({
               <span className="text-xs">Cargando evidencias estratégicas...</span>
             </div>
           ) : evidences.length === 0 ? (
-            <div className="text-center py-12 border border-dashed border-zinc-900/[0.13] dark:border-white/[0.08] rounded-xl text-zinc-500 text-xs">
+            <div className="text-center py-12 border border-dashed border-zinc-200 dark:border-white/[0.08] rounded-xl text-zinc-500 text-xs">
               No hay evidencias de tendencias asociadas directamente a este FODA.
             </div>
           ) : (
@@ -78,23 +78,23 @@ export const EvidenceDetailModal: React.FC<EvidenceDetailModalProps> = ({
                 className={`p-4 rounded-xl border transition-colors space-y-2 ${
                   isSelected 
                     ? 'bg-sky-500/10 border-sky-500/30 ring-1 ring-sky-500/20' 
-                    : 'bg-zinc-900/[0.02] dark:bg-white/[0.02] border-zinc-900/[0.1] dark:border-white/[0.06] hover:border-zinc-900/[0.16] dark:hover:border-white/[0.12]'
+                    : 'bg-zinc-50 dark:bg-white/[0.02] border-zinc-200 dark:border-white/[0.06] hover:border-zinc-300 dark:hover:border-white/[0.12]'
                 }`}
               >
                 <div className="flex items-start justify-between gap-3">
                   <div className="flex items-center gap-2">
-                    <span className="text-xs font-semibold px-2 py-0.5 rounded-md bg-zinc-900/[0.06] dark:bg-white/[0.06] text-zinc-700 dark:text-zinc-300 border border-zinc-900/[0.13] dark:border-white/[0.08]">
+                    <span className="text-xs font-semibold px-2 py-0.5 rounded-md bg-zinc-100 dark:bg-white/[0.06] text-zinc-700 dark:text-zinc-300 border border-zinc-200 dark:border-white/[0.08]">
                       {ev.trendSource || 'Tendencia'}
                     </span>
                     <h4 className="text-sm font-medium text-zinc-900 dark:text-white">{ev.trendTitle || 'Tendencia identificada'}</h4>
                     {isSelected && (
-                      <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-sky-500/20 text-sky-300 border border-sky-500/30">
+                      <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-sky-500/20 text-sky-600 dark:text-sky-300 border border-sky-500/30">
                         Vinculada a este elemento
                       </span>
                     )}
                   </div>
                   {ev.trendScore !== undefined && (
-                    <span className="inline-flex items-center gap-1 text-xs font-semibold px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 shrink-0">
+                    <span className="inline-flex items-center gap-1 text-xs font-semibold px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20 shrink-0">
                       <TrendingUp className="w-3 h-3" strokeWidth={1.5} />
                       {ev.trendScore}/100
                     </span>
@@ -110,7 +110,7 @@ export const EvidenceDetailModal: React.FC<EvidenceDetailModalProps> = ({
         </div>
 
         {/* Footer */}
-        <div className="p-4 border-t border-zinc-900/[0.1] dark:border-white/[0.06] bg-zinc-900/[0.01] dark:bg-white/[0.01] flex justify-end">
+        <div className="p-4 border-t border-zinc-200 dark:border-white/[0.06] bg-zinc-50/50 dark:bg-white/[0.01] flex justify-end">
           <Button variant="ghost" size="sm" onClick={onClose}>
             Cerrar
           </Button>

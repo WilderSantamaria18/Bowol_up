@@ -63,15 +63,26 @@ export const OpportunityCard: React.FC<OpportunityCardProps> = ({
     ? Number(opportunity.priorityScore).toFixed(1)
     : 'N/A';
 
+  // Check if saved as mandatory enabler under BOWOL Plans Phase 4
+  const isEnabler = (() => {
+    try {
+      const saved = localStorage.getItem(`bowol_opp_meta_${opportunity.id}`);
+      if (saved) return Boolean(JSON.parse(saved).isMandatoryEnabler);
+    } catch {
+      // ignore
+    }
+    return false;
+  })();
+
   const renderRiskBadge = () => {
     if (!opportunity.riskLevel) return null;
     switch (opportunity.riskLevel) {
       case 'LOW':
-        return <span className="px-1.5 py-0.5 rounded text-[10px] font-medium bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">Riesgo Bajo</span>;
+        return <span className="px-1.5 py-0.5 rounded text-[10px] font-medium bg-emerald-50 dark:bg-emerald-500/10 text-emerald-700 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-500/20">Riesgo Bajo</span>;
       case 'MEDIUM':
-        return <span className="px-1.5 py-0.5 rounded text-[10px] font-medium bg-amber-500/10 text-amber-400 border border-amber-500/20">Riesgo Medio</span>;
+        return <span className="px-1.5 py-0.5 rounded text-[10px] font-medium bg-amber-50 dark:bg-amber-500/10 text-amber-700 dark:text-amber-400 border border-amber-200 dark:border-amber-500/20">Riesgo Medio</span>;
       case 'HIGH':
-        return <span className="px-1.5 py-0.5 rounded text-[10px] font-medium bg-rose-500/10 text-rose-400 border border-rose-500/20">Riesgo Alto</span>;
+        return <span className="px-1.5 py-0.5 rounded text-[10px] font-medium bg-rose-50 dark:bg-rose-500/10 text-rose-700 dark:text-rose-400 border border-rose-200 dark:border-rose-500/20">Riesgo Alto</span>;
       default:
         return null;
     }
@@ -81,16 +92,23 @@ export const OpportunityCard: React.FC<OpportunityCardProps> = ({
     <div
       data-testid={`opportunity-card-${opportunity.id}`}
       onClick={() => onSelect?.(opportunity)}
-      className="group relative p-4 rounded-xl bg-zinc-900/[0.03] dark:bg-white/[0.03] border border-zinc-900/[0.1] dark:border-white/[0.06] hover:border-zinc-900/[0.16] dark:hover:border-white/[0.14] transition-all duration-200 shadow-md flex flex-col justify-between space-y-3 cursor-pointer"
+      className="group relative p-4 rounded-xl bg-white/80 dark:bg-white/[0.03] border border-zinc-200/80 dark:border-white/[0.06] hover:border-zinc-300 dark:hover:border-white/[0.14] transition-all duration-200 shadow-sm dark:shadow-md flex flex-col justify-between space-y-3 cursor-pointer"
     >
       <div className="space-y-2">
         {/* Header & Score Badge */}
         <div className="flex items-start justify-between gap-2">
           <div className="flex items-center gap-1.5 flex-wrap">
-            <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-semibold bg-orange-500/10 text-orange-400 border border-orange-500/30">
-              <Zap className="w-3 h-3" strokeWidth={1.5} />
-              <span>RICE {scoreDisplay}</span>
-            </span>
+            {isEnabler ? (
+              <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-semibold bg-purple-50 dark:bg-purple-500/15 text-purple-700 dark:text-purple-300 border border-purple-200 dark:border-purple-500/40">
+                <Zap className="w-3 h-3 text-purple-600 dark:text-purple-400" strokeWidth={1.5} />
+                <span>Habilitadora Previa</span>
+              </span>
+            ) : (
+              <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-semibold bg-orange-50 dark:bg-orange-500/10 text-orange-700 dark:text-orange-400 border border-orange-200 dark:border-orange-500/30">
+                <Zap className="w-3 h-3 text-orange-600 dark:text-orange-400" strokeWidth={1.5} />
+                <span>RICE {scoreDisplay}</span>
+              </span>
+            )}
             {renderRiskBadge()}
           </div>
 
@@ -101,7 +119,7 @@ export const OpportunityCard: React.FC<OpportunityCardProps> = ({
                 e.stopPropagation();
                 onSelect?.(opportunity);
               }}
-              className="p-1 rounded-md text-zinc-500 hover:text-orange-400 hover:bg-zinc-900/[0.05] dark:hover:bg-white/[0.05] transition-colors"
+              className="p-1 rounded-md text-zinc-500 hover:text-orange-600 dark:hover:text-orange-400 hover:bg-zinc-100 dark:hover:bg-white/[0.05] transition-colors"
               title="Abrir simulador RICE y detalles"
               aria-label="Simular RICE"
             >
@@ -111,7 +129,7 @@ export const OpportunityCard: React.FC<OpportunityCardProps> = ({
             <button
               type="button"
               onClick={handleDelete}
-              className="opacity-0 group-hover:opacity-100 transition-opacity p-1 rounded-md text-zinc-500 hover:text-rose-400 hover:bg-zinc-900/[0.05] dark:hover:bg-white/[0.05]"
+              className="opacity-0 group-hover:opacity-100 transition-opacity p-1 rounded-md text-zinc-400 hover:text-rose-600 dark:text-zinc-500 dark:hover:text-rose-400 hover:bg-zinc-100 dark:hover:bg-white/[0.05]"
               title="Eliminar oportunidad"
               aria-label="Eliminar oportunidad"
             >
@@ -140,14 +158,14 @@ export const OpportunityCard: React.FC<OpportunityCardProps> = ({
         {(opportunity.targetSegment || opportunity.ownerName) && (
           <div className="flex items-center gap-2 pt-1 flex-wrap text-[10px] text-zinc-600 dark:text-zinc-400">
             {opportunity.targetSegment && (
-              <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded bg-zinc-900/[0.02] dark:bg-white/[0.02] border border-zinc-900/[0.08] dark:border-white/[0.04]">
-                <Target className="w-2.5 h-2.5 text-sky-400" strokeWidth={1.5} />
+              <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded bg-zinc-100 dark:bg-white/[0.02] border border-zinc-200 dark:border-white/[0.04]">
+                <Target className="w-2.5 h-2.5 text-sky-600 dark:text-sky-400" strokeWidth={1.5} />
                 <span className="truncate max-w-[120px]">{opportunity.targetSegment}</span>
               </span>
             )}
             {opportunity.ownerName && (
-              <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded bg-zinc-900/[0.02] dark:bg-white/[0.02] border border-zinc-900/[0.08] dark:border-white/[0.04]">
-                <User className="w-2.5 h-2.5 text-orange-400" strokeWidth={1.5} />
+              <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded bg-zinc-100 dark:bg-white/[0.02] border border-zinc-200 dark:border-white/[0.04]">
+                <User className="w-2.5 h-2.5 text-orange-600 dark:text-orange-400" strokeWidth={1.5} />
                 <span className="truncate max-w-[100px]">{opportunity.ownerName}</span>
               </span>
             )}
@@ -155,31 +173,31 @@ export const OpportunityCard: React.FC<OpportunityCardProps> = ({
         )}
       </div>
 
-      <div className="space-y-2 pt-2 border-t border-zinc-900/[0.08] dark:border-white/[0.04]">
+      <div className="space-y-2 pt-2 border-t border-zinc-200/80 dark:border-white/[0.04]">
         {/* RICE Factors Pills */}
         <div className="grid grid-cols-4 gap-1 text-center">
-          <div className="p-1 rounded bg-black/30 border border-zinc-900/[0.08] dark:border-white/[0.04]">
+          <div className="p-1 rounded bg-zinc-50 dark:bg-black/30 border border-zinc-200/80 dark:border-white/[0.04]">
             <span className="text-[10px] text-zinc-500 block">Alcance</span>
             <span className="text-[11px] font-semibold text-zinc-900 dark:text-zinc-200">{opportunity.reachScore ?? '-'}</span>
           </div>
-          <div className="p-1 rounded bg-black/30 border border-zinc-900/[0.08] dark:border-white/[0.04]">
+          <div className="p-1 rounded bg-zinc-50 dark:bg-black/30 border border-zinc-200/80 dark:border-white/[0.04]">
             <span className="text-[10px] text-zinc-500 block">Impacto</span>
-            <span className="text-[11px] font-semibold text-emerald-400">{opportunity.impactScore ?? '-'}</span>
+            <span className="text-[11px] font-semibold text-emerald-700 dark:text-emerald-400">{opportunity.impactScore ?? '-'}</span>
           </div>
-          <div className="p-1 rounded bg-black/30 border border-zinc-900/[0.08] dark:border-white/[0.04]">
+          <div className="p-1 rounded bg-zinc-50 dark:bg-black/30 border border-zinc-200/80 dark:border-white/[0.04]">
             <span className="text-[10px] text-zinc-500 block">Conf.</span>
-            <span className="text-[11px] font-semibold text-sky-400">{opportunity.confidenceScore ?? '-'}</span>
+            <span className="text-[11px] font-semibold text-sky-700 dark:text-sky-400">{opportunity.confidenceScore ?? '-'}</span>
           </div>
-          <div className="p-1 rounded bg-black/30 border border-zinc-900/[0.08] dark:border-white/[0.04]">
+          <div className="p-1 rounded bg-zinc-50 dark:bg-black/30 border border-zinc-200/80 dark:border-white/[0.04]">
             <span className="text-[10px] text-zinc-500 block">Esfuerzo</span>
-            <span className="text-[11px] font-semibold text-amber-400">{opportunity.effortScore ?? '-'}</span>
+            <span className="text-[11px] font-semibold text-amber-700 dark:text-amber-400">{opportunity.effortScore ?? '-'}</span>
           </div>
         </div>
 
         {/* Evidence Count */}
         {opportunity.evidence && opportunity.evidence.length > 0 && (
           <div className="flex items-center gap-1 text-[10px] text-zinc-500">
-            <Layers className="w-3 h-3 text-sky-400" strokeWidth={1.5} />
+            <Layers className="w-3 h-3 text-sky-600 dark:text-sky-400" strokeWidth={1.5} />
             <span>{opportunity.evidence.length} señales/evidencias asociadas</span>
           </div>
         )}
@@ -192,9 +210,9 @@ export const OpportunityCard: React.FC<OpportunityCardProps> = ({
               e.stopPropagation();
               onConvertToProject(opportunity.id);
             }}
-            className="w-full py-1.5 px-2.5 rounded-lg text-xs font-semibold bg-gradient-to-r from-orange-500/20 to-amber-500/20 hover:from-orange-500/30 hover:to-amber-500/30 text-orange-200 border border-orange-500/30 transition-all flex items-center justify-center gap-1.5 shadow-sm"
+            className="w-full py-1.5 px-2.5 rounded-lg text-xs font-semibold bg-gradient-to-r from-orange-500/10 to-amber-500/10 hover:from-orange-500/20 hover:to-amber-500/20 text-orange-800 dark:text-orange-200 border border-orange-300 dark:border-orange-500/30 transition-all flex items-center justify-center gap-1.5 shadow-sm"
           >
-            <Rocket className="w-3.5 h-3.5 text-orange-400" strokeWidth={1.5} />
+            <Rocket className="w-3.5 h-3.5 text-orange-600 dark:text-orange-400" strokeWidth={1.5} />
             <span>Crear Proyecto & Backlog IA</span>
           </button>
         )}
